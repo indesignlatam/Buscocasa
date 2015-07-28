@@ -250,7 +250,7 @@ class PaymentController extends Controller {
 				}else{
 					$payment->listing->featured_expires_at 	= Carbon::now()->addDays(30);
 				}
-				$payment->listing->expires_at 		=  $payment->listing->expires_at->addDays(30);
+				$payment->listing->expires_at 		=  Carbon::now()->addDays(60);
 				$payment->listing->save();
 
 				// Send confirmation email to user and generate billing
