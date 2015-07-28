@@ -214,7 +214,7 @@ class PaymentController extends Controller {
 		// Log::info($request->get('sign'));
 
 		if($signature != $request->get('sign')){
-			return response()->json(['success' => 'Invalid signature'], 401);
+			return response()->json(['error' => 'Invalid signature'], 401);
 		}
 
 		$payment = Payment::where('reference_code', $request->get('reference_sale'))->first();
@@ -245,12 +245,12 @@ class PaymentController extends Controller {
 				// Update the listing and add it 30 days more of featuring 
 				// TODO If user pays again but changes the type the type will change and add the time
 				$payment->listing->featured_type 	= $payment->featuredType->id;
-				if($payment->listing->featured_expires_at){
-					$payment->listing->featured_expires_at 	= Carbon::createFromFormat('Y-m-d H:i:s', $payment->listing->featured_expires_at)->addDays(30);
+				if($payment->listing->featured_expires_at && $payment->listing->featured_expires_at < Carbon::now()){
+					$payment->listing->featured_expires_at 	= $payment->listing->featured_expires_at->addDays(30);
 				}else{
 					$payment->listing->featured_expires_at 	= Carbon::now()->addDays(30);
 				}
-				$payment->listing->expires_at 		=  Carbon::createFromFormat('Y-m-d H:i:s', $payment->listing->expires_at)->addDays(30);
+				$payment->listing->expires_at 		=  $payment->listing->expires_at->addDays(30);
 				$payment->listing->save();
 
 				// Send confirmation email to user and generate billing
