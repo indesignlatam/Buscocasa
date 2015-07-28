@@ -34,6 +34,7 @@
         	<input id="longitude" type="hidden" name="longitude" value="{{ $listing->longitude }}">
         	<input id="main_image_id" type="hidden" name="main_image_id" value="{{ $listing->main_image_id }}">
         	<input id="image_path" type="hidden" name="image_path" value="{{ $listing->image_path }}">
+        	<input id="save_close" type="hidden" name="save_close" value="0">
 
 			<div class="uk-grid uk-margin-top">
 
@@ -345,7 +346,7 @@
 					<div class="uk-margin-top uk-flex">
 				        <!-- This is a button toggling the modal -->
 				        <button form="create_form" type="submit" class="uk-button uk-button-large uk-button-success uk-text-bold uk-width-5-10 uk-margin-right" onclick="blockUI()">{{ trans('admin.save') }}</button>
-				        <button form="create_form" type="submit" class="uk-button uk-button-large uk-text-bold uk-width-5-10" onclick="blockUI()" >{{ trans('admin.save_close') }}</button>
+				        <button form="create_form" type="submit" class="uk-button uk-button-large uk-text-bold uk-width-5-10" onclick="saveClose()" >{{ trans('admin.save_close') }}</button>
 				    </div>
 				</div>
 
@@ -669,8 +670,9 @@
 			});
        	}
 
-       	function setShared(){
-       		// TODO set shared cookie
+       	function saveClose(){
+       		$("#save_close").val('1');
+       		blockUI();
        	}
 	</script>
 @endsection
