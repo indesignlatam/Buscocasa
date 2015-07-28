@@ -5,7 +5,7 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 
-use Carbon, Session, Auth, Log, Settings, URL;
+use Carbon, Session, Auth, Log, Settings, URL, Queue;
 use App\Models\Payment,
 	App\Models\Listing,
 	App\Models\FeaturedType;
