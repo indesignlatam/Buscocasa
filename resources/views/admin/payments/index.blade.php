@@ -59,7 +59,7 @@
 								</tr>
 							</thead>
 							@foreach($payments as $payment)
-								<tr>
+								<tr id="payment-{{ $payment->id }}">
 									@if($payment->confirmed)
 										<td class="uk-text-center uk-text-success"><i class="uk-icon-check-circle" data-uk-tooltip="{pos:'top'}" title="El pago ya fue confirmado por la entidad financiera."></i></td>
 									@elseif($payment->canceled)
@@ -73,7 +73,7 @@
 									<td>{{ money_format('$%!.1i', $payment->amount) }}</td>
 									<td>{{ $payment->payment_method_name }}</td>								
 									<td>{{ Carbon::createFromFormat('Y-m-d H:i:s', $payment->updated_at, 'America/Bogota')->diffForHumans() }}</td>
-									<td><a href="{{ url('/admin/pagos/'.$payment->id.'/cancel') }}" class="uk-button uk-button-small uk-button-danger"><i class="uk-icon-remove"></i></a></td>
+									<td><a class="uk-button uk-button-small uk-button-danger" id="{{ $payment->id }}" onclick="cancel(this)"><i class="uk-icon-remove"></i></a></td>
 								</tr>
 							@endforeach
 						</table>
@@ -95,4 +95,14 @@
 	<link href="{{ asset('/css/components/tooltip.almost-flat.min.css') }}" rel="stylesheet">
 	@parent
 	<script src="{{ asset('/js/components/tooltip.min.js') }}"></script>
+	<script type="text/javascript">
+		function cancel(sender) {
+	    	UIkit.modal.confirm("{{ trans('admin.cancel_payment_sure') }}", function(){
+			    // will be executed on confirm.
+			    $.post("{{ url('/admin/pagos') }}/" + sender.id, {_token: "{{ csrf_token() }}", _method:"DELETE"}, function(result){
+		            $( "#payment-"+sender.id ).animate({ height: 'toggle', opacity: 'toggle' }, 'slow');
+		        });			    
+			}, {labels:{Ok:'{{trans("admin.yes")}}', Cancel:'{{trans("admin.cancel")}}'}});
+	    }
+	</script>
 @endsection

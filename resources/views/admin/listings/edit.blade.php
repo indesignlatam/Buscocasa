@@ -404,13 +404,13 @@
 			</div>
 
 	        <div class="uk-grid uk-grid-collapse">
-	        	<div class="uk-width-1-2">
-	        		<a onclick="uplink()">
-	        			<img src="{{ asset('/images/support/upload-images.png') }}">
+	        	{{-- <div class="uk-width-1-1" class="uk-text-center">
+	        		<a onclick="uplink()" class="uk-align-center">
+	        			<img src="{{ asset('/images/support/upload-images.png') }}" width="50%">
 	        		</a>
-	        	</div>
+	        	</div> --}}
 
-	        	<div class="uk-width-1-2">
+	        	<div class="uk-width-1-1">
 	        		<div id="upload_drop_modal" class="uk-placeholder uk-placeholder-large uk-text-center uk-margin-top">
 					    <i class="uk-icon-large uk-icon-cloud-upload"></i> {{ trans('admin.drag_listing_images_or') }} <a class="uk-form-file">{{ trans('admin.select_an_image') }}<input id="upload_select_modal" type="file"></a>
 					</div>

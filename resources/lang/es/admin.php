@@ -178,6 +178,7 @@ return [
     'reference'                 => 'Referencia',
     'payment_method'            => 'Metodo de pago',
     'updated'                   => 'Actualizado',
+    'cancel_payment_sure'       => 'Estas seguro que deseas cancelar el pago?',
 
     // Confirm payment
     'confirm_payment'           => 'Confirma tu pago',

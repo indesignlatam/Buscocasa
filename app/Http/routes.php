@@ -135,7 +135,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
 
 	Route::resource('destacar', 'HighlightController');
 
-	Route::get('pagos/{id}/cancel', 'PaymentController@cancel');// Secured
+	Route::delete('pagos/{id}', 'PaymentController@cancel');// Secured
 	Route::get('pagos/respuesta', 'PaymentController@payUResponse');
 	Route::resource('pagos', 'PaymentController');
 
