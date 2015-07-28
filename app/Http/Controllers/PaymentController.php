@@ -238,8 +238,6 @@ class PaymentController extends Controller {
 			$payment->transaction_id 		= $request->get('transaction_id');
 			$payment->payment_method_name 	= $request->get('payment_method_name');
 
-			$payment->save();
-
 			if($request->get('state_pol') == 4){
 				$payment->confirmed = true;
 				$payment->canceled 	= false;
@@ -258,6 +256,8 @@ class PaymentController extends Controller {
 				// Send confirmation email to user and generate billing
 				Queue::push(new SendPaymentConfirmationEmail($payment));
 			}
+
+			$payment->save();
 		}
 
 		return response()->json(['success' => true]);

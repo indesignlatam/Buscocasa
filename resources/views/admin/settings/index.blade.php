@@ -66,6 +66,21 @@
 					</div>
 				</div>
 
+				<div class="uk-width-1-2  uk-margin-top">
+					<div class="uk-panel">
+						<h2>{{ trans('admin.dashboard') }}</h2>
+						<hr>
+						<div class="uk-form-row">
+					        <label class="uk-form-label" for="">{{ trans('admin.views_spent_ratio_success') }} <i class="uk-text-danger">*</i></label>
+							<input class="uk-width-large-10-10 uk-form-large" id="views_spent_ratio_success" type="number" value="{{ Settings::get('views_spent_ratio_success') }}" onchange="updateSetting(this.id, this.value)">
+						</div>
+						<div class="uk-form-row">
+					        <label class="uk-form-label" for="">{{ trans('admin.messages_spent_ratio_success') }} <i class="uk-text-danger">*</i></label>
+							<input class="uk-width-large-10-10 uk-form-large" id="messages_spent_ratio_success" type="number" value="{{ Settings::get('messages_spent_ratio_success') }}" onchange="updateSetting(this.id, this.value)">
+						</div>
+					</div>
+				</div>
+
 				<div class="uk-width-1-2 uk-margin-top">
 					<div class="uk-panel">
 						<h2>{{ trans('admin.payu') }}</h2>
@@ -124,21 +139,6 @@
 						<div class="uk-form-row">
 					        <label class="uk-form-label" for="">{{ trans('admin.tips_min_views') }} <i class="uk-text-danger">*</i></label>
 							<input class="uk-width-large-10-10 uk-form-large" id="tips_min_views" type="text" value="{{ Settings::get('tips_min_views') }}" onchange="updateSetting(this.id, this.value)">
-						</div>
-					</div>
-				</div>
-
-				<div class="uk-width-1-2  uk-margin-top">
-					<div class="uk-panel">
-						<h2>{{ trans('admin.dashboard') }}</h2>
-						<hr>
-						<div class="uk-form-row">
-					        <label class="uk-form-label" for="">{{ trans('admin.views_spent_ratio_success') }} <i class="uk-text-danger">*</i></label>
-							<input class="uk-width-large-10-10 uk-form-large" id="views_spent_ratio_success" type="email" value="{{ Settings::get('views_spent_ratio_success') }}" onchange="updateSetting(this.id, this.value)">
-						</div>
-						<div class="uk-form-row">
-					        <label class="uk-form-label" for="">{{ trans('admin.messages_spent_ratio_success') }} <i class="uk-text-danger">*</i></label>
-							<input class="uk-width-large-10-10 uk-form-large" id="messages_spent_ratio_success" type="text" value="{{ Settings::get('messages_spent_ratio_success') }}" onchange="updateSetting(this.id, this.value)">
 						</div>
 					</div>
 				</div>

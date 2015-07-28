@@ -147,7 +147,9 @@
             <div class="uk-grid">
                 @foreach($sales as $sale)
                     <div class="uk-width-large-2-10 uk-width-medium-1-3 uk-width-small-1-1" style="position:relative">
-
+                        <a href="{{ url($sale->path()) }}">
+                            <img src="{{ asset(Image::url($sale->image_path(),['mini_front'])) }}" class="uk-margin-small-bottom" style="max-width=150px" data-uk-scrollspy="{cls:'uk-animation-fade'}">
+                        </a>
                         @if($sale->featuredType && $sale->featured_expires_at > Carbon::now())
                             <img src="{{ asset($sale->featuredType->image_path) }}" style="position:absolute; top:0; left:30; max-width:100px">
                         @else
@@ -156,9 +158,6 @@
                             @endif
                         @endif
 
-                        <a href="{{ url($sale->path()) }}">
-                            <img src="{{ asset(Image::url($sale->image_path(),['mini_front'])) }}" class="uk-margin-small-bottom" style="max-width=150px" data-uk-scrollspy="{cls:'uk-animation-fade'}">
-                        </a>
                         <br class="uk-visible-small">
                         <a href="{{ url($sale->path()) }}">{{ $sale->title }}</a>
                         <p class="uk-text-muted" style="font-size:10px;margin-top:-4px">{{ $sale->area }} mt2 - {{ money_format('$%!.0i', $sale->price) }}</p>
@@ -179,10 +178,18 @@
             <h1 class="uk-text-bold">{{ trans('frontend.latest_listings_lease') }}</h1>
             <div class="uk-grid">
                 @foreach($leases as $lease)
-                    <div class="uk-width-large-2-10 uk-width-medium-1-3 uk-width-small-1-1">
+                    <div class="uk-width-large-2-10 uk-width-medium-1-3 uk-width-small-1-1" style="position:relative">
                         <a href="{{ url($lease->path()) }}">
                             <img src="{{ asset(Image::url($lease->image_path(),['mini_front'])) }}" class="uk-margin-small-bottom" style="max-width=150px" data-uk-scrollspy="{cls:'uk-animation-fade'}">
                         </a>
+                        @if($lease->featuredType && $lease->featured_expires_at > Carbon::now())
+                            <img src="{{ asset($lease->featuredType->image_path) }}" style="position:absolute; top:0; left:30; max-width:100px">
+                        @else
+                            @if(Carbon::createFromFormat('Y-m-d H:i:s', $lease->created_at)->diffInDays(Carbon::now()) < 5)
+                                <img src="{{asset('/images/defaults/new.png')}}" style="position:absolute; top:0; left:30; max-width:100px">
+                            @endif
+                        @endif
+
                         <a href="{{ url($lease->path()) }}">{{ $lease->title }}</a>
                         <p class="uk-text-muted" style="font-size:10px;margin-top:-4px">{{ $lease->area }} mt2 - {{ money_format('$%!.0i', $lease->price) }}</p>
                         <hr class="uk-visible-small uk-margin-bottom">
