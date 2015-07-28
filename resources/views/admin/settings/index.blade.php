@@ -70,14 +70,7 @@
 					<div class="uk-panel">
 						<h2>{{ trans('admin.payu') }}</h2>
 						<hr>
-						<div class="uk-form-row">
-					        <label class="uk-form-label" for="">{{ trans('admin.merchant_id') }} <i class="uk-text-danger">*</i></label>
-							<input class="uk-width-large-10-10 uk-form-large" id="merchant_id" type="text" value="{{ Settings::get('merchant_id') }}" onchange="updateSetting(this.id, this.value)">
-						</div>
-						<div class="uk-form-row">
-					        <label class="uk-form-label" for="">{{ trans('admin.account_id') }} <i class="uk-text-danger">*</i></label>
-							<input class="uk-width-large-10-10 uk-form-large" id="account_id" type="text" value="{{ Settings::get('account_id') }}" onchange="updateSetting(this.id, this.value)">
-						</div>
+						
 						<div class="uk-form-row">
 					        <label class="uk-form-label" for="">{{ trans('admin.currency') }} <i class="uk-text-danger">*</i></label>
 							<input class="uk-width-large-10-10 uk-form-large" id="currency" type="text" value="{{ Settings::get('currency') }}" onchange="updateSetting(this.id, this.value)">
@@ -85,18 +78,6 @@
 						<div class="uk-form-row">
 					        <label class="uk-form-label" for="">{{ trans('admin.test') }} <i class="uk-text-danger">*</i></label>
 							<input class="uk-width-large-10-10 uk-form-large" id="payu_test" type="number" value="{{ Settings::get('payu_test') }}" onchange="updateSetting(this.id, this.value)">
-						</div>
-						<div class="uk-form-row">
-					        <label class="uk-form-label" for="">{{ trans('admin.response_url') }} <i class="uk-text-danger">*</i></label>
-							<input class="uk-width-large-10-10 uk-form-large" id="response_url" type="text" value="{{ Settings::get('response_url') }}" onchange="updateSetting(this.id, this.value)">
-						</div>
-						<div class="uk-form-row">
-					        <label class="uk-form-label" for="">{{ trans('admin.confirmation_url') }} <i class="uk-text-danger">*</i></label>
-							<input class="uk-width-large-10-10 uk-form-large" id="confirmation_url" type="text" value="{{ Settings::get('confirmation_url') }}" onchange="updateSetting(this.id, this.value)">
-						</div>
-						<div class="uk-form-row">
-					        <label class="uk-form-label" for="">{{ trans('admin.dispute_url') }} <i class="uk-text-danger">*</i></label>
-							<input class="uk-width-large-10-10 uk-form-large" id="dispute_url" type="text" value="{{ Settings::get('dispute_url') }}" onchange="updateSetting(this.id, this.value)">
 						</div>
 					</div>
 				</div>

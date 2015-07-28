@@ -404,7 +404,7 @@
 			</div>
 
 	        <div class="uk-grid uk-grid-collapse">
-	        	{{-- <div class="uk-width-1-1" class="uk-text-center">
+	        	{{-- <div class="uk-width-1-1 uk-text-center">
 	        		<a onclick="uplink()" class="uk-align-center">
 	        			<img src="{{ asset('/images/support/upload-images.png') }}" width="50%">
 	        		</a>

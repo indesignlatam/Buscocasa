@@ -195,7 +195,7 @@
     				<h2 class="uk-text-bold">{{ trans('frontend.similar_listings') }}</h2>
     				@foreach($related as $rlisting)
 	    				<div class="uk-overlay uk-overlay-hover uk-margin-small">
-	    					<img class="uk-border-rounded" src="{{ asset($rlisting->image_path()) }}" alt="{{$rlisting->title}}">
+	    					<img class="uk-border-rounded" src="{{ asset($rlisting->image_path()) }}" alt="{{$rlisting->title}}" data-uk-scrollspy="{cls:'uk-animation-slide-left'}">
 						    <div class="uk-overlay-panel uk-overlay-background uk-overlay-fade">
 						    	<h4 class="uk-margin-remove">{{ $rlisting->title }}</h4>
 						    	<h4 class="uk-margin-top-remove uk-margin-small-bottom uk-text-bold">{{ money_format('$%!.0i', $rlisting->price) }}</h4>

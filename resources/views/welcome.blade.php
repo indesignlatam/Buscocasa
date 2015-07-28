@@ -157,7 +157,7 @@
                         @endif
 
                         <a href="{{ url($sale->path()) }}">
-                            <img src="{{ asset(Image::url($sale->image_path(),['mini_front'])) }}" class="uk-margin-small-bottom" style="max-width=150px">
+                            <img src="{{ asset(Image::url($sale->image_path(),['mini_front'])) }}" class="uk-margin-small-bottom" style="max-width=150px" data-uk-scrollspy="{cls:'uk-animation-fade'}">
                         </a>
                         <br class="uk-visible-small">
                         <a href="{{ url($sale->path()) }}">{{ $sale->title }}</a>
@@ -181,7 +181,7 @@
                 @foreach($leases as $lease)
                     <div class="uk-width-large-2-10 uk-width-medium-1-3 uk-width-small-1-1">
                         <a href="{{ url($lease->path()) }}">
-                            <img src="{{ asset(Image::url($lease->image_path(),['mini_front'])) }}" class="uk-margin-small-bottom" style="max-width=150px">
+                            <img src="{{ asset(Image::url($lease->image_path(),['mini_front'])) }}" class="uk-margin-small-bottom" style="max-width=150px" data-uk-scrollspy="{cls:'uk-animation-fade'}">
                         </a>
                         <a href="{{ url($lease->path()) }}">{{ $lease->title }}</a>
                         <p class="uk-text-muted" style="font-size:10px;margin-top:-4px">{{ $lease->area }} mt2 - {{ money_format('$%!.0i', $lease->price) }}</p>
@@ -204,7 +204,7 @@
     		<div class="uk-grid uk-margin-large-bottom">
                 <div class="uk-width-large-3-5 uk-width-small-1-1">
                     <a href="{{ url($featured[0]->path()) }}">
-                        <img src="{{ asset(Image::url($featured[0]->image_path(),['mini_image_2x'])) }}" class="uk-margin-remove">
+                        <img src="{{ asset(Image::url($featured[0]->image_path(),['mini_image_2x'])) }}" class="uk-margin-remove" data-uk-scrollspy="{cls:'uk-animation-slide-left'}">
                     </a>
                 </div>
                 <div class="uk-width-large-2-5 uk-width-small-1-1">
@@ -250,7 +250,7 @@
                 </div>
                 <div class="uk-width-large-3-5 uk-width-small-1-1">
                     <a href="{{ url($featured[1]->path()) }}">
-                        <img src="{{ asset(Image::url($featured[1]->image_path(),['mini_image_2x'])) }}" class="uk-margin-remove">
+                        <img src="{{ asset(Image::url($featured[1]->image_path(),['mini_image_2x'])) }}" class="uk-margin-remove" data-uk-scrollspy="{cls:'uk-animation-slide-right'}">
                     </a>
                 </div>
             </div>
