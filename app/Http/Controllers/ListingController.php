@@ -349,6 +349,10 @@ class ListingController extends Controller {
 
 	    $listing->save();
 
+	    
+	    if($request->get('save_close')){
+			return redirect('admin/listings')->withSuccess([trans('responses.listing_saved')]);
+	    }
 		return redirect('admin/listings/'.$id.'/edit')->withSuccess([trans('responses.listing_saved')]);
 	}
 
