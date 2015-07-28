@@ -100,7 +100,11 @@
 	    	UIkit.modal.confirm("{{ trans('admin.cancel_payment_sure') }}", function(){
 			    // will be executed on confirm.
 			    $.post("{{ url('/admin/pagos') }}/" + sender.id, {_token: "{{ csrf_token() }}", _method:"DELETE"}, function(result){
-		            $( "#payment-"+sender.id ).animate({ height: 'toggle', opacity: 'toggle' }, 'slow');
+			    	if(result.success){
+		            	$( "#payment-"+sender.id ).animate({ height: 'toggle', opacity: 'toggle' }, 'slow');
+			    	}else if(result.error){
+			    		UIkit.modal.alert(result.error);
+			    	}
 		        });			    
 			}, {labels:{Ok:'{{trans("admin.yes")}}', Cancel:'{{trans("admin.cancel")}}'}});
 	    }
