@@ -22,8 +22,9 @@
 		<hr>
 	    
 	    <div class="uk-panel">
-			<a class="uk-button uk-button-large uk-float-right uk-margin-left" href="{{ url('/admin/listings') }}">{{ trans('admin.close') }}</a>
-	        <button form="create_form" type="submit" class="uk-button uk-button-large uk-button-success uk-form-width-medium uk-float-right" onclick="blockUI()">{{ trans('admin.save') }}</button>
+			<a class="uk-button uk-button-large uk-float-right" href="{{ url('/admin/listings') }}">{{ trans('admin.close') }}</a>
+			<button form="create_form" type="submit" class="uk-button uk-button-large uk-form-width-medium uk-float-right uk-margin-right" onclick="saveClose()" >{{ trans('admin.save_close') }}</button>
+	        <button form="create_form" type="submit" class="uk-button uk-button-large uk-button-success uk-form-width-medium uk-float-right uk-margin-right" onclick="blockUI()">{{ trans('admin.save') }}</button>
 	    </div>
 
 		<form id="create_form" class="uk-form uk-form-stacked" method="POST" action="{{ url('/admin/listings/'.$listing->id) }}" enctype="multipart/form-data">
@@ -356,7 +357,7 @@
 	</div>
 </div>
 
-@if($listing->featured_expires_at && $listing->featured_expires_at < Carbon::now()->addDays(5))
+@if($listing->featured_expires_at && $listing->featured_expires_at < Carbon::now()->addDays(5) && $listing->featured_expires_at > Carbon::now())
 	<!-- This is the modal -->
 	<div id="expires_modal" class="uk-modal">
 	    <div class="uk-modal-dialog">
