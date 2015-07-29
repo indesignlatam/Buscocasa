@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel {
 		'App\Console\Commands\CleanTempFolder',
 		'App\Console\Commands\DeleteExpiredListings',
 		'App\Console\Commands\ArchiveDeletedListings',
+		'App\Console\Commands\TestPaymentEmail',
 	];
 
 	/**

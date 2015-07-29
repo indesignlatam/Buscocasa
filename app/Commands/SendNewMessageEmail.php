@@ -37,7 +37,10 @@ class SendNewMessageEmail extends Command implements SelfHandling, ShouldBeQueue
 		
 		// If mail not confirmed dont send email
 		if($object->listing->broker->confirmed){
-			Mail::send('emails.message', ['userMessage' => $object], function ($message) use ($object) {
+			Mail::send('emails.message', ['userMessage' => $object, 
+										  'user' 		=> $object->listing->broker,
+										 ], 
+			function ($message) use ($object) {
 			    $message->from(Settings::get('email_from'), Settings::get('email_from_name'))
 			    		->to($object->listing->broker->email, $object->listing->broker->name)
 			    		//->cc($object->email)
