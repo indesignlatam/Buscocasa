@@ -127,12 +127,12 @@ class AuthController extends Controller {
 			// Analytics event
 			Analytics::trackEvent('User Logged In', 'button', Auth::user()->id);
 
-			return redirect()->intended('/admin/');
+			return redirect()->intended($this->redirectPath());
 		}else if($this->auth->attempt(['email'=> $request->username, 'password' => $request->password], $request->has('remember'))) {
 			// Analytics event
 			Analytics::trackEvent('User Logged In', 'button', Auth::user()->id);
 
-		    return redirect()->intended('/admin/');
+		    return redirect()->intended($this->redirectPath());
 		}
 
 		// Analytics event
@@ -147,10 +147,10 @@ class AuthController extends Controller {
 
 	private function redirectPath(){
 		if(Auth::user()->is('admin')){
-			return '/admin/';
+			return '/admin';
 		}else{
 			if(count(Auth::user()->listings) > 0){
-				return '/admin/listings';
+				return '/admin';
 			}
 			return '/admin/listings/create';
 		}
