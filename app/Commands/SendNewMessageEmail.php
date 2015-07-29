@@ -42,7 +42,7 @@ class SendNewMessageEmail extends Command implements SelfHandling, ShouldBeQueue
 			    		->to($object->listing->broker->email, $object->listing->broker->name)
 			    		//->cc($object->email)
 			    		->replyTo($object->email)
-			    		->subject(trans('emails.new_message_subject'));
+			    		->subject(trans('emails.new_message_subject').$object->id);
 			});
 		}
 	}

@@ -17,7 +17,7 @@ return [
     'contact_now'                           => 'Contactalo Ya!',
 
     // New message - AppointmentController
-    'new_message_subject'                   => 'Tienes un nuevo mensaje de un cliente.',
+    'new_message_subject'                   => 'Tienes un nuevo mensaje - Inmueble #',
     'new_message_title'                     => 'Has recibido un nuevo mensaje de un cliente interesado en tu inmueble.',
     'new_message_client_data'               => 'Los datos del cliente interesado son los siguientes:',
 
