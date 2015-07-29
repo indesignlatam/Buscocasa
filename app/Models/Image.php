@@ -27,7 +27,7 @@ class Image extends IndesignModel {
 	 * @var array
 	 */
 	protected $rules = ['image_path'  						=> 'string|max:255|unique:images,image_path',
-						'image'  							=> 'required|image|max:5000|img_min_size:400,400',
+						'image'  							=> 'required|image|max:6500|img_min_size:400,400',
 				        'listing_id'  						=> 'required|numeric|exists:listings,id',
 				        ];
 
@@ -37,7 +37,7 @@ class Image extends IndesignModel {
 	 * @var array
 	 */
 	protected $editRules = ['image_path'  						=> 'string|max:255|unique:images,image_path',
-							'image'  							=> 'image|max:5000|img_min_size:400,400',
+							'image'  							=> 'image|max:6500|img_min_size:400,400',
 					        'listing_id'  						=> 'numeric|exists:listings,id',
 					        ];
 
