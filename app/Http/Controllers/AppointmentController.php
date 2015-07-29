@@ -96,10 +96,10 @@ class AppointmentController extends Controller {
 			}
 		}
 
-		//Spam protection
-		if($request->has('surname') || $request->get('surname')){
-			return redirect($url)->withSuccess([trans('responses.message_success')]);
-		}
+		// Removes honeypot protection bug #162
+		// if($request->has('surname') || $request->get('surname')){
+		// 	return redirect($url)->withSuccess([trans('responses.message_success')]);
+		// }
 
 		$input 					= $request->all();
 		$input['comments'] 		= preg_replace("/[^a-zA-Z0-9.,?¿ñáéíóú ]+/", "", $input['comments']);

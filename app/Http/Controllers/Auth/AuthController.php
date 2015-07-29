@@ -56,9 +56,10 @@ class AuthController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function postRegister(Request $request){
-		if($request->has('surname') || $request->get('surname')){
-			return redirect('/auth/register')->withErrors(['MIAW!!!!'])->withInput();
-		}
+		// Removes honeypot bug #162
+		// if($request->has('surname') || $request->get('surname')){
+		// 	return redirect('/auth/register')->withErrors(['MIAW!!!!'])->withInput();
+		// }
 
 		if(!$request->has('g-recaptcha-response')){
 			return redirect('/auth/register')->withErrors([trans('auth.recaptcha_error')])->withInput();
@@ -112,9 +113,10 @@ class AuthController extends Controller {
 	}
 
 	public function postLogin(Request $request){
-		if($request->has('username') || $request->get('username')){
-			return redirect('/auth/login')->withErrors(['MIAW!!!!']);
-		}
+		// Removes honeypot bug #162
+		// if($request->has('username') || $request->get('username')){
+		// 	return redirect('/auth/login')->withErrors(['MIAW!!!!']);
+		// }
 
 		$this->validate($request, [
 			'email' 	=> 'required|string|min:6', 
