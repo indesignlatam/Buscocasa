@@ -108,6 +108,7 @@ class UserController extends Controller {
 		$user 		= new User;
 
 		$input 					= $request->all();
+		$input['email'] 		= Auth::user()->email;
 		$input['phone_1'] 		= preg_replace("/[^0-9]/", "", $input['phone_1']);
 		$input['phone_2'] 		= preg_replace("/[^0-9]/", "", $input['phone_2']);
 		$input['description'] 	= preg_replace("/[^a-zA-Z0-9.,?¿#%&ñáéíóú ]+/", "", $input['description']);

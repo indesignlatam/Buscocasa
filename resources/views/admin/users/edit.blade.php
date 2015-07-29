@@ -57,7 +57,7 @@
 					<div class="uk-form-row">
 				        <label class="uk-form-label">{{ trans('admin.email') }} <i class="uk-text-danger">*</i></label>
 				        <div class="uk-form-controls">
-							<input class="uk-width-1-1 uk-form-large" id="email" type="email" name="email" placeholder="{{ trans('admin.email') }}" value="{{ $user->email }}">
+							<input class="uk-width-1-1 uk-form-large" id="email" type="email" name="email" placeholder="{{ trans('admin.email') }}" value="{{ $user->email }}" disabled>
 						</div>
 					</div>
 				</div>
