@@ -154,6 +154,7 @@ class ListingController extends Controller {
 
 		$listing = $listing->create($input);
 
+	    $listing->code 	= str_random(3).$listing->id;
 
 		$unwanted_array = [ 'Š'=>'S', 'š'=>'s', 'Ž'=>'Z', 'ž'=>'z', 'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E',
                             'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 'Ï'=>'I', 'Ñ'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O', 'Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O', 'Ù'=>'U',
@@ -172,7 +173,7 @@ class ListingController extends Controller {
 							  $listing->city->name;
 							  
 		$listing->title 	= str_limit($title, $limit = 245, $end = '');
-		$listing->slug 		= str_limit(str_slug($listing->title.'-'.'15638'.$listing->id, '-'), $limit = 245, $end = '');
+		$listing->slug 		= str_limit(str_slug($listing->title.'-'.$listing->code, '-'), $limit = 245, $end = '');
 
 		// Set expiring date
 		$listing->expires_at = Carbon::now()->addDays(Settings::get('listing_expiring'));
@@ -317,6 +318,9 @@ class ListingController extends Controller {
 
 	    $listing->fill($input);
 
+	    if(!$listing->code){
+	    	$listing->code = str_random(3).$listing->id;
+	    }
 
 	    $unwanted_array = [ 'Š'=>'S', 'š'=>'s', 'Ž'=>'Z', 'ž'=>'z', 'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E',
                             'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 'Ï'=>'I', 'Ñ'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O', 'Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O', 'Ù'=>'U',
@@ -335,7 +339,7 @@ class ListingController extends Controller {
 							  $listing->city->name;
 							  
 		$listing->title 	= str_limit($title, $limit = 245, $end = '');
-		$listing->slug 		= str_limit(str_slug($listing->title.'-'.'15638'.$listing->id, '-'), $limit = 245, $end = '');
+		$listing->slug 		= str_limit(str_slug($listing->title.'-'.$listing->code, '-'), $limit = 245, $end = '');
 
 		// Set listing features
 	    $features = Feature::all();

@@ -64,7 +64,12 @@ class ListingFEController extends Controller {
 		if(count($request->all()) > 0){
 			if($request->get('listing_code')){
 				$code 			= $request->get('listing_code');
-				$listings 		= Listing::remember(Settings::get('query_cache_time_short', 10))->active()->orderBy('id', 'DESC')->with('city', 'listingType', 'featuredType')->paginate(Settings::get('pagination_objects'));//where('listing_code', '=', $code)
+				$listings 		= Listing::remember(Settings::get('query_cache_time_short', 10))
+										->where('code', $request->get('listing_code'))
+										->active()
+										->orderBy('id', 'DESC')
+										->with('city', 'listingType', 'featuredType')
+										->paginate(Settings::get('pagination_objects'));
 			}else{
 				if($request->get('listing_type_id')){
 					$listing_type 	= $request->get('listing_type_id');

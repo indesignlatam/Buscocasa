@@ -56,6 +56,7 @@ class Listing extends IndesignModel {
 				        'featured'  					=> 'boolean',
 				        'floor'  						=> 'numeric|min:1|max:100',
 				        'image_path'					=> 'string|max:255',
+						'code'     						=> 'alpha_dash|max:20|unique:listings',
 				        ];
 
 	/**
@@ -90,6 +91,7 @@ class Listing extends IndesignModel {
 					        'floor'  						=> 'numeric',
 					        'district'  					=> 'string|max:200|min:3',
 				        	'image_path'					=> 'string|max:255',
+							'code'     						=> 'alpha_dash|max:20|unique:listings',
 					        ];
 
 	/**
@@ -100,7 +102,7 @@ class Listing extends IndesignModel {
 	protected $fillable = ['slug', 'broker_id', 'category_id', 'listing_type', 'listing_status', 'city_id', 'direction', 
 							'latitude', 'longitude', 'title', 'description', 'price', 'rooms', 'bathrooms', 
 							'garages', 'area', 'stratum', 'lot_area', 'construction_year', 'administration', 'image_path', 'main_image_id', 
-							'published', 'featured', 'floor', 'district'];
+							'published', 'featured', 'floor', 'district', 'code'];
 
 	/**
 	 * The attributes that are hidden to JSON responces.

@@ -139,7 +139,7 @@
 
 			                		<div class="uk-width-6-10">
 			                			<!-- Listing title -->
-			                			<a class="uk-h3 uk-text-bold" style="color:black;" href="{{ url('/admin/listings/'.$listing->id.'/edit') }}">{{ $listing->title }}</a>
+			                			<a class="uk-h3 uk-text-bold" style="color:black;" href="{{ url('/admin/listings/'.$listing->id.'/edit') }}">{{ $listing->title }} #{{ $listing->code }}</a>
 			                			<!-- Listing title -->
 
 			                			<!-- Listing info and share -->

@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'AddCodeToListing' => $baseDir . '/database/migrations/2015_07_29_145251_add_code_to_listing.php',
     'AddDistrictFieldListings' => $baseDir . '/database/migrations/2015_06_17_231531_add_district_field_listings.php',
     'AddEmailVerify' => $baseDir . '/database/migrations/2015_06_21_133330_add_email_verify.php',
     'AddExpireNotifiedListings' => $baseDir . '/database/migrations/2015_06_19_230010_add_expire_notified_listings.php',
