@@ -250,9 +250,9 @@
 					                			@endif
 				                			@endif
 
-				                			<!-- Banner button -->
-				                            <a class="uk-button uk-width-1-1 uk-margin-small-bottom" href="{{ url('/admin/banners/create') }}">{{ trans('admin.print_banner') }}</a>
-				                            <!-- Banner button -->
+				                			<!-- View in frontend button -->
+				                            <a class="uk-button uk-width-1-1 uk-margin-small-bottom" href="{{ url($listing->path()) }}" target="_blank">{{ trans('admin.view_listing') }}</a>
+				                			<!-- View in frontend button -->
 
 				                			<!-- Edit and delete buttons -->
 					                		<div class="uk-flex uk-flex-center uk-flex-space-between">

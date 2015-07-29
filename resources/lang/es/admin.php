@@ -42,6 +42,7 @@ return [
     'order_by'                  => 'Ordenar por',
     'eliminated_listings'       => 'Ver inmuebles eliminados',
     'go_back_listings'          => 'Vuelve a tus inmuebles publicados',
+    'view_listing'              => 'Ver inmueble',
 
     // Create Listing
     'new_listing' 				=> 'Nueva publicación',
