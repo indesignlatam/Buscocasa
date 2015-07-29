@@ -5,6 +5,7 @@ return [
     'listings' 					=> 'Inmuebles',
     'new' 						=> 'Nuevo',
     'publish_property'          => 'Publica tu inmueble Gratis',
+    'register_publish_free'     => 'Registrate y Publica Gratis',
     'publish_property_4_steps'  => 'Vende o arrienda tu inmueble en cuatro pasos',
     'id' 						=> 'id',
     'published' 				=> 'Publicado',

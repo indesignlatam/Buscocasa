@@ -4,7 +4,7 @@
             <img src="{{ asset('/images/logo_h.png') }}" alt="logo" style="height:45px">
         </a>
 
-        <a href="{{ url('/admin/listings/create') }}" class="uk-button uk-button-primary uk-button-large uk-align-right uk-margin-small-top uk-hidden-small">{{ trans('admin.publish_property') }}</a>
+        <a href="{{ url('/auth/register') }}" class="uk-button uk-button-primary uk-button-large uk-align-right uk-margin-small-top uk-hidden-small">{{ trans('admin.register_publish_free') }}</a>
     </div>
 
     <!-- This is the off-canvas sidebar -->
