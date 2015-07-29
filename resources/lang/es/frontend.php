@@ -24,6 +24,8 @@ return [
     'search_button' 			=> 'Buscar',
     'search_select_option' 		=> 'Seleccione una opción',
 
+    'register_publish_title'    => 'Publica tus inmuebles totalmente Gratis en BuscoCasa.co',
+
     //Latest listings
     'latest_listings_sale' 		=> 'Nuevos inmuebles en venta',
     'latest_listings_lease' 	=> 'Nuevos inmuebles en arriendo',

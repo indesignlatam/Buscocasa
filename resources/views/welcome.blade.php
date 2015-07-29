@@ -204,6 +204,15 @@
 
         <hr>
 
+        <!-- Register and publish -->
+        <div class="uk-text-center">
+            <h1 class="uk-text-bold">{{ trans('frontend.register_publish_title') }}</h1>
+            <a href="{{ url('/auth/register') }}" class="uk-button uk-button-primary uk-button-xlarge">{{ trans('admin.register_publish_free') }}</a>
+        </div>
+        <!-- Register and publish -->
+
+        <hr>
+
         <!-- Featured listings -->
         <h1 class="uk-margin-bottom uk-margin-top uk-text-bold">{{ trans('frontend.featured_listing') }}</h1>
 

@@ -2578,6 +2578,14 @@ select.uk-form-width-mini {
     font-size: 16px;
     border-radius: 5px
 }
+.uk-button-xlarge {
+    min-height: 60px;
+    padding: 0 15px;
+    line-height: 58px;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 5px
+}
 .uk-button-group {
     display: inline-block;
     vertical-align: middle;
