@@ -235,20 +235,20 @@ class AppointmentController extends Controller {
 	    if(!Auth::user()->is('admin')){
 	    	if(!$message || $message->listing->broker->id != Auth::user()->id){
 	    		if($request->ajax()){
-					Session::flash('error', [trans('responses.no_permission')]);
 					return response()->json(['error' => trans('responses.no_permission'.$id)]);
 				}
 	        	return redirect('admin/appointments')->withErrors([trans('responses.no_permission')]);
 	    	}
 		}
 
-		// TODO mark message as answered and viewed
-		$message->read = $request->get('mark');
+		$message->read 		= $request->get('mark');
+		$message->answered 	= $request->get('mark');
 		$message->save();
 
 		if($request->ajax()){
-			Session::flash('success', [trans('responses.message_marked')]);
-			return response()->json(['success' => trans('responses.message_marked')]);
+			return response()->json(['success'  => trans('responses.message_marked'),
+									 'mark' 	=> (bool)$message->read,
+									 ]);
 		}
 
 		return redirect('admin/appointments')->withErrors([trans('responses.message_marked')]);
