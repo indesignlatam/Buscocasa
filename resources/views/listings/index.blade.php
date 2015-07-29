@@ -286,15 +286,17 @@
 
 @section('js')
 	@parent
+
+	<!-- CSS -->
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+	<link href="{{ asset('/css/select2.min.css') }}" rel="stylesheet"/>
+	<!-- CSS -->
+
+	<!-- JS -->
 	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 	<script src="{{ asset('/js/accounting.min.js') }}"></script>
-
-	<link href="{{ asset('/css/select2.min.css') }}" rel="stylesheet" />
 	<script src="{{ asset('/js/select2.min.js') }}"></script>
-
-	<script type="text/javascript">var centreGot = false;</script>
-	{!! $map['js'] !!}
+	<!-- JS -->
 
 	<script type="text/javascript">
 		function setHideMap(hideMap) {
@@ -324,9 +326,6 @@
         $(document).ready(function() {
 		  	$("#city").select2();
 		});
-
-
-
 
 		$(function() {
 		    $( "#slider-range-price" ).slider({
@@ -403,4 +402,9 @@
 		      	" - " + accounting.formatNumber($( "#slider-range-area" ).slider( "values", 1 )) + "+ mt2" );
 	  	});
 	</script>
+
+	<!-- Google map js -->
+	<script type="text/javascript">var centreGot = false;</script>
+	{!! $map['js'] !!}
+	<!-- Google map js -->
 @endsection

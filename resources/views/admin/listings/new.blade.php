@@ -284,21 +284,22 @@
 @endsection
 
 @section('js')
+	@parent
+
+	<!-- CSS -->
 	<link href="{{ asset('/css/components/form-file.almost-flat.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/components/tooltip.almost-flat.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/components/sticky.almost-flat.min.css') }}" rel="stylesheet">
+	<link href="{{ asset('/css/select2.min.css') }}" rel="stylesheet" />
+	<!-- CSS -->
 
-	@parent
+	<!-- JS -->
     <script src="{{ asset('/js/components/tooltip.min.js') }}"></script>
     <script src="{{ asset('/js/components/sticky.min.js') }}"></script>
 	<script src="{{ asset('/js/accounting.min.js') }}"></script>
-
-
-	<link href="{{ asset('/css/select2.min.css') }}" rel="stylesheet" />
 	<script src="{{ asset('/js/select2.min.js') }}"></script>
+	<!-- JS -->
 
-	<script type="text/javascript">var centreGot = false;</script>
-	<?php echo $map['js']; ?>
 	<script type="text/javascript">
 		$(document).ready(function() {
 		  	$("#city").select2();
@@ -324,4 +325,9 @@
 	        field.value = accounting.formatNumber(field.value);
 	    }
 	</script>
+
+	<!-- Google maps js -->
+	<script type="text/javascript">var centreGot = false;</script>
+	<?php echo $map['js']; ?>
+	<!-- Google maps js -->
 @endsection

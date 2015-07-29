@@ -309,13 +309,18 @@
 @endsection
 
 @section('js')
+	@parent
+
+	<!-- CSS -->
 	<link href="{{ asset('/css/components/slideshow.almost-flat.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/components/slidenav.almost-flat.min.css') }}" rel="stylesheet">
+	<!-- CSS -->
 
-	@parent
+	<!-- CSS -->
 	<script src='https://www.google.com/recaptcha/api.js'></script>
     <script src="{{ asset('/js/components/slideshow.min.js') }}"></script>
-	<?php echo $map['js']; ?>
+	<!-- CSS -->
+	
 	<script type="text/javascript">
 		window.fbAsyncInit = function() {
         	FB.init({
@@ -388,5 +393,8 @@
 			$('#phone_2').html(phoneFormat($('#phone_2').html()));
 		});
 	</script>
-	
+
+	<!-- Google maps js -->
+	<?php echo $map['js']; ?>
+	<!-- Google maps js -->
 @endsection
