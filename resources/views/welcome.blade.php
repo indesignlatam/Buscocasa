@@ -44,7 +44,11 @@
 @section('content')
 	@include('includes.navbarHome')
 	<div class="uk-cover-background uk-position-relative">
+    @if($featuredFullScreen)
         <img class="" src="{{ asset(Image::url($featuredFullScreen->image_path(),['featured_front'])) }}" width="100%" alt="">
+    @else
+        <img class="" src="{{ asset('/images/defaults/welcome.jpg') }}" width="100%" alt="">
+    @endif
         <div class="uk-position-cover uk-flex uk-flex-center uk-flex-middle uk-visible-small">
             <h1 class="uk-text-contrast uk-text-bold">{{ trans('frontend.mobile_greeting') }}</h1>
         </div>
@@ -168,10 +172,10 @@
             <div class="uk-margin-large-bottom">
                 <a href="{{ url('ventas') }}" class="uk-button uk-float-right">Ver más inmuebles</a>
             </div>
+
+            <hr>
         @endif
         <!-- latest listings on sale-->
-
-        <hr>
 
         <!-- latest listings on lease-->
         @if(count($leases))
@@ -199,10 +203,10 @@
             <div class="uk-margin-large-bottom ">
                 <a href="{{ url('arriendos') }}" class="uk-button uk-float-right">Ver más inmuebles</a>
             </div>
+
+            <hr>
         @endif
         <!-- latest listings on lease-->
-
-        <hr>
 
         <!-- Register and publish -->
         <div class="uk-text-center">
@@ -214,9 +218,9 @@
         <hr>
 
         <!-- Featured listings -->
-        <h1 class="uk-margin-bottom uk-margin-top uk-text-bold">{{ trans('frontend.featured_listing') }}</h1>
-
+        
         @if(count($featured) > 0)
+            <h1 class="uk-margin-bottom uk-margin-top uk-text-bold">{{ trans('frontend.featured_listing') }}</h1>
     		<div class="uk-grid uk-margin-large-bottom">
                 <div class="uk-width-large-3-5 uk-width-small-1-1">
                     <a href="{{ url($featured[0]->path()) }}">
