@@ -175,7 +175,24 @@ class PaymentController extends Controller {
 		$signature 	= "$apiKey~$merchantId~$referenceCode~$amount~$currency~$transactionState";
 		$signature 	= md5($signature);
 
-		return view('admin.payments.response', ['signature' => $signature]);
+		if($signature != $request->get('signature')){
+			return redirect('/admin/pagos')->withErrors([trans('admin.payment_signature_error')]);
+		}
+
+		// TODO get real listing
+		//$payment 	= Payment::where('reference_code', $referenceCode)->where('user_id', Auth::user()->id)->first();
+		//$listing 	= $payment->listing;
+		$payment 	= Auth::user()->payments->first();
+		$listing 	= Auth::user()->listings->first();
+
+		if(!$listing){
+			return redirect('/admin/pagos')->withErrors([trans('admin.payment_no_listing_error')]);
+		}
+
+		return view('admin.payments.response', ['signature' => $signature,
+												'listing' 	=> $listing,
+												'payment'	=> $payment,
+												]);
 	}
 
 	/**

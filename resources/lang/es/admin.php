@@ -208,6 +208,10 @@ return [
     'transaction_description'   => 'Descripción',
     'transaction_entity'        => 'Entidad',
     'error_validating_signature'=> 'La transacción no es valida, la firma digital no coincide.',
+    'payment_signature_error'   => 'Payment verification error.',
+    'payment_no_listing_error'  => 'No encontramos ningun inmueble relacionado con este pago.',
+    'payment_response_success_text' => 'El pago fue exitoso. Tu inmueble sera destacado por 30 dias y sera visto por mas posibles compradores.',
+    'payment_response_error_text' => 'El pago fue rechazado por la entidad financiera. Verifica que los datos de la transaccion sean correctos y vuelvo a intentarlo.',
 
 
     // Configuration
