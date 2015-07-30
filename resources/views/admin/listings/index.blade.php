@@ -126,15 +126,16 @@
 					<ul class="uk-list">
 						@foreach($listings as $listing)
 			                <li class="uk-panel uk-panel-box uk-panel-box-secondary uk-margin-bottom">
-			                	<!-- Featured tag -->
-			                	@if($listing->featured_expires_at && Carbon::createFromFormat('Y-m-d H:i:s', $listing->featured_expires_at, 'America/Bogota') > Carbon::now())
-			                		<img src="{{asset($listing->featuredType->image_path)}}" style="position:absolute; top:0; left:0; max-width:150px">
-			                	@endif
-
-			                	<!-- Featured tag -->
 			                	<div class="uk-grid">
 			                		<div class="uk-width-2-10">
-			                			<a href="{{ url('/admin/listings/'.$listing->id.'/edit') }}"><img src="{{ asset(Image::url($listing->image_path(),['map_mini'])) }}"></a>
+			                			<a href="{{ url('/admin/listings/'.$listing->id.'/edit') }}">
+				                			<!-- Featured tag -->
+						                	@if($listing->featured_expires_at && Carbon::createFromFormat('Y-m-d H:i:s', $listing->featured_expires_at, 'America/Bogota') > Carbon::now())
+						                		<img src="{{asset($listing->featuredType->image_path)}}" style="position:absolute; top:0; left:0; max-width:150px">
+						                	@endif
+						                	<!-- Featured tag -->
+			                				<img src="{{ asset(Image::url($listing->image_path(),['map_mini'])) }}">
+			                			</a>
 			                		</div>
 
 			                		<div class="uk-width-6-10">

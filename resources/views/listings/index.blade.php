@@ -190,6 +190,7 @@
 							@foreach($listings1 = array_slice($featuredListings->all(), 0, 4) as $listing)
 								<div class="uk-width-large-1-4 uk-width-medium-1-2 uk-width-small-1-1" style="position:relative;">
 									<!-- Tags start -->
+									<a href="{{ url($listing->path()) }}">
 						    		@if($listing->featuredType && $listing->featured_expires_at > Carbon::now())
 						    			<img src="{{asset($listing->featuredType->image_path)}}" style="position:absolute; top:0; left:30; max-width:100px">
 						    		@else
@@ -198,7 +199,6 @@
 							    		@endif
 						    		@endif
 							    	<!-- Tags end -->
-									<a href="{{ url($listing->path()) }}">
 			                            <img src="{{ asset(Image::url($listing->image_path(),['mini_front'])) }}" class="uk-margin-small-bottom" style="max-width=150px">
 			                        </a>
 			                        <br class="uk-visible-small">
@@ -221,6 +221,7 @@
 											@foreach($listings1 = array_slice($featuredListings->all(), -4, 4) as $listing)
 												<div class="uk-width-large-1-4 uk-width-medium-1-2 uk-width-small-1-1" style="position:relative;">
 													<!-- Tags start -->
+													<a href="{{ url($listing->path()) }}">
 										    		@if($listing->featuredType && $listing->featured_expires_at > Carbon::now())
 										    			<img src="{{asset($listing->featuredType->image_path)}}" style="position:absolute; top:0; left:30; max-width:100px">
 										    		@else
@@ -229,7 +230,6 @@
 											    		@endif
 										    		@endif
 											    	<!-- Tags end -->
-													<a href="{{ url($listing->path()) }}">
 							                            <img src="{{ asset(Image::url($listing->image_path(),['mini_front'])) }}" class="uk-margin-small-bottom" style="max-width=150px">
 							                        </a>
 							                        <br class="uk-visible-small">
