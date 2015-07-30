@@ -279,7 +279,7 @@ return [
     'recaptcha_error'           => 'Por favor realiza la prueba para verificar que no eres un robot',
     'recaptcha_help'            => 'Debes hacer click en el anterior campo para verificar que no eres un robot.',
 
-    'features111'               => 'publicados',
+    'username_tooltip'          => 'El nombre de usuario sera el que te identifique en la barra de navegacion para que otros usuarios puedan ver todos tus inmuebles.',
     'features111'               => 'publicados',
     'features111'               => 'publicados',
     'features111'               => 'publicados',

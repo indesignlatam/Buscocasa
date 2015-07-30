@@ -10,10 +10,10 @@
 
 @section('content')
 
-<div class="uk-container uk-container-center uk-margin">
+{{-- <div class="uk-container uk-container-center uk-margin">
     <button form="create_form" type="submit" class="uk-button uk-button-large uk-button-success uk-form-width-medium" onclick="blockUI()">{{ trans('admin.save') }}</button>
 	<a class="uk-button uk-button-large" href="{{ url('/admin/listings') }}">{{ trans('admin.close') }}</a>
-</div>
+</div> --}}
 
 <div class="uk-cover-background uk-position-relative">
     <img class="" src="{{ asset('/images/defaults/user_front.jpg') }}" width="100%" alt="">
@@ -48,7 +48,7 @@
 					<div class="uk-form-row">
 				        <label class="uk-form-label">{{ trans('auth.username') }} <i class="uk-text-danger">*</i></label>
 				        <div class="uk-form-controls">
-							<input class="uk-width-1-1 uk-form-large" type="text" name="username" placeholder="{{ trans('admin.username') }}" value="{{ $user->username }}">
+							<input class="uk-width-1-1 uk-form-large" type="text" name="username" placeholder="{{ trans('admin.username') }}" value="{{ $user->username }}" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.username_tooltip') }}">
 						</div>
 					</div>
 				</div>
@@ -110,5 +110,7 @@
 @endsection
 
 @section('js')
+	<link href="{{ asset('/css/components/tooltip.almost-flat.min.css') }}" rel="stylesheet">
 	@parent
+	<script src="{{ asset('/js/components/tooltip.min.js') }}"></script>
 @endsection
