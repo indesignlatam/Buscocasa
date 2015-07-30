@@ -159,6 +159,7 @@ return [
     'phone' 					=> 'Telefono',
     'email' 					=> 'Correo',
     'description'               => 'Descripción',
+    'alt_phone'                 => 'Telefono 2',
 
     // Appointments
     'answer'                    => 'Responder',
