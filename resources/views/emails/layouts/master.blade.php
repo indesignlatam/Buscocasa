@@ -37,6 +37,9 @@
 		                <p><b>{{ trans('emails.already_sold') }}</b> {{ trans('emails.click') }} <a href="{{ url('/admin/listings/') }}">{{ trans('emails.here') }}</a> {{ trans('emails.to_delete_listing') }}</p>
 		            </div>
 		        @show
+
+		        @section('share_unregister')
+		        @show
 		    </div>
 		</div>
     </body>

@@ -6,7 +6,7 @@
 @section('content')
 	<p>{{ trans('emails.user_confirmation_title') }}</p>
 	
-	<h3>
+	<h3 class="uk-text-center">
 		{{ trans('emails.click_here_to_confirm') }}
 		<br>
 		<a href="{{ url('user/'.$user->id.'/confirm/'.$user->confirmation_code) }}" style="color:#d92228">{{ trans('emails.confirm_user') }}</a>
@@ -21,4 +21,8 @@
 
 @section('footer')
 	
+@endsection
+
+@section('share_unregister')
+	@parent
 @endsection

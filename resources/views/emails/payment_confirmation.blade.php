@@ -56,5 +56,9 @@
 @endsection
 
 @section('footer')
-	
+@endsection
+
+
+@section('share_unregister')
+	@parent
 @endsection

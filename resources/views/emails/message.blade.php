@@ -14,19 +14,20 @@
 
 	<div class="">
 		<div class="uk-margin-top">
-		    <h3>{{ trans('emails.new_message_client_data') }}</h3>
-		    <ul style="list-style-type:none;padding:0;margin:0;">
+		    <p class="uk-text-bold">{{ trans('emails.new_message_client_data') }}</p>
+		    <ul style="list-style: none outside none;">
 		    	<li>{{ trans('emails.name') }} <b>{{ $userMessage->name }}</li>
 		    	<li>{{ trans('emails.phone') }} <b>{{ $userMessage->phone }}</li>
 		    	<li>{{ trans('emails.email') }} <b>{{ $userMessage->email }}</li>
 		    </ul>
 
-		    <p>{{ $userMessage->comments }}</p>
-		    <hr class="uk-visible-small uk-hidden-large">
+		    <p><i>{{ $userMessage->comments }}</i></p>
 		</div>
 
+		<hr>
+
 		<div class="uk-margin-top">
-		    <h3>{{ $userMessage->listing->title }}</h3>
+		    <p class="uk-text-bold">{{ $userMessage->listing->title }}</p>
 		    <ul>
 		    	<li>{{ trans('emails.address') }} <b>{{ $userMessage->listing->direction }}</li>
 		    	<li>{{ trans('emails.price') }} <b>{{ money_format('$%!.0i', $userMessage->listing->price) }}</li>
@@ -51,5 +52,9 @@
 @endsection
 
 @section('footer')
+	@parent
+@endsection
+
+@section('share_unregister')
 	@parent
 @endsection

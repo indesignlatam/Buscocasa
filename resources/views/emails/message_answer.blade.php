@@ -8,38 +8,38 @@
 
 	<div class="uk-text-center">
 		<a href="{{ url($messageToAnswer->listing->path()) }}">
-			<img src="{{ $message->embed(public_path().$messageToAnswer->listing->image_path()) }}" width="300px">
-			{{-- <img src="{{ asset($messageToAnswer->listing->image_path()) }}" width="300px"> --}}
+			<img src="{{ $message->embed(public_path().$messageToAnswer->listing->image_path()) }}" width="300px" style="max-width:300px">
 		</a>
 	</div>
 
-	<div class="uk-grid">
-		<div class="uk-width-large-5-10 uk-margin-top">
-		    <h3 class="uk-text-primary">{{ trans('emails.message_answer') }}</h3>
-		    <p>
-		    	{{ $comments }}
-		    </p>
-		    <hr class="uk-visible-small">
+	<div class="">
+		<div class="uk-margin-top">
+		    <p class="uk-text-bold">{{ trans('emails.listing_message') }}</p>
+
+		    <p><i>{{ $comments }}</i></p>
 		</div>
 
-		<div class="uk-width-large-5-10 uk-margin-top">
-		    <h3 class="uk-text-primary">{{ trans('emails.listing_message') }}</h3>
-		    <p>{{ $messageToAnswer->listing->title }}</p>
-		    <p>
-		    	{{ trans('emails.address') }} <b>{{ $messageToAnswer->listing->direction }}</b><br>
-		    	{{ trans('emails.price') }} <b>{{ money_format('$%!.0i', $messageToAnswer->listing->price) }}</b><br>
-		    	{{ trans('emails.area') }} <b>{{ $messageToAnswer->listing->area }} mt2</b><br>
-		    	{{ trans('emails.stratum') }} <b>{{ $messageToAnswer->listing->stratum }}</b><br>
-		    	{{ trans('emails.rooms') }} <b>{{ $messageToAnswer->listing->rooms }}</b><br>
-		    	{{ trans('emails.bathrooms') }} <b>{{ $messageToAnswer->listing->bathrooms }}</b><br>
-		    </p>
+		<hr>
+
+		<div class="uk-margin-top">
+		    <p class="uk-text-bold">{{ $messageToAnswer->listing->title }}</p>
+		    <ul>
+		    	<li>{{ trans('emails.address') }} <b>{{ $messageToAnswer->listing->direction }}</li>
+		    	<li>{{ trans('emails.price') }} <b>{{ money_format('$%!.0i', $messageToAnswer->listing->price) }}</li>
+		    	<li>{{ trans('emails.area') }} <b>{{ $messageToAnswer->listing->area }} mt2</li>
+		    	<li>{{ trans('emails.stratum') }} <b>{{ $messageToAnswer->listing->stratum }}</li>
+		    	<li>{{ trans('emails.rooms') }} <b>{{ $messageToAnswer->listing->rooms }}</li>
+		    	<li>{{ trans('emails.bathrooms') }} <b>{{ $messageToAnswer->listing->bathrooms }}</li>
+		    </ul>
 	    </div>
 	</div>
 
-	<div class="uk-margin-top uk-text-center">
-		<h3 class="uk-text-primary">{{ trans('emails.contact_now') }} <b>{{ $messageToAnswer->listing->broker->email }}</b></h3>
+	<div class="uk-text-center uk-margin-top">
+		<h3 class="uk-text-primary uk-text-bold">{{ trans('emails.contact_now') }}<br>
+		<b>{{ $messageToAnswer->listing->broker->email }}</b></h3>
 	</div>
-	<p>{{ trans('emails.answer_to_contact') }}</p>
+	
+	<p class="uk-text-bold">{{ trans('emails.answer_to_contact') }}</p>
 @endsection
 
 @section('greetings')
@@ -47,5 +47,8 @@
 @endsection
 
 @section('footer')
+@endsection
+
+@section('share_unregister')
 	@parent
 @endsection
