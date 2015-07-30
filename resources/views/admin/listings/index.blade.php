@@ -154,7 +154,7 @@
 			                    					<li><i class="uk-text-muted">{{ trans('admin.mt2_price') }}</i> {{ money_format('$%!.0i', $listing->price/$listing->lot_area) }}</li>
 			                    					<li><i class="uk-text-muted">{{ trans('admin.area') }}</i> {{ number_format($listing->lot_area, 0) }} mt2</li>
 			                    				@endif
-			                    				<li><i class="uk-text-muted">{{ trans('admin.stratum') }}</i> {{ $listing->stratum }}</li>
+			                    				<li><i class="uk-text-muted">{{ trans('admin.code') }}</i> #{{ $listing->code }}</li>
 			                    			</ul>
 
 			                    			<ul class="uk-list uk-list-line uk-width-4-10">
@@ -357,7 +357,7 @@
 			  	method: 'share_open_graph',
 			  	action_type: 'og.shares',
 			  	action_properties: JSON.stringify({
-			    object:'{{ url('/') }}'+path,
+			    object: path,
 			})
 			}, function(response, id){
 				$.post("{{ url('/cookie/set') }}", {_token: "{{ csrf_token() }}", key: "shared_listing_"+id, value: true, time:11520}, function(result){

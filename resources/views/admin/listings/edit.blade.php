@@ -405,12 +405,6 @@
 			</div>
 
 	        <div class="uk-grid uk-grid-collapse">
-	        	{{-- <div class="uk-width-1-1 uk-text-center">
-	        		<a onclick="uplink()" class="uk-align-center">
-	        			<img src="{{ asset('/images/support/upload-images.png') }}" width="50%">
-	        		</a>
-	        	</div> --}}
-
 	        	<div class="uk-width-1-1">
 	        		<div id="upload_drop_modal" class="uk-placeholder uk-placeholder-large uk-text-center uk-margin-top">
 					    <i class="uk-icon-large uk-icon-cloud-upload"></i> {{ trans('admin.drag_listing_images_or') }} <a class="uk-form-file">{{ trans('admin.select_an_image') }}<input id="upload_select_modal" type="file"></a>
@@ -427,7 +421,7 @@
 			</div>
 
 		    <div class="uk-modal-footer">
-		    	<a href="" class="uk-button uk-button-danger uk-modal-close">{{ trans('admin.close') }}</a>
+		    	<a href="" class="uk-button uk-button-success uk-modal-close">{{ trans('admin.save') }}</a>
 		    </div>
 	    </div>
 	</div>
@@ -660,7 +654,7 @@
 			  	method: 'share_open_graph',
 			  	action_type: 'og.shares',
 			  	action_properties: JSON.stringify({
-			    object:'{{ url('+path+') }}',
+			    object: path,
 			})
 			}, function(response){
 				$.post("{{ url('/cookie/set') }}", {_token: "{{ csrf_token() }}", key: "shared_listing_"+{{ $listing->id }}, value: true, time:11520}, function(result){

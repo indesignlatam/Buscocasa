@@ -342,7 +342,7 @@
 			  	method: 'share_open_graph',
 			  	action_type: 'og.shares',
 			  	action_properties: JSON.stringify({
-			    object:'{{ url('/') }}'+path,
+			    object: path,
 			})
 			}, function(response, id){
 				$.post("{{ url('/cookie/set') }}", {_token: "{{ csrf_token() }}", key: "shared_listing_"+id, value: true, time:11520}, function(result){
@@ -358,7 +358,7 @@
 			  	method: 'share_open_graph',
 			  	action_type: 'og.likes',
 			  	action_properties: JSON.stringify({
-			    object:'{{ url('/') }}'+path,
+			    object: path,
 			})
 			}, function(response, id){
 			  	console.log(response);
