@@ -34,16 +34,18 @@ class WelcomeController extends Controller {
 	public function index(){
 		$sales 					= Listing::remember(Settings::get('query_cache_time_extra_short'))
 										 ->where('listing_type', 1)
-										 //->featured()
+										 ->featured()
 										 ->with('city', 'listingType', 'featuredType')
+										 ->orderBy('featured_type', 'asc')
 										 ->orderBy('id', 'desc')
 										 ->take(10)
 										 ->get();
 
 		$leases 				= Listing::remember(Settings::get('query_cache_time_extra_short'))
 										 ->where('listing_type', 2)
-										 //->featured()
+										 ->featured()
 										 ->with('city', 'listingType', 'featuredType')
+										 ->orderBy('featured_type', 'asc')
 										 ->orderBy('id', 'desc')
 										 ->take(10)
 										 ->get();
