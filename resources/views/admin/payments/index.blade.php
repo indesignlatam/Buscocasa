@@ -73,7 +73,12 @@
 									<td>{{ money_format('$%!.1i', $payment->amount) }}</td>
 									<td>{{ $payment->payment_method_name }}</td>								
 									<td>{{ Carbon::createFromFormat('Y-m-d H:i:s', $payment->updated_at, 'America/Bogota')->diffForHumans() }}</td>
-									<td><a class="uk-button uk-button-small uk-button-danger" id="{{ $payment->id }}" onclick="cancel(this)"><i class="uk-icon-remove"></i></a></td>
+
+									@if($payment->confirmed || $payment->canceled || $payment->state_pol)
+										<td><button class="uk-button uk-button-small uk-button-danger" id="{{ $payment->id }}" onclick="cancel(this)" disabled><i class="uk-icon-remove"></i></button></td>
+									@else
+										<td><button class="uk-button uk-button-small uk-button-danger" id="{{ $payment->id }}" onclick="cancel(this)"><i class="uk-icon-remove"></i></button></td>
+									@endif
 								</tr>
 							@endforeach
 						</table>

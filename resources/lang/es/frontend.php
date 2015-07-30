@@ -55,7 +55,7 @@ return [
     'contact_button' 			=> 'Enviar solicitud',
     'price_mt' 					=> 'Valor mt2',
     'similar_listings' 			=> 'Inmuebles similares',
-    'already_contacted_vendor' 	=> 'Ya has contactado al vendedor',
+    'already_contacted_vendor' 	=> 'Ya has contactado al vendedor hoy',
     'other_user_listings'       => 'Otros inmuebles del usuario',
 
     // Map marker info window
