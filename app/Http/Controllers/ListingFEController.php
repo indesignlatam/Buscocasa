@@ -257,12 +257,21 @@ class ListingFEController extends Controller {
 		
 		$features 	= Feature::remember(Settings::get('query_cache_time'))->with('category')->get();
 
-		$related 	= Listing::remember(Settings::get('query_cache_time_short'))
+		$related 	= Listing::remember(Settings::get('query_cache_time'))
+							 ->select(DB::raw("*,
+                              ( 6371 * acos( cos( radians(?) ) *
+                                cos( radians( latitude ) )
+                                * cos( radians( longitude ) - radians(?)
+                                ) + sin( radians(?) ) *
+                                sin( radians( latitude ) ) )
+                              ) AS distance"))
+							 ->setBindings([$listing->latitude, $listing->longitude, $listing->latitude, 5000])
+							 ->where('id', '<>', $listing->id)
 							 ->where('category_id', $listing->category_id)
 							 ->where('city_id', $listing->city_id)
 							 ->where('listing_type', $listing->listing_type)
 							 ->with('listingType')
-							 ->orderBy(DB::raw('RAND()'))
+							 ->orderBy('distance')
 							 ->take(3)
 							 ->get();
 
