@@ -265,7 +265,7 @@ class ListingFEController extends Controller {
                                 ) + sin( radians(?) ) *
                                 sin( radians( latitude ) ) )
                               ) AS distance"))
-							 ->setBindings([$listing->latitude, $listing->longitude, $listing->latitude, 5000])
+							 ->setBindings([$listing->latitude, $listing->longitude, $listing->latitude, Settings::get('related_radius', 5000)])
 							 ->where('id', '<>', $listing->id)
 							 ->where('category_id', $listing->category_id)
 							 ->where('city_id', $listing->city_id)
