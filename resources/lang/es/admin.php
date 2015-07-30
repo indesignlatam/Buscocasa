@@ -44,6 +44,11 @@ return [
     'eliminated_listings'       => 'Ver inmuebles eliminados',
     'go_back_listings'          => 'Vuelve a tus inmuebles publicados',
     'view_listing'              => 'Ver inmueble',
+    'images_check_tooltip'      => 'No has subido imagenes',
+    'shared_check_tooltip'      => 'No has compartido tu inmueble',
+    'aditional_check_tooltip'   => 'No has escrito una descripción adicional completa',
+    'features_check_tooltip'    => 'Tu inmueble no tiene suficientes caracteristicas',
+
 
     // Create Listing
     'new_listing' 				=> 'Nueva publicación',

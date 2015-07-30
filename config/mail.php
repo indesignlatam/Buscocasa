@@ -54,7 +54,7 @@ return [
 	|
 	*/
 
-	'from' => ['address' => 'comercial@indesigncolombia.com', 'name' => 'Equipo BuscoCasa.co'],
+	'from' => ['address' => 'no-reply@buscocasa.co', 'name' => 'Equipo BuscoCasa.co'],
 
 	/*
 	|--------------------------------------------------------------------------

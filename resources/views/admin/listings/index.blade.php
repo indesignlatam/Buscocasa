@@ -164,7 +164,7 @@
 			                    					@if(count($listing->images)>0)
 			                    					 	<i class="uk-icon-check uk-text-success"> </i>
 			                    					@else
-			                    						<i class="uk-icon-remove uk-text-danger"> </i>
+			                    						<i class="uk-icon-remove uk-text-danger" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.images_check_tooltip') }}"> </i>
 			                    					@endif
 													<i class="uk-text-muted">{{ trans('admin.images') }}</i>
 													</a>
@@ -174,7 +174,7 @@
 			                    					@if(Cookie::get('shared_listing_'.$listing->id))
 														<i class="uk-icon-check uk-text-success"> </i>
 			                    					@else
-			                    						<i class="uk-icon-remove uk-text-danger"> </i>
+			                    						<i class="uk-icon-remove uk-text-danger" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.shared_check_tooltip') }}"> </i>
 			                    					@endif
 			                    					<i class="uk-text-muted">{{ trans('admin.shared') }}</i>
 			                    					</a>
@@ -183,7 +183,7 @@
 			                    					@if(strlen($listing->description) > 50)
 														<i class="uk-icon-check uk-text-success"> </i>
 			                    					@else
-			                    						<i class="uk-icon-remove uk-text-danger"> </i>
+			                    						<i class="uk-icon-remove uk-text-danger" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.aditional_check_tooltip') }}"> </i>
 			                    					@endif
 			                    					<i class="uk-text-muted">{{ trans('admin.description') }}</i>
 			                    					</a>
@@ -193,7 +193,7 @@
 			                    					@if(count($listing->features) > 5)
 														<i class="uk-icon-check uk-text-success"> </i>
 			                    					@else
-			                    						<i class="uk-icon-remove uk-text-danger"> </i>
+			                    						<i class="uk-icon-remove uk-text-danger" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.features_check_tooltip') }}"> </i>
 			                    					@endif
 			                    					<i class="uk-text-muted">{{ trans('admin.features') }}</i>
 			                    					</a>
