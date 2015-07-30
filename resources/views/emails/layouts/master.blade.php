@@ -5,11 +5,14 @@
     </style>
 
     <body style="background:#fafafa">
+    	<div class="uk-panel" style="height:30px">
+    	</div>
+
         <div class="uk-container uk-container-center" style="margin-top:30px">
-            <div class="uk-panel uk-panel-box uk-panel-box-secondary uk-margin-large-bottom">
+            <div class="uk-panel uk-panel-box uk-panel-box-secondary uk-margin-large">
 		        @section('header')
 		            <div style="text-align:center;">
-		                <a href="{{ url('/') }}"><img src="{{ $message->embed(public_path().'/images/logo_h.png') }}" width="40%"></a>
+		                <a href="{{ url('/') }}"><img src="{{ $message->embed(public_path().'/images/logo_h.png') }}" width="300px" style="max-width:300px"></a>
 		            </div>
 		            @if(isset($user))
 		                <h3>{{ trans('emails.apreciated') }} {{ $user->name }},</h3>
