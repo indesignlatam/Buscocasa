@@ -12,7 +12,7 @@
             <div class="uk-panel uk-panel-box uk-panel-box-secondary uk-margin-large">
 		        @section('header')
 		            <div style="text-align:center;">
-		                <a href="{{ url('/') }}"><img src="{{ $message->embed(public_path().'/images/logo_h.png') }}" width="300px" style="max-width:300px"></a>
+		                <a href="{{ url('/') }}"><img src="{{ $message->embed(public_path().'/images/logo_h.png') }}" style="width:300px; max-width:300px"></a>
 		            </div>
 		            @if(isset($user))
 		                <h3>{{ trans('emails.apreciated') }} {{ $user->name }},</h3>

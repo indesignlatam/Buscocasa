@@ -8,7 +8,7 @@
 
 	<div class="uk-text-center">
 		<a href="{{ url($userMessage->listing->path()) }}">
-			<img src="{{ $message->embed(public_path().$userMessage->listing->image_path()) }}" width="300px" style="max-width:300px">
+			<img src="{{ $message->embed(public_path().$userMessage->listing->image_path()) }}" style="width:300px; max-width:300px">
 		</a>
 	</div>
 

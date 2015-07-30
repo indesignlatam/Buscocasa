@@ -12,7 +12,7 @@
 
 	<div style="text-align:center;">
 		<a href="{{ url($listing->path()) }}">
-			<img src="{{ $message->embed(public_path().$listing->image_path()) }}" width="300px" style="max-width:300px">
+			<img src="{{ $message->embed(public_path().$listing->image_path()) }}" style="width:300px; max-width:300px">
 		</a>
 	</div>
 
