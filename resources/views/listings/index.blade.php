@@ -215,7 +215,7 @@
 					    <li>
 					    	<?php $i = 0; ?>
 					    	@foreach($listings as $listing)
-					    		@if(count($listngs) > 10 && $i == ceil(count($listings)/2))
+					    		@if(count($listings) > 10 && $i == ceil(count($listings)/2))
 					    			<div class="uk-panel uk-panel-box uk-panel-box-primary uk-margin">
 										<div class="uk-grid">
 											@foreach($listings1 = array_slice($featuredListings->all(), -4, 4) as $listing)
