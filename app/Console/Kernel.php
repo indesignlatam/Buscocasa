@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel {
 		'App\Console\Commands\DeleteExpiredListings',
 		'App\Console\Commands\ArchiveDeletedListings',
 		'App\Console\Commands\TestPaymentEmail',
+		'App\Console\Commands\FlushCache',
 	];
 
 	/**
