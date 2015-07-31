@@ -124,9 +124,9 @@
 							<input name="accountId" 	type="hidden"  value="{{ config('payu.account_id') }}"/>
 						    <input name="description"   type="hidden"  value="{{ $payment->description }}"  />
 						    <input name="referenceCode" type="hidden"  value="{{ $payment->reference_code }}" />
-						    <input name="amount"        type="hidden"  value="{{ number_format($payment->amount, 2, '.', '') }}"   />
-						    <input name="tax"           type="hidden"  value="{{ number_format($payment->tax, 2, '.', '') }}"  />
-						    <input name="taxReturnBase" type="hidden"  value="{{ number_format($payment->tax_return_base, 2, '.', '') }}" />
+						    <input name="amount"        type="hidden"  value="{{ number_format($payment->amount, 0, '.', '') }}"   />
+						    <input name="tax"           type="hidden"  value="{{ number_format($payment->tax, 0, '.', '') }}"  />
+						    <input name="taxReturnBase" type="hidden"  value="{{ number_format($payment->tax_return_base, 0, '.', '') }}" />
 						    <input name="currency"      type="hidden"  value="{{ $payment->currency }}" />
 						    <input name="signature"     type="hidden"  value="{{ $payment->signature }}"  />
 						    <input name="test"          type="hidden"  value="0" />

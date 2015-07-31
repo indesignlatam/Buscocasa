@@ -88,10 +88,10 @@ class PaymentController extends Controller {
 		$input 						= $request->all();
 		$input['user_id'] 			= Auth::user()->id;
 		$input['reference_code'] 	= md5(Auth::user()->id . $request->get('listing_id') . Carbon::now()->toDateTimeString());
-		$input['amount'] 			= floatval(preg_replace("/[^0-9.]*/","", number_format($featuredType->price*1.16, 2, '.', ',')));
-		$input['tax'] 				= floatval(preg_replace("/[^0-9.]*/","", number_format($featuredType->price*0.16, 2, '.', ',')));
-		$input['tax_return_base'] 	= floatval(preg_replace("/[^0-9.]*/","", number_format($featuredType->price, 2, '.', ',')));
-		$input['description'] 		= $featuredType->name . ', ' . $listing->title . ' - ' . $listing->id;
+		$input['amount'] 			= floatval(preg_replace("/[^0-9.]*/","", number_format($featuredType->price, 2, '.', ',')));
+		$input['tax'] 				= floatval(preg_replace("/[^0-9.]*/","", number_format(($featuredType->price/1.16)*0.16, 2, '.', ',')));
+		$input['tax_return_base'] 	= floatval(preg_replace("/[^0-9.]*/","", number_format($featuredType->price/1.16, 2, '.', ',')));
+		$input['description'] 		= $featuredType->name . ', ' . $listing->title . ' - ' . $listing->code;
 
 		// Data to create signature
 		$referenceCode 				= $input['reference_code'];
