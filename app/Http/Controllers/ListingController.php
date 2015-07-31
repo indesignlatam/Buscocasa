@@ -138,7 +138,7 @@ class ListingController extends Controller {
 		$input['construction_year'] 	= preg_replace("/[^0-9]/", "", $input['construction_year']);
 		$input['administration'] 		= preg_replace("/[^0-9]/", "", $input['administration']);
 		$input['district'] 				= preg_replace("/[^a-zA-Z0-9ñáéíóú ]+/", "", $input['district']);
-		$input['description'] 			= preg_replace("/[^a-zA-Z0-9.,;:+$%/?¿!¡ñáéíóúüÁÉÍÓÚÜÑ ]+/", "", $input['description']);
+		//$input['description'] 			= preg_replace("/[^a-zA-Z0-9.,;:+$%/?¿!¡ñáéíóúüÁÉÍÓÚÜÑ ]+/", "", $input['description']);
 		$input['direction'] 			= preg_replace("/[^a-zA-Z0-9# -]+/", "", $input['direction']);
 		$input['broker_id'] 			= Auth::user()->id;
 		$input['listing_status'] 		= 2;
@@ -282,8 +282,8 @@ class ListingController extends Controller {
 		$input['floor'] 	= preg_replace("/[^0-9]/", "", $input['floor']);
 		$input['construction_year'] 	= preg_replace("/[^0-9]/", "", $input['construction_year']);
 		$input['administration'] 		= preg_replace("/[^0-9]/", "", $input['administration']);
-		$input['district'] 		= preg_replace("/[^a-zA-Z0-9ñáéíóú ]+/", "", $input['district']);
-		$input['description'] 	= preg_replace("/[^a-zA-Z0-9.,?¿ñáéíóú ]+/", "", $input['description']);
+		$input['district'] 		= preg_replace("/[^a-zA-Z0-9ñáéíóúÁÉÍÓÚÜÑ ]+/u", "", $input['district']);
+		//$input['description'] 	= preg_replace("/[^a-zA-Z0-9.,;:+$%/?¿!¡ñáéíóúüÁÉÍÓÚÜÑ ]+/u", "", $input['description']);
 		$input['direction'] 	= preg_replace("/[^a-zA-Z0-9# -]+/", "", $input['direction']);
 
 		if($input['main_image_id'] == ""){
