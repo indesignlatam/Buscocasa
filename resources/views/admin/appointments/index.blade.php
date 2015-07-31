@@ -139,24 +139,37 @@
 
 	    function answerMessage(objectID){
 	    	UIkit.modal.prompt("{{ trans('admin.answer_message_prompt') }}", '', function(newvalue){
+	    		$("#answer-"+objectID).prop('disabled', true);
+			    $("#mark-read-"+objectID).prop('disabled', true);
 			    // will be executed on submit.
 			    $.post("{{ url('/admin/messages') }}/"+objectID+"/answer", {_token: "{{ csrf_token() }}", comments : newvalue}, function(result){
 			    	if(result.success){
 			    		$("#message-"+objectID).fadeOut(500, function(){ $('table').append( '<tr id="message-'+objectID+'">'+ $(this).html()+ '</tr>')});
-			    		$("#answer-"+objectID).prop('disabled', true);
-			    		$("#mark-read-"+objectID).prop('disabled', true);
+			    	}else{
+			    		$("#answer-"+objectID).prop('disabled', false);
+			    		$("#mark-read-"+objectID).prop('disabled', false);
 			    	}
 		        });
 			}, {row:5, labels:{Ok:'{{trans("admin.send")}}', Cancel:'{{trans("admin.cancel")}}'}});
 	    }
 
-	    function mark(objectID, read){	    	
+	    function mark(objectID, read){
+	    	$("#answer-"+objectID).prop('disabled', read);
+			$("#mark-read-"+objectID).prop('disabled', read);   	
 		    // will be executed on submit.
 		    $.post("{{ url('/admin/messages') }}/"+objectID+"/mark", {_token: "{{ csrf_token() }}", mark : read}, function(result){
 		    	if(result.success){
 		        	$("#message-"+objectID).fadeOut(500, function(){ $('table').append( '<tr id="message-'+objectID+'">'+ $(this).html()+ '</tr>')});
 				    $("#answer-"+objectID).prop('disabled', result.mark);
 				    $("#mark-read-"+objectID).prop('disabled', result.mark);
+				}else{
+					if(read){
+						$("#answer-"+objectID).prop('disabled', false);
+				    	$("#mark-read-"+objectID).prop('disabled', false);
+					}else{
+						$("#answer-"+objectID).prop('disabled', true);
+				    	$("#mark-read-"+objectID).prop('disabled', true);
+					}
 				}
 	        });
 	    }
