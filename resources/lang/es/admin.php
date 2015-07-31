@@ -285,7 +285,9 @@ return [
     'recaptcha_help'            => 'Debes hacer click en el anterior campo para verificar que no eres un robot.',
 
     'username_tooltip'          => 'El nombre de usuario sera el que te identifique en la barra de navegacion para que otros usuarios puedan ver todos tus inmuebles.',
-    'features111'               => 'publicados',
+
+    // Welcome
+    'view_more_listings'        => 'Ver más inmuebles',
     'features111'               => 'publicados',
     'features111'               => 'publicados',
     'features111'               => 'publicados',

@@ -68,8 +68,11 @@
 @section('content')
 
 <div class="uk-container uk-container-center">
-    <h1>{{ trans('admin.dashboard') }}</h1>
-
+    <div class="uk-panel">
+        <h1 class="uk-float-left">{{ trans('admin.dashboard') }}</h1>
+        <a href="{{ url('/admin/listings/create') }}" class="uk-button uk-button-primary uk-button-large uk-float-right">{{ trans('admin.publish_property') }}</a>
+    </div>
+    
     <div class="uk-grid uk-grid-match" data-uk-grid-match="{target:'.uk-panel'}">
         @if(Auth::user()->confirmed)
             <!-- First row -->

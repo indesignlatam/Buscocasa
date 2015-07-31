@@ -171,7 +171,7 @@
                 @endforeach
             </div>
             <div class="uk-margin-large-bottom">
-                <a href="{{ url('ventas') }}" class="uk-button uk-float-right">Ver más inmuebles</a>
+                <a href="{{ url('ventas') }}" class="uk-button uk-float-right">{{ trans('admin.view_more_listings') }}</a>
             </div>
 
             <hr>
@@ -203,7 +203,7 @@
                 @endforeach
             </div>
             <div class="uk-margin-large-bottom ">
-                <a href="{{ url('arriendos') }}" class="uk-button uk-float-right">Ver más inmuebles</a>
+                <a href="{{ url('arriendos') }}" class="uk-button uk-float-right">{{ trans('admin.view_more_listings') }}</a>
             </div>
 
             <hr>
@@ -213,7 +213,11 @@
         <!-- Register and publish -->
         <div class="uk-text-center">
             <h1 class="uk-text-bold">{{ trans('frontend.register_publish_title') }}</h1>
-            <a href="{{ url('/auth/register') }}" class="uk-button uk-button-primary uk-button-xlarge">{{ trans('admin.register_publish_free') }}</a>
+            @if(!Auth::check())
+                <a href="{{ url('/auth/register') }}" class="uk-button uk-button-primary uk-button-xlarge">{{ trans('admin.register_publish_free') }}</a>
+            @else
+                <a href="{{ url('/admin/listings/create') }}" class="uk-button uk-button-primary uk-button-xlarge">{{ trans('admin.publish_property') }}</a>
+            @endif
         </div>
         <!-- Register and publish -->
 
