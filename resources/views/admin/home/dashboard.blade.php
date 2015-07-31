@@ -78,13 +78,13 @@
             <!-- First row -->
             <div class="uk-width-1-4 uk-margin-bottom">
                 <div class="uk-panel uk-panel-box uk-panel-box-secondary">
-                    <h3 class="uk-panel-title">{{ trans('admin.listings') }}</h3>
+                    <a href="{{ url('/admin/listings') }}" style="text-decoration:none"><h3 class="uk-panel-title">{{ trans('admin.listings') }}</h3></a>
                     <h1 class="uk-text-center">{{ $listingCount }}</h1>
                 </div>
             </div>
             <div class="uk-width-1-4 uk-margin-bottom">
                 <div class="uk-panel uk-panel-box uk-panel-box-secondary">
-                    <h3 class="uk-panel-title">{{ trans('admin.unanswered_messages') }}</h3>
+                    <a href="{{ url('/admin/messages') }}" style="text-decoration:none"><h3 class="uk-panel-title">{{ trans('admin.unanswered_messages') }}</h3></a>
 
                     @if($notAnsweredMessages == 0)
                         <h1 class="uk-text-center uk-text-success">{{ $notAnsweredMessages }}</h1>
