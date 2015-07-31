@@ -8,18 +8,17 @@
 
 	<div class="uk-text-center">
 		<a href="{{ url($userMessage->listing->path()) }}">
-			<img src="{{ $message->embed(public_path().$userMessage->listing->image_path()) }}" style="width:300px; max-width:300px">
+			<img src="{{ $message->embed(public_path().'/'.$userMessage->listing->image_path()) }}" style="width:300px; max-width:300px">
 		</a>
 	</div>
 
 	<div class="">
 		<div class="uk-margin-top">
 		    <p class="uk-text-bold">{{ trans('emails.new_message_client_data') }}</p>
-		    <ul style="list-style: none outside none;">
-		    	<li>{{ trans('emails.name') }} <b>{{ $userMessage->name }}</li>
-		    	<li>{{ trans('emails.phone') }} <b>{{ $userMessage->phone }}</li>
-		    	<li>{{ trans('emails.email') }} <b>{{ $userMessage->email }}</li>
-		    </ul>
+	    	<p>	{{ trans('emails.name') }} <b>{{ $userMessage->name }}</b><br>
+	    		{{ trans('emails.phone') }} <b>{{ $userMessage->phone }}</b><br>
+	    		{{ trans('emails.email') }} <b>{{ $userMessage->email }}</b>
+	    	</p>
 
 		    <p><i>{{ $userMessage->comments }}</i></p>
 		</div>
