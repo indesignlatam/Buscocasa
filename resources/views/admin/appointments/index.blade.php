@@ -56,7 +56,7 @@
 		            <tbody>
 		                @foreach($appointments as $appointment)
 		                    <tr id="message-{{ $appointment->id }}">
-		                        <td style="width:100px"><img src="{{ $appointment->listing->image_path() }}" style="width:100px"></td>
+		                        <td style="width:100px"><img src="{{ asset($appointment->listing->image_path()) }}" style="width:100px"></td>
 		                        <td style="width:20%"><b class="uk-h4">{{ $appointment->name }}</b><br>{{ $appointment->phone }}</td>
 		                        <td>{{ $appointment->email }}</td>
 		                        <td>{{ $appointment->comments }}</td>
