@@ -470,7 +470,7 @@ class ListingController extends Controller {
 	 * @return Response
 	 */
 	public function destroy($id, Request $request){
-		$listing = Listing::find($id);
+		$listing = Listing::where('id', $id)->withTrashed()->first();
 
 		// Security check
 	    if(!Auth::user()->is('admin')){
@@ -484,12 +484,15 @@ class ListingController extends Controller {
 	    	}
 		}
 
-		// Delete listing
-		$listing->delete();
+		if($listing->deleted_at){
+			$listing->forceDelete();
+		}else{
+			// Delete listing
+			$listing->delete();
+		}
 
 
 		if($request->ajax()){// If request was sent using ajax
-			Session::flash('success', [trans('responses.listing_deleted')]);
 			return response()->json(['error' => trans('responses.listing_deleted')]);
 		}
 		// If nos usign ajax return redirect

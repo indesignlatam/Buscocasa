@@ -113,7 +113,7 @@ return [
     //
     'my_listings_menu' 			=> 'Mis publicaciones',
     'my_messages_menu' 			=> 'Mensajes',
-    'profile_menu' 				=> 'Datos de usuario',
+    'profile_menu' 				=> 'Perfil de usuario',
     'login' 					=> 'Iniciar sesión',
     'logout' 					=> 'Cerrar sesión',
     'register' 					=> 'Registrate',
@@ -156,7 +156,7 @@ return [
     'confirmation_sent_title'   => 'Hemos enviado un mensaje a tu cuenta de correo electronico',
     'confirmation_sent_spam'    => 'Revisa tu cuenta de correo, si no encuentras el mensaje en tu carpeta de recibidos revisa la carpeta de spam.',
     //
-    'user_data'                 => 'Datos de usuario',
+    'user_data'                 => 'Perfil de usuario',
     'change_image' 				=> 'Cambiar imagen',
     'name' 						=> 'Nombre',
     'phone_alt' 				=> 'Telefono 2',

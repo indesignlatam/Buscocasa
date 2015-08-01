@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-use Carbon;
+use Carbon, File;
 use App\Models\IndesignModel;
 
 class Listing extends IndesignModel {

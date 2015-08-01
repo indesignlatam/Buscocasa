@@ -291,7 +291,12 @@
 					            <td class="uk-text-bold">{{ $listing->title }}</td>
 					            <td>{{ number_format($listing->area, 0) }} mt2</td>
 					            <td>{{ money_format('$%!.0i', $listing->price) }}</td>
-					            <td><a href="{{ url('/admin/listings/'.$listing->id.'/recover') }}" class="uk-button uk-button-success uk-width-1-1"><i class="uk-icon-undo"></i></a></td>
+					            <td>
+					            	<div class="uk-grid">
+					            		<a href="{{ url('/admin/listings/'.$listing->id.'/recover') }}" class="uk-button uk-button-success uk-width-1-2"><i class="uk-icon-undo"></i></a>
+					            		<button class="uk-button uk-button-danger uk-width-1-2" onclick="deleteObject(this)" id="{{ $listing->id }}"><i class="uk-icon-remove"></i></button>
+					            	</div>
+					            </td>
 					        </tr>
 						@endforeach
 						</tbody>
@@ -315,7 +320,7 @@
 					<br>
 					<br>
 					<a href="{{ url('/admin/listings/create') }}">
-						<img src="{{ asset('/images/support/publica.png') }}" width="75%">
+						<img src="{{ asset('/images/support/listings/publica.png') }}" width="75%">
 					</a>
 		    		
 		    		<div class="" style="margin-top:35px">
@@ -381,7 +386,8 @@
 	    	UIkit.modal.confirm("{{ trans('admin.sure') }}", function(){
 			    // will be executed on confirm.
 			    $.post("{{ url('/admin/listings') }}/" + sender.id, {_token: "{{ csrf_token() }}", _method:"DELETE"}, function(result){
-		            location.reload();
+			    	console.log(result);
+		            // location.reload();
 		        });
 			}, {labels:{Ok:'{{trans("admin.yes")}}', Cancel:'{{trans("admin.cancel")}}'}});
 	    }
