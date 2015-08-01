@@ -191,10 +191,9 @@ return [
     'payment_method'            => 'Metodo de pago',
     'updated'                   => 'Actualizado',
     'cancel_payment_sure'       => 'Estas seguro que deseas cancelar el pago?',
-    'confirm_payment'           => 'Confirmar pago',
 
     // Confirm payment
-    'confirm_payment'           => 'Confirma tu pago',
+    'confirm_payment'           => 'Confirmar pago',
     'confirm_payment_title'     => 'Por favor verifica todos los datos de la transaccion',
     'confirm_payment_text'      => 'A continuación seras redirigido de forma segura al sitio web de PayU Latino America en donde podras elegir un medio de pago para realizar tu transaccion y destacar tu publicación en BuscoCasa.co.',
     

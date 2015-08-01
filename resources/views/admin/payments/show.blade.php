@@ -114,7 +114,7 @@
 						    <input name="confirmationUrl" type="hidden"  value="{{ config('payu.confirmation_url') }}" />
 
 							<div class="uk-margin-top uk-text-center">
-						        <button form="payu" type="submit" class="uk-button uk-button-large uk-button-success uk-width-1-1" onclick="blockUI()">{{ trans('admin.pay') }}</button>
+						        <button form="payu" type="submit" class="uk-button uk-button-large uk-button-success uk-width-1-1" onclick="blockUI()">{{ trans('admin.confirm_payment') }}</button>
 								<a class="uk-button uk-margin-top uk-width-1-1" onclick="cancelPayment()">{{ trans('admin.cancel') }}</a>
 						    </div>
 						</form>
