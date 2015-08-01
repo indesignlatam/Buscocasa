@@ -94,23 +94,43 @@
 			@else
 		    	<div class="uk-text-center uk-margin-top">
 					<h2 style="color:#95979a" class="uk-text-bold">{{ trans('admin.you_have_no_messages') }}</h2>
-					<h3>Sigue estos pasos para mejorar la visibilidad de tu publicación</h3>
+					<h3>{{ trans('admin.no_messages_text') }}</h3>
 
 					<div class="uk-grid uk-grid-collapse uk-text-center">
-						<div class="uk-width-1-5">
-							<img src="{{ asset('/images/support/messages/consejo1.png') }}">
+						<div class="uk-width-large-1-5">
+							@if(isset($listing))
+								<a href="{{ url($listing->pathEdit()) }}"><img src="{{ asset('/images/support/messages/consejo1.png') }}"></a>
+							@else
+								<img src="{{ asset('/images/support/messages/consejo1.png') }}">
+							@endif
 						</div>
-						<div class="uk-width-1-5">
-							<img src="{{ asset('/images/support/messages/consejo2.png') }}">
+						<div class="uk-width-large-1-5">
+							@if(isset($listing))
+								<a href="{{ url($listing->pathEdit().'#7') }}"><img src="{{ asset('/images/support/messages/consejo2.png') }}"></a>
+							@else
+								<img src="{{ asset('/images/support/messages/consejo2.png') }}">
+							@endif
 						</div>
-						<div class="uk-width-1-5">
-							<img src="{{ asset('/images/support/messages/consejo3.png') }}">
+						<div class="uk-width-large-1-5">
+							@if(isset($listing))
+								<a href="{{ url($listing->pathEdit().'#7') }}"><img src="{{ asset('/images/support/messages/consejo3.png') }}"></a>
+							@else
+								<img src="{{ asset('/images/support/messages/consejo3.png') }}">
+							@endif
 						</div>
-						<div class="uk-width-1-5">
-							<img src="{{ asset('/images/support/messages/consejo4.png') }}">
+						<div class="uk-width-large-1-5">
+							@if(isset($listing))
+								<a href="{{ url('/admin/destacar/'.$listing->id) }}"><img src="{{ asset('/images/support/messages/consejo4.png') }}"></a>
+							@else
+								<img src="{{ asset('/images/support/messages/consejo4.png') }}">
+							@endif
 						</div>
-						<div class="uk-width-1-5">
-							<img src="{{ asset('/images/support/messages/consejo5.png') }}">
+						<div class="uk-width-large-1-5">
+							@if(isset($listing))
+								<a href="{{ url('/admin/destacar/'.$listing->id) }}"><img src="{{ asset('/images/support/messages/consejo5.png') }}"></a>
+							@else
+								<img src="{{ asset('/images/support/messages/consejo5.png') }}">
+							@endif
 						</div>
 					</div>
 		    		

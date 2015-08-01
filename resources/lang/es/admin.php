@@ -110,7 +110,6 @@ return [
     'steps_6'                    => 'Comparte en redes',
     'steps_7'                    => 'Destacado',
 
-
     //
     'my_listings_menu' 			=> 'Mis publicaciones',
     'my_messages_menu' 			=> 'Mensajes',
@@ -178,6 +177,7 @@ return [
     'view_messages' 			=> 'Ver mensajes',
     'send' 				        => 'Enviar',
     'show_deleted_messages'     => 'Buscar en los mensajes eliminados',
+    'no_messages_text'          => 'Sigue estos pasos para mejorar la visibilidad de tu publicación',
 
     // Payments
     'payments'                  => 'Pagos',
