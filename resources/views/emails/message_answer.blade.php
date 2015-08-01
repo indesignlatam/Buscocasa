@@ -8,13 +8,13 @@
 
 	<div class="uk-text-center">
 		<a href="{{ url($messageToAnswer->listing->path()) }}">
-			<img src="{{ $message->embed(public_path().'/'.$messageToAnswer->listing->image_path()) }}" style="width:300px; max-width:300px">
+			<img src="{{ $message->embed(public_path().'/'.$messageToAnswer->listing->image_path()) }}" style="max-width:300px">
 		</a>
 	</div>
 
 	<div class="">
 		<div class="uk-margin-top">
-		    <p class="uk-text-bold">{{ trans('emails.listing_message') }}</p>
+		    <p class="uk-text-bold">{{ trans('emails.message_answer') }}</p>
 
 		    <p><i>{{ $comments }}</i></p>
 		</div>
