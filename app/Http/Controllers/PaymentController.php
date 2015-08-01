@@ -61,7 +61,6 @@ class PaymentController extends Controller {
 	    if(!Auth::user()->is('admin')){
 	    	if(!$listing || $listing->broker->id != Auth::user()->id){
 	    		if($request->ajax()){// If request was sent using ajax
-	    			Session::flash('errors', [trans('responses.no_permission')]);
 					return response()->json(['error' => trans('responses.no_permission')]);
 	    		}
 	        	return redirect('admin/destacar')->withErrors([trans('responses.no_permission')]);
@@ -71,7 +70,6 @@ class PaymentController extends Controller {
 		// Check id the listing already has a payment that is not confirmed or canceled
 		if($listing->hasUnconfirmedPayments()){
 			if($request->ajax()){// If request was sent using ajax
-    			Session::flash('errors', [trans('responses.payment_unconfirmed_for_listing')]);
 				return response()->json(['error' => trans('responses.payment_unconfirmed_for_listing')]);
     		}
         	return redirect('admin/pagos')->withErrors([trans('responses.payment_unconfirmed_for_listing')]);
@@ -135,7 +133,6 @@ class PaymentController extends Controller {
 	    if(!Auth::user()->is('admin')){
 	    	if(!$payment || $payment->user->id != Auth::user()->id){
 	    		if($request->ajax()){// If request was sent using ajax
-	    			Session::flash('errors', [trans('responses.no_permission')]);
 					return response()->json(['error' => trans('responses.no_permission')]);
 	    		}
 	        	return redirect($this->path)->withErrors([trans('responses.no_permission')]);
@@ -264,7 +261,7 @@ class PaymentController extends Controller {
 				}else{
 					$payment->listing->featured_expires_at 	= Carbon::now()->addDays(30);
 				}
-				$payment->listing->expires_at 		=  Carbon::now()->addDays(60);
+				$payment->listing->expires_at 		=  $payment->listing->featured_expires_at->addDays(10);
 				$payment->listing->save();
 
 				// Send confirmation email to user and generate billing
@@ -311,7 +308,6 @@ class PaymentController extends Controller {
 	    if(!Auth::user()->is('admin')){
 	    	if(!$payment || $payment->user->id != Auth::user()->id){
 	    		if($request->ajax()){// If request was sent using ajax
-					Session::flash('errors', [trans('responses.no_permission')]);
 					return response()->json(['error' => trans('responses.no_permission')]);
 				}
 				// If nos usign ajax return redirect
@@ -330,7 +326,6 @@ class PaymentController extends Controller {
 		$payment->save();
 
 		if($request->ajax()){// If request was sent using ajax
-			//Session::flash('success', [trans('responses.payment_canceled')]);
 			return response()->json(['success' => trans('responses.payment_canceled')]);
 		}
 		// If nos usign ajax return redirect
@@ -351,7 +346,6 @@ class PaymentController extends Controller {
 	    if(!Auth::user()->is('admin')){
 	    	if(!$payment || $payment->user->id != Auth::user()->id){
 	    		if($request->ajax()){// If request was sent using ajax
-					Session::flash('errors', [trans('responses.no_permission')]);
 					return response()->json(['error' => trans('responses.no_permission')]);
 				}
 				// If nos usign ajax return redirect
@@ -363,7 +357,6 @@ class PaymentController extends Controller {
 		$payment->save();
 
 		if($request->ajax()){// If request was sent using ajax
-			Session::flash('success', [trans('responses.payment_canceled')]);
 			return response()->json(['success' => trans('responses.payment_canceled')]);
 		}
 		// If nos usign ajax return redirect
