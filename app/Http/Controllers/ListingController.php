@@ -476,7 +476,6 @@ class ListingController extends Controller {
 	    if(!Auth::user()->is('admin')){
 	    	if(!$listing || $listing->broker->id != Auth::user()->id){
 	    		if($request->ajax()){// If request was sent using ajax
-					Session::flash('errors', [trans('responses.no_permission')]);
 					return response()->json(['error' => trans('responses.no_permission')]);
 				}
 				// If nos usign ajax return redirect
@@ -493,10 +492,10 @@ class ListingController extends Controller {
 
 
 		if($request->ajax()){// If request was sent using ajax
-			return response()->json(['error' => trans('responses.listing_deleted')]);
+			return response()->json(['success' => trans('responses.listing_deleted')]);
 		}
 		// If nos usign ajax return redirect
-		return redirect('admin/listings')->withErrors([trans('responses.listing_deleted')]);
+		return redirect('admin/listings')->withSuccess([trans('responses.listing_deleted')]);
 	}
 
 }

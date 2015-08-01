@@ -11,6 +11,9 @@
 @section('content')
 
 <div class="uk-container uk-container-center uk-margin-top">
+	<div id="alert">
+	</div>
+
 	<div class="uk-panel">
 	
 		@if(Auth::user()->isAdmin())
@@ -125,7 +128,7 @@
 				<div class="uk-panel uk-margin-top">					
 					<ul class="uk-list">
 						@foreach($listings as $listing)
-			                <li class="uk-panel uk-panel-box uk-panel-box-secondary uk-margin-bottom">
+			                <li class="uk-panel uk-panel-box uk-panel-box-secondary uk-margin-bottom" id="listing-{{ $listing->id }}">
 			                	<div class="uk-grid">
 			                		<div class="uk-width-2-10">
 			                			<a href="{{ url('/admin/listings/'.$listing->id.'/edit') }}">
@@ -280,21 +283,21 @@
 					            <th style="width:50%">{{ trans('admin.title') }}</th>
 					            <th style="width:50px">{{ trans('admin.area') }}</th>
 					            <th style="width:50px">{{ trans('admin.price') }}</th>
-					            <th style="width:50px">{{ trans('admin.recover') }}</th>
+					            <th style="width:9%">{{ trans('admin.recover') }}</th>
 					        </tr>
 					    </thead>
 					    <tbody>
 						@foreach($listings as $listing)
-					        <tr>
+					        <tr id="listing-{{ $listing->id }}">
 					            <td>{{ $listing->id }}</td>
 					            <td><img src="{{ asset(Image::url($listing->image_path(),['map_mini'])) }}" style="width:40px"></td>
 					            <td class="uk-text-bold">{{ $listing->title }}</td>
 					            <td>{{ number_format($listing->area, 0) }} mt2</td>
 					            <td>{{ money_format('$%!.0i', $listing->price) }}</td>
 					            <td>
-					            	<div class="uk-grid">
-					            		<a href="{{ url('/admin/listings/'.$listing->id.'/recover') }}" class="uk-button uk-button-success uk-width-1-2"><i class="uk-icon-undo"></i></a>
-					            		<button class="uk-button uk-button-danger uk-width-1-2" onclick="deleteObject(this)" id="{{ $listing->id }}"><i class="uk-icon-remove"></i></button>
+					            	<div class="uk-flex uk-flex-space-between">
+					            		<a href="{{ url('/admin/listings/'.$listing->id.'/recover') }}" class="uk-button uk-button-success"><i class="uk-icon-undo"></i></a>
+					            		<button class="uk-button uk-button-danger" onclick="deleteObject(this)" id="{{ $listing->id }}"><i class="uk-icon-remove"></i></button>
 					            	</div>
 					            </td>
 					        </tr>
@@ -374,6 +377,19 @@
 			});
        	}
 
+	    function deleteObject(sender) {
+	    	UIkit.modal.confirm("{{ trans('admin.sure') }}", function(){
+			    // will be executed on confirm.
+			    $.post("{{ url('/admin/listings') }}/" + sender.id, {_token: "{{ csrf_token() }}", _method:"DELETE"}, function(result){
+			    	if(result.success){
+			    		$('#alert').append('<div class="uk-alert uk-alert-success" data-uk-alert><a href="" class="uk-alert-close uk-close"></a><p>'+result.success+'</p></div>');
+			    		$('#listing-'+sender.id).fadeOut(500, function() { $(this).remove(); });
+			    	}else if(result.error){
+			    		$('#alert').append('<div class="uk-alert uk-alert-danger" data-uk-alert><a href="" class="uk-alert-close uk-close"></a><p>'+result.error+'</p></div>');
+			    	}
+		        });
+			}, {labels:{Ok:'{{trans("admin.yes")}}', Cancel:'{{trans("admin.cancel")}}'}});
+	    }
 
 	    // function toggle(source){
 	    //     checkboxes = document.getElementsByName('checkedLine');
@@ -381,16 +397,6 @@
 	    //         checkboxes[i].checked = source.checked;
 	    //     }
 	    // }
-
-	    function deleteObject(sender) {
-	    	UIkit.modal.confirm("{{ trans('admin.sure') }}", function(){
-			    // will be executed on confirm.
-			    $.post("{{ url('/admin/listings') }}/" + sender.id, {_token: "{{ csrf_token() }}", _method:"DELETE"}, function(result){
-			    	console.log(result);
-		            // location.reload();
-		        });
-			}, {labels:{Ok:'{{trans("admin.yes")}}', Cancel:'{{trans("admin.cancel")}}'}});
-	    }
 
 	    // function deleteObjects() {
      //        var checkedValues = $('input[name="checkedLine"]:checked').map(function() {
