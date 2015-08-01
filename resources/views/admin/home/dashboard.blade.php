@@ -147,7 +147,7 @@
                     </ul>
                 @else
                     <div class="uk-text-center">
-                        <img src="{{ asset('/images/support/mail/no_notifications.png') }}" width="50%" class="uk-margin-large-top">
+                        <img src="{{ asset('/images/support/notifications/no_notifications.png') }}" width="70%" style="margin-top:30px">
                     </div>
                 @endif
             </div>
@@ -163,7 +163,7 @@
                     </ul>
                 @else
                     <div class="uk-text-center">
-                        <img src="{{ asset('/images/support/mail/no_messages.png') }}" width="50%" class="uk-margin-large-top">
+                        <img src="{{ asset('/images/support/messages/no_messages.png') }}" width="70%" style="margin-top:30px">
                     </div>
                 @endif
             </div>

@@ -14,13 +14,12 @@
 	<div class="uk-panel">
 		<h1>{{ trans('admin.transaction_result') }}</h1>
 
-	    <div class="uk-grid">
+	    <div class="uk-grid uk-margin-top">
 			
 		    <div class="uk-width-2-3">
 
 		    	@if(Request::get('transactionState') == 4)
-			    	<img src="{{ asset('/images/support/payments/payment_succeeded.png') }}" style="width:40%;" class="uk-align-center">
-			    	<h3 class="uk-margin-remove">{{ trans('admin.payment_response_success_text') }}</h3>
+			    	<img src="{{ asset('/images/support/payments/payment_succeeded.png') }}" class="uk-align-center">
 
 					<!-- Listing preview -->
 			    	<a style="text-decoration:none">
@@ -65,8 +64,16 @@
 						</div>
 					</a>
 					<!-- Listing preview -->
+			    @elseif(Request::get('transactionState') == 6 && Request::get('polResponseCode') == 6)
+			    	<img src="{{ asset('/images/support/payments/payment_denied_funds.png') }}" class="uk-align-center">
+			    @elseif(Request::get('transactionState') == 6)
+			    	<img src="{{ asset('/images/support/payments/payment_denied.png') }}" class="uk-align-center">
+			    @elseif(Request::get('transactionState') == 7 && Request::get('polResponseCode') == 25)
+			    	<img src="{{ asset('/images/support/payments/payment_pending_generated.png') }}" class="uk-align-center">
+			    @elseif(Request::get('transactionState') == 7)
+			    	<img src="{{ asset('/images/support/payments/payment_pending.png') }}" class="uk-align-center">
 			    @else
-			    	<img src="{{ asset('/images/support/payments/payment_succeeded.png') }}" style="width:40%;" class="uk-align-center">
+			    	<img src="{{ asset('/images/support/payments/payment_denied.png') }}" class="uk-align-center">
 			    	<h3 class="uk-margin-remove">{{ trans('admin.payment_response_error_text') }}</h3>
 			    @endif
 		    </div>

@@ -6,11 +6,12 @@
 @section('content')
 	<p>{{ trans('emails.user_confirmation_title') }}</p>
 	
-	<h3 class="uk-text-center">
-		{{ trans('emails.click_here_to_confirm') }}
-		<br>
-		<a href="{{ url('user/'.$user->id.'/confirm/'.$user->confirmation_code) }}" style="color:#d92228">{{ trans('emails.confirm_user') }}</a>
-	</h3>
+	<img src="{{ $message->embed(public_path().'/images/support/user/welcome.png') }}" style="max-width:600px" class="uk-align-center">
+
+	<div class="uk-text-center">
+		<h3>{{ trans('emails.click_here_to_confirm') }}</h3>
+		<a class="uk-button uk-button-large uk-button-primary" href="{{ url('user/'.$user->id.'/confirm/'.$user->confirmation_code) }}">{{ trans('emails.confirm_user') }}</a>
+	</div>
 
 	<p>{{ trans('emails.confirm_user_not_working') }}<br> {{ url('user/'.$user->id.'/confirm/'.$user->confirmation_code) }}</p>
 @endsection
