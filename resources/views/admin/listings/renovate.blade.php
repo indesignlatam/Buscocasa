@@ -25,10 +25,10 @@
 					<div class="uk-text-center"><img src="{{ asset('/images/support/highlight/destacado.png') }}" width="80%"></div>
 					<p>{{ trans('admin.free_text') }}</p>
 					<ul class="uk-list">
-						<li class="uk-text-contrast"> - </li>
-						<li class="uk-text-contrast"> - </li>
-						<li class=""><i class="uk-icon-check"></i> {{ Settings::get('listing_expiring') }} {{ trans('admin.days') }}</li>
-						<li class=""><i class="uk-icon-check"></i> {{ Settings::get('free_image_limit') }} {{ trans('admin.photos') }}</li>
+						<li class=""><i class="uk-icon-remove uk-text-danger"></i> {{ trans('admin.homepage_rotation') }}</li>
+						<li class=""><i class="uk-icon-remove uk-text-danger"></i> {{ trans('admin.outstanding_container') }}</li>
+						<li class=""><i class="uk-icon-check uk-text-success"></i> {{ Settings::get('listing_expiring') }} {{ trans('admin.days') }}</li>
+						<li class=""><i class="uk-icon-check uk-text-success"></i> {{ Settings::get('free_image_limit') }} {{ trans('admin.photos') }}</li>
 						<li class="uk-margin-top uk-h2 uk-text-center">{{ trans('admin.free') }}</li>
 					</ul>
 					<button class="uk-button uk-button-success uk-button-large uk-width-1-1" style="background-color:#1481e3" type="submit" form="free">{{ trans('admin.renovate') }}</button>
@@ -42,11 +42,31 @@
 					<div class="uk-text-center"><img src="{{ asset($type->icon) }}" width="80%"></div>
 					<p>{{ $type->description }}</p>
 					<ul class="uk-list">
-						<li class=""><i class="uk-icon-check"></i> {{ trans('admin.homepage_rotation') }}</li>
-						<li class=""><i class="uk-icon-check"></i> {{ trans('admin.outstanding_container') }}</li>
-						<li class=""><i class="uk-icon-check"></i> {{ Settings::get('listing_expiring') }} {{ trans('admin.days') }}</li>
-						<li class=""><i class="uk-icon-check"></i> {{ Settings::get('featured_image_limit') }} {{ trans('admin.photos') }}</li>
-						<li class="uk-margin-top uk-h2 uk-text-center" id="price-{{ $type->id }}">{{ $type->price }}</li>
+						@if($type->id >= 3)
+							<li class=""><i class="uk-icon-check uk-text-success"></i> {{ trans('admin.homepage_rotation') }}</li>
+						@else
+							<li class=""><i class="uk-icon-remove uk-text-danger"></i> {{ trans('admin.homepage_rotation') }}</li>
+						@endif
+
+						@if($type->id >= 2)
+							<li class=""><i class="uk-icon-check uk-text-success"></i> {{ trans('admin.outstanding_container') }}</li>
+						@else
+							<li class=""><i class="uk-icon-remove uk-text-danger"></i> {{ trans('admin.outstanding_container') }}</li>
+						@endif
+
+						@if($type->id)
+							<li class=""><i class="uk-icon-check uk-text-success"></i> {{ Settings::get('listing_expiring') }} {{ trans('admin.days') }}</li>
+						@else
+							<li class=""><i class="uk-icon-remove uk-text-danger"></i> {{ Settings::get('listing_expiring') }} {{ trans('admin.days') }}</li>
+						@endif
+
+						@if($type->id)
+							<li class=""><i class="uk-icon-check uk-text-success"></i> {{ Settings::get('featured_image_limit') }} {{ trans('admin.photos') }}</li>
+						@else
+							<li class=""><i class="uk-icon-remove uk-text-danger"></i> {{ Settings::get('featured_image_limit') }} {{ trans('admin.photos') }}</li>
+						@endif
+
+						<li class="uk-margin-top uk-h2 uk-text-center" id="price-{{ $type->id }}">{{ money_format('$%!.0i', $type->price) }}</li>
 					</ul>
 					<button class="uk-button uk-button-success uk-button-large uk-width-1-1" onclick="selectFeature({{$type->id}})" style="background-color:{{$type->color}}">{{ trans('admin.renovate') }}</button>
 				</div>
