@@ -191,6 +191,7 @@ return [
     'payment_method'            => 'Metodo de pago',
     'updated'                   => 'Actualizado',
     'cancel_payment_sure'       => 'Estas seguro que deseas cancelar el pago?',
+    'confirm_payment'           => 'Confirmar pago',
 
     // Confirm payment
     'confirm_payment'           => 'Confirma tu pago',
@@ -200,7 +201,7 @@ return [
     // Payment response
     'transaction_result'        => 'Resultado de la transacción',
     'transaction_info'          => 'Información de la transacción',
-    'transaction_state'         => 'Estado de la transacción',
+    'transaction_state'         => 'Estado de transacción',
     'transaction_approved'      => 'Transacción aprobada',
     'transaction_denied'        => 'Transacción rechazada',
     'transaction_error'         => 'Error al realizar la transacción',
@@ -288,8 +289,8 @@ return [
 
     // Welcome
     'view_more_listings'        => 'Ver más inmuebles',
-    'features111'               => 'publicados',
-    'features111'               => 'publicados',
+    'welcome_new_user'          => 'Estas un paso mas cerca de publicar tu inmueble. Te hemos enviado un mensaje para que confirmes tu correo electronico y puedas acceder a todos los beneficios de BuscoCasa.co',
+    'open'                      => 'Ir a',
     'features111'               => 'publicados',
     'features111'               => 'publicados',
     'features111'               => 'publicados',

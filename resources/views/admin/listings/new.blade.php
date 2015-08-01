@@ -260,8 +260,8 @@
 	</div>
 </div>
 
-<!-- Email confirmation message sent modal -->
-@if(Session::get('new_user'))
+<!-- Email confirmation message sent modal Session::get('new_user') -->
+@if(true)
 	<div id="confirmation_email_modal" class="uk-modal">
 	    <div class="uk-modal-dialog">
 	        <a href="" class="uk-modal-close uk-close uk-close-alt"></a>
@@ -269,13 +269,13 @@
 	        	{{ trans('admin.confirm_email') }}
 	        </div>
 
-	        <img src="{{ asset('images/support/mail/mail_sent.png') }}" width="500px" class="uk-align-center">
+	        <div class="uk-text-center">
+	        	<img src="{{ asset('images/support/user/welcome.png') }}" style="width:80%">
 
-	        <h3 class="uk-text-bold">Te hemos enviado un mensaje para que confirmes tu correo electronico y puedas acceder a todos los beneficios de BuscoCasa.co</h3>
+	        	<h3>{{ trans('admin.welcome_new_user') }}</h3>
 
-		    <div class="uk-modal-footer">
-		    	<a href="" class="uk-button uk-button-danger uk-modal-close">{{ trans('admin.close') }}</a>
-		    </div>
+	        	<a class="uk-button uk-button-large uk-button-success" id="open" href="" target="_blank">{{ trans('admin.open') }}</a>
+	        </div>
 	    </div>
 	</div>
 @endif
@@ -304,7 +304,10 @@
 		$(document).ready(function() {
 		  	$("#city").select2();
 
-			@if(Session::pull('new_user'))
+		  	$("#open").html('{{ trans('admin.open') }}'+' '+emailProvider('{{ Auth::user()->email }}'));
+		  	$("#open").attr("href", "http://"+emailProvider('{{ Auth::user()->email }}'))
+		  	//Session::pull('new_user')
+			@if(true)
 			  	var modal = UIkit.modal("#confirmation_email_modal");
 				modal.show()
 			@endif
@@ -323,6 +326,11 @@
 
 		function format(field){
 	        field.value = accounting.formatNumber(field.value);
+	    }
+
+	    function emailProvider(str){
+	    	var afterComma = str.substr(str.indexOf("@") + 1);
+	    	return afterComma;
 	    }
 	</script>
 

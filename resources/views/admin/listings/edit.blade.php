@@ -366,11 +366,12 @@
 	        	{{ trans('admin.listing_expiring_soon') }}
 	        </div>
 
-	        <h2 class="uk-text-danger">El inmueble expira {{ Carbon::createFromFormat('Y-m-d H:i:s', $listing->featured_expires_at)->diffForHumans() }}</h2>
-	        <a href="{{ url('/admin/listings/'.$listing->id.'/renovate') }}">Renovar</a>
-		    <div class="uk-modal-footer">
-		    	<a href="" class="uk-button uk-button-danger uk-modal-close">{{ trans('admin.close') }}</a>
-		    </div>
+	        <div class="uk-text-center">
+	        	<img src="{{ asset('/images/support/listings/expiring_listing.png') }}" style="max-width:80%">
+
+	        	<h2 class="uk-text-danger">El inmueble expira {{ $listing->featured_expires_at->diffForHumans() }}</h2>
+		        <a class="uk-button uk-button-large uk-button-success" href="{{ url('/admin/listings/'.$listing->id.'/renovate') }}">{{ trans('admin.renovate') }}</a>
+	        </div>
 	    </div>
 	</div>
 @elseif($listing->expires_at && $listing->expires_at < Carbon::now()->addDays(5))
@@ -381,11 +382,13 @@
 	        	{{ trans('admin.listing_expiring_soon') }}
 	        </div>
 
-	        <h2 class="uk-text-danger">El inmueble expira {{ Carbon::createFromFormat('Y-m-d H:i:s', $listing->expires_at)->diffForHumans() }}</h2>
-	        <a href="{{ url('/admin/listings/'.$listing->id.'/renovate') }}">Renovar</a>
-		    <div class="uk-modal-footer">
-		    	<a href="" class="uk-button uk-button-danger uk-modal-close">{{ trans('admin.close') }}</a>
-		    </div>
+	        <div class="uk-text-center">
+	        	<img src="{{ asset('/images/support/listings/expiring_listing.png') }}" style="max-width:80%">
+
+		        <h3 class="uk-text-danger">El inmueble expira {{ $listing->expires_at->diffForHumans() }}</h3>
+		        <a class="uk-button uk-button-large uk-button-success" href="{{ url('/admin/listings/'.$listing->id.'/renovate') }}">{{ trans('admin.renovate') }}</a>
+	        </div>
+	        
 	    </div>
 	</div>
 @endif
@@ -603,7 +606,7 @@
 		            complete: function(response) {
 		            	if(!response.error && response.image){
 		            		$("#images_uploaded").prepend('<div id="images_uploaded" class="uk-alert uk-alert-success" data-uk-alert><a href="" class="uk-alert-close uk-close"></a><p>{{ trans("admin.images_uploaded_succesfuly") }}</p></div>');
-		            		$("#images-div").prepend('<div class="uk-width-large-1-4 uk-width-medium-1-3" id="image-'+response.image.id+'"><figure class="uk-overlay uk-overlay-hover uk-margin-bottom"><img src="{{asset("")}}'+response.image.image_path+'"><div class="uk-overlay-panel uk-overlay-background uk-overlay-fade uk-text-center"><i class="uk-icon-large uk-icon-remove" id="'+response.image.id+'" onclick="deleteImage(this)" data-uk-tooltip="{pos:"top"}" title="{{ trans("admin.eliminate_image") }}"></i> <i class="uk-icon-large uk-icon-check" onclick="selectMainImage('+response.image.id+', '+response.image.image_path+')" data-uk-tooltip="{pos:"top"}" title="{{ trans("admin.set_as_main_image") }}"></i></div></figure></div>');
+		            		$("#images-div").prepend('<div class="uk-width-large-1-4 uk-width-medium-1-3" id="image-'+response.image.id+'"><figure class="uk-overlay uk-overlay-hover uk-margin-bottom"><img src="{{asset("")}}'+response.image.image_path+'"><div class="uk-overlay-panel uk-overlay-background uk-overlay-fade uk-text-center"><i class="uk-icon-large uk-icon-remove" id="'+response.image.id+'" onclick="deleteImage(this)" data-uk-tooltip="{pos:"top"}" title="{{ trans("admin.eliminate_image") }}"></i> <i class="uk-icon-large uk-icon-check" onclick="selectMainImage('+response.image.id+', \''+response.image.image_path+'\')" data-uk-tooltip="{pos:"top"}" title="{{ trans("admin.set_as_main_image") }}"></i></div></figure></div>');
 		            	}else{
 		            		if(response.error instanceof Array){
 		            			html = '<div id="images_uploaded" class="uk-alert uk-alert-danger" data-uk-alert><a href="" class="uk-alert-close uk-close"></a><ul>'
