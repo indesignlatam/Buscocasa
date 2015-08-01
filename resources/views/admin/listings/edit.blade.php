@@ -294,7 +294,7 @@
 						</div>
 
 				    	<div id="upload-drop" class="uk-placeholder uk-placeholder-large uk-text-center uk-margin-top">
-						    <i class="uk-icon-large uk-icon-cloud-upload"></i> {{ trans('admin.drag_listing_images_or') }} <a class="uk-form-file">{{ trans('admin.select_an_image') }}<input id="upload-select" type="file"></a>
+						    <i class="uk-icon-large uk-icon-cloud-upload"></i> {{ trans('admin.drag_listing_images_or') }} <a class="uk-form-file">{{ trans('admin.select_an_image') }}<input id="upload-select" type="file" multiple></a>
 						</div>
 
 						<div id="progressbar" class="uk-progress uk-hidden">
@@ -410,7 +410,7 @@
 	        <div class="uk-grid uk-grid-collapse">
 	        	<div class="uk-width-1-1">
 	        		<div id="upload_drop_modal" class="uk-placeholder uk-placeholder-large uk-text-center uk-margin-top">
-					    <i class="uk-icon-large uk-icon-cloud-upload"></i> {{ trans('admin.drag_listing_images_or') }} <a class="uk-form-file">{{ trans('admin.select_an_image') }}<input id="upload_select_modal" type="file"></a>
+					    <i class="uk-icon-large uk-icon-cloud-upload"></i> {{ trans('admin.drag_listing_images_or') }} <a class="uk-form-file">{{ trans('admin.select_an_image') }}<input id="upload_select_modal" type="file" multiple></a>
 					</div>
 
 					<div id="progressbar_modal" class="uk-progress uk-hidden">
@@ -464,7 +464,7 @@
 		@if($listing->featured_expires_at && $listing->featured_expires_at < Carbon::now()->addDays(5))
 			var modal = UIkit.modal("#expires_modal");
 			modal.show()
-		@elseif($listing->expires_at && $listing->expires_at < Carbon::now()->addDays(5))
+		@elseif($listing->expires_at && $listing->expires_at < Carbon::now()->addDays(5) && 1==2)
 			var modal = UIkit.modal("#expires_modal");
 			modal.show()
 		@elseif(!count($listing->images))
@@ -495,7 +495,21 @@
 
         function deleteImage(sender) {
 	        $.post("{{ url('/admin/images') }}/" + sender.id, {_token: "{{ csrf_token() }}", _method:"DELETE"}, function(result){
-	            $("#image-"+sender.id).remove();
+	            $("#image-"+sender.id).fadeOut(500, function() { $(this).remove(); });
+
+	            if(sender.id == $('#main_image_id').val()){
+                	$('#main_image_id').val(null);
+                	$('#image_path').val(null);
+                }
+                $("#images_uploaded").prepend('<div id="images_uploaded" class="uk-alert uk-alert-success" data-uk-alert><a href="" class="uk-alert-close uk-close"></a><p>{{ trans("admin.image_deleted_succesfuly") }}</p></div>');
+	        });
+	    }
+
+	    function deleteImageModal(sender) {
+	        $.post("{{ url('/admin/images') }}/" + sender.id, {_token: "{{ csrf_token() }}", _method:"DELETE"}, function(result){
+	            $("#image-modal-"+sender.id).fadeOut(500, function() { $(this).remove(); });
+	            $("#image-"+sender.id).fadeOut(500, function() { $(this).remove(); });
+
 	            if(sender.id == $('#main_image_id').val()){
                 	$('#main_image_id').val(null);
                 	$('#image_path').val(null);
@@ -534,10 +548,11 @@
 		            	if(!response.error && response.image){
 		            		$("#images_uploaded_modal").html('<p>Imagen cargada exitosamente</>');
 		            		$("#images_uploaded_modal").removeClass('uk-hidden');
-		            		$("#images_div_modal").prepend('<div class="uk-width-1-4" id="image-'+response.image.id+'"><figure class="uk-overlay uk-overlay-hover uk-margin-bottom"><img src="{{asset("")}}'+response.image.image_path+'"><div class="uk-overlay-panel uk-overlay-background uk-overlay-fade uk-text-center uk-vertical-align"><i class="uk-icon-large uk-icon-remove uk-vertical-align-middle" id="'+response.image.id+'" onclick="deleteImage(this)"></i> <i class="uk-icon-large uk-icon-check uk-vertical-align-middle" onclick="selectMainImage('+response.image.id+', '+response.image.image_path+')"></i></div></figure></div>');
+		            		$("#images_div_modal").append('<div class="uk-width-1-4" id="image-modal-'+response.image.id+'" style="display: none;"><figure class="uk-overlay uk-overlay-hover uk-margin-bottom"><img src="{{asset("")}}'+response.image.image_path+'"><div class="uk-overlay-panel uk-overlay-background uk-overlay-fade uk-text-center uk-vertical-align"><i class="uk-icon-large uk-icon-remove uk-vertical-align-middle" id="'+response.image.id+'" onclick="deleteImageModal(this)"></i></div></figure></div>');
+		            		$("#image-modal-"+response.image.id).show('normal');
 
 		            		// Insite uploader images
-		            		$("#images-div").prepend('<div class="uk-width-large-1-4 uk-width-medium-1-3" id="image-'+response.image.id+'"><figure class="uk-overlay uk-overlay-hover uk-margin-bottom"><img src="{{asset("")}}'+response.image.image_path+'"><div class="uk-overlay-panel uk-overlay-background uk-overlay-fade uk-text-center"><i class="uk-icon-large uk-icon-remove" id="'+response.image.id+'" onclick="deleteImage(this)" data-uk-tooltip="{pos:"top"}" title="{{ trans("admin.eliminate_image") }}"></i> <i class="uk-icon-large uk-icon-check" onclick="selectMainImage('+response.image.id+', '+response.image.image_path+')" data-uk-tooltip="{pos:"top"}" title="{{ trans("admin.set_as_main_image") }}"></i></div></figure></div>');
+		            		$("#images-div").append('<div class="uk-width-large-1-4 uk-width-medium-1-3" id="image-'+response.image.id+'"><figure class="uk-overlay uk-overlay-hover uk-margin-bottom"><img src="{{asset("")}}'+response.image.image_path+'"><div class="uk-overlay-panel uk-overlay-background uk-overlay-fade uk-text-center"><i class="uk-icon-large uk-icon-remove" id="'+response.image.id+'" onclick="deleteImage(this)" data-uk-tooltip="{pos:"top"}" title="{{ trans("admin.eliminate_image") }}"></i> <i class="uk-icon-large uk-icon-check" onclick="selectMainImage('+response.image.id+', \''+response.image.image_path+'\')" data-uk-tooltip="{pos:"top"}" title="{{ trans("admin.set_as_main_image") }}"></i></div></figure></div>');
 		            	}else{
 		            		$("#images_uploaded_modal").removeClass('uk-hidden');
 		            		$("#images_uploaded_modal").removeClass('uk-alert-success');
@@ -606,7 +621,8 @@
 		            complete: function(response) {
 		            	if(!response.error && response.image){
 		            		$("#images_uploaded").prepend('<div id="images_uploaded" class="uk-alert uk-alert-success" data-uk-alert><a href="" class="uk-alert-close uk-close"></a><p>{{ trans("admin.images_uploaded_succesfuly") }}</p></div>');
-		            		$("#images-div").prepend('<div class="uk-width-large-1-4 uk-width-medium-1-3" id="image-'+response.image.id+'"><figure class="uk-overlay uk-overlay-hover uk-margin-bottom"><img src="{{asset("")}}'+response.image.image_path+'"><div class="uk-overlay-panel uk-overlay-background uk-overlay-fade uk-text-center"><i class="uk-icon-large uk-icon-remove" id="'+response.image.id+'" onclick="deleteImage(this)" data-uk-tooltip="{pos:"top"}" title="{{ trans("admin.eliminate_image") }}"></i> <i class="uk-icon-large uk-icon-check" onclick="selectMainImage('+response.image.id+', \''+response.image.image_path+'\')" data-uk-tooltip="{pos:"top"}" title="{{ trans("admin.set_as_main_image") }}"></i></div></figure></div>');
+		            		$("#images-div").append('<div class="uk-width-large-1-4 uk-width-medium-1-3" id="image-'+response.image.id+'" style="display: none;"><figure class="uk-overlay uk-overlay-hover uk-margin-bottom"><img src="{{asset("")}}'+response.image.image_path+'"><div class="uk-overlay-panel uk-overlay-background uk-overlay-fade uk-text-center"><i class="uk-icon-large uk-icon-remove" id="'+response.image.id+'" onclick="deleteImage(this)" data-uk-tooltip="{pos:"top"}" title="{{ trans("admin.eliminate_image") }}"></i> <i class="uk-icon-large uk-icon-check" onclick="selectMainImage('+response.image.id+', \''+response.image.image_path+'\')" data-uk-tooltip="{pos:"top"}" title="{{ trans("admin.set_as_main_image") }}"></i></div></figure></div>');
+		            		$("#image-"+response.image.id).show('normal');
 		            	}else{
 		            		if(response.error instanceof Array){
 		            			html = '<div id="images_uploaded" class="uk-alert uk-alert-danger" data-uk-alert><a href="" class="uk-alert-close uk-close"></a><ul>'
