@@ -426,7 +426,6 @@ class ListingController extends Controller {
 		$listing->save();
 
 		if($request->ajax()){// If request was sent using ajax
-			Session::flash('errors', [trans('responses.listing_renovated')]);
 			return response()->json(['success' => trans('responses.listing_renovated')]);
 		}
 		return redirect('admin/listings/')->withSuccess([trans('responses.listing_renovated')]);

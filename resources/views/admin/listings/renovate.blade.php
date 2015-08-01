@@ -22,7 +22,7 @@
 			<div class="uk-width-1-4">
 				<div class="uk-panel uk-panel-box uk-panel-box-secondary">
 					<h2>{{ trans('admin.free') }}</h2>
-					<div class="uk-text-center"><img src="{{ asset('/images/support/highlight/destacado.png') }}" width="80%"></div>
+					<div class="uk-text-center"><img src="{{ asset('/images/support/highlight/free.png') }}" width="80%"></div>
 					<p>{{ trans('admin.free_text') }}</p>
 					<ul class="uk-list">
 						<li class=""><i class="uk-icon-remove uk-text-danger"></i> {{ trans('admin.homepage_rotation') }}</li>
