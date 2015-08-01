@@ -22,9 +22,9 @@
 		<hr>
 	    
 	    <div class="uk-panel">
-			<a class="uk-button uk-button-large uk-float-right" href="{{ url('/admin/listings') }}">{{ trans('admin.close') }}</a>
-			<button form="create_form" type="submit" class="uk-button uk-button-large uk-form-width-medium uk-float-right uk-margin-right" onclick="saveClose()" >{{ trans('admin.save_close') }}</button>
-	        <button form="create_form" type="submit" class="uk-button uk-button-large uk-button-success uk-form-width-medium uk-float-right uk-margin-right" onclick="blockUI()">{{ trans('admin.save') }}</button>
+			<a class="uk-button uk-button-large uk-width-small-1-1 uk-width-medium-2-10 uk-width-large-1-10 uk-align-right" href="{{ url('/admin/listings') }}">{{ trans('admin.close') }}</a>
+			<button form="create_form" type="submit" class="uk-button uk-button-large uk-width-small-1-1 uk-width-medium-3-10 uk-width-large-2-10 uk-align-right" onclick="saveClose()" >{{ trans('admin.save_close') }}</button>
+	        <button form="create_form" type="submit" class="uk-button uk-button-large uk-button-success uk-width-small-1-1 uk-width-medium-3-10 uk-width-large-2-10 uk-align-right" onclick="blockUI()">{{ trans('admin.save') }}</button>
 	    </div>
 
 		<form id="create_form" class="uk-form uk-form-stacked" method="POST" action="{{ url('/admin/listings/'.$listing->id) }}" enctype="multipart/form-data">
@@ -344,10 +344,10 @@
 				    </div>
 				    <!-- Share listing -->
 
-					<div class="uk-margin-top uk-flex">
+					<div class="uk-margin-top uk-grid">
 				        <!-- This is a button toggling the modal -->
-				        <button form="create_form" type="submit" class="uk-button uk-button-large uk-button-success uk-text-bold uk-width-5-10 uk-margin-right" onclick="blockUI()">{{ trans('admin.save') }}</button>
-				        <button form="create_form" type="submit" class="uk-button uk-button-large uk-text-bold uk-width-5-10" onclick="saveClose()" >{{ trans('admin.save_close') }}</button>
+				        <button form="create_form" type="submit" class="uk-button uk-button-large uk-button-success uk-text-bold uk-width-small-1-1 uk-width-medium-5-10 uk-width-large-5-10 uk-margin-bottom" onclick="blockUI()">{{ trans('admin.save') }}</button>
+				        <button form="create_form" type="submit" class="uk-button uk-button-large uk-text-bold uk-width-small-1-1 uk-width-medium-5-10 uk-width-large-5-10 uk-margin-bottom" onclick="saveClose()" >{{ trans('admin.save_close') }}</button>
 				    </div>
 				</div>
 
