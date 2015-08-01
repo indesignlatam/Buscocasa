@@ -172,10 +172,11 @@
         <div class="uk-width-1-3 uk-margin-top">
             <div class="uk-panel uk-panel-box uk-panel-box-secondary">
                 <h3>{{ trans('admin.social_share') }}</h3>
-                <img src="{{ asset('/images/indesign/logo.png') }}" style="width:150px; height:150px;" align="left">
+                <img src="{{ asset('/images/support/share.png') }}" style="width:150px; height:150px;" align="left">
                 <p>{{ trans('admin.social_share_dash_text') }}</p>
             </div>
         </div>
+
         <div class="uk-width-2-3 uk-margin-top">
             <div class="uk-panel uk-panel-box uk-panel-box-secondary">
                 <h3>{{ trans('admin.get_more_views') }}</h3>
