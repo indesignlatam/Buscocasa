@@ -70,7 +70,7 @@ class UserController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id){
+	public function edit($id, Request $request){
 		// Security check
 	    if(!Auth::user()->is('admin')){
 	    	if(!$id || $id != Auth::user()->id){
@@ -171,7 +171,7 @@ class UserController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id){
+	public function destroy($id, Request $request){
 		$self = false;
 		// Security check
 	    if(!Auth::user()->is('admin')){
