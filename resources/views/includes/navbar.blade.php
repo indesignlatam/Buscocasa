@@ -8,7 +8,7 @@
         </a>
 
         <a class="uk-navbar-brand uk-visible-small" href="{{ url('/admin/') }}">
-            <img src="{{ asset('/images/logo_h.png') }}" alt="logo" class="uk-margin-right" style="height:30px">
+            <img src="{{ asset('/images/logo_h.png') }}" alt="logo" class="uk-margin-right" style="max-height:23px">
         </a>
         
         <ul class="uk-navbar-nav uk-vertical-align uk-hidden-small">
