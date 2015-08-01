@@ -260,8 +260,8 @@
 	</div>
 </div>
 
-<!-- Email confirmation message sent modal Session::get('new_user') -->
-@if(true)
+<!-- Email confirmation message sent modal -->
+@if(Session::get('new_user'))
 	<div id="confirmation_email_modal" class="uk-modal">
 	    <div class="uk-modal-dialog">
 	        <a href="" class="uk-modal-close uk-close uk-close-alt"></a>
@@ -305,9 +305,9 @@
 		  	$("#city").select2();
 
 		  	$("#open").html('{{ trans('admin.open') }}'+' '+emailProvider('{{ Auth::user()->email }}'));
-		  	$("#open").attr("href", "http://"+emailProvider('{{ Auth::user()->email }}'))
-		  	//Session::pull('new_user')
-			@if(true)
+		  	$("#open").attr("href", "http://"+emailProvider('{{ Auth::user()->email }}'));
+
+			@if(Session::pull('new_user'))
 			  	var modal = UIkit.modal("#confirmation_email_modal");
 				modal.show()
 			@endif
