@@ -7,7 +7,7 @@
 	<p>{{ trans('emails.expiring_listing_title') }}</p>
 
 	<div style="text-align:center; margin-top:20px">
-		<h3><a href="{{ url('/admin/listings/'.$listing->id.'/renovate') }}">{{ trans('emails.renovate_listing_now') }}</a></h3>
+		<h3><a href="{{ url('/admin/listings/'.$listing->id.'/renovate') }}" class="uk-button uk-button-large uk-button-primary">{{ trans('emails.renovate_listing_now') }}</a></h3>
 	</div>
 
 	<div style="text-align:center;">
@@ -27,7 +27,7 @@
     </p>
 
 	<div style="text-align:center;">
-		<h3><a href="{{ url('/admin/listings/'.$listing->id.'/renovate') }}">{{ trans('emails.renovate_listing_now') }}</a></h3>
+		<h3><a href="{{ url('/admin/listings/'.$listing->id.'/renovate') }}" class="uk-button uk-button-large uk-button-primary">{{ trans('emails.renovate_listing_now') }}</a></h3>
 	</div>
 @endsection
 
