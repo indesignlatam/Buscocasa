@@ -13,6 +13,12 @@ class AppServiceProvider extends ServiceProvider {
 	 */
 	public function boot(){
 		//
+		Image::filter('full_page', [
+		    'width' 	=> 1200,
+		    'height' 	=> 350,
+		    'crop' 		=> true,
+		]);
+
 		Image::filter('full_image', [
 		    'width' 	=> 800,
 		    'height' 	=> 400,

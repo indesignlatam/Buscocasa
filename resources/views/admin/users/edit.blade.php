@@ -11,7 +11,7 @@
 @section('content')
 
 <div class="uk-cover-background uk-position-relative">
-    <img class="" src="{{ asset('/images/defaults/user_front.jpg') }}" width="100%" alt="">
+    <img class="" src="{{ asset(Image::url('/images/defaults/user_front.jpg',['full_page'])) }}" width="100%" alt="">
     <div class="uk-position-cover uk-flex uk-flex-center uk-flex-middle uk-visible-small">
         <h1 class="uk-text-contrast uk-text-bold">{{ strtoupper($user->name) }}</h1>
     </div>

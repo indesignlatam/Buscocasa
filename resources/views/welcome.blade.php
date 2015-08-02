@@ -47,7 +47,7 @@
     @if($featuredFullScreen)
         <img class="" src="{{ asset(Image::url($featuredFullScreen->image_path(),['featured_front'])) }}" width="100%" alt="">
     @else
-        <img class="" src="{{ asset('/images/defaults/welcome.jpg') }}" width="100%" alt="">
+        <img class="" src="{{ asset(Image::url('/images/defaults/welcome.jpg',['featured_front'])) }}" width="100%" alt="">
     @endif
         <div class="uk-position-cover uk-flex uk-flex-center uk-flex-middle uk-visible-small">
             <h1 class="uk-text-contrast uk-text-bold">{{ trans('frontend.mobile_greeting') }}</h1>
