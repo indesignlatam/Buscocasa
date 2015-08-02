@@ -170,8 +170,7 @@
 	    	UIkit.modal.confirm("{{ trans('admin.cancel_payment_sure') }}", function(){
 			    // will be executed on confirm.
 			    $.post("{{ url('/admin/pagos/'.$payment->id) }}", {_token: "{{ csrf_token() }}", _method:"DELETE"}, function(response){
-	                console.log(response);
-	                window.location.href = "{{url('/admin/pagos')}}";
+	                window.location.replace("{{url('/admin/pagos')}}");
 	            });
 			}, {labels:{Ok:'{{trans("admin.yes")}}', Cancel:'{{trans("admin.cancel")}}'}});
             

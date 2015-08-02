@@ -10,11 +10,6 @@
 
 @section('content')
 
-{{-- <div class="uk-container uk-container-center uk-margin">
-    <button form="create_form" type="submit" class="uk-button uk-button-large uk-button-success uk-form-width-medium" onclick="blockUI()">{{ trans('admin.save') }}</button>
-	<a class="uk-button uk-button-large" href="{{ url('/admin/listings') }}">{{ trans('admin.close') }}</a>
-</div> --}}
-
 <div class="uk-cover-background uk-position-relative">
     <img class="" src="{{ asset('/images/defaults/user_front.jpg') }}" width="100%" alt="">
     <div class="uk-position-cover uk-flex uk-flex-center uk-flex-middle uk-visible-small">
@@ -110,7 +105,8 @@
 @endsection
 
 @section('js')
-	<link href="{{ asset('/css/components/tooltip.almost-flat.min.css') }}" rel="stylesheet">
 	@parent
+
+	<link href="{{ asset('/css/components/tooltip.almost-flat.min.css') }}" rel="stylesheet">
 	<script src="{{ asset('/js/components/tooltip.min.js') }}"></script>
 @endsection

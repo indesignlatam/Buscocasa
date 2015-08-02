@@ -2,10 +2,11 @@
 
 return [
     // AppointmentController
-    'message_success'                       => 'Su mensaje ha sido enviado exitosamente.',
-    'message_deleted'                       => 'El mensaje fue borrado.',
+    'message_success'                       => 'El mensaje ha sido enviado exitosamente.',
+    'message_deleted'                       => 'El mensaje fue borrado exitosamente.',
     'message_sent'                          => 'El mensaje fue enviado exitosamente.',
-    'message_marked'                        => 'El mensaje fue marcado exitosamente.',
+    'message_marked_0'                      => 'El mensaje fue marcado como no visto.',
+    'message_marked_1'                      => 'El mensaje fue marcado como visto.',
 
     // ListingController
     'listing_created' 				        => 'Su inmueble fue creado exitosamente.',
@@ -38,6 +39,7 @@ return [
     // PaymentController
     'payment_canceled'                      => 'Pago cancelado exitosamente',
     'cant_cancel_payment'                   => 'No puedes cancelar este pago',
+    'payment_unconfirmed_for_listing'       => 'Hay pagos aun no confirmados para este inmueble',
     
     'features111'                           => 'publicados',
     'features111'                           => 'publicados',

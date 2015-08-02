@@ -161,8 +161,10 @@
 @endsection
 
 @section('js')
-	<link href="{{ asset('/css/components/sticky.almost-flat.min.css') }}" rel="stylesheet">
 	@parent
+	<link href="{{ asset('/css/components/sticky.almost-flat.min.css') }}" rel="stylesheet">
+	<link href="{{ asset('/css/components/tooltip.almost-flat.min.css') }}" rel="stylesheet">
+
 	<script src="{{ asset('/js/components/sticky.min.js') }}"></script>
     <script src="{{ asset('/js/components/tooltip.min.js') }}"></script>
 	<script src="{{ asset('/js/accounting.min.js') }}"></script>
@@ -175,10 +177,6 @@
 		// 	$('#lot_area').val(accounting.formatNumber(document.getElementById('lot_area').value));
 		// 	$('#administration').val(accounting.formatNumber(document.getElementById('administration').value));
 		// });
-
-		$(function() {
-			
-		});
 
 		function selectFeature(input){
 			$("#featured_id").val(input);

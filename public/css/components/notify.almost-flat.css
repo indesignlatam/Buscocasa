@@ -7,7 +7,7 @@
  */
 .uk-notify {
   position: fixed;
-  top: 10px;
+  top: 55px;
   left: 10px;
   z-index: 1040;
   -moz-box-sizing: border-box;
@@ -52,12 +52,13 @@
   position: relative;
   margin-bottom: 10px;
   padding: 15px;
-  background: #444444;
-  color: #ffffff;
+  background: #fff;
+  color: #444444;
   font-size: 16px;
+  font-weight: normal;
   line-height: 22px;
   cursor: pointer;
-  border: 1px solid #444444;
+  border: 3px solid #444444;
   border-radius: 4px;
 }
 /* Close in notify
@@ -79,21 +80,21 @@
 /* Modifier: `uk-alert-success`
  ========================================================================== */
 .uk-notify-message-success {
-  background: #f2fae3;
-  color: #659f13;
-  border-color: rgba(101, 159, 19, 0.3);
+  background: #fff;
+  color: #10b86d;
+  border-color: #10b86d;
 }
 /* Modifier: `uk-notify-message-warning`
  ========================================================================== */
 .uk-notify-message-warning {
-  background: #fffceb;
-  color: #e28327;
-  border-color: rgba(226, 131, 39, 0.3);
+  background: #fff;
+  color: #FF9500;
+  border-color: #FF9500;
 }
 /* Modifier: `uk-notify-message-danger`
  ========================================================================== */
 .uk-notify-message-danger {
-  background: #fff1f0;
-  color: #d85030;
-  border-color: rgba(216, 80, 48, 0.3);
+  background: #fff;
+  color: #f30c14;
+  border-color: #f30c14;
 }

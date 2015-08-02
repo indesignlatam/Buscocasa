@@ -144,7 +144,6 @@ class PaymentController extends Controller {
 			$payment->save();
 		}
 		
-
 		return view('admin.payments.show', ['payment' => $payment]);
 	}
 
@@ -308,6 +307,7 @@ class PaymentController extends Controller {
 	    if(!Auth::user()->is('admin')){
 	    	if(!$payment || $payment->user->id != Auth::user()->id){
 	    		if($request->ajax()){// If request was sent using ajax
+					Session::flash('errors', [trans('responses.no_permission')]);
 					return response()->json(['error' => trans('responses.no_permission')]);
 				}
 				// If nos usign ajax return redirect
@@ -317,6 +317,7 @@ class PaymentController extends Controller {
 
 		if($payment->confirmed || $payment->canceled || $payment->state_pol){
 			if($request->ajax()){// If request was sent using ajax
+				Session::flash('errors', [trans('responses.cant_cancel_payment')]);
 				return response()->json(['error' => trans('responses.cant_cancel_payment')]);
 			}
 	        return redirect($this->path)->withErrors([trans('responses.cant_cancel_payment')]);
@@ -326,6 +327,7 @@ class PaymentController extends Controller {
 		$payment->save();
 
 		if($request->ajax()){// If request was sent using ajax
+			Session::flash('errors', [trans('responses.payment_canceled')]);
 			return response()->json(['success' => trans('responses.payment_canceled')]);
 		}
 		// If nos usign ajax return redirect
@@ -346,6 +348,7 @@ class PaymentController extends Controller {
 	    if(!Auth::user()->is('admin')){
 	    	if(!$payment || $payment->user->id != Auth::user()->id){
 	    		if($request->ajax()){// If request was sent using ajax
+					Session::flash('errors', [trans('responses.no_permission')]);
 					return response()->json(['error' => trans('responses.no_permission')]);
 				}
 				// If nos usign ajax return redirect
@@ -357,6 +360,7 @@ class PaymentController extends Controller {
 		$payment->save();
 
 		if($request->ajax()){// If request was sent using ajax
+			Session::flash('success', [trans('responses.payment_canceled')]);
 			return response()->json(['success' => trans('responses.payment_canceled')]);
 		}
 		// If nos usign ajax return redirect

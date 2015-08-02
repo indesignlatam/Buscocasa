@@ -82,7 +82,7 @@
 						    			@endif
 						    			<!-- Reply button -->
 
-		                            	<a class="uk-button uk-button-danger uk-width-1-1" onclick="deleteObject({{ $appointment->id }})" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.delete_message') }}"><i class="uk-icon-remove"></i></a>
+		                            	<a id="delete-{{$appointment->id}}" class="uk-button uk-button-danger uk-width-1-1" onclick="deleteObject({{ $appointment->id }})" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.delete_message') }}"><i class="uk-icon-remove"></i></a>
 		                        	</div>
 		                        </td>
 		                    </tr>
@@ -150,46 +150,50 @@
 	<script src="{{ asset('/js/components/tooltip.min.js') }}"></script>
 
 	<script type="text/javascript">
-	    function toggle(source){
-	        checkboxes = document.getElementsByName('checkedLine');
-	        for(var i=0, n=checkboxes.length;i<n;i++) {
-	            checkboxes[i].checked = source.checked;
-	        }
-	    }
-
 	    function answerMessage(objectID){
 	    	UIkit.modal.prompt("{{ trans('admin.answer_message_prompt') }}", '', function(newvalue){
 	    		$("#answer-"+objectID).prop('disabled', true);
 			    $("#mark-read-"+objectID).prop('disabled', true);
+			    $("#delete-"+objectID).prop('disabled', true);
 			    // will be executed on submit.
 			    $.post("{{ url('/admin/messages') }}/"+objectID+"/answer", {_token: "{{ csrf_token() }}", comments : newvalue}, function(result){
 			    	if(result.success){
-			    		$("#message-"+objectID).fadeOut(500, function(){ $('table').append( '<tr id="message-'+objectID+'">'+ $(this).html()+ '</tr>')});
+			    		$("#message-"+objectID).appendTo($('table'));
+			    		$("#delete-"+objectID).prop('disabled', false);
+			    		UIkit.notify('<i class="uk-icon-check-circle"></i> '+result.success, {pos:'top-right', status:'success', timeout: 5000});
 			    	}else{
 			    		$("#answer-"+objectID).prop('disabled', false);
 			    		$("#mark-read-"+objectID).prop('disabled', false);
+			    		$("#delete-"+objectID).prop('disabled', false);
+			    		UIkit.notify('<i class="uk-icon-remove"></i> '+result.error, {pos:'top-right', status:'danger', timeout: 5000});
 			    	}
 		        });
 			}, {row:5, labels:{Ok:'{{trans("admin.send")}}', Cancel:'{{trans("admin.cancel")}}'}});
 	    }
 
 	    function mark(objectID, read){
-	    	$("#answer-"+objectID).prop('disabled', read);
-			$("#mark-read-"+objectID).prop('disabled', read);   	
+	    	$("#answer-"+objectID).prop('disabled', true);
+			$("#mark-read-"+objectID).prop('disabled', true);
+			$("#delete-"+objectID).prop('disabled', true); 	
 		    // will be executed on submit.
 		    $.post("{{ url('/admin/messages') }}/"+objectID+"/mark", {_token: "{{ csrf_token() }}", mark : read}, function(result){
 		    	if(result.success){
-		        	$("#message-"+objectID).fadeOut(500, function(){ $('table').append( '<tr id="message-'+objectID+'">'+ $(this).html()+ '</tr>')});
+		        	$("#message-"+objectID).appendTo($('table'));
 				    $("#answer-"+objectID).prop('disabled', result.mark);
 				    $("#mark-read-"+objectID).prop('disabled', result.mark);
+					$("#delete-"+objectID).prop('disabled', false);
+				    UIkit.notify('<i class="uk-icon-check-circle"></i> '+result.success, {pos:'top-right', status:'success', timeout: 5000});
 				}else{
 					if(read){
 						$("#answer-"+objectID).prop('disabled', false);
 				    	$("#mark-read-"+objectID).prop('disabled', false);
+				    	$("#delete-"+objectID).prop('disabled', false);
 					}else{
 						$("#answer-"+objectID).prop('disabled', true);
 				    	$("#mark-read-"+objectID).prop('disabled', true);
+				    	$("#delete-"+objectID).prop('disabled', false);
 					}
+					UIkit.notify('<i class="uk-icon-remove"></i> '+result.error, {pos:'top-right', status:'danger', timeout: 5000});
 				}
 	        });
 	    }
@@ -197,15 +201,27 @@
 	    function deleteObject(objectID) {
 	    	UIkit.modal.confirm("{{ trans('admin.sure') }}", function(){
 			    // will be executed on confirm.
-			    $("#message-"+objectID).fadeOut(500, function(){ $(this).remove();});
+			    $("#message-"+objectID).fadeOut(500);
 
 		        $.post("{{ url('/admin/messages') }}/" + objectID, {_token: "{{ csrf_token() }}", _method:"DELETE"}, function(result){
-		        	console.log(result);
-		            //location.reload();
+		        	if(result.success){
+		        		$("#message-"+objectID).remove();
+		        		UIkit.notify('<i class="uk-icon-check-circle"></i> '+result.success, {pos:'top-right', status:'success', timeout: 15000});
+		        	}else if(result.error){
+		        		$("#message-"+objectID).fadeIn(500);
+		        		UIkit.notify('<i class="uk-icon-remove"></i> '+result.error, {pos:'top-right', status:'danger', timeout: 15000});
+		        	}
 		        });
 			}, {labels:{Ok:'{{trans("admin.yes")}}', Cancel:'{{trans("admin.cancel")}}'}});
 	    	
 	    }
+
+	    // function toggle(source){
+	    //     checkboxes = document.getElementsByName('checkedLine');
+	    //     for(var i=0, n=checkboxes.length;i<n;i++) {
+	    //         checkboxes[i].checked = source.checked;
+	    //     }
+	    // }
 
 	    // function deleteObjects() {
      //        var checkedValues = $('input[name="checkedLine"]:checked').map(function() {

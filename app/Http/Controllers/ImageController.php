@@ -41,7 +41,6 @@ class ImageController extends Controller {
 	    if(!Auth::user()->is('admin')){
 	    	if(!$listing || $listing->broker->id != Auth::user()->id){
 	    		if($request->ajax()){
-					Session::flash('error', [trans('responses.no_permission')]);
 					return response()->json(['error' => trans('responses.no_permission'.$id)]);
 				}
 	        	return redirect('admin/listings')->withErrors([trans('responses.no_permission')]);
@@ -107,8 +106,8 @@ class ImageController extends Controller {
 
 		$image = $image->create($input);
 
-		return response()->json(['image' => $image,
-								 'error' => false
+		return response()->json(['image' 	=> $image,
+								 'success'	=> trans('admin.image_uploaded_succesfuly'),
 								 ]);
 	}
 
@@ -148,7 +147,7 @@ class ImageController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id){
+	public function destroy($id, Request $request){
 		//
 		$image 		= ImageModel::find($id);
 
@@ -156,8 +155,7 @@ class ImageController extends Controller {
 	    if(!Auth::user()->is('admin')){
 	    	if(!$image || $image->listing->broker->id != Auth::user()->id){
 	    		if($request->ajax()){
-					Session::flash('error', [trans('responses.no_permission')]);
-					return response()->json(['error' => trans('responses.no_permission'.$id)]);
+					return response()->json(['error' => trans('responses.no_permission')]);
 				}
 	        	return redirect('admin/listings')->withErrors([trans('responses.no_permission')]);
 	    	}
@@ -177,14 +175,10 @@ class ImageController extends Controller {
 			if(File::exists($path)){
 				File::delete($path);
 				if(File::exists($path)){
-					return response()->json(trans('responses.error_deleting_image'));
+					return response()->json(['error' => trans('responses.error_deleting_image')]);
 				}
 			}
 		}
-
-		// if(File::exists($path)){
-		// 	return response()->json(trans('responses.error_deleting_image'));
-		// }
 
 		if($image->listing->main_image_id == $id){
 			$image->listing->main_image_id = null;
@@ -210,7 +204,9 @@ class ImageController extends Controller {
 			$listing->save();
 		}
 
-		return response()->json([count($listing->images), $listing->image_path]);
+		return response()->json(['images_count' => count($listing->images), 
+								 'success'		=> trans('admin.image_deleted_succesfuly'),
+								 ]);
 	}
 
 }

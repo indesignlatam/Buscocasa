@@ -11,11 +11,8 @@
 @section('content')
 
 <div class="uk-container uk-container-center uk-margin-top">
-	<div id="alert">
-	</div>
 
 	<div class="uk-panel">
-	
 		@if(Auth::user()->isAdmin())
 			<h1>{{ trans('admin.listings') }}</h1>
 
@@ -341,8 +338,8 @@
 @endsection
 
 @section('js')
-	<link href="{{ asset('/css/components/tooltip.almost-flat.min.css') }}" rel="stylesheet">
 	@parent
+	<link href="{{ asset('/css/components/tooltip.almost-flat.min.css') }}" rel="stylesheet">
 	<script src="{{ asset('/js/components/tooltip.min.js') }}"></script>
 
 	<script type="text/javascript">
@@ -369,6 +366,7 @@
 			    object: path,
 			})
 			}, function(response, id){
+				UIkit.notify('<i class="uk-icon-check-circle"></i> {{ trans("admin.listing_shared") }}', {pos:'top-right', status:'success', timeout: 15000});
 				$.post("{{ url('/cookie/set') }}", {_token: "{{ csrf_token() }}", key: "shared_listing_"+id, value: true, time:11520}, function(result){
 	                
 	            });
@@ -382,10 +380,10 @@
 			    // will be executed on confirm.
 			    $.post("{{ url('/admin/listings') }}/" + sender.id, {_token: "{{ csrf_token() }}", _method:"DELETE"}, function(result){
 			    	if(result.success){
-			    		$('#alert').append('<div class="uk-alert uk-alert-success" data-uk-alert><a href="" class="uk-alert-close uk-close"></a><p>'+result.success+'</p></div>');
+			    		UIkit.notify('<i class="uk-icon-check-circle"></i> '+result.success, {pos:'top-right', status:'success', timeout: 15000});
 			    		$('#listing-'+sender.id).fadeOut(500, function() { $(this).remove(); });
 			    	}else if(result.error){
-			    		$('#alert').append('<div class="uk-alert uk-alert-danger" data-uk-alert><a href="" class="uk-alert-close uk-close"></a><p>'+result.error+'</p></div>');
+			    		UIkit.notify('<i class="uk-icon-remove"></i> '+result.error, {pos:'top-right', status:'danger', timeout: 15000});
 			    	}
 		        });
 			}, {labels:{Ok:'{{trans("admin.yes")}}', Cancel:'{{trans("admin.cancel")}}'}});

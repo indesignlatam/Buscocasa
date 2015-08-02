@@ -97,18 +97,19 @@
 @endsection
 
 @section('js')
-	<link href="{{ asset('/css/components/tooltip.almost-flat.min.css') }}" rel="stylesheet">
 	@parent
+	<link href="{{ asset('/css/components/tooltip.almost-flat.min.css') }}" rel="stylesheet">
 	<script src="{{ asset('/js/components/tooltip.min.js') }}"></script>
+	
 	<script type="text/javascript">
 		function cancel(sender) {
 	    	UIkit.modal.confirm("{{ trans('admin.cancel_payment_sure') }}", function(){
-			    // will be executed on confirm.
 			    $.post("{{ url('/admin/pagos') }}/" + sender.id, {_token: "{{ csrf_token() }}", _method:"DELETE"}, function(result){
 			    	if(result.success){
 		            	$( "#payment-"+sender.id ).animate({ height: 'toggle', opacity: 'toggle' }, 'slow');
+		            	UIkit.notify('<i class="uk-icon-check-circle"></i> '+result.success, {pos:'top-right', status:'success', timeout: 15000});
 			    	}else if(result.error){
-			    		UIkit.modal.alert(result.error);
+			    		UIkit.notify('<i class="uk-icon-remove"></i> '+result.error, {pos:'top-right', status:'danger', timeout: 15000});
 			    	}
 		        });			    
 			}, {labels:{Ok:'{{trans("admin.yes")}}', Cancel:'{{trans("admin.cancel")}}'}});

@@ -5,7 +5,7 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 
-use Auth, Cookie, Carbon, Queue, Session, Settings, Analytics;
+use Auth, Cookie, Carbon, Queue, Settings, Analytics;
 use App\Models\Appointment,
 	App\Models\Listing;
 use App\Commands\SendNewMessageEmail,
@@ -135,8 +135,7 @@ class AppointmentController extends Controller {
 	    if(!Auth::user()->is('admin')){
 	    	if(!$listing || $listing->broker->id != Auth::user()->id){
 	    		if($request->ajax()){
-					Session::flash('error', [trans('responses.no_permission')]);
-					return response()->json(['error' => trans('responses.no_permission'.$id)]);
+					return response()->json(['error' => trans('responses.no_permission')]);
 				}
 	        	return redirect('admin/appointments')->withErrors([trans('responses.no_permission')]);
 	    	}
@@ -195,8 +194,7 @@ class AppointmentController extends Controller {
 	    if(!Auth::user()->is('admin')){
 	    	if(!$message || $message->listing->broker->id != Auth::user()->id){
 	    		if($request->ajax()){
-					Session::flash('error', [trans('responses.no_permission')]);
-					return response()->json(['error' => trans('responses.no_permission'.$id)]);
+					return response()->json(['error' => trans('responses.no_permission')]);
 				}
 	        	return redirect('admin/appointments')->withErrors([trans('responses.no_permission')]);
 	    	}
@@ -214,11 +212,9 @@ class AppointmentController extends Controller {
 		Analytics::trackEvent('Answer Message', 'button', $message->id);
 
 		if($request->ajax()){
-			Session::flash('success', [trans('responses.message_sent')]);
 			return response()->json(['success' => trans('responses.message_sent')]);
 		}
-
-		return redirect('admin/appointments')->withErrors([trans('responses.message_sent')]);
+		return redirect('admin/appointments')->withSuccess([trans('responses.message_sent')]);
 	}
 
 	/**
@@ -235,7 +231,7 @@ class AppointmentController extends Controller {
 	    if(!Auth::user()->is('admin')){
 	    	if(!$message || $message->listing->broker->id != Auth::user()->id){
 	    		if($request->ajax()){
-					return response()->json(['error' => trans('responses.no_permission'.$id)]);
+					return response()->json(['error' => trans('responses.no_permission')]);
 				}
 	        	return redirect('admin/appointments')->withErrors([trans('responses.no_permission')]);
 	    	}
@@ -246,12 +242,11 @@ class AppointmentController extends Controller {
 		$message->save();
 
 		if($request->ajax()){
-			return response()->json(['success'  => trans('responses.message_marked'),
+			return response()->json(['success'  => trans('responses.message_marked_'.(bool)$message->read),
 									 'mark' 	=> (bool)$message->read,
 									 ]);
 		}
-
-		return redirect('admin/appointments')->withErrors([trans('responses.message_marked')]);
+		return redirect('admin/appointments')->withSuccess([trans('responses.message_marked_'.(bool)$message->read)]);
 	}
 
 	/**
@@ -268,8 +263,7 @@ class AppointmentController extends Controller {
 	    if(!Auth::user()->is('admin')){
 	    	if(!$message || $message->listing->broker->id != Auth::user()->id){
 	    		if($request->ajax()){
-					Session::flash('error', [trans('responses.no_permission')]);
-					return response()->json(['error' => trans('responses.no_permission'.$id)]);
+					return response()->json(['error' => trans('responses.no_permission')]);
 				}
 	        	return redirect('admin/appointments')->withErrors([trans('responses.no_permission')]);
 	    	}
@@ -278,11 +272,9 @@ class AppointmentController extends Controller {
 		$message->delete();
 
 		if($request->ajax()){
-			Session::flash('success', [trans('responses.message_deleted')]);
 			return response()->json(['success' => trans('responses.message_deleted')]);
 		}
-
-		return redirect('admin/appointments')->withErrors([trans('responses.message_deleted')]);
+		return redirect('admin/appointments')->withSuccess([trans('responses.message_deleted')]);
 	}
 
 }

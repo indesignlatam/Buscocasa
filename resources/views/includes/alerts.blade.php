@@ -1,39 +1,42 @@
-<div class="uk-container uk-container-center uk-margin-top">
-	@if (count($errors) > 0)
-		<div class="uk-alert uk-alert-danger" data-uk-alert>
-			<a href="" class="uk-alert-close uk-close"></a>
-			<strong>{{ trans('frontend.oops') }}</strong> {{ trans('frontend.input_error') }}<br><br>
-			<ul class="uk-list">
-				@foreach ($errors->all() as $error)
-					<li><i class="uk-icon-remove"></i> {{ $error }}</li>
-				@endforeach
-			</ul>
-		</div>
-	@endif
+@if (count($errors) > 0)
+	<script type="text/javascript">
+		$(function() {
+			@foreach ($errors->all() as $error)
+				UIkit.notify('<i class="uk-icon-remove"></i> {{ $error }}', {pos:'top-right', status:'danger', timeout: 15000});
+	    	@endforeach
+		});
+    </script>
+@endif
 
-	@if(Session::has('success') && count(Session::get('success')) > 0)
-	    <div class="uk-alert uk-alert-success" data-uk-alert>
-	    	<a href="" class="uk-alert-close uk-close"></a>
-			<ul class="uk-list">
-				@foreach (Session::get('success') as $error)
-					<li><i class="uk-icon-check"></i> {{ $error }}</li>
-				@endforeach
-			</ul>
-		</div>
-	@endif
+@if(Session::has('success') && count(Session::get('success')) > 0)
+	<script type="text/javascript">
+		$(function() {
+			@foreach (Session::get('success') as $success)
+				UIkit.notify('<i class="uk-icon-check-circle"></i> {{ $success }}', {pos:'top-right', status:'success', timeout: 15000});
+	    	@endforeach
+		});
+	</script>
+@endif
 
-	@if(Session::has('notice') && count(Session::get('notice')) > 0)
-	    <div class="uk-alert uk-alert-warning" data-uk-alert>
-	    	<a href="" class="uk-alert-close uk-close"></a>
-			<strong>{{ trans('frontend.oops') }}</strong> {{ trans('frontend.input_warning') }}<br><br>
-			<ul class="uk-list">
-				@foreach (Session::get('notice') as $error)
-					<li><i class="uk-icon-minus"></i> {{ $error }}</li>
-				@endforeach
-			</ul>
-		</div>
-	@endif
-</div>
+@if(Session::has('notice') && count(Session::get('notice')) > 0)
+	<script type="text/javascript">
+		$(function() {
+			@foreach (Session::get('notice') as $notice)
+				UIkit.notify('<i class="uk-icon-circle-o"></i> {{ $notice }}', {pos:'top-right', status:'info', timeout: 15000});
+	    	@endforeach
+		});
+	</script>
+@endif
+
+@if(Session::has('warning') && count(Session::get('warning')) > 0)
+	<script type="text/javascript">
+		$(function() {
+			@foreach (Session::get('warning') as $warning)
+				UIkit.notify('<i class="uk-icon-minus-square"></i> {{ $warning }}', {pos:'top-right', status:'warning', timeout: 15000});
+	    	@endforeach
+		});
+	</script>
+@endif
 
 {{-- @if (count($errors) > 0)
     <script type="text/javascript">

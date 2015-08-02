@@ -98,6 +98,7 @@ return [
     'edit_listing' 				=> 'Editar inmueble publicado',
     'add_images_to_listing'		=> 'Agrega imagenes para mejorar la visibilidad de tu publicación',
     'images_uploaded_succesfuly'=> 'Las imagenes fueron cargadas exitosamente.',
+    'image_uploaded_succesfuly' => 'La imagen fue cargada exitosamente.',
     'image_deleted_succesfuly'  => 'La imagen fue eliminida exitosamente.',
     'listing_expiring_soon'     => 'Tu inmueble expira pronto',
 
