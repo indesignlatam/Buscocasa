@@ -5,6 +5,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
 use File, Settings;
+use App\Models\Listing;
 use App\Commands\SendTipsEmail;
 
 class TipsEmail extends Command {
@@ -43,7 +44,7 @@ class TipsEmail extends Command {
 		// less than n views
 		// OR less than n messages?
 		// TODO send one message per user
-		$listings = Listing::where('created_at', Carbon::now()->addDays(Settings::get('tips_days_from_created', 15)))
+		$listings = Listing::where('created_at', '>', Carbon::now()->addDays(Settings::get('tips_days_from_created', 15)))
 						   ->where('views', '<', Settings::get('tips_min_views', 30))
 						   ->with('broker')
 						   ->get();
