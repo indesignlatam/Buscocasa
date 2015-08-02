@@ -3,7 +3,7 @@
 @section('head')
     <title>{{ Settings::get('site_name') }}</title>
     <meta property="og:title" content="{{ Settings::get('site_name') }}"/>
-    <meta property="og:image" content="{{ asset('/images/facebook-share.jpg') }}"/>
+    <meta property="og:image" content="{{ asset('/images/defaults/facebook-share.jpg') }}"/>
     <meta property="og:type" content="website"/>
     <meta property="og:description" content="{{ Settings::get('site_description') }}"/>
 @endsection

@@ -60,37 +60,35 @@
                                 <br>
                                 <p class="uk-text-contrast">
                                     Mail: comercial@buscocasa.co<br>
-                                    Tel:  (+57 1) 8796436<br>
-                                    Whatsapp: (+57) 3203999043
                                 </p>
 
-                                {{-- <div class="" style="margin-top:25px">
-                                    <a onclick="share('{{ '/'.strtolower(str_plural($listing->listingType->name)).'/'.$listing->slug }}')" class="uk-icon-button uk-icon-facebook"></a> 
-                                    <a class="uk-icon-button uk-icon-twitter twitter-share-button" href="https://twitter.com/intent/tweet?text=Hello%20world%20{{ url('/'.strtolower(str_plural($listing->listingType->name)).'/'.$listing->slug) }}" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=440,width=600');return false;"></a>
-                                    <a href="https://plus.google.com/share?url={{ url('/'.strtolower(str_plural($listing->listingType->name)).'/'.$listing->slug) }}" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;" class="uk-icon-button uk-icon-google-plus"></a>
-                                </div> --}}
+                                <div class="" style="margin-top:25px">
+                                    <a onclick="share('{{ url('') }}')" class="uk-icon-hover uk-icon-large uk-icon-facebook"></a> 
+                                    <a class="uk-icon-hover uk-icon-large uk-icon-twitter twitter-share-button" href="https://twitter.com/intent/tweet?text={{ Settings::get('site_name') }}%20{{ url('/') }}" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=440,width=600');return false;"></a>
+                                    <a href="https://plus.google.com/share?url={{ url('/') }}" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;" class="uk-icon-hover uk-icon-large uk-icon-google-plus"></a>
+                                </div>
                             </div>
                         </div>
                         <div class="uk-width-large-2-10 uk-width-medium-1-6 uk-hidden-small uk-margin-large-top uk-text-right">
                             <h3 class="uk-text-contrast">VENTAS</h3>
                             <ul class="uk-list">
-                                <li class="uk-text-contrast">Casas</li>
-                                <li class="uk-text-contrast">Apartamentos</li>
-                                <li class="uk-text-contrast">Oficinas</li>
-                                <li class="uk-text-contrast">Lotes</li>
-                                <li class="uk-text-contrast">Fincas</li>
-                                <li class="uk-text-contrast">Bodegas</li>
+                                <li><a href="{{ url('/ventas?category_id=1') }}" style="text-decoration:none" class="uk-text-contrast">Casas</a></li>
+                                <li><a href="{{ url('/ventas?category_id=2') }}" style="text-decoration:none" class="uk-text-contrast">Apartamentos</a></li>
+                                <li><a href="{{ url('/ventas?category_id=3') }}" style="text-decoration:none" class="uk-text-contrast">Oficinas</a></li>
+                                <li><a href="{{ url('/ventas?category_id=4') }}" style="text-decoration:none" class="uk-text-contrast">Lotes</a></li>
+                                <li><a href="{{ url('/ventas?category_id=5') }}" style="text-decoration:none" class="uk-text-contrast">Fincas</a></li>
+                                <li><a href="{{ url('/ventas?category_id=6') }}" style="text-decoration:none" class="uk-text-contrast">Bodegas</a></li>
                             </ul>
                         </div>
                         <div class="uk-width-large-2-10 uk-width-medium-1-6 uk-hidden-small uk-margin-large-top uk-text-right">
                             <h3 class="uk-text-contrast">ARRIENDOS</h3>
                             <ul class="uk-list">
-                                <li class="uk-text-contrast">Casas</li>
-                                <li class="uk-text-contrast">Apartamentos</li>
-                                <li class="uk-text-contrast">Oficinas</li>
-                                <li class="uk-text-contrast">Lotes</li>
-                                <li class="uk-text-contrast">Fincas</li>
-                                <li class="uk-text-contrast">Bodegas</li>
+                                <li><a href="{{ url('/arriendos?category_id=1') }}" style="text-decoration:none" class="uk-text-contrast">Casas</a></li>
+                                <li><a href="{{ url('/arriendos?category_id=2') }}" style="text-decoration:none" class="uk-text-contrast">Apartamentos</a></li>
+                                <li><a href="{{ url('/arriendos?category_id=3') }}" style="text-decoration:none" class="uk-text-contrast">Oficinas</a></li>
+                                <li><a href="{{ url('/arriendos?category_id=4') }}" style="text-decoration:none" class="uk-text-contrast">Lotes</a></li>
+                                <li><a href="{{ url('/arriendos?category_id=5') }}" style="text-decoration:none" class="uk-text-contrast">Fincas</a></li>
+                                <li><a href="{{ url('/arriendos?category_id=6') }}" style="text-decoration:none" class="uk-text-contrast">Bodegas</a></li>
                             </ul>
                         </div>
                         
@@ -100,7 +98,7 @@
                                 <li class="uk-text-contrast">Quienes Somos</li>
                                 <li class="uk-text-contrast">Nuestros Servicios</li>
                                 <li class="uk-text-contrast">Preguntas Frequentes</li>
-                                <li class="uk-text-contrast">Tarifas</li>
+                                <li class="uk-text-contrast">Blog</li>
                                 <li class="uk-text-contrast">Publíca</li>
                             </ul>
                         </div>
@@ -108,9 +106,9 @@
                         <div class="uk-width-large-2-10 uk-width-medium-1-6 uk-hidden-small uk-margin-large-top uk-text-right">
                             <h3 class="uk-text-contrast">OTROS SITIOS</h3>
                             <ul class="uk-list">
-                                <li class="uk-text-contrast">BuscoCasa</li>
-                                <li class="uk-text-contrast">BuscoCarro</li>
-                                <li class="uk-text-contrast">BuscoMoto</li>
+                                <li><a href="{{ url('/') }}" style="text-decoration:none" class="uk-text-contrast">BuscoCasa</a></li>
+                                <li><a href="{{ url('/') }}" style="text-decoration:none" class="uk-text-contrast">BuscoCarro</a></li>
+                                <li><a href="{{ url('/') }}" style="text-decoration:none" class="uk-text-contrast">BuscoMoto</a></li>
                             </ul>
                         </div>
                     </div>
@@ -139,6 +137,34 @@
             <!-- Necessary Scripts -->
             <script src="{{ asset('/js/jquery.min.js') }}"></script>
             <script src="{{ asset('/js/uikit.min.js') }}"></script>
+
+            <script type="text/javascript">
+                window.fbAsyncInit = function() {
+                    FB.init({
+                        appId      : {{ Settings::get('facebook_app_id') }},
+                        xfbml      : true,
+                        version    : 'v2.3'
+                    });
+                };
+                (function(d, s, id){
+                    var js, fjs = d.getElementsByTagName(s)[0];
+                    if (d.getElementById(id)) {return;}
+                    js = d.createElement(s); js.id = id;
+                    js.src = "//connect.facebook.net/en_US/sdk.js";
+                    fjs.parentNode.insertBefore(js, fjs);
+                }(document, 'script', 'facebook-jssdk'));
+
+                function share(path){
+                    FB.ui({
+                        method: 'share_open_graph',
+                        action_type: 'og.shares',
+                        action_properties: JSON.stringify({
+                        object: path,
+                    })
+                    }, function(response){
+                    });
+                }
+            </script>
 
             <!-- Other Scripts -->
             {!! Analytics::render() !!}
