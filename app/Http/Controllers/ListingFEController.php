@@ -67,7 +67,7 @@ class ListingFEController extends Controller {
 				$listings 		= Listing::remember(Settings::get('query_cache_time_short', 10))
 										->where('code', $request->get('listing_code'))
 										->active()
-										->orderBy('id', 'DESC')
+										->orderBy('featured_type', 'DESC')
 										->with('city', 'listingType', 'featuredType')
 										->paginate(Settings::get('pagination_objects'));
 			}else{
@@ -138,7 +138,7 @@ class ListingFEController extends Controller {
 						$query 		= $query->orderBy('id', 'DESC');
 					}
 				}else{
-					$query 	= $query->orderBy('id', 'DESC');
+					$query 	= $query->orderBy('featured_type', 'DESC');
 				}
 
 				$listings 	= $query->with('city', 'listingType', 'featuredType')->paginate(Settings::get('pagination_objects'));
@@ -156,7 +156,7 @@ class ListingFEController extends Controller {
 					$query 		= $query->orderBy('id', 'DESC');
 				}
 			}else{
-				$query 	= $query->orderBy('id', 'DESC');
+				$query 	= $query->orderBy('featured_type', 'DESC');
 			}
 
 			$listings 	= $query->with('city', 'listingType', 'featuredType')->paginate(Settings::get('pagination_objects'));
