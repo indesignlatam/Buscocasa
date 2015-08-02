@@ -133,6 +133,11 @@ class UserController extends Controller {
 	public function confirm($id, $code){
 		//
 	    $user = User::where('id', $id)->where('confirmation_code', $code)->first();
+
+	    if(!$user){
+			return redirect('/')->withErrors([trans('responses.no_permission')]);
+	    }
+	    
 	    $user->confirmed 			= true;
 	    $user->confirmation_code 	= null;
 	    $user->save();
@@ -158,7 +163,7 @@ class UserController extends Controller {
 		if(!Auth::user()->confirmed){
 			return view('admin.users.not_confirmed');
 		}else{
-			return redirect('admin');
+			return redirect('admin')->withErrors([trans('responses.no_permission')]);
 		}
 	}
 
@@ -178,7 +183,7 @@ class UserController extends Controller {
 	    	if(!$id || $id != Auth::user()->id){
 	    		$self = true;
 	    		if($request->ajax()){
-					Session::flash('error', [trans('responses.no_permission')]);
+					Session::flash('errors', [trans('responses.no_permission')]);
 					return response()->json(['error' => trans('responses.no_permission')]);
 				}
 	        	return redirect('/admin/user/'.Auth::user()->id.'/edit')->withErrors([trans('responses.no_permission')]);
@@ -196,6 +201,10 @@ class UserController extends Controller {
 		$user = User::find($id);
 		$user->delete();
 
+		if($request->ajax()){
+			Session::flash('success', [trans('responses.no_permission')]);
+			return response()->json(['success' => trans('responses.no_permission')]);
+		}
 		return redirect('/admin/users')->withSuccess([trans('responses.account_removed')]);
 	}
 
