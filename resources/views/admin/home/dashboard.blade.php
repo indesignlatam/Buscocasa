@@ -67,7 +67,7 @@
  
 @section('content')
 
-<div class="uk-container uk-container-center">
+<div class="uk-container uk-container-center uk-margin-top">
     <div class="uk-panel">
         <h1 class="uk-float-left">{{ trans('admin.dashboard') }}</h1>
         <a href="{{ url('/admin/listings/create') }}" class="uk-button uk-button-primary uk-button-large uk-float-right">{{ trans('admin.publish_property') }}</a>

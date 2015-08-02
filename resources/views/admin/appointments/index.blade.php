@@ -92,8 +92,8 @@
 
 				<?php echo $appointments->render(); ?>
 			@else
-		    	<div class="uk-text-center uk-margin-top">
-					<h2 style="color:#95979a" class="uk-text-bold">{{ trans('admin.you_have_no_messages') }}</h2>
+		    	<div class="uk-text-center">
+					<h2 class="uk-text-bold uk-text-muted">{{ trans('admin.you_have_no_messages') }}</h2>
 					<h3>{{ trans('admin.no_messages_text') }}</h3>
 
 					<div class="uk-grid uk-grid-collapse uk-text-center">

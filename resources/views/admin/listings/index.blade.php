@@ -303,7 +303,7 @@
 					</table>
 				@else
 					<div class="uk-text-center uk-margin-top">
-						<h2 style="color:#95979a" class="uk-text-bold">{{ trans('admin.you_have_no_deleted_listings') }}</h2>
+						<h2 class="uk-text-bold uk-text-muted">{{ trans('admin.you_have_no_deleted_listings') }}</h2>
 
 						<div class="" style="margin-top:35px">
 			    			<a href="{{ url('/admin/listings/create') }}" class="uk-button uk-button-large uk-button-primary">{{ trans('admin.publish_property') }}</a>
@@ -315,7 +315,7 @@
 				@endif
 			@else
 				<div class="uk-text-center uk-margin-top">
-					<h2 style="color:#95979a" class="uk-text-bold">{{ trans('admin.you_have_no_listings') }}</h2>
+					<h2 class="uk-text-bold uk-text-muted">{{ trans('admin.you_have_no_listings') }}</h2>
 					<a href="{{ url('/admin/listings/create') }}" class="uk-h3">{{ trans('admin.publish_property_4_steps') }}</a>
 					<br>
 					<br>
