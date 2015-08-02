@@ -264,7 +264,13 @@ return [
     'pay'                       => 'Realizar pago',
     'listing_preview'           => 'Vista previa del inmueble',
     'highlight_listing_text'    => 'Destaca la publicacion de tu inmueble para que sea vista por mas personas y tener la posibilidad de concretar una venta en el menor tiempo posible.',
-    'features111'               => 'publicados',
+    'homepage_rotation_tooltip' => 'La publicación saldra aleatoriamente en la pagina principal',
+    'social_publish_tooltip'    => 'El inmueble sera publicado en nuestra pagina de facebook',
+    'listing_expiring_tooltip'  => 'La cantidad de días que durara la publicación',
+    'outstanding_container_tooltip'     => 'La publicación aparecera en un contenedor que sobresale sobre los demas',
+    'better_search_positions_tooltip'   => 'La publicación aparecera en mejores posiciones en las paginas de busqueda',
+    'featured_image_limit_tooltip'      => 'Cantidad maxima de fotos que podra tener la publicación',
+    'listing_container_ribbon_tooltip'  => 'La publicación tendra un liston que lo hace destacar aun mas',
 
     // Listings limit
     'listings_limit_title'      => 'Alcanzaste la cantidad maxima de publicaciones gratis',
@@ -281,6 +287,7 @@ return [
     'photos'                    => 'fotos',
     'homepage_rotation'         => 'Rotación en pagina pricipal',
     'outstanding_container'     => 'Contenedor que sobresale',
+    'listing_container_ribbon'  => 'Liston de destacado',
     'better_search_positions'   => 'Posición en busquedas',
     'social_publish'            => 'Publicado en redes',
 

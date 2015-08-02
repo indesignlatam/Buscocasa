@@ -43,32 +43,59 @@
 					<p>{{ $type->description }}</p>
 					<ul class="uk-list">
 						@if($type->id >= 3)
-							<li class=""><i class="uk-icon-check uk-text-success"></i> {{ trans('admin.homepage_rotation') }}</li>
+							<li data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.homepage_rotation_tooltip') }}"><i class="uk-icon-check uk-text-success"></i> {{ trans('admin.homepage_rotation') }}</li>
 						@else
-							<li class=""><i class="uk-icon-remove uk-text-danger"></i> {{ trans('admin.homepage_rotation') }}</li>
+							<li data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.homepage_rotation_tooltip') }}"><i class="uk-icon-remove uk-text-danger"></i> {{ trans('admin.homepage_rotation') }}</li>
+						@endif
+
+						@if($type->id >= 3)
+							<li data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.social_publish_tooltip') }}"><i class="uk-icon-check uk-text-success"></i> {{ trans('admin.social_publish') }}</li>
+						@else
+							<li data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.social_publish_tooltip') }}"><i class="uk-icon-remove uk-text-danger"></i> {{ trans('admin.social_publish') }}</li>
 						@endif
 
 						@if($type->id >= 2)
-							<li class=""><i class="uk-icon-check uk-text-success"></i> {{ trans('admin.outstanding_container') }}</li>
+							<li data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.better_search_positions_tooltip') }}"><i class="uk-icon-check uk-text-success"></i> {{ trans('admin.better_search_positions') }}</li>
 						@else
-							<li class=""><i class="uk-icon-remove uk-text-danger"></i> {{ trans('admin.outstanding_container') }}</li>
+							<li data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.better_search_positions_tooltip') }}"><i class="uk-icon-remove uk-text-danger"></i> {{ trans('admin.better_search_positions') }}</li>
+						@endif
+
+						@if($type->id >= 2)
+							<li data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.listing_container_ribbon_tooltip') }}"><i class="uk-icon-check uk-text-success"></i> {{ trans('admin.listing_container_ribbon') }}</li>
+						@else
+							<li data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.listing_container_ribbon_tooltip') }}"><i class="uk-icon-remove uk-text-danger"></i> {{ trans('admin.listing_container_ribbon') }}</li>
+						@endif
+
+						@if($type->id >= 1)
+							<li data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.outstanding_container_tooltip') }}"><i class="uk-icon-check uk-text-success"></i> {{ trans('admin.outstanding_container') }}</li>
+						@else
+							<li data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.outstanding_container_tooltip') }}"><i class="uk-icon-remove uk-text-danger"></i> {{ trans('admin.outstanding_container') }}</li>
 						@endif
 
 						@if($type->id)
-							<li class=""><i class="uk-icon-check uk-text-success"></i> {{ Settings::get('listing_expiring') }} {{ trans('admin.days') }}</li>
+							<li data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.listing_expiring_tooltip') }}"><i class="uk-icon-check uk-text-success"></i> {{ Settings::get('listing_expiring') }} {{ trans('admin.days') }}</li>
 						@else
-							<li class=""><i class="uk-icon-remove uk-text-danger"></i> {{ Settings::get('listing_expiring') }} {{ trans('admin.days') }}</li>
+							<li data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.listing_expiring_tooltip') }}"><i class="uk-icon-remove uk-text-danger"></i> {{ Settings::get('listing_expiring') }} {{ trans('admin.days') }}</li>
 						@endif
 
 						@if($type->id)
-							<li class=""><i class="uk-icon-check uk-text-success"></i> {{ Settings::get('featured_image_limit') }} {{ trans('admin.photos') }}</li>
+							<li data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.featured_image_limit_tooltip') }}"><i class="uk-icon-check uk-text-success"></i> {{ Settings::get('featured_image_limit') }} {{ trans('admin.photos') }}</li>
 						@else
-							<li class=""><i class="uk-icon-remove uk-text-danger"></i> {{ Settings::get('featured_image_limit') }} {{ trans('admin.photos') }}</li>
+							<li data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.featured_image_limit_tooltip') }}"><i class="uk-icon-remove uk-text-danger"></i> {{ Settings::get('featured_image_limit') }} {{ trans('admin.photos') }}</li>
 						@endif
 
-						<li class="uk-margin-top uk-h2 uk-text-center" id="price-{{ $type->id }}">{{ money_format('$%!.0i', $type->price) }}</li>
+						@if($type->id > 2)
+							<li class="uk-margin-top uk-h2 uk-text-center" id="price-{{ $type->id }}">{{ money_format('$%!.0i', $type->price) }}</li>
+						@else
+							<li class="uk-margin-top uk-h2 uk-text-center" id="price-{{ $type->id }}">{{ money_format('$%!.0i', $type->price) }}</li>
+						@endif
 					</ul>
-					<button class="uk-button uk-button-success uk-button-large uk-width-1-1" onclick="selectFeature({{$type->id}})" style="background-color:{{$type->color}}">{{ trans('admin.renovate') }}</button>
+
+					@if($type->id > 1)
+						<button class="uk-button uk-button-success uk-button-large uk-width-1-1" onclick="feature({{$type->id}})" style="background-color:{{$type->color}}" data-uk-smooth-scroll="{offset: -400}">{{ trans('admin.select') }}</button>
+					@else
+						<button class="uk-button uk-button-large uk-width-1-1" onclick="feature({{$type->id}})" data-uk-smooth-scroll="{offset: -400}">{{ trans('admin.select') }}</button>
+					@endif
 				</div>
 			</div>
 			@endforeach
@@ -92,6 +119,8 @@
 
 @section('js')
 	@parent
+	<link href="{{ asset('/css/components/tooltip.almost-flat.min.css') }}" rel="stylesheet">
+
     <script src="{{ asset('/js/components/tooltip.min.js') }}"></script>
 	<script src="{{ asset('/js/accounting.min.js') }}"></script>
 
