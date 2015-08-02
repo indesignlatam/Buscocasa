@@ -34,6 +34,18 @@
 									<li class=""><i class="uk-icon-remove uk-text-danger"></i> {{ trans('admin.homepage_rotation') }}</li>
 	    						@endif
 
+	    						@if($type->id >= 3)
+									<li class=""><i class="uk-icon-check uk-text-success"></i> {{ trans('admin.social_publish') }}</li>
+	    						@else
+									<li class=""><i class="uk-icon-remove uk-text-danger"></i> {{ trans('admin.social_publish') }}</li>
+	    						@endif
+
+	    						@if($type->id >= 2)
+									<li class=""><i class="uk-icon-check uk-text-success"></i> {{ trans('admin.better_search_positions') }}</li>
+	    						@else
+									<li class=""><i class="uk-icon-remove uk-text-danger"></i> {{ trans('admin.better_search_positions') }}</li>
+	    						@endif
+
 	    						@if($type->id >= 2)
 									<li class=""><i class="uk-icon-check uk-text-success"></i> {{ trans('admin.outstanding_container') }}</li>
 	    						@else
@@ -52,9 +64,18 @@
 									<li class=""><i class="uk-icon-remove uk-text-danger"></i> {{ Settings::get('featured_image_limit') }} {{ trans('admin.photos') }}</li>
 	    						@endif
 
-								<li class="uk-margin-top uk-h2 uk-text-center" id="price-{{ $type->id }}">{{ money_format('$%!.0i', $type->price) }}</li>
+	    						@if($type->id > 2)
+									<li class="uk-margin-top uk-h2 uk-text-center" id="price-{{ $type->id }}">{{ money_format('$%!.0i', $type->price) }}</li>
+	    						@else
+									<li class="uk-margin-top uk-h2 uk-text-center" id="price-{{ $type->id }}">{{ money_format('$%!.0i', $type->price) }}</li>
+	    						@endif
 	    					</ul>
-	    					<button class="uk-button uk-button-success uk-button-large uk-width-1-1" onclick="feature({{$type->id}})" style="background-color:{{$type->color}}" data-uk-smooth-scroll="{offset: -300}">{{ trans('admin.select') }}</button>
+
+	    					@if($type->id > 1)
+								<button class="uk-button uk-button-success uk-button-large uk-width-1-1" onclick="feature({{$type->id}})" style="background-color:{{$type->color}}" data-uk-smooth-scroll="{offset: -400}">{{ trans('admin.select') }}</button>
+    						@else
+								<button class="uk-button uk-button-large uk-width-1-1" onclick="feature({{$type->id}})" data-uk-smooth-scroll="{offset: -400}">{{ trans('admin.select') }}</button>
+    						@endif
 	    				</div>
 	    			</div>
 	    			@endforeach

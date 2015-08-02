@@ -280,7 +280,9 @@ return [
     'days'                      => 'días',
     'photos'                    => 'fotos',
     'homepage_rotation'         => 'Rotación en pagina pricipal',
-    'outstanding_container'      => 'Contenedor que sobresale',
+    'outstanding_container'     => 'Contenedor que sobresale',
+    'better_search_positions'   => 'Posición en busquedas',
+    'social_publish'            => 'Publicado en redes',
 
     'recaptcha_error'           => 'Por favor realiza la prueba para verificar que no eres un robot',
     'recaptcha_help'            => 'Debes hacer click en el anterior campo para verificar que no eres un robot.',
