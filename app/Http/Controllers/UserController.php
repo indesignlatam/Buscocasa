@@ -121,6 +121,10 @@ class UserController extends Controller {
 
 		$user->fill($input)->save();
 
+		if($request->ajax()){
+			Session::flash('success', [trans('responses.user_saved')]);
+			return response()->json(['success' => trans('responses.user_saved')]);
+		}
 		return redirect('/admin/user/'.$id.'/edit')->withSuccess([trans('responses.user_saved')]);
 	}
 
