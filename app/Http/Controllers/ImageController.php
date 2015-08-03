@@ -48,7 +48,13 @@ class ImageController extends Controller {
 		}
 
 		// Image number limit
-		if($listing->featured_type && $listing->featured_expires_at && $listing->featured_expires_at > Carbon::now()){
+		if(!$listing->broker->confirmed){
+			if(count($listing->images) >= Settings::get('unconfirmed_image_limit', 2)){
+				return response()->json(['error' => trans('responses.image_limit'),
+										 'image' => null
+										 ]);
+			}
+		}elseif($listing->featured_type && $listing->featured_expires_at && $listing->featured_expires_at > Carbon::now()){
 			if(count($listing->images) >= Settings::get('featured_image_limit', 20)){
 				return response()->json(['error' => trans('responses.image_limit'),
 										 'image' => null
