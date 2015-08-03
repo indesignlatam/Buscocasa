@@ -33,6 +33,27 @@
 				<!-- Order by -->
 				<div class="uk-text-right">
 					<form action="{{url(Request::path())}}" method="GET" class="uk-form">
+						<select name="take" onchange="this.form.submit()">
+					    	<option value="">Cantidad de publicaciones</option>
+					    	@if(Request::get('take') == 50)
+					    		<option value="50" selected>Ver 50</option>
+					    	@else
+					    		<option value="50">Ver 50</option>
+					    	@endif
+
+					    	@if(Request::get('take') == 30)
+					    		<option value="30" selected>Ver 30</option>
+					    	@else
+					    		<option value="30">Ver 30</option>
+					    	@endif
+
+					    	@if(Request::get('take') == 10)
+					    		<option value="10" selected>Ver 10</option>
+					    	@else
+					    		<option value="10">Ver 10</option>
+					    	@endif
+					    </select>
+
 					    <select name="order_by" onchange="this.form.submit()">
 					    	<option value="">Ordenar por</option>
 					    	

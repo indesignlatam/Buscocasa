@@ -42,6 +42,7 @@ class ListingFEController extends Controller {
 		$listingType 	= 'Venta';
 		$listingTypes 	= null;
 		$listingTypeID 	= 1;
+		$take 			= Settings::get('pagination_objects');
 
 		$query			= Listing::remember(Settings::get('query_cache_time_short', 10))->active();
 
@@ -58,7 +59,10 @@ class ListingFEController extends Controller {
 			$listingTypeID 	= $request->get('listing_type_id');
 			$listingTypes 	= ListingType::remember(Settings::get('query_cache_time'))->get();
 		}
-		
+
+		if($request->has('take') && is_int($request->get('take'))){
+			$take = $request->get('take');
+		}
 
 
 		if(count($request->all()) > 0){
@@ -69,7 +73,7 @@ class ListingFEController extends Controller {
 										->active()
 										->orderBy('featured_type', 'DESC')
 										->with('city', 'listingType', 'featuredType')
-										->paginate(Settings::get('pagination_objects'));
+										->paginate($take);
 			}else{
 				if($request->get('listing_type_id')){
 					$listing_type 	= $request->get('listing_type_id');
@@ -141,7 +145,7 @@ class ListingFEController extends Controller {
 					$query 	= $query->orderBy('featured_type', 'DESC');
 				}
 
-				$listings 	= $query->with('city', 'listingType', 'featuredType')->paginate(Settings::get('pagination_objects'));
+				$listings 	= $query->with('city', 'listingType', 'featuredType')->paginate($take);
 			}
 		}else{
 			$query 		= $query->with('featuredType');
@@ -159,7 +163,7 @@ class ListingFEController extends Controller {
 				$query 	= $query->orderBy('featured_type', 'DESC');
 			}
 
-			$listings 	= $query->with('city', 'listingType', 'featuredType')->paginate(Settings::get('pagination_objects'));
+			$listings 	= $query->with('city', 'listingType', 'featuredType')->paginate($take);
 		}
 
 		$categories 	= Category::remember(Settings::get('query_cache_time'))->get();

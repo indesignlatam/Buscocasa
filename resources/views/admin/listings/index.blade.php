@@ -21,6 +21,27 @@
 		        <a class="uk-button" href="{{ url('/admin/listings/create') }}">{{ trans('admin.new') }}</a>
 				<button class="uk-button uk-button-danger" onclick="deleteObjects()"><i class="uk-icon-trash"></i></button>	
 				<form action="{{url(Request::path())}}" method="GET" class="uk-form uk-align-right">
+					<select name="take" onchange="this.form.submit()">
+				    	<option value="">Cantidad de publicaciones</option>
+				    	@if(Request::get('take') == 50)
+				    		<option value="50" selected>Ver 50</option>
+				    	@else
+				    		<option value="50">Ver 50</option>
+				    	@endif
+
+				    	@if(Request::get('take') == 30)
+				    		<option value="30" selected>Ver 30</option>
+				    	@else
+				    		<option value="30">Ver 30</option>
+				    	@endif
+
+				    	@if(Request::get('take') == 10)
+				    		<option value="10" selected>Ver 10</option>
+				    	@else
+				    		<option value="10">Ver 10</option>
+				    	@endif
+				    </select>
+
 				    <select name="order_by" onchange="this.form.submit()">
 				    	<option value="">Ordenar por</option>
 				    	
@@ -50,6 +71,27 @@
 			        <a class="uk-button uk-button-large" href="{{ url('/admin/listings/?deleted=true') }}" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.eliminated_listings') }}"><i class="uk-icon-trash"></i></a>
 
 			        <form action="{{url(Request::path())}}" method="GET" class="uk-form uk-align-right">
+			        	<select name="take" onchange="this.form.submit()">
+					    	<option value="">Cantidad de publicaciones</option>
+					    	@if(Request::get('take') == 50)
+					    		<option value="50" selected>Ver 50</option>
+					    	@else
+					    		<option value="50">Ver 50</option>
+					    	@endif
+
+					    	@if(Request::get('take') == 30)
+					    		<option value="30" selected>Ver 30</option>
+					    	@else
+					    		<option value="30">Ver 30</option>
+					    	@endif
+
+					    	@if(Request::get('take') == 10)
+					    		<option value="10" selected>Ver 10</option>
+					    	@else
+					    		<option value="10">Ver 10</option>
+					    	@endif
+					    </select>
+				    
 					    <select name="order_by" onchange="this.form.submit()">
 					    	<option value="">Ordenar por</option>
 					    	

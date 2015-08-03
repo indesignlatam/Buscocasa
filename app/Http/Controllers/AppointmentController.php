@@ -23,6 +23,8 @@ class AppointmentController extends Controller {
 	public function index(Request $request){
 		//
 		$query;
+		$take = Settings::get('pagination_objects');
+
 		if(Auth::user()->is('admin')){
 		}else{
 			$query = Appointment::leftJoin('listings',
@@ -43,7 +45,11 @@ class AppointmentController extends Controller {
 			$query 	= $query->with('listing')->orderBy('answered', 'ASC')->orderBy('appointments.created_at', 'DESC');
 		}
 
-		$objects = $query->paginate(Settings::get('pagination_objects'));
+		if($request->has('take') && is_int($request->get('take'))){
+			$take = $request->get('take');
+		}
+
+		$objects = $query->paginate($take);
 
 		return view('admin.appointments.index', ['appointments' => $objects]);
 	}

@@ -21,7 +21,8 @@ class ListingController extends Controller {
 	 */
 	public function index(Request $request){
 		//
-		$query = Listing::with('city');
+		$query 	= Listing::with('city');
+		$take 	= Settings::get('pagination_objects');
 
 		if(Auth::user()->isAdmin()){
 			if($request->get('deleted')){
@@ -46,7 +47,11 @@ class ListingController extends Controller {
 			$query 	= $query->orderBy('id', 'DESC');
 		}
 
-		$objects = $query->with('listingType', 'featuredType','images', 'features')->paginate(Settings::get('pagination_objects'));
+		if($request->has('take') && is_int($request->get('take'))){
+			$take = $request->get('take');
+		}
+
+		$objects = $query->with('listingType', 'featuredType','images', 'features')->paginate($take);
 
 		return view('admin.listings.index', ['listings' => $objects]);
 	}

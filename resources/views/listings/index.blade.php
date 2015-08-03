@@ -143,6 +143,27 @@
 
 	    	<div class="uk-width-large-3-4 uk-width-small-1-1 uk-margin-left">
 	    		<div class="uk-form uk-align-right">
+	    			<select form="search_form" name="take" onchange="this.form.submit()">
+				    	<option value="">Cantidad de publicaciones</option>
+				    	@if(Request::get('take') == 50)
+				    		<option value="50" selected>Ver 50</option>
+				    	@else
+				    		<option value="50">Ver 50</option>
+				    	@endif
+
+				    	@if(Request::get('take') == 30)
+				    		<option value="30" selected>Ver 30</option>
+				    	@else
+				    		<option value="30">Ver 30</option>
+				    	@endif
+
+				    	@if(Request::get('take') == 10)
+				    		<option value="10" selected>Ver 10</option>
+				    	@else
+				    		<option value="10">Ver 10</option>
+				    	@endif
+				    </select>
+
 				    <select form="search_form" name="order_by" onchange="this.form.submit()">
 				    	<option value="">Ordenar por</option>
 				    	@if(Request::get('order_by') && Request::get('order_by') == 'id_desc')
