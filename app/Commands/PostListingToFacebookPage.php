@@ -7,6 +7,8 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Queue\ShouldBeQueued;
 
+use Image;
+
 class PostListingToFacebookPage extends Command implements SelfHandling, ShouldBeQueued {
 
 	use InteractsWithQueue, SerializesModels;
@@ -32,7 +34,7 @@ class PostListingToFacebookPage extends Command implements SelfHandling, ShouldB
 		// Post to facebook page
 		$page_access_token 		= 'CAALz6NTr0cABAINoFdpijnQzJZAgyOuBnEv90GB3557wU7tanjCZA3QFhkANETGFvO4MD59AZCWB48ME51ZBIhbqdB0ZACeP4FbveQ3Ekf1JuIZCwZA4AFdDH8NOYfhlSOAAvLZC2e6LMU9iNqP3ql62lqOp7Uq5Qro93XZCRloDWpAyfWL1ZBI9weKzQlFEU0SAqgoNoWvAAJTAZDZD';
 		$page_id				= '511385855693541';
-		$data['picture'] 		= url($this->listing->image_path());
+		$data['picture'] 		= url( Image::url($this->listing->image_path(), ['facebook_share']) );
 		$data['link'] 			= url($this->listing->path());
 		//$data['message'] 		= "Your message";
 		$data['caption'] 		= "Destacados";

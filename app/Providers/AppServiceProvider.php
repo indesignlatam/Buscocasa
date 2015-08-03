@@ -25,6 +25,12 @@ class AppServiceProvider extends ServiceProvider {
 		    'crop' 		=> true,
 		]);
 
+		Image::filter('facebook_share', [
+		    'width' 	=> 800,
+		    'height' 	=> 400,
+		    'crop' 		=> true,
+		]);
+
 		Image::filter('mini_image_2x', [
 		    'width' 	=> 700,
 		    'height' 	=> 400,
