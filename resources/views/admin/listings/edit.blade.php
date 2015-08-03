@@ -365,7 +365,12 @@
 	        <div class="uk-text-center">
 	        	<img src="{{ asset('/images/support/listings/expiring_listing.png') }}" style="max-width:80%">
 
-	        	<h2 class="uk-text-danger">El inmueble expira {{ $listing->featured_expires_at->diffForHumans() }}</h2>
+	        	@if($listing->featured_expires_at < Carbon::now())
+	        		<h2 class="uk-text-danger">{{ trans('admin.listing_featured_expired') }} {{ $listing->featured_expires_at->diffForHumans() }}</h2>
+				@else
+	        		<h2 class="uk-text-danger">{{ trans('admin.listing_featured_expires') }} {{ $listing->featured_expires_at->diffForHumans() }}</h2>
+				@endif
+
 		        <a class="uk-button uk-button-large uk-button-success" href="{{ url('/admin/listings/'.$listing->id.'/renovate') }}">{{ trans('admin.renovate') }}</a>
 	        </div>
 	    </div>
@@ -381,7 +386,12 @@
 	        <div class="uk-text-center">
 	        	<img src="{{ asset('/images/support/listings/expiring_listing.png') }}" style="max-width:80%">
 
-		        <h3 class="uk-text-danger">El inmueble expira {{ $listing->expires_at->diffForHumans() }}</h3>
+		        @if($listing->expires_at < Carbon::now())
+	        		<h2 class="uk-text-danger">{{ trans('admin.listing_expired') }} {{ $listing->expires_at->diffForHumans() }}</h2>
+				@else
+	        		<h2 class="uk-text-danger">{{ trans('admin.listing_expires') }} {{ $listing->expires_at->diffForHumans() }}</h2>
+				@endif
+
 		        <a class="uk-button uk-button-large uk-button-success" href="{{ url('/admin/listings/'.$listing->id.'/renovate') }}">{{ trans('admin.renovate') }}</a>
 	        </div>
 	        
