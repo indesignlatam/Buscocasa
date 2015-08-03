@@ -1,4 +1,6 @@
-var elixir = require('laravel-elixir');
+// var elixir = require('laravel-elixir');
+var htmlmin = require('gulp-htmlmin');
+var gulp = require('gulp');
 
 /*
  |--------------------------------------------------------------------------
@@ -11,6 +13,24 @@ var elixir = require('laravel-elixir');
  |
  */
 
-elixir(function(mix) {
-    mix.less('app.less');
+// elixir(function(mix) {
+//     mix.less('app.less');
+// });
+
+
+gulp.task('compress', function() {
+    var opts = {
+        collapseWhitespace:    	true,
+        conservativeCollapse:  	false,
+        removeAttributeQuotes: 	true,
+        removeComments:        	true,
+        removeCommentsFromCDATA:true,
+        removeRedundantAttributes:true,
+        minifyJS:              	true,
+        minifyCSS: 				true,
+    };
+
+    return gulp.src('./storage/framework/views/**/*')
+               .pipe(htmlmin(opts))
+               .pipe(gulp.dest('./storage/framework/views/'));
 });

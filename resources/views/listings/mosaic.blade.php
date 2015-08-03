@@ -13,7 +13,6 @@
     @endif
 				<img src="{{ asset(Image::url($listing->image_path(),['mini_image_2x'])) }}" style="max-width:380px; float:left" class="uk-margin-right">
 			    <div class="uk-overlay-panel uk-overlay-background uk-overlay-fade">
-			    	{{-- <p style="margin-top:-2px" class="uk-text-contrast">{{ $listing->city->name .", ". $listing->direction }}</p> --}}
 			    	<ul style="list-style-type: none;margin-top:-5px" class="uk-text-contrast">
 	    				@if($listing->rooms)
 	    				<li><i class="uk-icon-check"></i> {{ $listing->rooms }} {{ trans('admin.rooms') }}</li>
@@ -44,12 +43,18 @@
 	    				@endif
 	    			</ul>
 			    </div>
-			    
+		@if($listing->featuredType && $listing->featured_expires_at > Carbon::now())
 			</div>
-
+		@else
+			</div>
+		@endif
     		<div class="">
     			<p class="uk-text-muted"><strong class="uk-text-primary">{{ $listing->title }}</strong> {{ $listing->area }} mts - {{ money_format('$%!.0i', $listing->price) }}</p>
     		</div>
-    	</div>
+	@if($listing->featuredType && $listing->featured_expires_at > Carbon::now())
+		</div>
+	@else
+		</div>
+	@endif
 	</a>
 </div>
