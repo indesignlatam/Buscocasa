@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddCodeToListing extends Migration {
+class AddTipsentUsers extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,8 +12,8 @@ class AddCodeToListing extends Migration {
 	 */
 	public function up(){
 		//
-		Schema::table('listings', function($table){
-		    $table->string('code',20)->nullable()->after('id');
+		Schema::table('users', function($table){
+		    $table->timestamp('tips_sent_at')->nullable()->after('image_path');
 		});
 	}
 
@@ -24,8 +24,8 @@ class AddCodeToListing extends Migration {
 	 */
 	public function down(){
 		//
-		Schema::table('listings', function($table){
-		    $table->dropColumn('phone_2');
+		Schema::table('users', function($table){
+		    $table->dropColumn('tips_sent_at');
 		});
 	}
 }

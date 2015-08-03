@@ -21,6 +21,7 @@ return array(
     'AddPhonesToUsersTable' => $baseDir . '/database/migrations/2015_07_22_112920_add_phones_to_users_table.php',
     'AddReadAnsweredFieldsAppointments' => $baseDir . '/database/migrations/2015_06_23_151112_add_read_answered_fields_appointments.php',
     'AddSlugListing' => $baseDir . '/database/migrations/2015_05_14_190452_add_slug_listing.php',
+    'AddTipsentUsers' => $baseDir . '/database/migrations/2015_08_02_222936_add_tipsent_users.php',
     'CharifyCountriesTable' => $baseDir . '/database/migrations/2015_05_12_023004_charify_countries_table.php',
     'CountriesSeeder' => $baseDir . '/database/seeds/CountriesSeeder.php',
     'CreateAppointmentsTable' => $baseDir . '/database/migrations/2015_06_02_183100_create_appointments_table.php',

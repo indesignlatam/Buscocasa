@@ -59,15 +59,9 @@ return [
     'payment_confirmation_title'            => 'Haz realizado un pago en BuscoCasa.co, a continuación encontraras la informacion del pago y la factura correspondiente al mismo.',
 
     // Tips
+    'tips_subject'                          => 'Recibe más visitas en tu publicación.',
     'tips_title'                            => 'Hemos analizado las estadisticas de tus inmuebles y encontramos que no has tenido la cantidad de mensajes o visitas de clientes que nosotros esperariamos. Por eso te invitamos a que sigas las siguientes recomendaciones para lograr que tu inmueble tenga mas visitas y por lo tanto seas contactado mas veces por los clientes interesados.',
     'tips_conclution'                       => 'Si deseas ayuda para realizar alguna de las operaciones que sugerimos no dudes en responder este mensaje y seras contactado por uno de nuestros asesores.',
-
-
-
-
-
-
-
 
 
 
