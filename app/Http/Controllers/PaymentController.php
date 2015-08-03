@@ -11,6 +11,7 @@ use App\Models\Payment,
 	App\Models\FeaturedType;
 
 use App\Commands\SendPaymentConfirmationEmail;
+use App\Commands\PostListingToFacebookPage;
 
 class PaymentController extends Controller {
 
@@ -266,26 +267,8 @@ class PaymentController extends Controller {
 				// Send confirmation email to user and generate billing
 				Queue::push(new SendPaymentConfirmationEmail($payment));
 
-
 				// Post to facebook page
-				$page_access_token 		= 'CAALz6NTr0cABAINoFdpijnQzJZAgyOuBnEv90GB3557wU7tanjCZA3QFhkANETGFvO4MD59AZCWB48ME51ZBIhbqdB0ZACeP4FbveQ3Ekf1JuIZCwZA4AFdDH8NOYfhlSOAAvLZC2e6LMU9iNqP3ql62lqOp7Uq5Qro93XZCRloDWpAyfWL1ZBI9weKzQlFEU0SAqgoNoWvAAJTAZDZD';
-				$page_id				= '511385855693541';
-				$data['picture'] 		= url($payment->listing->image_path());
-				$data['link'] 			= url($payment->listing->path());
-				//$data['message'] 		= "Your message";
-				$data['caption'] 		= "Destacados";
-				$data['description'] 	= $payment->listing->description;
-				$data['access_token'] 	= $page_access_token;
-				$post_url = 'https://graph.facebook.com/'.$page_id.'/feed';
-
-				$ch = curl_init();
-				curl_setopt($ch, CURLOPT_URL, $post_url);
-				curl_setopt($ch, CURLOPT_POST, 1);
-				curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-				$return = curl_exec($ch);
-				curl_close($ch);
-				// Post to facebook page
+				Queue::push(new PostListingToFacebookPage($payment->listing));
 			}
 
 			$payment->save();

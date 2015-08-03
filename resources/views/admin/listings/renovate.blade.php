@@ -26,12 +26,15 @@
 					<p>{{ trans('admin.free_text') }}</p>
 					<ul class="uk-list">
 						<li class=""><i class="uk-icon-remove uk-text-danger"></i> {{ trans('admin.homepage_rotation') }}</li>
+						<li class=""><i class="uk-icon-remove uk-text-danger"></i> {{ trans('admin.social_publish') }}</li>
+						<li class=""><i class="uk-icon-remove uk-text-danger"></i> {{ trans('admin.better_search_positions') }}</li>
+						<li class=""><i class="uk-icon-remove uk-text-danger"></i> {{ trans('admin.listing_container_ribbon') }}</li>
 						<li class=""><i class="uk-icon-remove uk-text-danger"></i> {{ trans('admin.outstanding_container') }}</li>
 						<li class=""><i class="uk-icon-check uk-text-success"></i> {{ Settings::get('listing_expiring') }} {{ trans('admin.days') }}</li>
 						<li class=""><i class="uk-icon-check uk-text-success"></i> {{ Settings::get('free_image_limit') }} {{ trans('admin.photos') }}</li>
 						<li class="uk-margin-top uk-h2 uk-text-center">{{ trans('admin.free') }}</li>
 					</ul>
-					<button class="uk-button uk-button-success uk-button-large uk-width-1-1" style="background-color:#1481e3" type="submit" form="free">{{ trans('admin.renovate') }}</button>
+					<button class="uk-button uk-button-large uk-width-1-1" type="submit" form="free">{{ trans('admin.renovate') }}</button>
 				</div>
 			</div>
 
@@ -92,9 +95,9 @@
 					</ul>
 
 					@if($type->id > 1)
-						<button class="uk-button uk-button-success uk-button-large uk-width-1-1" onclick="feature({{$type->id}})" style="background-color:{{$type->color}}" data-uk-smooth-scroll="{offset: -400}">{{ trans('admin.select') }}</button>
+						<button class="uk-button uk-button-success uk-button-large uk-width-1-1" onclick="selectFeature({{$type->id}})" style="background-color:{{$type->color}}">{{ trans('admin.renovate') }}</button>
 					@else
-						<button class="uk-button uk-button-large uk-width-1-1" onclick="feature({{$type->id}})" data-uk-smooth-scroll="{offset: -400}">{{ trans('admin.select') }}</button>
+						<button class="uk-button uk-button-large uk-width-1-1" onclick="selectFeature({{$type->id}})">{{ trans('admin.renovate') }}</button>
 					@endif
 				</div>
 			</div>
