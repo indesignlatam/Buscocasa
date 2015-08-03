@@ -1,6 +1,6 @@
 <a href="{{ url($listing->path()) }}" style="text-decoration:none">
 	<!-- Tags start -->
-	@if($listing->featuredType && $listing->featured_expires_at > Carbon::now())
+	@if($listing->featuredType && $listing->featuredType->id > 1 && $listing->featured_expires_at > Carbon::now())
 		<div class="uk-panel uk-panel-box uk-panel-box-primary uk-margin-remove">
 			<img src="{{asset($listing->featuredType->image_path)}}" style="position:absolute; top:0; left:0; max-width:150px">
 	@else
@@ -42,7 +42,7 @@
 			<li><i class="uk-icon-check"></i> {{ money_format('$%!.0i', $listing->administration) }} {{ trans('admin.administration_fees') }}</li>
 			@endif
 		</ul>
-@if($listing->featuredType && $listing->featured_expires_at > Carbon::now())
+@if($listing->featuredType && $listing->featuredType->id > 1 && $listing->featured_expires_at > Carbon::now())
 	</div>
 @else
 	</div>

@@ -191,11 +191,11 @@
 								<div class="uk-width-large-1-4 uk-width-medium-1-2 uk-width-small-1-1" style="position:relative;">
 									<!-- Tags start -->
 									<a href="{{ url($listing->path()) }}">
-						    		@if($listing->featuredType && $listing->featured_expires_at > Carbon::now())
+						    		@if($listing->featuredType && $listing->featuredType->id > 1 && $listing->featured_expires_at > Carbon::now())
 						    			<img src="{{asset($listing->featuredType->image_path)}}" style="position:absolute; top:0; left:30; max-width:100px">
 						    		@else
 							    		@if(Carbon::createFromFormat('Y-m-d H:i:s', $listing->created_at)->diffInDays(Carbon::now()) < 5)
-							    			<img src="{{asset('/images/defaults/new.png')}}" style="position:absolute; top:0; left:0; max-width:100px">
+							    			<img src="{{asset('/images/defaults/new.png')}}" style="position:absolute; top:0; left:30; max-width:100px">
 							    		@endif
 						    		@endif
 							    	<!-- Tags end -->
@@ -222,11 +222,11 @@
 												<div class="uk-width-large-1-4 uk-width-medium-1-2 uk-width-small-1-1" style="position:relative;">
 													<!-- Tags start -->
 													<a href="{{ url($listing->path()) }}">
-										    		@if($listing->featuredType && $listing->featured_expires_at > Carbon::now())
+										    		@if($listing->featuredType && $listing->featuredType->id > 1 && $listing->featured_expires_at > Carbon::now())
 										    			<img src="{{asset($listing->featuredType->image_path)}}" style="position:absolute; top:0; left:30; max-width:100px">
 										    		@else
 											    		@if(Carbon::createFromFormat('Y-m-d H:i:s', $listing->created_at)->diffInDays(Carbon::now()) < 5)
-											    			<img src="{{asset('/images/defaults/new.png')}}" style="position:absolute; top:0; left:0; max-width:100px">
+											    			<img src="{{asset('/images/defaults/new.png')}}" style="position:absolute; top:0; left:30; max-width:100px">
 											    		@endif
 										    		@endif
 											    	<!-- Tags end -->
