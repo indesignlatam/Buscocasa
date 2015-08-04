@@ -63,9 +63,7 @@
 				<form id="search_form" class="uk-form uk-form-stacked" method="GET" action="{{ url(Request::path()) }}">
 			@else
 				<form id="search_form" class="uk-form uk-form-stacked" method="GET" action="{{ url(Request::path()) }}">
-			@endif	    		
-					{{-- <input type="hidden" name="_token" value="{{ csrf_token() }}"> --}}
-
+			@endif
 					<input class="uk-width-large-10-10 uk-margin-large-bottom uk-form-large" type="text" name="listing_code" placeholder="{{ trans('frontend.search_field') }}" value="">
 
 					<div class="uk-form-row">
@@ -142,57 +140,57 @@
 	    	<!-- End search bar -->
 
 	    	<div class="uk-width-large-3-4 uk-width-small-1-1 uk-margin-left">
-	    		<div class="uk-form uk-align-right">
-	    			<select form="search_form" name="take" onchange="this.form.submit()">
-				    	<option value="">Cantidad de publicaciones</option>
-				    	@if(Request::get('take') == 50)
-				    		<option value="50" selected>Ver 50</option>
-				    	@else
-				    		<option value="50">Ver 50</option>
-				    	@endif
-
-				    	@if(Request::get('take') == 30)
-				    		<option value="30" selected>Ver 30</option>
-				    	@else
-				    		<option value="30">Ver 30</option>
-				    	@endif
-
-				    	@if(Request::get('take') == 10)
-				    		<option value="10" selected>Ver 10</option>
-				    	@else
-				    		<option value="10">Ver 10</option>
-				    	@endif
-				    </select>
-
-				    <select form="search_form" name="order_by" onchange="this.form.submit()">
-				    	<option value="">Ordenar por</option>
-				    	@if(Request::get('order_by') && Request::get('order_by') == 'id_desc')
-				    		<option value="id_desc" selected>Fecha creación</option>
-				    	@elseif(Cookie::get('listings_order_by') == 'id_desc')
-				    		<option value="id_desc" selected>Fecha creación</option>
-				    	@else
-				    		<option value="id_desc">Fecha creación</option>
-				    	@endif
-
-				    	@if(Request::get('order_by') && Request::get('order_by') == 'price_max')
-				    		<option value="price_max" selected>Mayor a menor valor</option>
-				    	@elseif(Cookie::get('listings_order_by') == 'price_max')
-				    		<option value="price_max" selected>Mayor a menor valor</option>
-				    	@else
-				    		<option value="price_max">Mayor a menor valor</option>
-				    	@endif
-
-				    	@if(Request::get('order_by') && Request::get('order_by') == 'price_min')
-				    		<option value="price_min" selected>Menor a mayor valor</option>
-				    	@elseif(Cookie::get('listings_order_by') == 'price_min')
-				    		<option value="price_min" selected>Menor a mayor valor</option>
-				    	@else
-				    		<option value="price_min">Menor a mayor valor</option>
-				    	@endif
-				    </select>
-				</div>
-				
 	    		@if(count($listings))
+	    			<div class="uk-form uk-align-right">
+		    			<select form="search_form" name="take" onchange="this.form.submit()">
+					    	<option value="">Cantidad de publicaciones</option>
+					    	@if(Request::get('take') == 50)
+					    		<option value="50" selected>Ver 50</option>
+					    	@else
+					    		<option value="50">Ver 50</option>
+					    	@endif
+
+					    	@if(Request::get('take') == 30)
+					    		<option value="30" selected>Ver 30</option>
+					    	@else
+					    		<option value="30">Ver 30</option>
+					    	@endif
+
+					    	@if(Request::get('take') == 10)
+					    		<option value="10" selected>Ver 10</option>
+					    	@else
+					    		<option value="10">Ver 10</option>
+					    	@endif
+					    </select>
+
+					    <select form="search_form" name="order_by" onchange="this.form.submit()">
+					    	<option value="">Ordenar por</option>
+					    	@if(Request::get('order_by') && Request::get('order_by') == 'id_desc')
+					    		<option value="id_desc" selected>Fecha creación</option>
+					    	@elseif(Cookie::get('listings_order_by') == 'id_desc')
+					    		<option value="id_desc" selected>Fecha creación</option>
+					    	@else
+					    		<option value="id_desc">Fecha creación</option>
+					    	@endif
+
+					    	@if(Request::get('order_by') && Request::get('order_by') == 'price_max')
+					    		<option value="price_max" selected>Mayor a menor valor</option>
+					    	@elseif(Cookie::get('listings_order_by') == 'price_max')
+					    		<option value="price_max" selected>Mayor a menor valor</option>
+					    	@else
+					    		<option value="price_max">Mayor a menor valor</option>
+					    	@endif
+
+					    	@if(Request::get('order_by') && Request::get('order_by') == 'price_min')
+					    		<option value="price_min" selected>Menor a mayor valor</option>
+					    	@elseif(Cookie::get('listings_order_by') == 'price_min')
+					    		<option value="price_min" selected>Menor a mayor valor</option>
+					    	@else
+					    		<option value="price_min">Menor a mayor valor</option>
+					    	@endif
+					    </select>
+					</div>
+					
 		    		<!-- This is the container of the toggling elements -->
 					<ul class="uk-tab" data-uk-switcher="{connect:'#my-id'}">
 						@if(!Cookie::get('show_mosaic'))
