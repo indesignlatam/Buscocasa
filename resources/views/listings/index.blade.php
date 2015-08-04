@@ -141,7 +141,7 @@
 
 	    	<div class="uk-width-large-3-4 uk-width-small-1-1 uk-margin-left">
 	    		@if(count($listings))
-	    			<div class="uk-form uk-align-right">
+	    			<div class="uk-form uk-align-right uk-hidden-small">
 		    			<select form="search_form" name="take" onchange="this.form.submit()">
 					    	<option value="">Cantidad de publicaciones</option>
 					    	@if(Request::get('take') == 50)
