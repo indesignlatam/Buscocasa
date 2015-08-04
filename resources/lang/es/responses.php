@@ -18,6 +18,7 @@ return [
 
     // General
     'no_object_found'                       => 'No se encontro ningun objeto.',
+    'file_to_large'                         => 'El archivo es muy pesado',
     'error_saving_image'                    => 'Hubo un error al guardar la imagen.',
     'no_permission'                         => 'No tienes permiso para realizar esta acción.',
 
@@ -34,7 +35,7 @@ return [
     'your_account_removed'                  => 'Tu cuenta fue eliminada.',
 
     // ImageController
-    'image_limit'                           => 'Haz alcanzado tu limite de fotos.',
+    'image_limit'                           => 'Haz alcanzado tu limite maximo de fotos.',
     
     // PaymentController
     'payment_canceled'                      => 'Pago cancelado exitosamente',
