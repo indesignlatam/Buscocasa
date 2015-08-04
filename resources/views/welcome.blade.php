@@ -43,7 +43,6 @@
 
 @section('content')
 	@include('includes.navbarHome')
-    {{ locale_get_default() }}
 	<div class="uk-cover-background uk-position-relative">
     @if($featuredFullScreen)
         <img class="" src="{{ asset(Image::url($featuredFullScreen->image_path(),['featured_front'])) }}" width="100%" alt="">
