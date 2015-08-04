@@ -54,7 +54,7 @@
             <div class="" id="footer">
                 <div class="uk-container uk-container-center">
                     <div class="uk-grid">
-                        <div class="uk-width-large-2-10 uk-width-small-1-1 uk-margin-large-top">
+                        <div class="uk-width-small-1-1 uk-width-medium-2-10 uk-width-large-2-10 uk-margin-large-top">
                             <div class="uk-text-center-small">
                                 <img src="{{ asset('/images/logo_h_contrast.png') }}">
                                 <br>
@@ -62,14 +62,14 @@
                                     Mail: comercial@buscocasa.co<br>
                                 </p>
 
-                                <div class="" style="margin-top:25px">
+                                <div style="margin-top:25px">
                                     <a onclick="share('{{ url('') }}')" class="uk-icon-hover uk-icon-large uk-icon-facebook"></a> 
                                     <a class="uk-icon-hover uk-icon-large uk-icon-twitter twitter-share-button" href="https://twitter.com/intent/tweet?text={{ Settings::get('site_name') }}%20{{ url('/') }}" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=440,width=600');return false;"></a>
                                     <a href="https://plus.google.com/share?url={{ url('/') }}" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;" class="uk-icon-hover uk-icon-large uk-icon-google-plus"></a>
                                 </div>
                             </div>
                         </div>
-                        <div class="uk-width-large-2-10 uk-width-medium-1-6 uk-hidden-small uk-margin-large-top uk-text-right">
+                        <div class="uk-width-medium-1-6 uk-width-large-2-10 uk-hidden-small uk-margin-large-top uk-text-right">
                             <h3 class="uk-text-contrast">VENTAS</h3>
                             <ul class="uk-list">
                                 <li><a href="{{ url('/ventas?category_id=1') }}" style="text-decoration:none" class="uk-text-contrast">Casas</a></li>
@@ -80,7 +80,7 @@
                                 <li><a href="{{ url('/ventas?category_id=6') }}" style="text-decoration:none" class="uk-text-contrast">Bodegas</a></li>
                             </ul>
                         </div>
-                        <div class="uk-width-large-2-10 uk-width-medium-1-6 uk-hidden-small uk-margin-large-top uk-text-right">
+                        <div class="uk-width-medium-1-6 uk-width-large-2-10 uk-hidden-small uk-margin-large-top uk-text-right">
                             <h3 class="uk-text-contrast">ARRIENDOS</h3>
                             <ul class="uk-list">
                                 <li><a href="{{ url('/arriendos?category_id=1') }}" style="text-decoration:none" class="uk-text-contrast">Casas</a></li>
@@ -92,7 +92,7 @@
                             </ul>
                         </div>
                         
-                        <div class="uk-width-large-2-10 uk-width-medium-1-6 uk-hidden-small uk-margin-large-top uk-text-right">
+                        <div class="uk-width-medium-1-6 uk-width-large-2-10 uk-hidden-small uk-margin-large-top uk-text-right">
                             <h3 class="uk-text-contrast">NOSOTROS</h3>
                             <ul class="uk-list">
                                 <li class="uk-text-contrast">Quienes Somos</li>
@@ -103,7 +103,7 @@
                             </ul>
                         </div>
 
-                        <div class="uk-width-large-2-10 uk-width-medium-1-6 uk-hidden-small uk-margin-large-top uk-text-right">
+                        <div class="uk-width-medium-1-6 uk-width-large-2-10 uk-hidden-small uk-margin-large-top uk-text-right">
                             <h3 class="uk-text-contrast">OTROS SITIOS</h3>
                             <ul class="uk-list">
                                 <li><a href="{{ url('/') }}" style="text-decoration:none" class="uk-text-contrast">BuscoCasa</a></li>

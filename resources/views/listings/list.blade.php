@@ -11,6 +11,7 @@
 	@endif
 	<!-- Tags end -->
 		<img src="{{ asset(Image::url($listing->image_path(),['mini_image_2x'])) }}" style="width:350px; height:200px; float:left" class="uk-margin-right">
+		<div class="uk-visible-small uk-width-1-1 uk-panel"></div>
 		<h4 class="uk-margin-remove">{{ $listing->title }}</h4>
 		<h4 style="margin-top:0px" class="uk-text-primary">${{ money_format('%!.0i', $listing->price) }}</h4>
 		<ul style="list-style-type: none;margin-top:-5px" class="uk-text-muted uk-text-small">
