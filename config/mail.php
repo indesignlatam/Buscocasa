@@ -15,7 +15,7 @@ return [
 	|
 	*/
 
-	'driver' => 'mandrill',
+	'driver' => env('MAIL_DRIVER', 'mandrill'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -28,7 +28,7 @@ return [
 	|
 	*/
 
-	'host' => 'smtp.mandrillapp.com',
+	'host' => env('MAIL_HOST', 'smtp.mandrillapp.com'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -41,7 +41,7 @@ return [
 	|
 	*/
 
-	'port' => 587,
+	'port' => env('MAIL_PORT', 587),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -80,7 +80,7 @@ return [
 	|
 	*/
 
-	'username' => 'pmogollon@indesigncolombia.com',
+	'username' => env('MAIL_USERNAME', 'pmogollon@indesigncolombia.com'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -93,7 +93,7 @@ return [
 	|
 	*/
 
-	'password' => '6D9evxuYpCYq_1JY1v_vtA',
+	'password' => env('MAIL_PASSWORD', '6D9evxuYpCYq_1JY1v_vtA'),
 
 	/*
 	|--------------------------------------------------------------------------
