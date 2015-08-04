@@ -278,7 +278,7 @@
 					<div id="5">
 						<h2 class="uk-text-primary uk-text-bold" style="text-transform: uppercase">{{ trans('admin.listing_description') }}</h2>
 						<p class="uk-margin-top-remove">{{ trans('admin.listing_description_help') }}</p>
-						<textarea class="uk-width-large-10-10 uk-margin-small-bottom" rows="5" name="description">{{ $listing->description }}</textarea>
+						<textarea class="uk-width-large-10-10 uk-margin-small-bottom" rows="5" name="description" maxlength="2000">{{ $listing->description }}</textarea>
 					</div>
 					<!-- Informacion adicional -->
 

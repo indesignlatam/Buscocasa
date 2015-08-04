@@ -40,7 +40,7 @@ class Listing extends IndesignModel {
 				        'latitude'  					=> 'required|numeric',
 				        'longitude'  					=> 'required|numeric',
 				        'title'  						=> 'string|max:255',
-				        'description'  					=> 'string|max:255',
+				        'description'  					=> 'string|max:2000',
 				        'price'  						=> 'required|numeric|min:0',
 				        'stratum'  						=> 'required|numeric|min:0|max:6',
 				        'rooms'  						=> 'numeric',
