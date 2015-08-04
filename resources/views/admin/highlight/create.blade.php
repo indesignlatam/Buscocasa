@@ -77,8 +77,10 @@
 	    						@endif
 	    					</ul>
 
-	    					@if($type->id > 1)
-								<a href="#preview" class="uk-button uk-button-success uk-button-large uk-width-1-1" onclick="feature({{$type->id}})" style="background-color:{{$type->color}}" data-uk-smooth-scroll>{{ trans('admin.select') }}</a>
+	    					@if($type->id == 3)
+								<a href="#preview" class="uk-button uk-button-primary uk-button-large uk-width-1-1" onclick="feature({{$type->id}})" data-uk-smooth-scroll>{{ trans('admin.select') }}</a>
+    						@elseif($type->id == 2)
+								<a href="#preview" class="uk-button uk-button-secondary uk-button-large uk-width-1-1" onclick="feature({{$type->id}})" data-uk-smooth-scroll>{{ trans('admin.select') }}</a>
     						@else
 								<a href="#preview" class="uk-button uk-button-large uk-width-1-1" onclick="feature({{$type->id}})" data-uk-smooth-scroll>{{ trans('admin.select') }}</a>
     						@endif

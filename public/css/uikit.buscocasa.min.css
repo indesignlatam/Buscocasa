@@ -2471,7 +2471,8 @@ select.uk-form-width-mini {
 }
 .uk-button-secondary {
     background-color: #FF9500;
-    color: #fff
+    color: #fff;
+    text-shadow:none;
 }
 .uk-button-secondary:hover,
 .uk-button-secondary:focus {
@@ -2486,6 +2487,7 @@ select.uk-form-width-mini {
 .uk-button-tertiary {
     background-color: #FFDB4C;
     color: #000
+    text-shadow:none;
 }
 .uk-button-tertiary:hover,
 .uk-button-tertiary:focus {

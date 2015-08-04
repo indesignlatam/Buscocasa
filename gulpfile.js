@@ -21,7 +21,7 @@ var gulp = require('gulp');
 gulp.task('compress', function() {
     var opts = {
         collapseWhitespace:    	true,
-        conservativeCollapse:  	false,
+        conservativeCollapse:  	true,
         removeAttributeQuotes: 	true,
         removeComments:        	true,
         removeCommentsFromCDATA:true,
