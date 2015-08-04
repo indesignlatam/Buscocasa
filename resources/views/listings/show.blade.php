@@ -46,7 +46,7 @@
 		@endif
 
 		<h2 class="uk-hidden-small" style="float:left; display:inline">{{ $listing->title }}</h2>
-		<h2 class="uk-visible-small">{{ $listing->title }} #{{ $listing->code }}</h2>
+		<h2 class="uk-visible-small">{{ $listing->title }}</h2>
 		<div style="float:right; display:inline" class="uk-hidden-small">
 			<i class="uk-h2 uk-text-right">{{ trans('admin.price') }} </i>
 			<i class="uk-h2 uk-text-primary uk-text-right"> ${{ money_format('%!.0i', $listing->price) }}</i>
