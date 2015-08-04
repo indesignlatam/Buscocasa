@@ -72,6 +72,7 @@ class ListingFEController extends Controller {
 										->where('code', $request->get('listing_code'))
 										->active()
 										->orderBy('featured_type', 'DESC')
+										->orderBy('id', 'DESC')
 										->with('city', 'listingType', 'featuredType')
 										->paginate($take);
 			}else{
@@ -145,7 +146,7 @@ class ListingFEController extends Controller {
 					$query 	= $query->orderBy('featured_type', 'DESC');
 				}
 
-				$listings 	= $query->with('city', 'listingType', 'featuredType')->paginate($take);
+				$listings 	= $query->orderBy('id', 'DESC')->with('city', 'listingType', 'featuredType')->paginate($take);
 			}
 		}else{
 			$query 		= $query->with('featuredType');
@@ -163,7 +164,7 @@ class ListingFEController extends Controller {
 				$query 	= $query->orderBy('featured_type', 'DESC');
 			}
 
-			$listings 	= $query->with('city', 'listingType', 'featuredType')->paginate($take);
+			$listings 	= $query->orderBy('id', 'DESC')->with('city', 'listingType', 'featuredType')->paginate($take);
 		}
 
 		$categories 	= Category::remember(Settings::get('query_cache_time'))->get();
@@ -261,23 +262,22 @@ class ListingFEController extends Controller {
 		
 		$features 	= Feature::remember(Settings::get('query_cache_time'))->with('category')->get();
 
-		$related 	= Listing::remember(Settings::get('query_cache_time'))
-							 ->select(DB::raw("*,
+		$related 	= Listing::select(DB::raw("*,
                               ( 6371 * acos( cos( radians(?) ) *
                                 cos( radians( latitude ) )
                                 * cos( radians( longitude ) - radians(?)
                                 ) + sin( radians(?) ) *
                                 sin( radians( latitude ) ) )
                               ) AS distance"))
-							 ->setBindings([$listing->latitude, $listing->longitude, $listing->latitude, Settings::get('related_radius', 5000)])
+							 ->setBindings([$listing->latitude, $listing->longitude, $listing->latitude])
 							 ->where('id', '<>', $listing->id)
 							 ->where('category_id', $listing->category_id)
-							 ->where('city_id', $listing->city_id)
 							 ->where('listing_type', $listing->listing_type)
 							 ->with('listingType')
 							 ->orderBy('distance')
 							 ->take(3)
 							 ->get();
+
 
 		$config 	= array();
 	    $config['center'] 		= $listing->latitude.','.$listing->longitude;
