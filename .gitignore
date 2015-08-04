@@ -1,3 +1,9 @@
+/vendor
+/node_modules
+Homestead.yaml
+Homestead.json
+.env
+
 # OS generated files #
 ######################
 .DS_Store
@@ -13,7 +19,3 @@ Thumbs.db
 *.log
 *.sql
 *.sqlite
-
-# Environment Files #
-#####################
-*.env
