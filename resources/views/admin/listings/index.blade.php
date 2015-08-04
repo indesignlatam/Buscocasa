@@ -67,10 +67,9 @@
 			    <div class="">
 			        <!-- This is a button toggling the modal -->
 			        <a class="uk-button uk-button-large uk-button-primary uk-text-bold" href="{{ url('/admin/listings/create') }}">{{ trans('admin.publish_property') }}</a>
-			        {{-- <button class="uk-button uk-button-large uk-button-danger" onclick="deleteObjects()"><i class="uk-icon-trash"></i></button> --}}
 			        <a class="uk-button uk-button-large" href="{{ url('/admin/listings/?deleted=true') }}" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.eliminated_listings') }}"><i class="uk-icon-trash"></i></a>
 
-			        <form action="{{url(Request::path())}}" method="GET" class="uk-form uk-align-right">
+			        <form action="{{url(Request::path())}}" method="GET" class="uk-form uk-align-right uk-hidden-small">
 			        	<select name="take" onchange="this.form.submit()">
 					    	<option value="">Cantidad de publicaciones</option>
 					    	@if(Request::get('take') == 50)
@@ -169,7 +168,7 @@
 						@foreach($listings as $listing)
 			                <li class="uk-panel uk-panel-box uk-panel-box-secondary uk-margin-bottom" id="listing-{{ $listing->id }}">
 			                	<div class="uk-grid">
-			                		<div class="uk-width-2-10">
+			                		<div class="uk-width-large-2-10 uk-width-medium-2-10 uk-width-small-1-1">
 			                			<a href="{{ url('/admin/listings/'.$listing->id.'/edit') }}">
 				                			<!-- Featured tag -->
 						                	@if($listing->featured_expires_at && $listing->featuredType->id > 1 && Carbon::createFromFormat('Y-m-d H:i:s', $listing->featured_expires_at, 'America/Bogota') > Carbon::now())
@@ -180,13 +179,13 @@
 			                			</a>
 			                		</div>
 
-			                		<div class="uk-width-6-10">
+			                		<div class="uk-width-large-6-10 uk-width-medium-6-10 uk-width-small-1-1">
 			                			<!-- Listing title -->
 			                			<a class="uk-h3 uk-text-bold" style="color:black;" href="{{ url('/admin/listings/'.$listing->id.'/edit') }}">{{ $listing->title }}</a>
 			                			<!-- Listing title -->
 
 			                			<!-- Listing info and share -->
-			                			<div class="uk-grid uk-margin-top">
+			                			<div class="uk-grid uk-margin-top uk-hidden-small">
 
 			                    			<ul class="uk-list uk-list-line uk-width-4-10">
 			                    				<li><i class="uk-text-muted">{{ trans('admin.price') }}</i> {{ money_format('$%!.0i', $listing->price) }}</li>
@@ -261,7 +260,7 @@
 			                			<!-- Listing info and share -->
 			                		</div>
 
-			                		<div class="uk-width-2-10">
+			                		<div class="uk-width-large-2-10 uk-width-medium-2-10 uk-width-small-1-1">
 			                			@if(!$listing->deleted_at)
 			                				<!-- If listing is featured and is not expired yet -->
 				                			@if($listing->featured_expires_at && $listing->featured_expires_at > Carbon::now())

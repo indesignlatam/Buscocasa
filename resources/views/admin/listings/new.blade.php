@@ -17,8 +17,8 @@
 	    <hr>
 	    
 	    <div class="uk-panel">
-			<a class="uk-button uk-button-large uk-float-right uk-margin-left" href="{{ url('/admin/listings') }}">{{ trans('admin.close') }}</a>
-	        <button form="create_form" type="submit" class="uk-button uk-button-large uk-button-success uk-form-width-medium uk-float-right" onclick="blockUI()">{{ trans('admin.save') }}</button>
+			<a class="uk-button uk-button-large uk-float-right uk-margin-left uk-width-small-1-1 uk-width-medium-2-10 uk-width-large-1-10" href="{{ url('/admin/listings') }}">{{ trans('admin.close') }}</a>
+	        <button form="create_form" type="submit" class="uk-button uk-button-large uk-button-success uk-float-right uk-width-small-1-1 uk-width-medium-3-10 uk-width-large-2-10" onclick="blockUI()">{{ trans('admin.save') }}</button>
 	    </div>
 
 		<form id="create_form" class="uk-form uk-form-stacked" method="POST" action="{{ url('/admin/listings') }}">

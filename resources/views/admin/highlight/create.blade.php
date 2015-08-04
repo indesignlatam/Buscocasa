@@ -19,10 +19,10 @@
 	   	<p>{{ trans('admin.highlight_listing_text') }}</p>
 
 	    <div class="uk-grid">
-	    	<div class="uk-width-7-10">
+	    	<div class="uk-width-small-1-1 uk-width-medium-1-1 uk-width-large-7-10">
 	    		<div class="uk-grid">
 	    			@foreach($featuredTypes as $type)
-	    			<div class="uk-width-1-3">
+	    			<div class="uk-width-small-1-1 uk-width-medium-1-3 uk-width-large-1-3">
 	    				<div class="uk-panel uk-panel-box uk-panel-box-secondary">
 	    					<h3>{{ $type->name }}</h3>
 	    					<div class="uk-text-center"><img src="{{ asset($type->icon) }}" width="80%"></div>
@@ -78,15 +78,16 @@
 	    					</ul>
 
 	    					@if($type->id > 1)
-								<button class="uk-button uk-button-success uk-button-large uk-width-1-1" onclick="feature({{$type->id}})" style="background-color:{{$type->color}}" data-uk-smooth-scroll="{offset: -400}">{{ trans('admin.select') }}</button>
+								<a href="#preview" class="uk-button uk-button-success uk-button-large uk-width-1-1" onclick="feature({{$type->id}})" style="background-color:{{$type->color}}" data-uk-smooth-scroll>{{ trans('admin.select') }}</a>
     						@else
-								<button class="uk-button uk-button-large uk-width-1-1" onclick="feature({{$type->id}})" data-uk-smooth-scroll="{offset: -400}">{{ trans('admin.select') }}</button>
+								<a href="#preview" class="uk-button uk-button-large uk-width-1-1" onclick="feature({{$type->id}})" data-uk-smooth-scroll>{{ trans('admin.select') }}</a>
     						@endif
 	    				</div>
 	    			</div>
+	    			<div class="uk-visible-small uk-margin-top"></div>
 	    			@endforeach
 
-	    			<div class="uk-width-1-1 uk-margin-top">
+	    			<div class="uk-width-1-1 uk-margin-top" id="preview">
 	    				<hr>
 	    				<h3>{{ trans('admin.listing_preview') }}</h3>
 			    		<a style="text-decoration:none" >
@@ -130,7 +131,9 @@
 	    		</div>
 	    	</div>
 
-	    	<div class="uk-width-3-10">
+	    	<div class="uk-hidden-large uk-margin-top"></div>
+
+	    	<div class="uk-width-small-1-1 uk-width-medium-1-1 uk-width-large-3-10">
 	    		<div class="uk-panel uk-panel-box" data-uk-sticky="{boundary: true}">
 	    		<h3 class="uk-panel-title">{{ trans('admin.shop_basket') }}</h3>
 		    		<table class="uk-table">

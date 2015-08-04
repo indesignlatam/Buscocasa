@@ -17,7 +17,7 @@
 	    <hr>
 
 	    <div class="uk-grid">
-	    	<div class="uk-width-7-10">
+	    	<div class="uk-width-small-1-1 uk-width-medium-1-1 uk-width-large-7-10">
 			   	<div>
 					<h3>{{ trans('admin.confirm_payment_title') }}</h3>
 					<p>{{ trans('admin.confirm_payment_text') }}</p>
@@ -65,7 +65,9 @@
 			    </a>
 	    	</div>
 
-	    	<div class="uk-width-3-10">
+	    	<div class="uk-hidden-large uk-margin-top"></div>
+
+	    	<div class="uk-width-small-1-1 uk-width-medium-1-1 uk-width-large-3-10">
 	    		<div class="uk-panel uk-panel-box">
 	    		<h3 class="uk-panel-title">{{ trans('admin.shop_basket') }}</h3>
 		    		<table class="uk-table">
