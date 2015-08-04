@@ -272,6 +272,8 @@ class Listing extends IndesignModel {
 					$ids[] = $feature->id;
 				}
 				$listing->features()->detach($ids);
+
+				ArchivedListing::create($listing->toArray());
 		    }
         });
     }

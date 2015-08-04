@@ -52,8 +52,6 @@ class ArchiveDeletedListings extends Command {
 	        	$this->info('Archiving listing: '.$listing->id);
 	        	// $this->output->progressAdvance();//Only for laravel 5.1
 
-				ArchivedListing::create($listing->toArray());
-
 				// Permantly delete form the table
 	        	$listing->forceDelete();
 	        }
