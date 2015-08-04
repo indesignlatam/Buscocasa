@@ -13,3 +13,7 @@ Thumbs.db
 *.log
 *.sql
 *.sqlite
+
+# Environment Files #
+#####################
+*.env
