@@ -132,7 +132,7 @@
 					</p>
 		            <div id="slider-range-area"></div>
 		            <input type="hidden" id="area_min" name="area_min" value="{{Request::get('area_min')}}">
-					<input type="hidden" id="area_max" name="area_max" value="{{Request::get('area_min')}}">
+					<input type="hidden" id="area_max" name="area_max" value="{{Request::get('area_max')}}">
 
                 	<button type="submit" class="uk-button uk-button-primary uk-align-right uk-margin-large-top">{{ trans('frontend.search_button') }}</button>
 				</form>
@@ -349,7 +349,7 @@
 		$(function() {
 		    $( "#slider-range-price" ).slider({
 		      	range: true,
-		      	step: 5000000,
+		      	step: 10000000,
 		      	min: 0,// TODO get from settings
 		      	max: 2000000000,// TODO get from settings
 

@@ -95,30 +95,33 @@ class ListingFEController extends Controller {
 					$priceMin = $request->get('price_min');
 					$priceMax = $request->get('price_max');
 
-					if($roomMax = 2000000000){// TODO insert to settings
-						$query 			= $query->where('price', '>=', $priceMin);
+					if($priceMax >= 2000000000){// TODO insert to settings
+						$query = $query->where('price', '>=', $priceMin);
+					}else{
+						$query = $query->WhereBetween('price', [$priceMin-1, $priceMax]);
 					}
-					$query 			= $query->WhereBetween('price', [$priceMin-1, $priceMax]);
 				}
 
 				if($request->get('rooms_min') && $request->get('rooms_max')){
 					$roomMin = $request->get('rooms_min');
 					$roomMax = $request->get('rooms_max');
 
-					if($roomMax = 10){// TODO insert to settings
-						$query 			= $query->where('rooms', '>=', $roomMin);
+					if($roomMax >= 10){// TODO insert to settings
+						$query = $query->where('rooms', '>=', $roomMin);
+					}else{
+						$query = $query->WhereBetween('rooms', [$roomMin, $roomMax]);
 					}
-					$query 			= $query->WhereBetween('rooms', [$roomMin-1, $roomMax]);
 				}
 
 				if($request->get('area_min') && $request->get('area_max')){
 					$areaMin = $request->get('area_min');
 					$areaMax = $request->get('area_max');
 
-					if($areaMax = 501){// TODO insert to settings
-						$query 			= $query->where('area', '>=', $areaMin);
+					if($areaMax >= 500){// TODO insert to settings
+						$query = $query->where('area', '>=', $areaMin);
+					}else{
+						$query = $query->WhereBetween('area', [$areaMin-1, $areaMax]);
 					}
-					$query 			= $query->WhereBetween('area', [$areaMin-1, $areaMax]);
 				}
 
 				if($request->get('order_by')){
@@ -169,12 +172,6 @@ class ListingFEController extends Controller {
 
 		$categories 	= Category::remember(Settings::get('query_cache_time'))->get();
 		$cities 		= City::remember(Settings::get('query_cache_time'))->orderBy('ordering')->get();
-
-		//Prices
-		$minPrice 	= Listing::remember(Settings::get('query_cache_time'))->min('price');
-		$maxPrice 	= Listing::remember(Settings::get('query_cache_time'))->max('price');
-		//Area
-		$maxArea 	= Listing::remember(Settings::get('query_cache_time'))->max('area');
 
 		// Featured Listings
 		if($listingTypeID){
@@ -234,9 +231,6 @@ class ListingFEController extends Controller {
 										'cities' 			=> $cities, 
 										'categories' 		=> $categories ,
 										'map' 				=> $map,
-										'minPrice' 			=> $minPrice,
-										'maxPrice' 			=> $maxPrice,
-										'maxArea' 			=> $maxArea,
 										]);
 	}
 
