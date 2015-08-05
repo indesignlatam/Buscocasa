@@ -15,12 +15,9 @@
 		<h1>{{ trans('admin.transaction_result') }}</h1>
 
 	    <div class="uk-grid uk-margin-top">
-			
-		    <div class="uk-width-2-3">
-
+		    <div class="uk-width-small-1-1 uk-width-medium-2-3 uk-width-large-2-3">
 		    	@if(Request::get('transactionState') == 4)
 			    	<img src="{{ asset('/images/support/payments/payment_succeeded.png') }}" class="uk-align-center">
-
 					<!-- Listing preview -->
 			    	<a style="text-decoration:none">
 						<div class="uk-panel uk-panel-box uk-panel-box-primary uk-margin-remove">
@@ -29,9 +26,8 @@
 							<img src="{{asset($payment->featuredType->image_path)}}" style="position:absolute; top:0; left:0; max-width:150px">
 						@endif
 						<!-- Tags end -->
-							<img src="{{ asset(Image::url($listing->image_path(),['mini_image_2x'])) }}" style="width:350px; height:200px; float:left" class="uk-margin-right">
+							<img src="{{ asset(Image::url($listing->image_path(),['mini_image_2x'])) }}" style="max-width:350px; float:left" class="uk-margin-right">
 							<h4 class="uk-margin-remove">{{ $listing->title }}</h4>
-							{{-- <p style="margin-top:-2px" class="uk-text-muted">{{ $listing->city->name .", ". $listing->direction }}</p> --}}
 							<h4 style="margin-top:0px" class="uk-text-primary">${{ money_format('%!.0i', $listing->price) }}</h4>
 							<ul style="list-style-type: none;margin-top:-5px" class="uk-text-muted uk-text-small">
 								@if($listing->rooms)
@@ -80,7 +76,7 @@
 			    @endif
 		    </div>
 
-	    	<div class="uk-width-1-3">
+	    	<div class="uk-width-small-1-1 uk-width-medium-1-3 uk-width-large-1-3">
 			@if($signature == Request::get('signature'))
 				<h2 class="uk-text-bold">{{ trans('admin.transaction_info') }}</h2>
 				<table class="uk-table uk-table-striped uk-table-hover">
