@@ -1,8 +1,10 @@
 <a href="{{ url($listing->path()) }}" style="text-decoration:none">
 	<!-- Tags start -->
-	@if($listing->featuredType && $listing->featuredType->id > 1 && $listing->featured_expires_at > Carbon::now())
+	@if($listing->featuredType && $listing->featured_expires_at > Carbon::now())
 		<div class="uk-panel uk-panel-box uk-panel-box-primary uk-margin-remove">
+		@if($listing->featuredType->id > 1)
 			<img src="{{asset($listing->featuredType->image_path)}}" style="position:absolute; top:0; left:0; max-width:150px">
+		@endif
 	@else
 		<div class="uk-panel uk-panel-hover uk-margin-remove">
 			@if(Carbon::createFromFormat('Y-m-d H:i:s', $listing->created_at)->diffInDays(Carbon::now()) < 5)

@@ -25,7 +25,9 @@
 			    	<a style="text-decoration:none">
 						<div class="uk-panel uk-panel-box uk-panel-box-primary uk-margin-remove">
 						<!-- Tags start -->
+						@if($payment->featuredType->id > 1)
 							<img src="{{asset($payment->featuredType->image_path)}}" style="position:absolute; top:0; left:0; max-width:150px">
+						@endif
 						<!-- Tags end -->
 							<img src="{{ asset(Image::url($listing->image_path(),['mini_image_2x'])) }}" style="width:350px; height:200px; float:left" class="uk-margin-right">
 							<h4 class="uk-margin-remove">{{ $listing->title }}</h4>
