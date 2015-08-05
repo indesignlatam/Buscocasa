@@ -22,8 +22,7 @@ class Handler extends ExceptionHandler {
 	 * @param  \Exception  $e
 	 * @return void
 	 */
-	public function report(Exception $e)
-	{
+	public function report(Exception $e){
 		return parent::report($e);
 	}
 
@@ -34,8 +33,11 @@ class Handler extends ExceptionHandler {
 	 * @param  \Exception  $e
 	 * @return \Illuminate\Http\Response
 	 */
-	public function render($request, Exception $e)
-	{
+	public function render($request, Exception $e){
+        // Redirect back 
+		if ($e instanceof TokenMismatchException){
+            return redirect($request->fullUrl())->withErrors(['csrf_error' => "Opps! Seems you couldn't submit form for a longtime. Please try again"]);
+        }
 		return parent::render($request, $e);
 	}
 
