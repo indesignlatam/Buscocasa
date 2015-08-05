@@ -25,6 +25,6 @@ return [
     |
     */
 
-    'driver' => 'redis',
+    'driver' => env('THROTTLE_DRIVER', null),
 
 ];
