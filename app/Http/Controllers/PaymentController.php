@@ -210,10 +210,9 @@ class PaymentController extends Controller {
 		$currency			= $request->get('currency');
 		$transactionState	= $request->get('state_pol');
 
-		// Log::info('Amount decimals: '.substr($amount, -2));
+		Log::info('Recived payment confirmation attemp for: '.$referenceCode.' - State: '$transactionState);
 
 		if(substr($amount, -2) == "00"){
-			// Log::info('Decimals == 00');
 			$amount	= number_format($amount, 1, '.', '');
 		}
 
@@ -225,13 +224,13 @@ class PaymentController extends Controller {
 		// Log::info($request->get('sign'));
 
 		if($signature != $request->get('sign')){
+			Log::info('Error validating signature for: '.$referenceCode);
 			return response()->json(['error' => 'Invalid signature'], 401);
 		}
 
 		$payment = Payment::where('reference_code', $request->get('reference_sale'))->first();
 
 		if(!$payment->confirmed){
-			// Log::info('Payment state: '.$request->get('state_pol'));
 			$payment->locked 	= false;
 			
 			$payment->state_pol 			= $request->get('state_pol');
@@ -267,12 +266,16 @@ class PaymentController extends Controller {
 				// Send confirmation email to user and generate billing
 				Queue::push(new SendPaymentConfirmationEmail($payment));
 
-				// Post to facebook page
-				Queue::push(new PostListingToFacebookPage($payment->listing));
+				if($payment->featuredType->id >= 3){
+					// Post to facebook page
+					Queue::push(new PostListingToFacebookPage($payment->listing));
+				}
 			}
 
 			$payment->save();
 		}
+
+		Log::info('Listing successfuly update and featured: '.$referenceCode.' - State: '$transactionState);
 
 		return response()->json(['success' => true]);
 	}
