@@ -32,7 +32,7 @@
 			@if(count($appointments) > 0)
 				<!-- Order by -->
 				<div class="uk-text-right">
-					<form action="{{url(Request::path())}}" method="GET" class="uk-form">
+					<form action="{{url(Request::path())}}" method="GET" class="uk-form uk-hidden-small">
 						<select name="take" onchange="this.form.submit()">
 					    	<option value="">Cantidad de publicaciones</option>
 					    	@if(Request::get('take') == 50)
@@ -77,33 +77,50 @@
 		            <tbody>
 		                @foreach($appointments as $appointment)
 		                    <tr id="message-{{ $appointment->id }}">
-		                        <td style="width:100px"><img src="{{ asset($appointment->listing->image_path()) }}" style="width:100px"></td>
+		                        <td style="max-width:100px"><img src="{{ asset($appointment->listing->image_path()) }}" style="width:100px"></td>
 		                        <td style="width:20%"><b class="uk-h4">{{ $appointment->name }}</b><br>{{ $appointment->phone }}</td>
-		                        <td>{{ $appointment->email }}</td>
+		                        <td class="uk-hidden-small">{{ $appointment->email }}</td>
 		                        <td>{{ $appointment->comments }}</td>
-		                        <td style="width:140px" >
-		                        	<div class="uk-flex" style="width:140px">
+		                        <td style="max-width:120px" class="uk-text-right">
+		                        	<div class="uk-grid uk-grid-small" data-uk-grid-margin>
 		                        		<!-- Reply button -->
 		                        		@if(Auth::user()->confirmed)
 					    					@if(!$appointment->answered)
-						    					<button id="answer-{{$appointment->id}}" class="uk-button uk-button-success uk-width-1-1 uk-margin-small-right" onclick="answerMessage({{ $appointment->id }})" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.reply') }}"><i class="uk-icon-reply"></i></button>
-						    					<button id="mark-read-{{$appointment->id}}" class="uk-button uk-width-1-1 uk-margin-small-right" onclick="mark({{ $appointment->id }}, 1)" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.mark_as_answered') }}"><i class="uk-icon-check-square-o"></i></button>
+					    						<div class="uk-width-small-1-1 uk-width-medium-1-3 uk-width-large-1-3">
+					    							<button id="answer-{{$appointment->id}}" class="uk-button uk-button-success" onclick="answerMessage({{ $appointment->id }})" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.reply') }}"><i class="uk-icon-reply"></i></button>
+					    						</div>
+					    						<div class="uk-width-small-1-1 uk-width-medium-1-3 uk-width-large-1-3">
+						    						<button id="mark-read-{{$appointment->id}}" class="uk-button" onclick="mark({{ $appointment->id }}, 1)" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.mark_as_answered') }}"><i class="uk-icon-check-square-o"></i></button>
+						    					</div>
 						    				@else
-						    					<button id="answer-{{$appointment->id}}" class="uk-button uk-button-success uk-width-1-1 uk-margin-small-right" onclick="answerMessage({{ $appointment->id }})" disabled><i class="uk-icon-reply"></i></button>
-						    					<button id="mark-read-{{$appointment->id}}" class="uk-button uk-width-1-1 uk-margin-small-right" onclick="mark({{ $appointment->id }}, 1)" disabled><i class="uk-icon-check-square-o"></i></button>
+					    						<div class="uk-width-small-1-1 uk-width-medium-1-3 uk-width-large-1-3">
+						    						<button id="answer-{{$appointment->id}}" class="uk-button uk-button-success uk-width-small-1-1 uk-width-medium-1-3 uk-width-large-1-3" onclick="answerMessage({{ $appointment->id }})" disabled><i class="uk-icon-reply"></i></button>
+						    					</div>
+					    						<div class="uk-width-small-1-1 uk-width-medium-1-3 uk-width-large-1-3">
+						    						<button id="mark-read-{{$appointment->id}}" class="uk-button uk-width-small-1-1 uk-width-medium-1-3 uk-width-large-1-3" onclick="mark({{ $appointment->id }}, 1)" disabled><i class="uk-icon-check-square-o"></i></button>
+						    					</div>
 						    				@endif
 						    			@else
 						    				@if(!$appointment->answered)
-						    					<a href="{{ url('admin/user/not_confirmed') }}" class="uk-button uk-button-success uk-width-1-1 uk-margin-small-bottom"><i class="uk-icon-reply"></i></a>
-						    					<button id="mark-read-{{$appointment->id}}" class="uk-button uk-width-1-1 uk-margin-small-right" onclick="mark({{ $appointment->id }}, 1)"><i class="uk-icon-check-square-o"></i></button>
+					    						<div class="uk-width-small-1-1 uk-width-medium-1-3 uk-width-large-1-3">
+						    						<a href="{{ url('admin/user/not_confirmed') }}" class="uk-button uk-button-success uk-width-small-1-1 uk-width-medium-1-3 uk-width-large-1-3"><i class="uk-icon-reply"></i></a>
+						    					</div>
+					    						<div class="uk-width-small-1-1 uk-width-medium-1-3 uk-width-large-1-3">
+						    						<button id="mark-read-{{$appointment->id}}" class="uk-button uk-width-small-1-1 uk-width-medium-1-3 uk-width-large-1-3" onclick="mark({{ $appointment->id }}, 1)"><i class="uk-icon-check-square-o"></i></button>
+						    					</div>
 						    				@else
-						    					<button id="answer-{{$appointment->id}}" class="uk-button uk-button-success uk-width-1-1 uk-margin-small-right" onclick="answerMessage({{ $appointment->id }})" disabled><i class="uk-icon-reply"></i></button>
-						    					<button id="mark-read-{{$appointment->id}}" class="uk-button uk-width-1-1 uk-margin-small-right" onclick="mark({{ $appointment->id }}, 1)" disabled><i class="uk-icon-check-square-o"></i></button>
+					    						<div class="uk-width-small-1-1 uk-width-medium-1-3 uk-width-large-1-3">
+						    						<button id="answer-{{$appointment->id}}" class="uk-button uk-button-success uk-width-small-1-1 uk-width-medium-1-3 uk-width-large-1-3" onclick="answerMessage({{ $appointment->id }})" disabled><i class="uk-icon-reply"></i></button>
+						    					</div>
+					    						<div class="uk-width-small-1-1 uk-width-medium-1-3 uk-width-large-1-3">
+						    						<button id="mark-read-{{$appointment->id}}" class="uk-button uk-width-small-1-1 uk-width-medium-1-3 uk-width-large-1-3" onclick="mark({{ $appointment->id }}, 1)" disabled><i class="uk-icon-check-square-o"></i></button>
+						    					</div>
 						    				@endif
 						    			@endif
 						    			<!-- Reply button -->
-
-		                            	<a id="delete-{{$appointment->id}}" class="uk-button uk-button-danger uk-width-1-1" onclick="deleteObject({{ $appointment->id }})" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.delete_message') }}"><i class="uk-icon-remove"></i></a>
+						    			<div class="uk-width-small-1-1 uk-width-medium-1-3 uk-width-large-1-3">
+		                            		<a id="delete-{{$appointment->id}}" class="uk-button uk-button-danger" onclick="deleteObject({{ $appointment->id }})" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.delete_message') }}"><i class="uk-icon-remove"></i></a>
+		                            	</div>
 		                        	</div>
 		                        </td>
 		                    </tr>

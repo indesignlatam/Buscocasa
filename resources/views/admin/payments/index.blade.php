@@ -27,7 +27,7 @@
 				<div class="">
 					<a class="uk-button uk-button-large" href="{{ url('/admin/pagos/?unconfirmed=true') }}" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.unconfirmed_payments') }}"><i class="uk-icon-trash"></i></a>
 
-					<form action="{{url(Request::path())}}" method="GET" class="uk-form uk-align-right">
+					<form action="{{url(Request::path())}}" method="GET" class="uk-form uk-align-right uk-hidden-small">
 					    <select name="order_by" onchange="this.form.submit()">
 					    	<option value="">{{ trans('admin.order_by') }}</option>
 					    	
@@ -53,8 +53,8 @@
 									<th style="width:15px"></th>
 									<th>{{ trans('admin.reference') }}</th>
 									<th>{{ trans('admin.price') }}</th>
-									<th style="width:15%">{{ trans('admin.payment_method') }}</th>
-									<th style="width:12%">{{ trans('admin.updated') }}</th>
+									<th style="width:15%" class="uk-hidden-small">{{ trans('admin.payment_method') }}</th>
+									<th style="width:12%" class="uk-hidden-small">{{ trans('admin.updated') }}</th>
 									<th style="width:5%"></th>
 								</tr>
 							</thead>
@@ -71,8 +71,8 @@
 									@endif
 									<td>{{ $payment->description }}</td>
 									<td>{{ money_format('$%!.1i', $payment->amount) }}</td>
-									<td>{{ $payment->payment_method_name }}</td>								
-									<td>{{ Carbon::createFromFormat('Y-m-d H:i:s', $payment->updated_at, 'America/Bogota')->diffForHumans() }}</td>
+									<td class="uk-hidden-small">{{ $payment->payment_method_name }}</td>								
+									<td class="uk-hidden-small">{{ Carbon::createFromFormat('Y-m-d H:i:s', $payment->updated_at, 'America/Bogota')->diffForHumans() }}</td>
 
 									@if($payment->confirmed || $payment->canceled || $payment->state_pol)
 										<td><button class="uk-button uk-button-small uk-button-danger" id="{{ $payment->id }}" onclick="cancel(this)" disabled><i class="uk-icon-remove"></i></button></td>
