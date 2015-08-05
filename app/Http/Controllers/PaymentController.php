@@ -210,7 +210,7 @@ class PaymentController extends Controller {
 		$currency			= $request->get('currency');
 		$transactionState	= $request->get('state_pol');
 
-		Log::info('Recived payment confirmation attemp for: '.$referenceCode.' - State: '$transactionState);
+		Log::info('Recived payment confirmation attemp for: '.$referenceCode.' - State: '.$transactionState);
 
 		if(substr($amount, -2) == "00"){
 			$amount	= number_format($amount, 1, '.', '');
@@ -275,7 +275,7 @@ class PaymentController extends Controller {
 			$payment->save();
 		}
 
-		Log::info('Listing successfuly update and featured: '.$referenceCode.' - State: '$transactionState);
+		Log::info('Listing successfuly update and featured: '.$referenceCode.' - State: '.$transactionState);
 
 		return response()->json(['success' => true]);
 	}
