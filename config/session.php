@@ -109,7 +109,7 @@ return [
 	|
 	*/
 
-	'cookie' => 'laravel_session',
+	'cookie' => env('SESSION_COOKIE_NAME', 'buscocasa.co_session'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -135,7 +135,7 @@ return [
 	|
 	*/
 
-	'domain' => null,
+	'domain' => env('SESSION_COOKIE_DOMAIN', 'buscocasa.co'),
 
 	/*
 	|--------------------------------------------------------------------------
