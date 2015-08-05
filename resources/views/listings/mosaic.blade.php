@@ -11,7 +11,7 @@
 				<img src="{{asset('/images/defaults/new.png')}}" style="position:absolute; top:0; left:0; max-width:150px">
 			@endif
     @endif
-				<img src="{{ asset(Image::url($listing->image_path(),['mini_image_2x'])) }}" style="max-width:380px; float:left" class="uk-margin-right">
+				<img src="{{ asset(Image::url($listing->image_path(),['mini_image_2x'])) }}" style="width:380px; float:left" class="uk-margin-right">
 			    <div class="uk-overlay-panel uk-overlay-background uk-overlay-fade">
 			    	<ul style="list-style-type: none;margin-top:-5px" class="uk-text-contrast">
 	    				@if($listing->rooms)
