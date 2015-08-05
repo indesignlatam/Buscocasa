@@ -35,6 +35,7 @@ class Handler extends ExceptionHandler {
 	 */
 	public function render($request, Exception $e){
         // Redirect back 
+        return response()->json('miaw');
 		if ($e instanceof TokenMismatchException){
 			return response()->json('miaw');
             return redirect($request->fullUrl())->withErrors(['csrf_error' => "Opps! Seems you couldn't submit form for a longtime. Please try again"]);
