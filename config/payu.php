@@ -15,8 +15,8 @@ return [
     'account_id' 		=> '538794',
 
     'response_url'		=> 'http://buscocasa.co/admin/pagos/respuesta',
-    'confirmation_url'	=> 'http://www.buscocasa.co/pagos/confirmar',
-    'dispute_url'		=> 'http://www.buscocasa.co/pagos/disputa',
+    'confirmation_url'	=> 'http://buscocasa.co/pagos/confirmar',
+    'dispute_url'		=> 'http://buscocasa.co/pagos/disputa',
 
 
     /*
