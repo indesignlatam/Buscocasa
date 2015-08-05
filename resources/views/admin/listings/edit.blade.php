@@ -465,7 +465,7 @@
 		@if($listing->featured_expires_at && $listing->featured_expires_at < Carbon::now()->addDays(5))
 			var modal = UIkit.modal("#expires_modal");
 			modal.show()
-		@elseif($listing->expires_at && $listing->expires_at < Carbon::now()->addDays(5) && 1==2)
+		@elseif($listing->expires_at && $listing->expires_at < Carbon::now()->addDays(5))
 			var modal = UIkit.modal("#expires_modal");
 			modal.show()
 		@elseif(!count($listing->images))
