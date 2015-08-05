@@ -154,10 +154,7 @@
 							@endif
 						</div>
 					</div>
-		    		
-		    		<div class="uk-margin-large-top">
-		    			<a href="{{ url('/admin/messages?deleted=true') }}">{{ trans('admin.show_deleted_messages') }}</a>
-		    		</div>
+							    		
 		    	</div>
 			@endif
 		</div>
@@ -166,8 +163,8 @@
 @endsection
 
 @section('js')
-	<link href="{{ asset('/css/components/tooltip.almost-flat.min.css') }}" rel="stylesheet">
 	@parent
+	<link href="{{ asset('/css/components/tooltip.almost-flat.min.css') }}" rel="stylesheet">
 	<script src="{{ asset('/js/components/tooltip.min.js') }}"></script>
 
 	<script type="text/javascript">
@@ -181,12 +178,12 @@
 			    	if(result.success){
 			    		$("#message-"+objectID).appendTo($('table'));
 			    		$("#delete-"+objectID).prop('disabled', false);
-			    		UIkit.notify('<i class="uk-icon-check-circle"></i> '+result.success, {pos:'top-right', status:'success', timeout: 5000});
+			    		UIkit.notify('<i class="uk-icon-check-circle"></i> '+result.success, {pos:'top-right', status:'success', timeout: 15000});
 			    	}else{
 			    		$("#answer-"+objectID).prop('disabled', false);
 			    		$("#mark-read-"+objectID).prop('disabled', false);
 			    		$("#delete-"+objectID).prop('disabled', false);
-			    		UIkit.notify('<i class="uk-icon-remove"></i> '+result.error, {pos:'top-right', status:'danger', timeout: 5000});
+			    		UIkit.notify('<i class="uk-icon-remove"></i> '+result.error, {pos:'top-right', status:'danger', timeout: 15000});
 			    	}
 		        });
 			}, {row:5, labels:{Ok:'{{trans("admin.send")}}', Cancel:'{{trans("admin.cancel")}}'}});
@@ -203,7 +200,7 @@
 				    $("#answer-"+objectID).prop('disabled', result.mark);
 				    $("#mark-read-"+objectID).prop('disabled', result.mark);
 					$("#delete-"+objectID).prop('disabled', false);
-				    UIkit.notify('<i class="uk-icon-check-circle"></i> '+result.success, {pos:'top-right', status:'success', timeout: 5000});
+				    UIkit.notify('<i class="uk-icon-check-circle"></i> '+result.success, {pos:'top-right', status:'success', timeout: 15000});
 				}else{
 					if(read){
 						$("#answer-"+objectID).prop('disabled', false);
@@ -214,7 +211,7 @@
 				    	$("#mark-read-"+objectID).prop('disabled', true);
 				    	$("#delete-"+objectID).prop('disabled', false);
 					}
-					UIkit.notify('<i class="uk-icon-remove"></i> '+result.error, {pos:'top-right', status:'danger', timeout: 5000});
+					UIkit.notify('<i class="uk-icon-remove"></i> '+result.error, {pos:'top-right', status:'danger', timeout: 15000});
 				}
 	        });
 	    }
@@ -234,7 +231,6 @@
 		        	}
 		        });
 			}, {labels:{Ok:'{{trans("admin.yes")}}', Cancel:'{{trans("admin.cancel")}}'}});
-	    	
 	    }
 
 	    // function toggle(source){
