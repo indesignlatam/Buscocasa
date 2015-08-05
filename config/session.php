@@ -109,7 +109,7 @@ return [
 	|
 	*/
 
-	'cookie' => env('SESSION_COOKIE_NAME', 'buscocasa.co_session'),
+	'cookie' => env('SESSION_COOKIE_NAME', 'buscocasa_session'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -135,7 +135,7 @@ return [
 	|
 	*/
 
-	'domain' => env('SESSION_COOKIE_DOMAIN', 'buscocasa.co'),
+	'domain' => env('SESSION_COOKIE_DOMAIN', 'buscocasa'),
 
 	/*
 	|--------------------------------------------------------------------------
