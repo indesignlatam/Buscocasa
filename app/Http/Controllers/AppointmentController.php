@@ -147,7 +147,7 @@ class AppointmentController extends Controller {
 	 * @return Response
 	 */
 	public function show($id, Request $request){
-		//
+		// Get the object requested
 		$listing = Listing::find($id);
 
 		// Security check

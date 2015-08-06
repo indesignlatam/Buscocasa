@@ -6,9 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use Settings;
-use App\Models\Payment,
-	App\Models\Listing,
-	App\Models\FeaturedType;
+use Auth;
+use App\Models\Listing;
+use	App\Models\FeaturedType;
 
 class HighlightController extends Controller {
 
@@ -51,12 +51,24 @@ class HighlightController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id){
-		// add security
-		$listing 		= Listing::find($id);
+	public function show($id, Request $request){
+		// Get the object requested
+		$listing = Listing::find($id);
 
-		$featuredTypes	= FeaturedType::remember(Settings::get('query_cache_time'))->get();
+		// Security check
+	    if(!Auth::user()->is('admin')){
+	    	if(!$listing || $listing->broker_id != Auth::user()->id){
+	    		if($request->ajax()){
+					return response()->json(['error' => trans('responses.no_permission')]);
+				}
+	        	return redirect('/admin/listings')->withErrors([trans('responses.no_permission')]);
+	    	}
+		}
 
+		// Get the featured types and cache them
+		$featuredTypes = FeaturedType::remember(Settings::get('query_cache_time'))->get();
+
+		// Return the view
 		return view('admin.highlight.create', [ 'listing' 		=> $listing,
 												'featuredTypes' => $featuredTypes
 												]);

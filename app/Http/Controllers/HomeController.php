@@ -28,11 +28,7 @@ class HomeController extends Controller {
      * Instantiate a new UserController instance.
      */
     public function __construct(){
-        $this->middleware('auth');
-
-        //$this->middleware('log', ['only' => ['fooAction', 'barAction']]);
-
-        //$this->middleware('subscribed', ['except' => ['fooAction', 'barAction']]);
+    	//
     }
 
 	public function index(){

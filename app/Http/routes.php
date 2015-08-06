@@ -99,25 +99,6 @@ Route::group(['prefix' => 'cookie'], function(){
 |
 */
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
-	Route::group(['middleware' => 'auth.admin'], function(){
-		Route::resource('config', 'SettingsController');
-		Route::resource('users', 'UserController');
-
-		Route::resource('categories', 'CategoryController');
-		Route::resource('feature-categories', 'FeatureCategoryController');
-		Route::resource('listing-types', 'ListingTypeController');
-		Route::resource('listing-statuses', 'ListingStatusController');
-
-		Route::resource('features', 'FeatureController');
-		Route::resource('cities', 'CityController');
-
-		Route::resource('roles', 'RoleController');
-		Route::post('roles/attach', 'RoleController@attachPermission');
-		Route::post('roles/delete', 'RoleController@destroyMultiple');
-		Route::resource('permissions', 'PermissionController');
-		Route::post('permissions/delete', 'PermissionController@destroyMultiple');
-	});
-
 	Route::get('/', 'HomeController@index');
 	Route::get('/home', 'HomeController@index');
 
@@ -144,6 +125,25 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
 	Route::get('user/send_confirmation_email', 'UserController@sendConfirmationEmail');// Secured
 	Route::get('user/not_confirmed', 'UserController@notConfirmed');// Secured
 	Route::resource('user', 'UserController', ['only' => ['edit', 'update']]);// Secured
+});
+
+Route::group(['prefix' => 'admin', 'middleware' => 'auth.admin'], function(){
+	Route::resource('config', 'SettingsController');
+	Route::resource('users', 'UserController');
+
+	Route::resource('categories', 'CategoryController');
+	Route::resource('feature-categories', 'FeatureCategoryController');
+	Route::resource('listing-types', 'ListingTypeController');
+	Route::resource('listing-statuses', 'ListingStatusController');
+
+	Route::resource('features', 'FeatureController');
+	Route::resource('cities', 'CityController');
+
+	Route::resource('roles', 'RoleController');
+	Route::post('roles/attach', 'RoleController@attachPermission');
+	Route::post('roles/delete', 'RoleController@destroyMultiple');
+	Route::resource('permissions', 'PermissionController');
+	Route::post('permissions/delete', 'PermissionController@destroyMultiple');
 });
 
 /*
