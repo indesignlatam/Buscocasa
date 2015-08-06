@@ -36,14 +36,14 @@ class AuthThrottleMiddleware {
      * @return mixed
      */
     public function handle($request, Closure $next, $limit = 10, $time = 3){
-
-        if (!$this->throttle->attempt($request, $limit, $time)) {
-            return Redirect::back()
-                    ->withInput($request->all())
-                    ->withErrors([
-                        'rate_limit_exeeded' => trans('responses.rate_limit_exeeded'),
-                ]);
-            //throw new TooManyRequestsHttpException($time * 60, 'Rate limit exceed.');
+        if(env('APP_ENV') == 'production'){
+            if (!$this->throttle->attempt($request, $limit, $time)) {
+                return Redirect::back()
+                        ->withInput($request->all())
+                        ->withErrors([
+                            'rate_limit_exeeded' => trans('responses.rate_limit_exeeded'),
+                    ]);
+            }
         }
 
         return $next($request);
