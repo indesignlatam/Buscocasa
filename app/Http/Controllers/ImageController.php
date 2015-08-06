@@ -167,25 +167,6 @@ class ImageController extends Controller {
 	    	}
 		}
 
-		$path 		= substr($image->image_path, 1);
-
-		$ext 		= File::extension($path);
-
-		$paths[]	= $path;
-		$paths[] 	= str_replace('.'.$ext,'-image(mini_image_2x).'.$ext,$path);
-		$paths[] 	= str_replace('.'.$ext,'-image(featured_front).'.$ext,$path);
-		$paths[] 	= str_replace('.'.$ext,'-image(mini_front).'.$ext,$path);
-		$paths[] 	= str_replace('.'.$ext,'-image(map_mini).'.$ext,$path);
-
-		foreach ($paths as $path) {
-			if(File::exists($path)){
-				File::delete($path);
-				if(File::exists($path)){
-					return response()->json(['error' => trans('responses.error_deleting_image')]);
-				}
-			}
-		}
-
 		if($image->listing->main_image_id == $id){
 			$image->listing->main_image_id = null;
 			$image->listing->image_path = null;

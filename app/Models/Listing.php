@@ -262,7 +262,6 @@ class Listing extends IndesignModel {
 				
 				// Delete images	
 				foreach($listing->images as $image){
-					File::delete(public_path().'/'.$image->image_path);
 					$image->delete();
 				}
 
