@@ -244,7 +244,7 @@ class ListingFEController extends Controller {
 		//
 		$listing;
 		if(is_string($id)){
-			$listing = Listing::remember(Settings::get('query_cache_time_short', 10))->where('slug', $id)->first();
+			$listing = Listing::where('slug', $id)->first();
 		}
 
 		if(!$listing){
