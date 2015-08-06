@@ -1,6 +1,6 @@
 <?php namespace App\Exceptions;
 
-use Exception;
+use Exception, Redirect;
 use Illuminate\Session\TokenMismatchException;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -39,7 +39,10 @@ class Handler extends ExceptionHandler {
 	public function render($request, Exception $e){
 		// Redirect back 
 		if ($e instanceof TokenMismatchException){
-            return redirect($request->fullUrl())->withErrors(['Opps! Seems you couldnt submit form for a longtime. Please try again']);
+			return Redirect::back()
+                    ->withInput($request->all())
+                    ->withErrors(['invalid_token' => trans('responses.invalid_token'),
+                ]);
         }
 
 		return parent::render($request, $e);

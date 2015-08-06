@@ -22,6 +22,7 @@ return [
     'error_saving_image'                    => 'Hubo un error al guardar la imagen.',
     'no_permission'                         => 'No tienes permiso para realizar esta acción.',
     'rate_limit_exeeded'                    => 'Has hecho demasiadas solicitudes en poco tiempo! Espera un momento y vuelve a intentar.',
+    'invalid_token'                         => 'La sesión expiro! Porfavor intenta nuevamente.',
 
     //UserController
     'user_saved'                            => 'Los datos de usuario fueron guardados exitosamente.',
