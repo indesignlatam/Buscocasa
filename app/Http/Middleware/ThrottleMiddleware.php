@@ -39,7 +39,7 @@ class ThrottleMiddleware {
         $limit 	= 1; // request limit
         $time 	= 1; // ban time
 
-        if (!$throttle->attempt($request, $limit, $time)) {
+        if (!$this->throttle->attempt($request, $limit, $time)) {
             throw new TooManyRequestsHttpException($time * 60, 'Rate limit exceed.');
         }
 
