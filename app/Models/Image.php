@@ -75,14 +75,13 @@ class Image extends IndesignModel {
 	// 	return null;
 	// }
 
-	// EVENTS
 	/**
     * Model events
     */
     protected static function boot() {
         parent::boot();
 
-        static::deleting(function($image) { // before delete() method call this
+        static::deleted(function($image) { // after delete() method call this
         	$path 		= substr($image->image_path, 1);
 			$ext 		= File::extension($path);
 
