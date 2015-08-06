@@ -1,6 +1,6 @@
 <?php namespace App\Http\Middleware;
 
-use Closure;
+use Closure, Redirect;
 use GrahamCampbell\Throttle\Throttle;
 use Illuminate\Contracts\Routing\Middleware;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
@@ -40,7 +40,12 @@ class ThrottleMiddleware {
         $time 	= 1; // ban time
 
         if (!$this->throttle->attempt($request, $limit, $time)) {
-            throw new TooManyRequestsHttpException($time * 60, 'Rate limit exceed.');
+            return Redirect::back()
+                    ->withInput($request->all())
+                    ->withErrors([
+                        'rate_limit_exeeded' => 'Ha enviado muchos mensajes en muy poco tiempo! Espera un momento para volver a enviar mas mensajes.',
+                ]);
+            //throw new TooManyRequestsHttpException($time * 60, 'Rate limit exceed.');
         }
 
         return $next($request);
