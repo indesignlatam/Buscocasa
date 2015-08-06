@@ -21,7 +21,7 @@ class AppointmentController extends Controller {
      * @return void
      */
     public function __construct(){
-        $this->middleware('throttle:1,1', ['only' => ['store', 'answer']]);
+        $this->middleware('throttle', ['only' => ['store', 'answer']]);
     }
 
 	/**
