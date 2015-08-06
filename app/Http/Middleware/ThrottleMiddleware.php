@@ -5,7 +5,7 @@ use GrahamCampbell\Throttle\Throttle;
 use Illuminate\Contracts\Routing\Middleware;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 
-class Throttle {
+class ThrottleMiddleware {
 
 	/**
      * The throttle instance.
@@ -37,7 +37,7 @@ class Throttle {
      */
     public function handle($request, Closure $next){
         $limit 	= 1; // request limit
-        $time 	= 30; // ban time
+        $time 	= 1; // ban time
 
         if (!$throttle->attempt($request, $limit, $time)) {
             throw new TooManyRequestsHttpException($time * 60, 'Rate limit exceed.');
