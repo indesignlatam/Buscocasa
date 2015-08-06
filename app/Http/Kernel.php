@@ -30,7 +30,7 @@ class Kernel extends HttpKernel {
 		'auth.basic' 				=> 'Illuminate\Auth\Middleware\AuthenticateWithBasicAuth',
 		'guest' 					=> 'App\Http\Middleware\RedirectIfAuthenticated',
 		'listings.view.throttle' 	=> 'App\Http\Middleware\ListingViewThrottle',
-		'throttle'					=> 'App\Http\Middleware\Throttle',
+		'throttle'					=> 'App\Http\Middleware\ThrottleMiddleware',
 	];
 
 }
