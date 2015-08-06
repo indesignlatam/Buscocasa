@@ -13,6 +13,18 @@ use App\Commands\SendUserConfirmationEmail;
 class UserController extends Controller {
 
 	/**
+	 * Create a new authentication controller instance.
+	 *
+	 * @param  \Illuminate\Contracts\Auth\Guard  $auth
+	 * @param  \Illuminate\Contracts\Auth\Registrar  $registrar
+	 * @return void
+	 */
+	public function __construct(){
+		$this->middleware('throttle.auth', ['only' => ['update']]);
+		$this->middleware('throttle', ['only' => ['confirm', 'sendConfirmationEmail']]);
+	}
+
+	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response

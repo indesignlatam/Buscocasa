@@ -31,6 +31,7 @@ class Kernel extends HttpKernel {
 		'guest' 					=> 'App\Http\Middleware\RedirectIfAuthenticated',
 		'listings.view.throttle' 	=> 'App\Http\Middleware\ListingViewThrottle',
 		'throttle'					=> 'App\Http\Middleware\ThrottleMiddleware',
+		'throttle.auth'				=> 'App\Http\Middleware\AuthThrottleMiddleware',
 	];
 
 }

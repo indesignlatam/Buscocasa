@@ -35,6 +35,7 @@ class PasswordController extends Controller {
 		// Translate the password reset email subject
 		$this->subject = trans('emails.password_reset_subject');
 		$this->middleware('guest');
+		$this->middleware('throttle', ['only' => ['postEmail']]);
 	}
 
 	/**

@@ -5,7 +5,7 @@ use GrahamCampbell\Throttle\Throttle;
 use Illuminate\Contracts\Routing\Middleware;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 
-class ThrottleMiddleware {
+class AuthThrottleMiddleware {
 
 	/**
      * The throttle instance.
@@ -35,7 +35,7 @@ class ThrottleMiddleware {
      *
      * @return mixed
      */
-    public function handle($request, Closure $next, $limit = 2, $time = 1){
+    public function handle($request, Closure $next, $limit = 10, $time = 3){
 
         if (!$this->throttle->attempt($request, $limit, $time)) {
             return Redirect::back()
