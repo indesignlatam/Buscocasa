@@ -90,7 +90,7 @@ class AppointmentController extends Controller {
 	 * @return Response
 	 */
 	public function store(Request $request){
-		// Captcha verify+
+		// Captcha verify
 		if(!Auth::check()){
 			if(!$request->has('g-recaptcha-response')){
 				return redirect()->back()->withErrors([trans('auth.recaptcha_error')])->withInput();
