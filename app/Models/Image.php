@@ -1,5 +1,6 @@
 <?php namespace App\Models;
 
+use File;
 use App\Models\IndesignModel;
 
 class Image extends IndesignModel {
