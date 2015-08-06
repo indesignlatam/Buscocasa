@@ -16,6 +16,15 @@ use	App\Events\ListingMessaged;
 class AppointmentController extends Controller {
 
 	/**
+     * Instantiate a new UserController instance.
+     *
+     * @return void
+     */
+    public function __construct(){
+        $this->middleware('throttle:1,1', ['only' => ['store', 'answer']]);
+    }
+
+	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
