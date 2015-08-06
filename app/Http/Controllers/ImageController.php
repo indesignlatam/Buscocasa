@@ -5,10 +5,24 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 
-use Image, File, Auth, Carbon, Settings;
-use App\Models\Image as ImageModel, App\Models\Listing;
+use Image;
+use File;
+use Auth;
+use Carbon;
+use Settings;
+use App\Models\Image as ImageModel;
+use App\Models\Listing;
 
 class ImageController extends Controller {
+
+	/**
+     * Instantiate a new ImageController instance.
+     *
+     * @return void
+     */
+    public function __construct(){
+    	//
+    }
 
 	/**
 	 * Display a listing of the resource.
@@ -34,12 +48,12 @@ class ImageController extends Controller {
 	 * @return Response
 	 */
 	public function store(Request $request){
-		//
+		// Get the object requested
 		$listing = Listing::find($request->get('listing_id'));
 
 		// Security check
 	    if(!Auth::user()->is('admin')){
-	    	if(!$listing || $listing->broker->id != Auth::user()->id){
+	    	if(!$listing || $listing->broker_id != Auth::user()->id){
 	    		if($request->ajax()){
 					return response()->json(['error' => trans('responses.no_permission'.$id)]);
 				}
@@ -68,15 +82,12 @@ class ImageController extends Controller {
 			}
 		}
 
-		
-
-
+		// Create an image object
 		$image = new ImageModel;
 
-		$input = $request->all();
-
-	    $file = $request->file("image");
-		$name = md5($request->get('title') . str_random(40)).'.'.$file->getClientOriginalExtension();
+	    $file 	= $request->file("image");
+		$name 	= $listing->id.md5($request->get('title') . str_random(40)).'.'.$file->getClientOriginalExtension();
+		$input 	= $request->all();
 		$input['image_path'] = '/images/listings/full/'.$name;
 
 		if (!$image->validate($input)){
@@ -85,14 +96,32 @@ class ImageController extends Controller {
 	        						]);
 	    }
 
-		if($file->move("images/temp", $name) == null){
+	    // Move file to temp folder
+		if(!$file->move("images/temp", $name)){
 			return response()->json(['error' => [trans('responses.error_saving_image')],
 									 'image' => null
 									]);
 		}
 
-		// Crop image and watermark it
-		$img 			= Image::make('/images/temp/'.$name, ['width' => 800, 'height' => 540, 'crop' => true]);
+		// Get image orientation
+		$exif 		= exif_read_data(public_path().'/images/temp/'.$name, 'IFD0');
+		$rotation 	= 0;
+		if(!empty($exif['Orientation'])) {
+		    switch($exif['Orientation']) {
+		        case 8:
+		            $rotation = 90;
+		            break;
+		        case 3:
+		            $rotation = 180;
+		            break;
+		        case 6:
+		            $rotation = -90;
+		            break;
+		    }
+		}
+
+		// Crop image, watermark and rotate it
+		$img 			= Image::make('/images/temp/'.$name, ['width' => 800, 'height' => 540, 'crop' => true, 'rotate' => $rotation]);
 		$watermark 		= Image::open(public_path().'/images/watermark_contrast.png');// Or use watermark.png for color watermark
 		$size      		= $img->getSize();
 		$wSize     		= $watermark->getSize();
@@ -100,20 +129,21 @@ class ImageController extends Controller {
 		$img->paste($watermark, $bottomRight);
 		$img->save('images/listings/full/'.$name);
 
+		// Delete the temp file
 		File::delete(public_path().'/images/temp/'.$name);
 
-		// Solves bug where image is not show if the listing is not saved #125
-		$setMainImage = false;
+		// Set this image as main if none set on listing
 		if(count($listing->images) == 0){
-			$setMainImage = true;
 			$listing->image_path = 'images/listings/full/'.$name;
 			$listing->save();
 		}
 
+		// Create the image
 		$image = $image->create($input);
 
+		// Return ajax response with image and success message
 		return response()->json(['image' 	=> $image,
-								 'success'	=> trans('admin.image_uploaded_succesfuly'),
+								 'success'	=> trans('admin.image_uploaded_succesfuly')
 								 ]);
 	}
 
@@ -154,12 +184,12 @@ class ImageController extends Controller {
 	 * @return Response
 	 */
 	public function destroy($id, Request $request){
-		//
-		$image 		= ImageModel::find($id);
+		// Get the object requested
+		$image = ImageModel::find($id);
 
 		// Security check
 	    if(!Auth::user()->is('admin')){
-	    	if(!$image || $image->listing->broker->id != Auth::user()->id){
+	    	if(!$image || $image->listing->broker_id != Auth::user()->id){
 	    		if($request->ajax()){
 					return response()->json(['error' => trans('responses.no_permission')]);
 				}
@@ -167,6 +197,7 @@ class ImageController extends Controller {
 	    	}
 		}
 
+		// Null image_path and main_image_id if deleted image is main image
 		if($image->listing->main_image_id == $id){
 			$image->listing->main_image_id = null;
 			$image->listing->image_path = null;
@@ -177,20 +208,24 @@ class ImageController extends Controller {
 			$image->listing->save();
 		}
 
+		// Persist listing after deleting image
 		$listing = $image->listing;
 		
+		// Delete image
 		$image->delete();
 
+		// If no image_path and there are mores images set first as image_path
 		if($listing->image_path == null && count($listing->images) > 0){
-			$image->listing->main_image_id 	= null;
+			$listing->main_image_id = null;
 			$listing->image_path = $listing->images->first()->image_path;
 			$listing->save();
 		}else if(count($listing->images)){
-			$image->listing->main_image_id 	= null;
-			$listing->image_path 			= null;
+			$listing->main_image_id = null;
+			$listing->image_path = null;
 			$listing->save();
 		}
 
+		// Return ajax response
 		return response()->json(['images_count' => count($listing->images), 
 								 'success'		=> trans('admin.image_deleted_succesfuly'),
 								 ]);
