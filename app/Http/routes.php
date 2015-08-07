@@ -96,6 +96,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth.admin'], function(){
 Route::controllers([
 	'auth' 		=> 'Auth\AuthController',
 	'password' 	=> 'Auth\PasswordController',
+	'cookie' 	=> 'CookieController',
 ]);
 Route::get('social-auth/{provider?}', 'Auth\AuthController@redirectToProvider');
 Route::get('social-auth/{provider?}/redirects', 'Auth\AuthController@handleProviderCallback');
@@ -120,27 +121,6 @@ Route::resource('publicar', 'FrontendController@publica');
 
 /*
 |--------------------------------------------------------------------------
-| Cookie Routes
-|--------------------------------------------------------------------------
-|
-| Here are all the API routes for external consumption.
-|
-| 
-|
-*/
-Route::group(['prefix' => 'cookie'], function(){
-	Route::post('/set', function(){
-		if(Input::has('time')){
-			Cookie::queue(Input::get('key'), Input::get('value'), Input::get('time'));
-		}else{
-			Cookie::queue(Input::get('key'), Input::get('value'));
-		}
-	    return Response::json(['success' => true, 'key' => Input::get('key'), 'value' => Input::get('value')]);
-	});
-});
-
-/*
-|--------------------------------------------------------------------------
 | Email preview Routes
 |--------------------------------------------------------------------------
 |
@@ -149,33 +129,33 @@ Route::group(['prefix' => 'cookie'], function(){
 | 
 |
 */
-Route::group(['prefix' => 'emails', 'middleware' => 'auth.admin'], function(){
-	Route::get('confirm_user', function(){
-	    return view('emails.confirm_user', ['user' => Auth::user()]);
-	});
+// Route::group(['prefix' => 'emails', 'middleware' => 'auth.admin'], function(){
+// 	Route::get('confirm_user', function(){
+// 	    return view('emails.confirm_user', ['user' => Auth::user()]);
+// 	});
 
-	Route::get('listing_expiring', function(){
-	    return view('emails.listing_expiring', ['listing' => Auth::user()->listings->first()]);
-	});
+// 	Route::get('listing_expiring', function(){
+// 	    return view('emails.listing_expiring', ['listing' => Auth::user()->listings->first()]);
+// 	});
 
-	Route::get('message_answer', function(){
-	    return view('emails.message_answer', ['messageToAnswer' => Auth::user()->appointments->first(), 'comments' => 'maiw miaw miaw miaw maiw']);
-	});
+// 	Route::get('message_answer', function(){
+// 	    return view('emails.message_answer', ['messageToAnswer' => Auth::user()->appointments->first(), 'comments' => 'maiw miaw miaw miaw maiw']);
+// 	});
 
-	Route::get('message', function(){
-	    return view('emails.message', ['userMessage' => Auth::user()->appointments->first()]);
-	});
+// 	Route::get('message', function(){
+// 	    return view('emails.message', ['userMessage' => Auth::user()->appointments->first()]);
+// 	});
 
-	Route::get('password', function(){
-	    return view('emails.password', ['token' => 'miawmiawmiawmiawmiawmiamwidasdasda']);
-	});
+// 	Route::get('password', function(){
+// 	    return view('emails.password', ['token' => 'miawmiawmiawmiawmiawmiamwidasdasda']);
+// 	});
 
-	Route::get('payment_confirmation', function(){
-		$payment = App\Models\Payment::find(7);
-	    return view('emails.paymentConfirmation', ['payment' => $payment]);
-	});
+// 	Route::get('payment_confirmation', function(){
+// 		$payment = App\Models\Payment::find(7);
+// 	    return view('emails.paymentConfirmation', ['payment' => $payment]);
+// 	});
 
-	Route::get('tips', function(){
-	    return view('emails.tips', ['listing' => Auth::user()->listings->first()]);
-	});
-});
+// 	Route::get('tips', function(){
+// 	    return view('emails.tips', ['listing' => Auth::user()->listings->first()]);
+// 	});
+// });
