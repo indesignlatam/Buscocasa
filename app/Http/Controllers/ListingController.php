@@ -34,6 +34,8 @@ class ListingController extends Controller {
 		if(Auth::user()->isAdmin()){
 			if($request->get('deleted')){
 				$query = Listing::onlyTrashed();
+			}else{
+				$query = Listing::whereNotNull('id');
 			}
 		}else{
 			if($request->get('deleted')){
