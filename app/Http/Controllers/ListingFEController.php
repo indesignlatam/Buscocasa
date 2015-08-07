@@ -37,7 +37,6 @@ class ListingFEController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request){
-		//
 		$listings;
 		$listingType 	= 'Venta';
 		$listingTypes 	= null;
@@ -46,6 +45,7 @@ class ListingFEController extends Controller {
 
 		$query			= Listing::remember(Settings::get('query_cache_time_short', 10))->active();
 
+		// Which is the listing type?
 		if($request->is('ventas')){
 			$listingType 	= 'Venta';
 			$listingTypeID 	= 1;
@@ -60,12 +60,9 @@ class ListingFEController extends Controller {
 			$listingTypes 	= ListingType::remember(Settings::get('query_cache_time'))->get();
 		}
 
-		if($request->has('take') && is_int($request->get('take'))){
-			$take = $request->get('take');
-		}
-
-
+		// If search params set
 		if(count($request->all()) > 0){
+			// If searching for an specific code
 			if($request->get('listing_code')){
 				$code 			= $request->get('listing_code');
 				$listings 		= Listing::remember(Settings::get('query_cache_time_short', 10))
@@ -73,9 +70,9 @@ class ListingFEController extends Controller {
 										->active()
 										->orderBy('featured_type', 'DESC')
 										->orderBy('id', 'DESC')
-										->with('city', 'listingType', 'featuredType')
+										->with('listingType', 'featuredType')
 										->paginate($take);
-			}else{
+			}else{// If not searching for an specific listing, set up the params to the query
 				if($request->get('listing_type_id')){
 					$listing_type 	= $request->get('listing_type_id');
 					$query 			= $query->where('listing_type', $listing_type);
@@ -124,75 +121,73 @@ class ListingFEController extends Controller {
 					}
 				}
 
+				// Order the query by params
 				if($request->get('order_by')){
-					// Log::info('Order_by');
 					if($request->get('order_by') == 'price_min'){
 						Cookie::queue('listings_order_by', 'price_min', 60);// TODO insert to settings
-						$query 		= $query->orderBy('price', 'ASC');
+						$query = $query->orderBy('price', 'ASC');
 					}else if($request->get('order_by') == 'price_max'){
 						Cookie::queue('listings_order_by', 'price_max', 60);// TODO insert to settings
-						$query 		= $query->orderBy('price', 'DESC');
+						$query = $query->orderBy('price', 'DESC');
 					}else if($request->get('order_by') == 'id_desc'){
 						Cookie::queue('listings_order_by', 'id_desc', 60);// TODO insert to settings
-						$query 		= $query->orderBy('id', 'DESC');
+						$query = $query->orderBy('id', 'DESC');
 					}					
-				}else if (Cookie::get('listings_order_by')) {
-					// Log::info('Order_by cookie');
+				}else if (Cookie::get('listings_order_by')) {// Order by cookie values
 					if(Cookie::get('listings_order_by') == 'price_min'){
-						$query 		= $query->orderBy('price', 'ASC');
+						$query = $query->orderBy('price', 'ASC');
 					}else if(Cookie::get('listings_order_by') == 'price_max'){
-						$query 		= $query->orderBy('price', 'DESC');
+						$query = $query->orderBy('price', 'DESC');
 					}else if(Cookie::get('listings_order_by') == 'id_desc'){
-						$query 		= $query->orderBy('id', 'DESC');
+						$query = $query->orderBy('id', 'DESC');
 					}
 				}else{
-					$query 	= $query->orderBy('featured_type', 'DESC');
+					$query = $query->orderBy('featured_type', 'DESC');
 				}
 
-				$listings 	= $query->orderBy('id', 'DESC')->with('city', 'listingType', 'featuredType')->paginate($take);
-			}
-		}else{
-			$query 		= $query->with('featuredType');
+				// Take n objects
+				if($request->has('take') && is_int($request->get('take'))){
+					$take = $request->get('take');
+				}
 
+				$listings = $query->orderBy('id', 'DESC')->with('listingType', 'featuredType')->paginate($take);
+			}
+		}else{// If no params
 			if (Cookie::get('listings_order_by')) {
-				// Log::info('Order_by cookie');
 				if(Cookie::get('listings_order_by') == 'price_min'){
-					$query 		= $query->orderBy('price', 'ASC');
+					$query = $query->orderBy('price', 'ASC');
 				}else if(Cookie::get('listings_order_by') == 'price_max'){
-					$query 		= $query->orderBy('price', 'DESC');
+					$query = $query->orderBy('price', 'DESC');
 				}else if(Cookie::get('listings_order_by') == 'id_desc'){
-					$query 		= $query->orderBy('id', 'DESC');
+					$query = $query->orderBy('id', 'DESC');
 				}
 			}else{
-				$query 	= $query->orderBy('featured_type', 'DESC');
+				$query = $query->orderBy('featured_type', 'DESC');
 			}
 
-			$listings 	= $query->orderBy('id', 'DESC')->with('city', 'listingType', 'featuredType')->paginate($take);
+			$listings = $query->orderBy('id', 'DESC')->with('listingType', 'featuredType')->paginate($take);
 		}
 
-		$categories 	= Category::remember(Settings::get('query_cache_time'))->get();
-		$cities 		= City::remember(Settings::get('query_cache_time'))->orderBy('ordering')->get();
+		$categories = Category::remember(Settings::get('query_cache_time'))->get();
+		$cities 	= City::remember(Settings::get('query_cache_time'))->orderBy('ordering')->get();
 
 		// Featured Listings
 		if($listingTypeID){
 			$featuredListings = Listing::remember(Settings::get('query_cache_time_extra_short', 1))
-								   ->where('featured_expires_at', '>', Carbon::now())
-								   ->where('listing_type', $listingTypeID)
-								   ->take(8)
-								   ->orderByRaw("RAND()")
-								   ->with('city', 'listingType', 'featuredType')
-								   ->remember(Settings::get('query_cache_time_extra_short', 1))
-								   ->get();
+									   ->where('featured_expires_at', '>', Carbon::now())
+									   ->where('listing_type', $listingTypeID)
+									   ->take(8)
+									   ->orderByRaw("RAND()")
+									   ->with('listingType', 'featuredType')
+									   ->get();
 		}else{
 			$featuredListings = Listing::remember(Settings::get('query_cache_time_extra_short', 1))
-								   ->where('featured_expires_at', '>', Carbon::now())
-								   ->take(8)
-								   ->orderByRaw("RAND()")
-								   ->with('city', 'listingType', 'featuredType')
-								   ->get();
+									   ->where('featured_expires_at', '>', Carbon::now())
+									   ->take(8)
+									   ->orderByRaw("RAND()")
+									   ->with('listingType', 'featuredType')
+									   ->get();
 		}
-		
-
 
 		// MAPS
 		$config = array();
@@ -206,15 +201,15 @@ class ListingFEController extends Controller {
 	    
 	    foreach ($listings as $listing) {
 	    	$marker = array();
-			$marker['position'] 			= $listing->latitude.','.$listing->longitude;
-			$marker['icon'] 				= asset('/images/maps/marker_icon.png');
-			$marker['icon_scaledSize']		= '50,30';
+			$marker['position'] 		= $listing->latitude.','.$listing->longitude;
+			$marker['icon'] 			= asset('/images/maps/marker_icon.png');
+			$marker['icon_scaledSize']	= '50,30';
 			if($listing->featuredType && $listing->featured_expires_at > Carbon::now()){
-				$marker['infowindow_content'] 	= '<a href="'.url($listing->path()).'" style="text-decoration:none"><h3 class="uk-margin-small-bottom">'. $listing->title .'</h3></a><div class="uk-grid" style="width:500px"><div class="uk-width-1-2"><a href="'.url($listing->path()).'" style="text-decoration:none"><img src="'.asset($listing->featuredType->image_path).'" style="position:absolute; top:30; left:0; max-width:100px"><img src="'. asset(Image::url($listing->image_path(),['map_mini'])) .'" style="width:250px; height:200px"></a></div><div class="uk-width-1-2"><h3 class="uk-margin-left uk-margin-top-remove uk-text-primary">'. money_format('$%!.0i', $listing->price) .'</h3><ul class="uk-list uk-list-line uk-margin-left uk-width-1-1" style="margin-top:-px"><li>'.$listing->rooms.' '.trans("frontend.rooms").'</li><li>'.$listing->bathrooms.' '.trans("frontend.bathrooms").'</li><li>'.$listing->area.' mt2</li><li>'.$listing->garages.' '.trans("frontend.garages").'</li></ul><a href="'.url($listing->path()).'" class="uk-button uk-button-primary uk-margin-left">'.trans("frontend.goto_listing").'</a></div></div>';
+				$marker['infowindow_content'] = '<a href="'.url($listing->path()).'" style="text-decoration:none"><h3 class="uk-margin-small-bottom">'. $listing->title .'</h3></a><div class="uk-grid" style="width:500px"><div class="uk-width-1-2"><a href="'.url($listing->path()).'" style="text-decoration:none"><img src="'.asset($listing->featuredType->image_path).'" style="position:absolute; top:30; left:0; max-width:100px"><img src="'. asset(Image::url($listing->image_path(),['map_mini'])) .'" style="width:250px; height:200px"></a></div><div class="uk-width-1-2"><h3 class="uk-margin-left uk-margin-top-remove uk-text-primary">'. money_format('$%!.0i', $listing->price) .'</h3><ul class="uk-list uk-list-line uk-margin-left uk-width-1-1" style="margin-top:-px"><li>'.$listing->rooms.' '.trans("frontend.rooms").'</li><li>'.$listing->bathrooms.' '.trans("frontend.bathrooms").'</li><li>'.$listing->area.' mt2</li><li>'.$listing->garages.' '.trans("frontend.garages").'</li></ul><a href="'.url($listing->path()).'" class="uk-button uk-button-primary uk-margin-left">'.trans("frontend.goto_listing").'</a></div></div>';
 			}else{
-				$marker['infowindow_content'] 	= '<a href="'.url($listing->path()).'" style="text-decoration:none"><h3 class="uk-margin-small-bottom">'. $listing->title .'</h3></a><div class="uk-grid" style="width:500px"><div class="uk-width-1-2"><a href="'.url($listing->path()).'" style="text-decoration:none"><img src="'. asset(Image::url($listing->image_path(),['map_mini'])) .'" style="width:250px; height:200px"></a></div><div class="uk-width-1-2"><h3 class="uk-margin-left uk-margin-top-remove uk-text-primary">'. money_format('$%!.0i', $listing->price) .'</h3><ul class="uk-list uk-list-line uk-margin-left uk-width-1-1" style="margin-top:-px"><li>'.$listing->rooms.' '.trans("frontend.rooms").'</li><li>'.$listing->bathrooms.' '.trans("frontend.bathrooms").'</li><li>'.$listing->area.' mt2</li><li>'.$listing->garages.' '.trans("frontend.garages").'</li></ul><a href="'.url($listing->path()).'" class="uk-button uk-button-primary uk-margin-left">'.trans("frontend.goto_listing").'</a></div></div>';
+				$marker['infowindow_content'] = '<a href="'.url($listing->path()).'" style="text-decoration:none"><h3 class="uk-margin-small-bottom">'. $listing->title .'</h3></a><div class="uk-grid" style="width:500px"><div class="uk-width-1-2"><a href="'.url($listing->path()).'" style="text-decoration:none"><img src="'. asset(Image::url($listing->image_path(),['map_mini'])) .'" style="width:250px; height:200px"></a></div><div class="uk-width-1-2"><h3 class="uk-margin-left uk-margin-top-remove uk-text-primary">'. money_format('$%!.0i', $listing->price) .'</h3><ul class="uk-list uk-list-line uk-margin-left uk-width-1-1" style="margin-top:-px"><li>'.$listing->rooms.' '.trans("frontend.rooms").'</li><li>'.$listing->bathrooms.' '.trans("frontend.bathrooms").'</li><li>'.$listing->area.' mt2</li><li>'.$listing->garages.' '.trans("frontend.garages").'</li></ul><a href="'.url($listing->path()).'" class="uk-button uk-button-primary uk-margin-left">'.trans("frontend.goto_listing").'</a></div></div>';
 			}
-			$marker['animation'] 			= 'DROP';
+			$marker['animation'] = 'DROP';
 			Gmaps::add_marker($marker);
 	    }
 
@@ -242,13 +237,10 @@ class ListingFEController extends Controller {
 	 */
 	public function show($id){
 		//
-		$listing;
-		if(is_string($id)){
-			$listing = Listing::where('slug', $id)->first();
-		}
+		$listing = Listing::where('slug', $id)->first();
 
 		if(!$listing){
-			return redirect('/');
+			abort(404);
 		}
 
 		// Next, we will fire off an event and pass along 
@@ -256,7 +248,8 @@ class ListingFEController extends Controller {
 		
 		$features 	= Feature::remember(Settings::get('query_cache_time'))->with('category')->get();
 
-		$related 	= Listing::select(DB::raw("*,
+		$related 	= Listing::remember(Settings::get('query_cache_time_short'))
+							 ->select(DB::raw("*,
                               ( 6371 * acos( cos( radians(?) ) *
                                 cos( radians( latitude ) )
                                 * cos( radians( longitude ) - radians(?)
