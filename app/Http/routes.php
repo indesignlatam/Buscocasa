@@ -10,11 +10,7 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-App::setLocale('es');
-Carbon::setLocale('es');
-setlocale(LC_ALL, 'es_ES');
-setlocale(LC_MONETARY, 'en_US');
-date_default_timezone_set('America/Bogota');
+
 
 /*
 |--------------------------------------------------------------------------
