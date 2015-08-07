@@ -2,7 +2,11 @@
 
 use Illuminate\Support\ServiceProvider;
 
-use Image, Validator, Request;
+use Image;
+use Validator; 
+use Request;
+use App;
+use Carbon;
 
 class AppServiceProvider extends ServiceProvider {
 
