@@ -12,13 +12,6 @@ class Appointment extends IndesignModel {
     protected $table = 'appointments';
 
     /**
-     * The primary key of the table.
-     *
-     * @var string
-     */
-    // protected $primaryKey = 'id';
-
-    /**
      * The rules to verify when creating.
      *
      * @var array
