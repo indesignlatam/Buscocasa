@@ -201,24 +201,24 @@
 							    	<h4 class="uk-margin-remove">{{ $rlisting->title }}</h4>
 							    	<h4 class="uk-margin-top-remove uk-margin-small-bottom uk-text-bold">{{ money_format('$%!.0i', $rlisting->price) }}</h4>
 							    	<ul style="list-style-type: none;margin-top:-5px; margin-left:-30px" class="uk-text-contrast">
-					    				@if($listing->rooms)
-					    				<li><i class="uk-icon-check"></i> {{ $listing->rooms }} {{ trans('admin.rooms') }}</li>
+					    				@if($rlisting->rooms)
+					    				<li><i class="uk-icon-check"></i> {{ $rlisting->rooms }} {{ trans('admin.rooms') }}</li>
 					    				@endif
 
-					    				@if($listing->bathrooms)
-					    				<li><i class="uk-icon-check"></i> {{ $listing->bathrooms }} {{ trans('admin.bathrooms') }}</li>
+					    				@if($rlisting->bathrooms)
+					    				<li><i class="uk-icon-check"></i> {{ $rlisting->bathrooms }} {{ trans('admin.bathrooms') }}</li>
 					    				@endif
 
-					    				@if($listing->stratum)
-					    				<li><i class="uk-icon-check"></i> {{ trans('admin.stratum') }} {{ $listing->stratum }}</li>
+					    				@if($rlisting->stratum)
+					    				<li><i class="uk-icon-check"></i> {{ trans('admin.stratum') }} {{ $rlisting->stratum }}</li>
 					    				@endif
 
-					    				@if($listing->area)
-					    				<li><i class="uk-icon-check"></i> {{ number_format($listing->area, 0, ',', '.') }} mt2</li>
+					    				@if($rlisting->area)
+					    				<li><i class="uk-icon-check"></i> {{ number_format($rlisting->area, 0, ',', '.') }} mt2</li>
 					    				@endif
 
-					    				@if($listing->lot_area)
-					    				<li id="lot_area"><i class="uk-icon-check"></i> {{ number_format($listing->lot_area, 0, ',', '.') }} {{ trans('frontend.lot_area') }}</li>
+					    				@if($rlisting->lot_area)
+					    				<li id="lot_area"><i class="uk-icon-check"></i> {{ number_format($rlisting->lot_area, 0, ',', '.') }} {{ trans('frontend.lot_area') }}</li>
 					    				@endif
 					    			</ul>
 							    </div>
