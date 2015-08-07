@@ -2,14 +2,19 @@
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-use Carbon, File;
+use Carbon;
 use App\Models\IndesignModel;
 
 class Listing extends IndesignModel {
 
 	use SoftDeletes;
 
-	protected $dates = ['deleted_at', 'featured_expires_at', 'expires_at'];
+	/**
+     * The attributes that would be returned as dates
+     *
+     * @var string
+     */
+	protected $dates = ['created_at', 'update_at', 'deleted_at', 'featured_expires_at', 'expires_at'];
 
 	/**
 	 * The name of the table.
@@ -17,13 +22,6 @@ class Listing extends IndesignModel {
 	 * @var string
 	 */
     protected $table = 'listings';
-
-    /**
-	 * The primary key of the table.
-	 *
-	 * @var string
-	 */
-	//protected $primaryKey = 'pid';
 
 	/**
 	 * The rules to verify when creating.
@@ -50,7 +48,6 @@ class Listing extends IndesignModel {
 				        'lot_area'  					=> 'numeric',
 				        'construction_year'  			=> 'numeric|min:1800|max:2040',
 				        'administration'  				=> 'numeric|min:0',
-				        'image'  						=> 'image|max:2000',
 				        'main_image_id'  				=> 'numeric|exists:images,id',
 				        'published'  					=> 'boolean',
 				        'featured'  					=> 'boolean',
@@ -64,33 +61,31 @@ class Listing extends IndesignModel {
 	 *
 	 * @var array
 	 */
-	protected $editRules = ['slug'     						=> 'string|max:255|unique:listings,slug',
+	protected $editRules = ['slug'     						=> 'alpha_dash|max:255|unique:listings,slug',
 							'broker_id'     				=> 'numeric|exists:users,id',
-							'category_id'     				=> 'numeric|exists:categories,id',
-							'listing_type'     				=> 'numeric|exists:listing_types,id',
+							'category_id'     				=> 'required|numeric|exists:categories,id',
+							'listing_type'     				=> 'required|numeric|exists:listing_types,id',
 							'listing_status'  				=> 'numeric|exists:listing_statuses,id',
-					        'city_id'     					=> 'numeric|exists:cities,id',
-					        'direction'  					=> 'string|max:255',
-					        'latitude'  					=> 'numeric',
-					        'longitude'  					=> 'numeric',
+					        'city_id'     					=> 'required|numeric|exists:cities,id',
+					        'direction'  					=> 'required|string|max:255',
+					        'latitude'  					=> 'required|numeric',
+					        'longitude'  					=> 'required|numeric',
 					        'title'  						=> 'string|max:255',
-					        'description'  					=> 'string',
-					        'price'  						=> 'numeric|min:0',
-				        	'stratum'  						=> 'numeric|min:1|max:6',
+					        'description'  					=> 'string|max:2000',
+					        'price'  						=> 'required|numeric|min:0',
+					        'stratum'  						=> 'required|numeric|min:1|max:6',
 					        'rooms'  						=> 'numeric',
 					        'bathrooms'  					=> 'numeric',
 					        'garages'  						=> 'numeric',
-					        'area'  						=> 'numeric|min:0',
+					        'area'  						=> 'numeric',
 					        'lot_area'  					=> 'numeric',
 					        'construction_year'  			=> 'numeric',
 					        'administration'  				=> 'numeric|min:0',
-					        'image_path'  					=> 'string|max:255',
-				        	'main_image_id'  				=> 'numeric|exists:images,id',
+					        'main_image_id'  				=> 'numeric|exists:images,id',
 					        'published'  					=> 'boolean',
 					        'featured'  					=> 'boolean',
-					        'floor'  						=> 'numeric',
-					        'district'  					=> 'string|max:200|min:3',
-				        	'image_path'					=> 'string|max:255',
+					        'floor'  						=> 'numeric|min:0|max:100',
+					        'image_path'					=> 'string|max:255',
 							'code'     						=> 'alpha_dash|max:20|unique:listings',
 					        ];
 
@@ -99,37 +94,41 @@ class Listing extends IndesignModel {
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['slug', 'broker_id', 'category_id', 'listing_type', 'listing_status', 'city_id', 'direction', 
-							'latitude', 'longitude', 'title', 'description', 'price', 'rooms', 'bathrooms', 
-							'garages', 'area', 'stratum', 'lot_area', 'construction_year', 'administration', 'image_path', 'main_image_id', 
-							'published', 'featured', 'floor', 'district', 'code'];
+	protected $fillable = [ 'slug', 
+							'broker_id', 
+							'category_id', 
+							'listing_type', 
+							'listing_status', 
+							'city_id', 
+							'direction', 
+							'latitude', 
+							'longitude', 
+							'title', 
+							'description', 
+							'price', 
+							'rooms', 
+							'bathrooms', 
+							'garages', 
+							'area', 
+							'stratum', 
+							'lot_area', 
+							'construction_year', 
+							'administration', 
+							'image_path', 
+							'main_image_id', 
+							'published', 
+							'featured', 
+							'floor', 
+							'district', 
+							'code',
+							];
+
 
 	/**
-	 * The attributes that are hidden to JSON responces.
+	 * Resolve the image path to show
 	 *
-	 * @var array
+	 * @var string
 	 */
-	protected $hidden = ['created_at', 'deleted_at'];
-
-	/**
-	 * The attributes that are appended to JSON responces.
-	 *
-	 * @var array
-	 */
-	protected $appends = ['image_url'];
-
-	/**
-	 * The method that appends the attribute to JSON responces.
-	 *
-	 * @var null or attribute
-	 */
-	public function getImageUrlAttribute(){
-		if($this->image_path){
-			return asset($this->image_path);
-		}
-		return null;
-	}
-
 	public function image_path(){
 		if($this->image_path || $this->image_path != ''){
 			return $this->image_path;
@@ -137,14 +136,29 @@ class Listing extends IndesignModel {
 		return '/images/defaults/listing.jpg';
 	}
 
+	/**
+	 * Resolve the path to listing in FE
+	 *
+	 * @var string
+	 */
 	public function path(){
 		return strtolower('/'.str_plural($this->listingType->name).'/'.$this->slug);
 	}
 
+	/**
+	 * Resolve the path to listing in BE
+	 *
+	 * @var string
+	 */
 	public function pathEdit(){
 		return strtolower('/admin/listings/'.$this->id.'/edit');
 	}
 
+	/**
+	 * Check if listing has an unconfirmed payment
+	 *
+	 * @var bool
+	 */
 	public function hasUnconfirmedPayments(){
 		if(count($this->payments) > 0){
 			foreach ($this->payments as $payment) {
@@ -165,45 +179,16 @@ class Listing extends IndesignModel {
         return $query->where('expires_at', '>', Carbon::now());
     }
 
+    /**
+     * Scope a query to only include featured listings.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
     public function scopeFeatured($query){
         return $query->where('featured_expires_at', '>', Carbon::now());
     }
 
 
-
-    // All messages count
-    public function mainImage(){
-    	if(count($this->images) > 0){
-	    	if($this->main_image_id){
-	    		return $this->hasOne('App\Models\Image')
-				      	->where('id', $this->main_image_id)
-				      	->groupBy('listing_id');
-	    	}else{
-	    		return $this->hasOne('App\Models\Image')
-		  				->where('listing_id', $this->id)
-		  				->orderBy('id', 'DESC')
-		  				->take(1)
-		  				->groupBy('listing_id');
-	    	}
-	    }
-	    return null;
-	}
-	public function getMainImageAttribute(){
-		if(count($this->images) > 0){
-			// if relation is not loaded already, let's do it first
-			if ( ! array_key_exists('mainImage', $this->relations)) 
-			$this->load('mainImage');
-
-			$related = $this->getRelation('mainImage');
-
-			// then return the count directly
-			return $this->getRelation('mainImage');
-		}else{
-			$image = new Image;
-			$image->image_path = '/images/defaults/listing.jpg';
-			return $image;
-		}
-	}
 
 	// All messages count
     public function messageCount(){
@@ -241,10 +226,9 @@ class Listing extends IndesignModel {
 	}
 
 
-	// EVENTS
 	/**
-    * Model events
-    */
+     * Model events
+     */
     protected static function boot() {
         parent::boot();
 

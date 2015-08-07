@@ -5,22 +5,12 @@ use Bican\Roles\Models\Role as BicanRole;
 use Validator;
 
 class Role extends BicanRole {
-	//
+	
     /**
-     * The attributes that are mass assignable.
+     * The rules to verify when creating.
      *
      * @var array
      */
-    protected $fillable = ['name', 'slug', 'description', 'level'];
-
-    /**
-     * The attributes that are hidden to JSON responces.
-     *
-     * @var array
-     */
-    protected $hidden = ['created_at', 'deleted_at'];
-
-
 	protected $rules 		= ['name' 			=> 'required|string|max:255',
 								'slug' 			=> 'required|string|max:255',
 								'description' 	=> 'required|string|max:255',
@@ -31,6 +21,25 @@ class Role extends BicanRole {
 								'description' 	=> 'string|max:255',
 								'level' 		=> 'numeric'
 								];
+
+    /**
+     * The attributes that are hidden to JSON responces.
+     *
+     * @var array
+     */
+    protected $hidden = ['created_at', 'deleted_at'];
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [ 'name', 
+                            'slug', 
+                            'description', 
+                            'level',
+                            ];
+
 
     protected $errors;
 

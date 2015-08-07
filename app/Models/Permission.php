@@ -5,13 +5,23 @@ use Bican\Roles\Models\Permission as BicanPermission;
 use Validator;
 
 class Permission extends BicanPermission {
-	//
+    
     /**
-     * The attributes that are mass assignable.
+     * The rules to verify when creating.
      *
      * @var array
      */
-    protected $fillable = ['name', 'slug', 'description', 'model'];
+	protected $rules 		= [ 'name' 			=> 'required|string|max:255',
+								'slug' 			=> 'required|string|max:255',
+								'description' 	=> 'required|string|max:255',
+								'model' 		=> 'string|max:255'
+								];
+
+    protected $editRules 	= [ 'name' 			=> 'string|max:255',
+								'slug' 			=> 'string|max:255',
+								'description' 	=> 'string|max:255',
+								'model' 		=> 'string|max:255'
+								];
 
     /**
      * The attributes that are hidden to JSON responces.
@@ -20,17 +30,18 @@ class Permission extends BicanPermission {
      */
     protected $hidden = ['created_at', 'deleted_at'];
     
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [ 'name', 
+                            'slug', 
+                            'description', 
+                            'model',
+                            ];
 
-	protected $rules 		= ['name' 			=> 'required|string|max:255',
-								'slug' 			=> 'required|string|max:255',
-								'description' 	=> 'required|string|max:255',
-								'model' 		=> 'string|max:255'
-								];
-    protected $editRules 	= ['name' 			=> 'string|max:255',
-								'slug' 			=> 'string|max:255',
-								'description' 	=> 'string|max:255',
-								'model' 		=> 'string|max:255'
-								];
+
 
     protected $errors;
 
