@@ -104,24 +104,31 @@ class ImageController extends Controller {
 		}
 
 		// Get image orientation
-		$exif 		= exif_read_data(public_path().'/images/temp/'.$name, 'IFD0');
-		$rotation 	= 0;
+		$exif = exif_read_data(public_path().'/images/temp/'.$name, 'IFD0');
+		$rotation = 0;
 		if(!empty($exif['Orientation'])) {
 		    switch($exif['Orientation']) {
 		        case 8:
-		            $rotation = 90;
+		            $rotation = -90;
 		            break;
 		        case 3:
 		            $rotation = 180;
 		            break;
 		        case 6:
-		            $rotation = -90;
+		            $rotation = 90;
 		            break;
 		    }
 		}
 
-		// Crop image, watermark and rotate it
-		$img 			= Image::make('/images/temp/'.$name, ['width' => 800, 'height' => 540, 'crop' => true, 'rotate' => $rotation]);
+		// Rotate the image if necessary
+		if($rotation != 0){
+			$img = Image::open(public_path().'/images/temp/'.$name);
+			$img->rotate($rotation);
+			$img->save('images/temp/'.$name);
+		}
+		
+		// Crop image, watermark
+		$img 			= Image::make('/images/temp/'.$name, ['width' => 800, 'height' => 540, 'crop' => true]);
 		$watermark 		= Image::open(public_path().'/images/watermark_contrast.png');// Or use watermark.png for color watermark
 		$size      		= $img->getSize();
 		$wSize     		= $watermark->getSize();
@@ -143,7 +150,7 @@ class ImageController extends Controller {
 
 		// Return ajax response with image and success message
 		return response()->json(['image' 	=> $image,
-								 'success'	=> trans('admin.image_uploaded_succesfuly')
+								 'success'	=> trans('admin.image_uploaded_succesfuly'),
 								 ]);
 	}
 
