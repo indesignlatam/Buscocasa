@@ -94,26 +94,26 @@
 						    					</div>
 						    				@else
 					    						<div class="uk-width-small-1-1 uk-width-medium-1-3 uk-width-large-1-3">
-						    						<button id="answer-{{$appointment->id}}" class="uk-button uk-button-success uk-width-small-1-1 uk-width-medium-1-3 uk-width-large-1-3" onclick="answerMessage({{ $appointment->id }})" disabled><i class="uk-icon-reply"></i></button>
+						    						<button id="answer-{{$appointment->id}}" class="uk-button uk-button-success" onclick="answerMessage({{ $appointment->id }})" disabled><i class="uk-icon-reply"></i></button>
 						    					</div>
 					    						<div class="uk-width-small-1-1 uk-width-medium-1-3 uk-width-large-1-3">
-						    						<button id="mark-read-{{$appointment->id}}" class="uk-button uk-width-small-1-1 uk-width-medium-1-3 uk-width-large-1-3" onclick="mark({{ $appointment->id }}, 1)" disabled><i class="uk-icon-check-square-o"></i></button>
+						    						<button id="mark-read-{{$appointment->id}}" class="uk-button" onclick="mark({{ $appointment->id }}, 1)" disabled><i class="uk-icon-check-square-o"></i></button>
 						    					</div>
 						    				@endif
 						    			@else
 						    				@if(!$appointment->answered)
 					    						<div class="uk-width-small-1-1 uk-width-medium-1-3 uk-width-large-1-3">
-						    						<a href="{{ url('admin/user/not_confirmed') }}" class="uk-button uk-button-success uk-width-small-1-1 uk-width-medium-1-3 uk-width-large-1-3"><i class="uk-icon-reply"></i></a>
+						    						<a href="{{ url('admin/user/not_confirmed') }}" class="uk-button uk-button-success"><i class="uk-icon-reply"></i></a>
 						    					</div>
 					    						<div class="uk-width-small-1-1 uk-width-medium-1-3 uk-width-large-1-3">
-						    						<button id="mark-read-{{$appointment->id}}" class="uk-button uk-width-small-1-1 uk-width-medium-1-3 uk-width-large-1-3" onclick="mark({{ $appointment->id }}, 1)"><i class="uk-icon-check-square-o"></i></button>
+						    						<button id="mark-read-{{$appointment->id}}" class="uk-button" onclick="mark({{ $appointment->id }}, 1)"><i class="uk-icon-check-square-o"></i></button>
 						    					</div>
 						    				@else
 					    						<div class="uk-width-small-1-1 uk-width-medium-1-3 uk-width-large-1-3">
-						    						<button id="answer-{{$appointment->id}}" class="uk-button uk-button-success uk-width-small-1-1 uk-width-medium-1-3 uk-width-large-1-3" onclick="answerMessage({{ $appointment->id }})" disabled><i class="uk-icon-reply"></i></button>
+						    						<button id="answer-{{$appointment->id}}" class="uk-button uk-button-success" onclick="answerMessage({{ $appointment->id }})" disabled><i class="uk-icon-reply"></i></button>
 						    					</div>
 					    						<div class="uk-width-small-1-1 uk-width-medium-1-3 uk-width-large-1-3">
-						    						<button id="mark-read-{{$appointment->id}}" class="uk-button uk-width-small-1-1 uk-width-medium-1-3 uk-width-large-1-3" onclick="mark({{ $appointment->id }}, 1)" disabled><i class="uk-icon-check-square-o"></i></button>
+						    						<button id="mark-read-{{$appointment->id}}" class="uk-button" onclick="mark({{ $appointment->id }}, 1)" disabled><i class="uk-icon-check-square-o"></i></button>
 						    					</div>
 						    				@endif
 						    			@endif
