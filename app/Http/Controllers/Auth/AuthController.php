@@ -8,8 +8,12 @@ use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Http\Request;
 
 use App\Commands\SendUserConfirmationEmail;
-use Auth, Artisan, Socialize, Queue, Analytics, 
-	App\Models\Role, App\User; 
+use Auth;
+use Socialize; 
+use Queue;
+use Analytics;
+use	App\Models\Role;
+use App\User; 
 
 class AuthController extends Controller {
 
@@ -149,29 +153,36 @@ class AuthController extends Controller {
 			}
 			return '/admin/listings/create';
 		}
-		
 	}
 
 
-	public function redirectToProvider($provider){
+	public function redirectToProvider($provider = null){
+		if(!$provider || $provider != 'facebook'){
+			abort(404);
+		}
+
 	    return Socialize::with($provider)->redirect();
 	}
 
-	public function handleProviderCallback($provider){
+	public function handleProviderCallback($provider = null){
+		if(!$provider || $provider != 'facebook'){
+			abort(404);
+		}
+
 	    $providerUser = Socialize::with($provider)->user();
 
 	    // OAuth Two Providers
 		$token = $providerUser->token;
 
-		$user 	= User::firstOrNew(['email' => $providerUser->getEmail()]);
-
-		if(!$user->email){
+		$user = User::firstOrNew(['email' => $providerUser->getEmail()]);
+		if(!$user->id){
 			if($providerUser->getNickname()){
-				$user->username 	= $providerUser->getEmail();
+				$user->username = md5($providerUser->getEmail());
 			}
 			
-			$user->name 		= $providerUser->getName();
-			$user->email 		= $providerUser->getEmail();
+			$user->name 	= $providerUser->getName();
+			$user->email 	= $providerUser->getEmail();
+			$user->confirmed= true;
 			// $user->avatar 		= $providerUser->getAvatar();
 			// $user->user_id 		= $providerUser->getId();
 
@@ -179,7 +190,9 @@ class AuthController extends Controller {
 
 			$role = Role::where('slug', '=', 'registered.user')->first();
 			$user->attachRole($role);
-			Session::push('new_user', true);
+
+			// Analytics event
+			Analytics::trackEvent('User Registered by Facebook', 'button', $user->id);
 		}
 
 		Auth::login($user);
