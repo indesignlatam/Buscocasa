@@ -5,10 +5,15 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 
-use Carbon, Session, Auth, Log, Settings, URL, Queue;
-use App\Models\Payment,
-	App\Models\Listing,
-	App\Models\FeaturedType;
+use Carbon;
+use Auth;
+use Log;
+use Settings;
+use Queue;
+
+use App\Models\Payment;
+use	App\Models\Listing;
+use	App\Models\FeaturedType;
 
 use App\Commands\SendPaymentConfirmationEmail;
 use App\Commands\PostListingToFacebookPage;
@@ -27,16 +32,40 @@ class PaymentController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request){
-		//
 		$query;
+		$take = Settings::get('pagination_objects');
 
-		if(!$request->has('unconfirmed')){
-			$query = Payment::where('confirmed', true)->where('user_id', Auth::user()->id)->orWhere('canceled', false)->where('user_id', Auth::user()->id);
+		if(Auth::user()->is('admin')){
+			if(!$request->has('unconfirmed')){
+				$query = Payment::where('confirmed', true)->orWhere('canceled', false);
+			}else{
+				$query = Payment::where('confirmed', false)->orWhere('canceled', true);
+			}
 		}else{
-			$query = Payment::where('user_id', Auth::user()->id);
+			if(!$request->has('unconfirmed')){
+				$query = Payment::where('confirmed', true)->where('user_id', Auth::user()->id)->orWhere('canceled', false)->where('user_id', Auth::user()->id);
+			}else{
+				$query = Payment::where('user_id', Auth::user()->id);
+			}
+		}
+
+		// Order the objects
+		if($request->get('order_by')){
+			if($request->get('order_by') == 'id_asc'){
+				$query = $query->orderBy('id', 'ASC');
+			}else if($request->get('order_by') == 'id_desc'){
+				$query = $query->orderBy('id', 'DESC');
+			}
+		}else{
+			$query = $query->orderBy('id', 'DESC');
+		}
+
+		// Take n objects
+		if($request->has('take') && is_int($request->get('take'))){
+			$take = $request->get('take');
 		}
 						  
-		$payments = $query->paginate(Settings::get('pagination_objects'));
+		$payments = $query->paginate($take);
 
 		return view('admin.payments.index', ['payments' => $payments]);
 	}
@@ -60,11 +89,11 @@ class PaymentController extends Controller {
 
 		// Security check
 	    if(!Auth::user()->is('admin')){
-	    	if(!$listing || $listing->broker->id != Auth::user()->id){
+	    	if(!$listing || $listing->broker_id != Auth::user()->id){
 	    		if($request->ajax()){// If request was sent using ajax
 					return response()->json(['error' => trans('responses.no_permission')]);
 	    		}
-	        	return redirect('admin/destacar')->withErrors([trans('responses.no_permission')]);
+	        	return redirect()->back()->withErrors([trans('responses.no_permission')]);
 	    	}
 		}
 
@@ -76,40 +105,39 @@ class PaymentController extends Controller {
         	return redirect('admin/pagos')->withErrors([trans('responses.payment_unconfirmed_for_listing')]);
 		}
 
-		$payment		= new Payment;
-		$featuredType 	= FeaturedType::find($request->get('featured_id'));
+		$payment = new Payment;
+		$featuredType = FeaturedType::find($request->get('featured_id'));
 
 		if(!$featuredType || !$request->get('featured_id')){
-			return redirect(URL::previous())->withErrors([trans('admin.no_featured_selected')]);
+			return redirect()->back()->withErrors([trans('admin.no_featured_selected')]);
 		}
 
-		
 		$input 						= $request->all();
 		$input['user_id'] 			= Auth::user()->id;
 		$input['reference_code'] 	= md5(Auth::user()->id . $request->get('listing_id') . Carbon::now()->toDateTimeString());
 		$input['amount'] 			= floatval(preg_replace("/[^0-9.]*/","", number_format($featuredType->price, 2, '.', ',')));
 		$input['tax'] 				= floatval(preg_replace("/[^0-9.]*/","", number_format(($featuredType->price/1.16)*0.16, 2, '.', ',')));
 		$input['tax_return_base'] 	= floatval(preg_replace("/[^0-9.]*/","", number_format($featuredType->price/1.16, 2, '.', ',')));
-		$input['description'] 		= $featuredType->name . ', ' . $listing->title . ' - ' . $listing->code;
+		$input['description'] 		= $featuredType->name . ', ' . $listing->title . ' - #' . $listing->code;
 
 		// Data to create signature
-		$referenceCode 				= $input['reference_code'];
-		$amount 					= $input['amount'];
-		$currency 					= Settings::get('currency', 'COP');
+		$referenceCode = $input['reference_code'];
+		$amount = $input['amount'];
+		$currency = Settings::get('currency', 'COP');
 		$merchantId;
 		$apiKey;
 
 		if(Settings::get('payu_test', 1)){
-			$merchantId 				= config('payu.test_merchant_id');
-			$apiKey 					= config('payu.test_api_key');
+			$merchantId = config('payu.test_merchant_id');
+			$apiKey = config('payu.test_api_key');
 		}else{
-			$merchantId 				= config('payu.merchant_id');
-			$apiKey 					= config('payu.api_key');
+			$merchantId = config('payu.merchant_id');
+			$apiKey = config('payu.api_key');
 		}
 		
-		$signature 					= str_replace(',', '.', "$apiKey~$merchantId~$referenceCode~$amount~$currency");
+		$signature = str_replace(',', '.', "$apiKey~$merchantId~$referenceCode~$amount~$currency");
 
-		$input['signature'] 		= md5($signature);
+		$input['signature'] = md5($signature);
 
 		if (!$payment->validate($input)){
 	        return redirect($this->path.$request->get('listing_id'))->withErrors($payment->errors())->withInput();
@@ -128,11 +156,11 @@ class PaymentController extends Controller {
 	 */
 	public function show($id, Request $request){
 		//
-		$payment = Payment::where('id', $id)->where('locked', false)->where('confirmed', false)->where('canceled', false)->first();// TODO eager loading?
+		$payment = Payment::where('id', $id)->where('locked', false)->where('confirmed', false)->where('canceled', false)->first();
 
 		// Security check
 	    if(!Auth::user()->is('admin')){
-	    	if(!$payment || $payment->user->id != Auth::user()->id){
+	    	if(!$payment || $payment->user_id != Auth::user()->id){
 	    		if($request->ajax()){// If request was sent using ajax
 					return response()->json(['error' => trans('responses.no_permission')]);
 	    		}
@@ -140,10 +168,8 @@ class PaymentController extends Controller {
 	    	}
 		}
 		
-		if($payment){
-			$payment->locked = true;
-			$payment->save();
-		}
+		$payment->locked = true;
+		$payment->save();
 
 		return view('admin.payments.show', ['payment' => $payment]);
 	}
@@ -158,9 +184,9 @@ class PaymentController extends Controller {
 		//
 		$apiKey;
 		if(Settings::get('payu_test', 1)){
-			$apiKey 					= config('payu.test_api_key');
+			$apiKey = config('payu.test_api_key');
 		}else{
-			$apiKey 					= config('payu.api_key');
+			$apiKey = config('payu.api_key');
 		}
 
 		$merchantId 		= $request->get('merchantId');
@@ -176,8 +202,8 @@ class PaymentController extends Controller {
 			return redirect('/admin/pagos')->withErrors([trans('admin.payment_signature_error')]);
 		}
 
-		$payment 	= Payment::where('reference_code', $referenceCode)->where('user_id', Auth::user()->id)->first();
-		$listing 	= $payment->listing;
+		$payment = Payment::where('reference_code', $referenceCode)->where('user_id', Auth::user()->id)->first();
+		$listing = $payment->listing;
 
 		if(!$listing){
 			return redirect('/admin/pagos')->withErrors([trans('admin.payment_no_listing_error')]);
@@ -199,9 +225,9 @@ class PaymentController extends Controller {
 		//
 		$apiKey;
 		if(Settings::get('payu_test', 1)){
-			$apiKey 					= config('payu.test_api_key');
+			$apiKey = config('payu.test_api_key');
 		}else{
-			$apiKey 					= config('payu.api_key');
+			$apiKey = config('payu.api_key');
 		}
 		
 		$merchantId 		= $request->get('merchant_id');
@@ -218,10 +244,6 @@ class PaymentController extends Controller {
 
 		$signature 	= "$apiKey~$merchantId~$referenceCode~$amount~$currency~$transactionState";
 		$signature 	= md5($signature);
-
-		// Log::info('Signature:');
-		// Log::info($signature);
-		// Log::info($request->get('sign'));
 
 		if($signature != $request->get('sign')){
 			Log::info('Error validating signature for: '.$referenceCode);
@@ -254,13 +276,13 @@ class PaymentController extends Controller {
 
 				// Update the listing and add it 30 days more of featuring 
 				// TODO If user pays again but changes the type the type will change and add the time
-				$payment->listing->featured_type 	= $payment->featuredType->id;
+				$payment->listing->featured_type = $payment->featuredType->id;
 				if($payment->listing->featured_expires_at && $payment->listing->featured_expires_at < Carbon::now()){
-					$payment->listing->featured_expires_at 	= $payment->listing->featured_expires_at->addDays(30);
+					$payment->listing->featured_expires_at = $payment->listing->featured_expires_at->addDays(30);
 				}else{
-					$payment->listing->featured_expires_at 	= Carbon::now()->addDays(30);
+					$payment->listing->featured_expires_at = Carbon::now()->addDays(30);
 				}
-				$payment->listing->expires_at 		=  $payment->listing->featured_expires_at->addDays(10);
+				$payment->listing->expires_at = $payment->listing->featured_expires_at->addDays(10);
 				$payment->listing->save();
 
 				// Send confirmation email to user and generate billing
@@ -312,7 +334,7 @@ class PaymentController extends Controller {
 
 		// Security check
 	    if(!Auth::user()->is('admin')){
-	    	if(!$payment || $payment->user->id != Auth::user()->id){
+	    	if(!$payment || $payment->user_id != Auth::user()->id){
 	    		if($request->ajax()){// If request was sent using ajax
 					return response()->json(['error' => trans('responses.no_permission')]);
 				}
@@ -350,7 +372,7 @@ class PaymentController extends Controller {
 
 		// Security check
 	    if(!Auth::user()->is('admin')){
-	    	if(!$payment || $payment->user->id != Auth::user()->id){
+	    	if(!$payment || $payment->user_id != Auth::user()->id){
 	    		if($request->ajax()){// If request was sent using ajax
 					return response()->json(['error' => trans('responses.no_permission')]);
 				}
