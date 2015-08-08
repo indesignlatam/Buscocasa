@@ -3,8 +3,6 @@
 use Illuminate\Support\ServiceProvider;
 
 use Image;
-use Validator; 
-use Request;
 use App;
 use Carbon;
 

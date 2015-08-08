@@ -267,7 +267,6 @@
         @endif
         <!-- Featured listings -->
     </div>
-</html>
 @endsection
 
 @section('js')

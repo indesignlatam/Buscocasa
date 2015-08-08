@@ -1,6 +1,6 @@
 <?php namespace App\Exceptions;
 
-use Exception, Redirect;
+use Exception;
 use Illuminate\Session\TokenMismatchException;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -24,8 +24,7 @@ class Handler extends ExceptionHandler {
 	 * @param  \Exception  $e
 	 * @return void
 	 */
-	public function report(Exception $e)
-	{
+	public function report(Exception $e){
 		return parent::report($e);
 	}
 
@@ -39,9 +38,9 @@ class Handler extends ExceptionHandler {
 	public function render($request, Exception $e){
 		// Redirect back 
 		if ($e instanceof TokenMismatchException){
-			return Redirect::back()
-                    ->withInput($request->all())
-                    ->withErrors(['invalid_token' => trans('responses.invalid_token'),
+			return redirect()->back()
+		                     ->withInput($request->all())
+		                     ->withErrors(['invalid_token' => trans('responses.invalid_token'),
                 ]);
         }
 

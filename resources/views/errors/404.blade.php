@@ -10,7 +10,7 @@
 
 @section('css')
 	@parent
-	<link href='//fonts.googleapis.com/css?family=Lato:100' rel='stylesheet' type='text/css'>
+	<link href='//fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
 	<style>
 		body {
 			margin: 0;
@@ -40,7 +40,7 @@
 	
 	<div class="container uk-container uk-margin-large" style="height:200px">
 		<div class="content">
-			<div class="title">Be right back.</div>
+			<div class="title">No encontramos la pagina que solicitaste.</div>
 		</div>
 	</div>
 

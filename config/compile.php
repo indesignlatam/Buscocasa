@@ -20,6 +20,9 @@ return [
 		realpath(__DIR__.'/../app/Providers/ConfigServiceProvider.php'),
 		realpath(__DIR__.'/../app/Providers/EventServiceProvider.php'),
 		realpath(__DIR__.'/../app/Providers/RouteServiceProvider.php'),
+
+		// Custom
+		realpath(__DIR__.'/../app/Http\Middleware\VerifyCsrfToken'),
 	],
 
 	/*
