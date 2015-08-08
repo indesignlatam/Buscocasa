@@ -98,7 +98,7 @@ class PaymentController extends Controller {
 		}
 
 		// Check id the listing already has a payment that is not confirmed or canceled
-		if($listing->hasUnconfirmedPayments()){
+		if($listing->hasUnconfirmedPayments() || ($listing->featured_expires_at && $listing->featured_expires_at > Carbon::now()->addDays(5))){
 			if($request->ajax()){// If request was sent using ajax
 				return response()->json(['error' => trans('responses.payment_unconfirmed_for_listing')]);
     		}

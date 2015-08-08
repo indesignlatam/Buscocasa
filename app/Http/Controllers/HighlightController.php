@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use Settings;
 use Auth;
+use Carbon;
 use App\Models\Listing;
 use	App\Models\FeaturedType;
 
@@ -63,6 +64,10 @@ class HighlightController extends Controller {
 				}
 	        	return redirect('/admin/listings')->withErrors([trans('responses.no_permission')]);
 	    	}
+		}
+
+		if($listing->featured_expires_at > Carbon::now()->addDays(5)){
+	        return redirect('/admin/listings')->withErrors([trans('responses.no_permission')]);
 		}
 
 		// Get the featured types and cache them
