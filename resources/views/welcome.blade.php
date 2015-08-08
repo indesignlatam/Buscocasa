@@ -152,15 +152,7 @@
                 @foreach($sales as $sale)
                     <div class="uk-width-large-2-10 uk-width-medium-1-3 uk-width-small-1-1" style="position:relative">
                         <a href="{{ url($sale->path()) }}">
-                            <img src="{{ asset(Image::url($sale->image_path(),['mini_front'])) }}" class="uk-margin-small-bottom" style="max-width=150px" data-uk-scrollspy="{cls:'uk-animation-fade'}">
-                        
-                        @if($sale->featuredType && $sale->featured_expires_at > Carbon::now())
-                            <img src="{{ asset($sale->featuredType->image_path) }}" style="position:absolute; top:0; left:30; max-width:100px">
-                        @else
-                            @if(Carbon::createFromFormat('Y-m-d H:i:s', $sale->created_at)->diffInDays(Carbon::now()) < 5)
-                                <img src="{{asset('/images/defaults/new.png')}}" style="position:absolute; top:0; left:30; max-width:100px">
-                            @endif
-                        @endif
+                            <img src="{{ asset(Image::url($sale->image_path(),['mini_front'])) }}" class="uk-margin-small-bottom" style="max-width=150px" data-uk-scrollspy="{cls:'uk-animation-fade'}">                        
                         </a>
 
                         <br class="uk-visible-small">
@@ -186,14 +178,6 @@
                     <div class="uk-width-large-2-10 uk-width-medium-1-3 uk-width-small-1-1" style="position:relative">
                         <a href="{{ url($lease->path()) }}">
                             <img src="{{ asset(Image::url($lease->image_path(),['mini_front'])) }}" class="uk-margin-small-bottom" style="max-width=150px" data-uk-scrollspy="{cls:'uk-animation-fade'}">
-                        
-                        @if($lease->featuredType && $lease->featured_expires_at > Carbon::now())
-                            <img src="{{ asset($lease->featuredType->image_path) }}" style="position:absolute; top:0; left:30; max-width:100px">
-                        @else
-                            @if(Carbon::createFromFormat('Y-m-d H:i:s', $lease->created_at)->diffInDays(Carbon::now()) < 5)
-                                <img src="{{asset('/images/defaults/new.png')}}" style="position:absolute; top:0; left:30; max-width:100px">
-                            @endif
-                        @endif
                         </a>
                         
                         <a href="{{ url($lease->path()) }}">{{ $lease->title }}</a>
@@ -230,7 +214,7 @@
     		<div class="uk-grid uk-margin-large-bottom">
                 <div class="uk-width-large-3-5 uk-width-small-1-1">
                     <a href="{{ url($featured[0]->path()) }}">
-                        <img src="{{ asset(Image::url($featured[0]->image_path(),['mini_image_2x'])) }}" class="uk-margin-remove" data-uk-scrollspy="{cls:'uk-animation-slide-left'}">
+                        <img src="{{ asset(Image::url($featured[0]->image_path(),['mini_image_2x'])) }}" class="uk-margin-remove" data-uk-scrollspy="{cls:'uk-animation-fade'}">
                     </a>
                 </div>
                 <div class="uk-width-large-2-5 uk-width-small-1-1">
@@ -276,7 +260,7 @@
                 </div>
                 <div class="uk-width-large-3-5 uk-width-small-1-1">
                     <a href="{{ url($featured[1]->path()) }}">
-                        <img src="{{ asset(Image::url($featured[1]->image_path(),['mini_image_2x'])) }}" class="uk-margin-remove" data-uk-scrollspy="{cls:'uk-animation-slide-right'}">
+                        <img src="{{ asset(Image::url($featured[1]->image_path(),['mini_image_2x'])) }}" class="uk-margin-remove" data-uk-scrollspy="{cls:'uk-animation-fade'}">
                     </a>
                 </div>
             </div>
