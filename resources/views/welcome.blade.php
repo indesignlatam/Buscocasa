@@ -10,9 +10,6 @@
 
 @section('css')
 	@parent
-    <script type="text/javascript">
-    loadCSS("{{ asset('/css/select2front.min.css') }}")
-    </script>
     <style type="text/css">
         #code {
           margin: -5px;
@@ -292,7 +289,7 @@
 @section('js')
 	@parent
 
-    <noscript><link href="{{ asset('/css/select2front.min.css') }}" rel="stylesheet"/></noscript>
+    <link href="{{ asset('/css/select2front.min.css') }}" rel="stylesheet" />
     <script src="{{ asset('/js/select2.min.js') }}"></script>
 
     <script type="text/javascript">

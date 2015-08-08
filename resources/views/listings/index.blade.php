@@ -17,10 +17,6 @@
 
 @section('css')
 	@parent
-	<script type="text/javascript">
-		loadCSS("//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css");
-		loadCSS("{{ asset('/css/select2.min.css') }}");
-	</script>
 @endsection
 
 @section('content')
@@ -309,9 +305,10 @@
 
 @section('js')
 	@parent
+
 	<!-- CSS -->
-	<noscript><link href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet"></noscript>
-	<noscript><link href="{{ asset('/css/select2.min.css') }}" rel="stylesheet"></noscript>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+	<link href="{{ asset('/css/select2.min.css') }}" rel="stylesheet"/>
 	<!-- CSS -->
 
 	<!-- JS -->

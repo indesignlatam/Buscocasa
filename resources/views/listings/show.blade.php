@@ -16,10 +16,6 @@
 
 @section('css')
 	@parent
-	<script type="text/javascript">
-		loadCSS("{{ asset('/css/components/slideshow.almost-flat.min.css') }}");
-		loadCSS("{{ asset('/css/select2.min.css') }}");
-	</script>
 @endsection
 
 @section('content')
@@ -317,15 +313,16 @@
 
 @section('js')
 	@parent
+
 	<!-- CSS -->
-	<noscript><link href="{{ asset('/css/components/slideshow.almost-flat.min.css') }}" rel="stylesheet"></noscript>
-	<noscript><link href="{{ asset('/css/components/slidenav.almost-flat.min.css') }}" rel="stylesheet"></noscript>
+	<link href="{{ asset('/css/components/slideshow.almost-flat.min.css') }}" rel="stylesheet">
+	<link href="{{ asset('/css/components/slidenav.almost-flat.min.css') }}" rel="stylesheet">
 	<!-- CSS -->
 
-	<!-- JS -->
-	<script async src='https://www.google.com/recaptcha/api.js'></script>
-    <script async src="{{ asset('/js/components/slideshow.min.js') }}"></script>
-	<!-- JS -->
+	<!-- CSS -->
+	<script src='https://www.google.com/recaptcha/api.js'></script>
+    <script src="{{ asset('/js/components/slideshow.min.js') }}"></script>
+	<!-- CSS -->
 	
 	<script type="text/javascript">
 		window.fbAsyncInit = function() {

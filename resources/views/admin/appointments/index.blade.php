@@ -181,7 +181,7 @@
 @section('js')
 	@parent
 	<link href="{{ asset('/css/components/tooltip.almost-flat.min.css') }}" rel="stylesheet">
-	<script async src="{{ asset('/js/components/tooltip.min.js') }}"></script>
+	<script src="{{ asset('/js/components/tooltip.min.js') }}"></script>
 
 	<script type="text/javascript">
 	    function answerMessage(objectID){

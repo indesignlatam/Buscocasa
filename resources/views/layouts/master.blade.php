@@ -39,12 +39,12 @@
         <!-- Scripts -->
         @section('js')
             <!-- Necessary Scripts -->
-            <script async src="{{ asset('/js/jquery.min.js') }}"></script>
-            <script async src="{{ asset('/js/uikit.min.js') }}"></script>
+            <script src="{{ asset('/js/jquery.min.js') }}"></script>
+            <script src="{{ asset('/js/uikit.min.js') }}"></script>
 
             <!-- Other Scripts -->
             <link href="{{ asset('/css/components/notify.almost-flat.css') }}" rel="stylesheet">
-            <script async src="{{ asset('/js/components/notify.min.js') }}"></script>
+            <script src="{{ asset('/js/components/notify.min.js') }}"></script>
             {!! Analytics::render() !!}
         @show
 
