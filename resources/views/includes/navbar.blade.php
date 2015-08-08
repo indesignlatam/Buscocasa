@@ -3,14 +3,42 @@
 
     	<a href="#menuoffcanvas" class="uk-navbar-toggle uk-visible-small" data-uk-offcanvas></a>
         
-        <a class="uk-navbar-brand uk-hidden-small" href="{{ url('/admin/') }}">
+        <a class="uk-navbar-brand uk-hidden-small" href="{{ url('/admin') }}">
             <img src="{{ asset('/images/logo_h.png') }}" alt="logo" class="uk-margin-right" style="height:30px; margin-left:-20px">
         </a>
 
-        <a class="uk-navbar-brand uk-visible-small" href="{{ url('/admin/') }}">
-            <img src="{{ asset('/images/logo_h.png') }}" alt="logo" class="uk-margin-right" style="height:30px">
+        <a class="uk-navbar-brand uk-visible-small" href="{{ url('/admin') }}">
+            <img src="{{ asset('/images/logo_h.png') }}" alt="logo" style="max-height:17px">
         </a>
-        
+
+        <!-- This is the off-canvas sidebar -->
+        <div id="menuoffcanvas" class="uk-offcanvas">
+            <div class="uk-offcanvas-bar">
+                <ul class="uk-nav uk-nav-offcanvas" data-uk-nav>
+                    <li class="uk-parent" data-uk-dropdown>
+                        <a href="{{ url('/admin') }}">{{ trans('admin.dashboard') }}</a>
+                    </li>
+                    <li class="uk-parent" data-uk-dropdown>
+                        <a href="{{ url('/admin/listings') }}">{{ trans('admin.my_listings_menu') }}</a>
+                    </li>
+                    <li class="uk-parent" data-uk-dropdown>
+                        <a href="{{ url('/admin/messages') }}">{{ trans('admin.my_messages_menu') }}</a>
+                    </li>
+                    <li class="uk-parent" data-uk-dropdown>
+                        <a href="{{ url('/admin/pagos') }}">{{ trans('admin.payments') }}</a>
+                    </li>
+
+                    @if(Auth::check())
+                    <li class="uk-nav-divider"></li>
+                    <li><a href="{{ url('/') }}" target="_blank">{{ trans('admin.live_site') }}</a></li>
+                    <li><a href="{{ url('/admin/user/'.Auth::user()->id.'/edit') }}">{{ trans('admin.profile_menu') }}</a></li>
+                    <li><a href="{{ url('/auth/logout') }}">{{ trans('admin.logout') }}</a></li>
+                    @endif            
+                </ul>
+            </div>
+        </div>
+        <!-- This is the off-canvas sidebar -->
+
         <ul class="uk-navbar-nav uk-vertical-align uk-hidden-small">
             @if(Auth::check())
                 @role('admin')

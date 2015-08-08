@@ -5,14 +5,14 @@
 
 @section('content')
 	<p>{{ trans('emails.expiring_listing_title') }}</p>
-	<div style="text-align:center;">
-		<h3><a href="{{ url('/admin/listings/'.$listing->id.'/renovate') }}">{{ trans('emails.renovate_listing_now') }}</a></h3>
+
+	<div style="text-align:center; margin-top:20px">
+		<h3><a href="{{ url('/admin/listings/'.$listing->id.'/renovate') }}" class="uk-button uk-button-large uk-button-primary">{{ trans('emails.renovate_listing_now') }}</a></h3>
 	</div>
 
 	<div style="text-align:center;">
 		<a href="{{ url($listing->path()) }}">
-			{{-- <img src="{{ $message->embed(public_path().$listing->image_path()) }}" width="300px"> --}}
-			<img src="{{ asset($listing->image_path()) }}" width="300px">
+			<img src="{{ $message->embed(public_path().'/'.$listing->image_path()) }}" style="width:300px; max-width:300px">
 		</a>
 	</div>
 
@@ -26,8 +26,8 @@
     	{{ trans('emails.bathrooms') }} <b>{{ $listing->bathrooms }}</b><br>
     </p>
 
-	<div class="uk-text-center">
-		<h3><a href="{{ url('/admin/listings/'.$listing->id.'/renovate') }}">{{ trans('emails.renovate_listing_now') }}</a></h3>
+	<div style="text-align:center;">
+		<h3><a href="{{ url('/admin/listings/'.$listing->id.'/renovate') }}" class="uk-button uk-button-large uk-button-primary">{{ trans('emails.renovate_listing_now') }}</a></h3>
 	</div>
 @endsection
 
@@ -36,5 +36,9 @@
 @endsection
 
 @section('footer')
+	@parent
+@endsection
+
+@section('share_unregister')
 	@parent
 @endsection

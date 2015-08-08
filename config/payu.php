@@ -15,8 +15,8 @@ return [
     'account_id' 		=> '538794',
 
     'response_url'		=> 'http://buscocasa.co/admin/pagos/respuesta',
-    'confirmation_url'	=> 'http://www.buscocasa.co/pagos/confirmar',
-    'dispute_url'		=> 'http://www.buscocasa.co/pagos/disputa',
+    'confirmation_url'	=> 'http://buscocasa.co/pagos/confirmar',
+    'dispute_url'		=> 'http://buscocasa.co/pagos/disputa',
 
 
     /*
@@ -32,14 +32,4 @@ return [
     'test_api_login'		=> '11959c415b33d0c',
     'test_api_key' 			=> '6u39nqhq8ftd0hlvnjfs66eh8c',
     'test_account_id'		=> '500538',
-
-    /*
-	|--------------------------------------------------------------------------
-	| Table name to store settings
-	|--------------------------------------------------------------------------
-	|
-	| Info: If you change this table name, dont forget to update your settings migrations file.
-	|
-	*/
-    // 'db_table'   => 'settings'
 ];

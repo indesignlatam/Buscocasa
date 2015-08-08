@@ -9,6 +9,21 @@ class IndesignModel extends Model {
 
     use Rememberable;
 
+    /**
+     * The attributes that would be returned as dates
+     *
+     * @var string
+     */
+    protected $dates = ['created_at', 'update_at', 'deleted_at'];
+
+    /**
+     * The attributes that are hidden to JSON responces.
+     *
+     * @var array
+     */
+    protected $hidden = ['created_at', 'deleted_at'];
+    
+
 	protected $rules = [];
     protected $editRules = [];
 

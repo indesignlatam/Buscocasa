@@ -17,8 +17,8 @@
 	    <hr>
 	    
 	    <div class="uk-panel">
-			<a class="uk-button uk-button-large uk-float-right uk-margin-left" href="{{ url('/admin/listings') }}">{{ trans('admin.close') }}</a>
-	        <button form="create_form" type="submit" class="uk-button uk-button-large uk-button-success uk-form-width-medium uk-float-right" onclick="blockUI()">{{ trans('admin.save') }}</button>
+			<a class="uk-button uk-button-large uk-float-right uk-margin-left uk-width-small-1-1 uk-width-medium-2-10 uk-width-large-1-10" href="{{ url('/admin/listings') }}">{{ trans('admin.close') }}</a>
+	        <button form="create_form" type="submit" class="uk-button uk-button-large uk-button-success uk-float-right uk-width-small-1-1 uk-width-medium-3-10 uk-width-large-2-10" onclick="blockUI()">{{ trans('admin.save') }}</button>
 	    </div>
 
 		<form id="create_form" class="uk-form uk-form-stacked" method="POST" action="{{ url('/admin/listings') }}">
@@ -246,7 +246,7 @@
 					<div id="5">
 						<h2 class="uk-text-primary uk-text-bold" style="text-transform: uppercase">{{ trans('admin.listing_description') }}</h2>
 						<p class="uk-margin-top-remove">{{ trans('admin.listing_description_help') }}</p>
-						<textarea class="uk-width-large-10-10 uk-margin-small-bottom" rows="5" name="description">{{ old('description') }}</textarea>
+						<textarea class="uk-width-large-10-10 uk-margin-small-bottom" rows="5" name="description" maxlength="2000">{{ old('description') }}</textarea>
 					</div>
 					<!-- Informacion adicional -->
 
@@ -269,13 +269,13 @@
 	        	{{ trans('admin.confirm_email') }}
 	        </div>
 
-	        <img src="{{ asset('images/support/mail/mail_sent.png') }}" width="500px" class="uk-align-center">
+	        <div class="uk-text-center">
+	        	<img src="{{ asset('images/support/user/welcome.png') }}" style="width:80%">
 
-	        <h3 class="uk-text-bold">Te hemos enviado un mensaje para que confirmes tu correo electronico y puedas acceder a todos los beneficios de BuscoCasa.co</h3>
+	        	<h3>{{ trans('admin.welcome_new_user') }}</h3>
 
-		    <div class="uk-modal-footer">
-		    	<a href="" class="uk-button uk-button-danger uk-modal-close">{{ trans('admin.close') }}</a>
-		    </div>
+	        	<a class="uk-button uk-button-large uk-button-success" id="open" href="" target="_blank">{{ trans('admin.open') }}</a>
+	        </div>
 	    </div>
 	</div>
 @endif
@@ -284,24 +284,28 @@
 @endsection
 
 @section('js')
+	@parent
+
+	<!-- CSS -->
 	<link href="{{ asset('/css/components/form-file.almost-flat.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/components/tooltip.almost-flat.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/components/sticky.almost-flat.min.css') }}" rel="stylesheet">
+	<link href="{{ asset('/css/select2.min.css') }}" rel="stylesheet" />
+	<!-- CSS -->
 
-	@parent
+	<!-- JS -->
     <script src="{{ asset('/js/components/tooltip.min.js') }}"></script>
     <script src="{{ asset('/js/components/sticky.min.js') }}"></script>
 	<script src="{{ asset('/js/accounting.min.js') }}"></script>
-
-
-	<link href="{{ asset('/css/select2.min.css') }}" rel="stylesheet" />
 	<script src="{{ asset('/js/select2.min.js') }}"></script>
+	<!-- JS -->
 
-	<script type="text/javascript">var centreGot = false;</script>
-	<?php echo $map['js']; ?>
 	<script type="text/javascript">
 		$(document).ready(function() {
 		  	$("#city").select2();
+
+		  	$("#open").html('{{ trans('admin.open') }}'+' '+emailProvider('{{ Auth::user()->email }}'));
+		  	$("#open").attr("href", "http://"+emailProvider('{{ Auth::user()->email }}'));
 
 			@if(Session::pull('new_user'))
 			  	var modal = UIkit.modal("#confirmation_email_modal");
@@ -323,5 +327,15 @@
 		function format(field){
 	        field.value = accounting.formatNumber(field.value);
 	    }
+
+	    function emailProvider(str){
+	    	var afterComma = str.substr(str.indexOf("@") + 1);
+	    	return afterComma;
+	    }
 	</script>
+
+	<!-- Google maps js -->
+	<script type="text/javascript">var centreGot = false;</script>
+	<?php echo $map['js']; ?>
+	<!-- Google maps js -->
 @endsection

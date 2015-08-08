@@ -19,30 +19,124 @@
 	   	<p>{{ trans('admin.highlight_listing_text') }}</p>
 
 	    <div class="uk-grid">
-	    	<div class="uk-width-7-10">
+	    	<div class="uk-width-small-1-1 uk-width-medium-1-1 uk-width-large-7-10">
 	    		<div class="uk-grid">
 	    			@foreach($featuredTypes as $type)
-	    			<div class="uk-width-1-3">
+	    			<div class="uk-width-small-1-1 uk-width-medium-1-3 uk-width-large-1-3">
 	    				<div class="uk-panel uk-panel-box uk-panel-box-secondary">
 	    					<h3>{{ $type->name }}</h3>
 	    					<div class="uk-text-center"><img src="{{ asset($type->icon) }}" width="80%"></div>
 	    					<p>{{ $type->description }}</p>
 	    					<ul class="uk-list">
-								<li class=""><i class="uk-icon-check"></i> {{ trans('admin.homepage_rotation') }}</li>
-								<li class=""><i class="uk-icon-check"></i> {{ trans('admin.outstanding_container') }}</li>
-								<li class=""><i class="uk-icon-check"></i> {{ Settings::get('listing_expiring') }} {{ trans('admin.days') }}</li>
-								<li class=""><i class="uk-icon-check"></i> {{ Settings::get('featured_image_limit') }} {{ trans('admin.photos') }}</li>
-								<li class="uk-margin-top uk-h2 uk-text-center" id="price-{{ $type->id }}">{{ money_format('$%!.1i', $type->price*1.16) }}</li>
+	    						@if($type->id >= 3)
+									<li data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.homepage_rotation_tooltip') }}"><i class="uk-icon-check uk-text-success"></i> {{ trans('admin.homepage_rotation') }}</li>
+								@else
+									<li data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.homepage_rotation_tooltip') }}"><i class="uk-icon-remove uk-text-danger"></i> {{ trans('admin.homepage_rotation') }}</li>
+								@endif
+
+								@if($type->id >= 3)
+									<li data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.social_publish_tooltip') }}"><i class="uk-icon-check uk-text-success"></i> {{ trans('admin.social_publish') }}</li>
+								@else
+									<li data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.social_publish_tooltip') }}"><i class="uk-icon-remove uk-text-danger"></i> {{ trans('admin.social_publish') }}</li>
+								@endif
+
+								@if($type->id >= 2)
+									<li data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.better_search_positions_tooltip') }}"><i class="uk-icon-check uk-text-success"></i> {{ trans('admin.better_search_positions') }}</li>
+								@else
+									<li data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.better_search_positions_tooltip') }}"><i class="uk-icon-remove uk-text-danger"></i> {{ trans('admin.better_search_positions') }}</li>
+								@endif
+
+								@if($type->id >= 2)
+									<li data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.listing_container_ribbon_tooltip') }}"><i class="uk-icon-check uk-text-success"></i> {{ trans('admin.listing_container_ribbon') }}</li>
+								@else
+									<li data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.listing_container_ribbon_tooltip') }}"><i class="uk-icon-remove uk-text-danger"></i> {{ trans('admin.listing_container_ribbon') }}</li>
+								@endif
+
+								@if($type->id >= 1)
+									<li data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.outstanding_container_tooltip') }}"><i class="uk-icon-check uk-text-success"></i> {{ trans('admin.outstanding_container') }}</li>
+								@else
+									<li data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.outstanding_container_tooltip') }}"><i class="uk-icon-remove uk-text-danger"></i> {{ trans('admin.outstanding_container') }}</li>
+								@endif
+
+								@if($type->id)
+									<li data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.listing_expiring_tooltip') }}"><i class="uk-icon-check uk-text-success"></i> {{ Settings::get('listing_expiring') }} {{ trans('admin.days') }}</li>
+								@else
+									<li data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.listing_expiring_tooltip') }}"><i class="uk-icon-remove uk-text-danger"></i> {{ Settings::get('listing_expiring') }} {{ trans('admin.days') }}</li>
+								@endif
+
+								@if($type->id)
+									<li data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.featured_image_limit_tooltip') }}"><i class="uk-icon-check uk-text-success"></i> {{ Settings::get('featured_image_limit') }} {{ trans('admin.photos') }}</li>
+								@else
+									<li data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.featured_image_limit_tooltip') }}"><i class="uk-icon-remove uk-text-danger"></i> {{ Settings::get('featured_image_limit') }} {{ trans('admin.photos') }}</li>
+								@endif
+
+	    						@if($type->id > 2)
+									<li class="uk-margin-top uk-h2 uk-text-center" id="price-{{ $type->id }}">{{ money_format('$%!.0i', $type->price) }}</li>
+	    						@else
+									<li class="uk-margin-top uk-h2 uk-text-center" id="price-{{ $type->id }}">{{ money_format('$%!.0i', $type->price) }}</li>
+	    						@endif
 	    					</ul>
-	    					<button class="uk-button uk-button-success uk-button-large uk-width-1-1" onclick="feature({{$type->id}})" style="background-color:{{$type->color}}" data-uk-smooth-scroll="{offset: -300}">{{ trans('admin.select') }}</button>
+
+	    					@if($type->id == 3)
+								<a href="#preview" class="uk-button uk-button-primary uk-button-large uk-width-1-1" onclick="feature({{$type->id}})" data-uk-smooth-scroll>{{ trans('admin.select') }}</a>
+    						@elseif($type->id == 2)
+								<a href="#preview" class="uk-button uk-button-secondary uk-button-large uk-width-1-1" onclick="feature({{$type->id}})" data-uk-smooth-scroll>{{ trans('admin.select') }}</a>
+    						@else
+								<a href="#preview" class="uk-button uk-button-large uk-width-1-1" onclick="feature({{$type->id}})" data-uk-smooth-scroll>{{ trans('admin.select') }}</a>
+    						@endif
 	    				</div>
 	    			</div>
+	    			<div class="uk-visible-small uk-margin-top"></div>
 	    			@endforeach
+
+	    			<div class="uk-width-1-1 uk-margin-top" id="preview">
+	    				<hr>
+	    				<h3>{{ trans('admin.listing_preview') }}</h3>
+			    		<a style="text-decoration:none" >
+							<div class="uk-panel uk-panel-box uk-panel-box-primary uk-margin-remove" id="listing">
+								<img src="{{ asset(Image::url($listing->image_path(),['mini_image_2x'])) }}" style="width:350px; height:200px; float:left" class="uk-margin-right">
+								<h4 class="uk-margin-remove">{{ $listing->title }}</h4>
+								{{-- <p style="margin-top:-2px" class="uk-text-muted">{{ $listing->city->name .", ". $listing->direction }}</p> --}}
+								<h4 style="margin-top:0px" class="uk-text-primary">${{ money_format('%!.0i', $listing->price) }}</h4>
+								<ul style="list-style-type: none;margin-top:-5px" class="uk-text-muted uk-text-small">
+									@if($listing->rooms)
+									<li><i class="uk-icon-check"></i> {{ $listing->rooms }} {{ trans('admin.rooms') }}</li>
+									@endif
+
+									@if($listing->bathrooms)
+									<li><i class="uk-icon-check"></i> {{ $listing->bathrooms }} {{ trans('admin.bathrooms') }}</li>
+									@endif
+
+									@if($listing->garages)
+									<li><i class="uk-icon-check"></i> {{ $listing->garages }} {{ trans('admin.garages') }}</li>
+									@endif
+
+									@if($listing->stratum)
+									<li><i class="uk-icon-check"></i> {{ trans('admin.stratum') }} {{ $listing->stratum }}</li>
+									@endif
+
+									@if($listing->area)
+									<li><i class="uk-icon-check"></i> {{ number_format($listing->area, 0, ',', '.') }} mt2</li>
+									@endif
+
+									@if($listing->lot_area)
+									<li id="lot_area"><i class="uk-icon-check"></i> {{ number_format($listing->lot_area, 0, ',', '.') }} {{ trans('frontend.lot_area') }}</li>
+									@endif
+
+									@if((int)$listing->administration != 0)
+									<li><i class="uk-icon-check"></i> {{ money_format('$%!.0i', $listing->administration) }} {{ trans('admin.administration_fees') }}</li>
+									@endif
+								</ul>
+							</div>
+						</a>
+	    			</div>
 	    		</div>
 	    	</div>
 
-	    	<div class="uk-width-3-10">
-	    		<div class="uk-panel uk-panel-box">
+	    	<div class="uk-hidden-large uk-margin-top"></div>
+
+	    	<div class="uk-width-small-1-1 uk-width-medium-1-1 uk-width-large-3-10">
+	    		<div class="uk-panel uk-panel-box" data-uk-sticky="{boundary: true}">
 	    		<h3 class="uk-panel-title">{{ trans('admin.shop_basket') }}</h3>
 		    		<table class="uk-table">
 		    			<thead>
@@ -92,51 +186,7 @@
 	    		</div>
 	    	</div>
 
-	    	<div class="uk-width-7-10 uk-margin-top">
-	    		<hr>
-	    		<h3>{{ trans('admin.listing_preview') }}</h3>
-	    		<a style="text-decoration:none" >
-					<div class="uk-panel uk-panel-box uk-panel-box-primary uk-margin-remove" id="listing">
-						<img src="{{ asset(Image::url($listing->image_path(),['mini_image_2x'])) }}" style="width:350px; height:200px; float:left" class="uk-margin-right">
-						<h4 class="uk-margin-remove">{{ $listing->title }}</h4>
-						{{-- <p style="margin-top:-2px" class="uk-text-muted">{{ $listing->city->name .", ". $listing->direction }}</p> --}}
-						<h4 style="margin-top:0px" class="uk-text-primary">${{ money_format('%!.0i', $listing->price) }}</h4>
-						<ul style="list-style-type: none;margin-top:-5px" class="uk-text-muted uk-text-small">
-							@if($listing->rooms)
-							<li><i class="uk-icon-check"></i> {{ $listing->rooms }} {{ trans('admin.rooms') }}</li>
-							@endif
-
-							@if($listing->bathrooms)
-							<li><i class="uk-icon-check"></i> {{ $listing->bathrooms }} {{ trans('admin.bathrooms') }}</li>
-							@endif
-
-							@if($listing->garages)
-							<li><i class="uk-icon-check"></i> {{ $listing->garages }} {{ trans('admin.garages') }}</li>
-							@endif
-
-							@if($listing->stratum)
-							<li><i class="uk-icon-check"></i> {{ trans('admin.stratum') }} {{ $listing->stratum }}</li>
-							@endif
-
-							@if($listing->area)
-							<li><i class="uk-icon-check"></i> {{ number_format($listing->area, 0, ',', '.') }} mt2</li>
-							@endif
-
-							@if($listing->lot_area)
-							<li id="lot_area"><i class="uk-icon-check"></i> {{ number_format($listing->lot_area, 0, ',', '.') }} {{ trans('frontend.lot_area') }}</li>
-							@endif
-
-							@if((int)$listing->administration != 0)
-							<li><i class="uk-icon-check"></i> {{ money_format('$%!.0i', $listing->administration) }} {{ trans('admin.administration_fees') }}</li>
-							@endif
-
-						</ul>
-					</div>
-				</a>
-	    	</div>
 	    </div>
-		
-
 
 	</div>
 </div>
@@ -144,6 +194,10 @@
 
 @section('js')
 	@parent
+	<link href="{{ asset('/css/components/sticky.almost-flat.min.css') }}" rel="stylesheet">
+	<link href="{{ asset('/css/components/tooltip.almost-flat.min.css') }}" rel="stylesheet">
+
+	<script src="{{ asset('/js/components/sticky.min.js') }}"></script>
     <script src="{{ asset('/js/components/tooltip.min.js') }}"></script>
 	<script src="{{ asset('/js/accounting.min.js') }}"></script>
 
@@ -155,10 +209,6 @@
 		// 	$('#lot_area').val(accounting.formatNumber(document.getElementById('lot_area').value));
 		// 	$('#administration').val(accounting.formatNumber(document.getElementById('administration').value));
 		// });
-
-		$(function() {
-			
-		});
 
 		function selectFeature(input){
 			$("#featured_id").val(input);
@@ -172,7 +222,7 @@
 			if(input == 1){
 				console.log(1);
 				$("#featured_id").val(1);
-				tag = "<img src=\"{{asset('/images/defaults/featured.png')}}\" style=\"position:absolute; top:0; left:0; max-width:150px\" id=\"tag\">";
+				tag = "";//"<img src=\"{{asset('/images/defaults/featured.png')}}\" style=\"position:absolute; top:0; left:0; max-width:150px\" id=\"tag\">";
 			}else if(input == 2){
 				console.log(2);
 				$("#featured_id").val(2);
@@ -185,9 +235,9 @@
 			$("#tag").remove();
 	        $("#listing").prepend(tag);
 
-	        price	= accounting.formatMoney(types[input-1].price, "$", 0, ",", ".");
-	        tax 	= accounting.formatMoney(types[input-1].price*0.16, "$", 0, ",", ".");
-	        total 	= accounting.formatMoney(types[input-1].price*1.16, "$", 0, ",", ".");
+	        price	= accounting.formatMoney(types[input-1].price/1.16, "$", 0, ",", ".");
+	        tax 	= accounting.formatMoney((types[input-1].price/1.16)*0.16, "$", 0, ",", ".");
+	        total 	= accounting.formatMoney(types[input-1].price, "$", 0, ",", ".");
 	        $("#name").html(types[input-1].name);
 	        $("#price").html(price);
 	        $("#iva").html(tax);

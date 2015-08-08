@@ -11,8 +11,8 @@
 @section('content')
 
 <div class="uk-container uk-container-center uk-margin-top">
+
 	<div class="uk-panel">
-	
 		@if(Auth::user()->isAdmin())
 			<h1>{{ trans('admin.listings') }}</h1>
 
@@ -21,6 +21,27 @@
 		        <a class="uk-button" href="{{ url('/admin/listings/create') }}">{{ trans('admin.new') }}</a>
 				<button class="uk-button uk-button-danger" onclick="deleteObjects()"><i class="uk-icon-trash"></i></button>	
 				<form action="{{url(Request::path())}}" method="GET" class="uk-form uk-align-right">
+					<select name="take" onchange="this.form.submit()">
+				    	<option value="">Cantidad de publicaciones</option>
+				    	@if(Request::get('take') == 50)
+				    		<option value="50" selected>Ver 50</option>
+				    	@else
+				    		<option value="50">Ver 50</option>
+				    	@endif
+
+				    	@if(Request::get('take') == 30)
+				    		<option value="30" selected>Ver 30</option>
+				    	@else
+				    		<option value="30">Ver 30</option>
+				    	@endif
+
+				    	@if(Request::get('take') == 10)
+				    		<option value="10" selected>Ver 10</option>
+				    	@else
+				    		<option value="10">Ver 10</option>
+				    	@endif
+				    </select>
+
 				    <select name="order_by" onchange="this.form.submit()">
 				    	<option value="">Ordenar por</option>
 				    	
@@ -46,10 +67,30 @@
 			    <div class="">
 			        <!-- This is a button toggling the modal -->
 			        <a class="uk-button uk-button-large uk-button-primary uk-text-bold" href="{{ url('/admin/listings/create') }}">{{ trans('admin.publish_property') }}</a>
-			        {{-- <button class="uk-button uk-button-large uk-button-danger" onclick="deleteObjects()"><i class="uk-icon-trash"></i></button> --}}
 			        <a class="uk-button uk-button-large" href="{{ url('/admin/listings/?deleted=true') }}" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.eliminated_listings') }}"><i class="uk-icon-trash"></i></a>
 
-			        <form action="{{url(Request::path())}}" method="GET" class="uk-form uk-align-right">
+			        <form action="{{url(Request::path())}}" method="GET" class="uk-form uk-align-right uk-hidden-small">
+			        	<select name="take" onchange="this.form.submit()">
+					    	<option value="">Cantidad de publicaciones</option>
+					    	@if(Request::get('take') == 50)
+					    		<option value="50" selected>Ver 50</option>
+					    	@else
+					    		<option value="50">Ver 50</option>
+					    	@endif
+
+					    	@if(Request::get('take') == 30)
+					    		<option value="30" selected>Ver 30</option>
+					    	@else
+					    		<option value="30">Ver 30</option>
+					    	@endif
+
+					    	@if(Request::get('take') == 10)
+					    		<option value="10" selected>Ver 10</option>
+					    	@else
+					    		<option value="10">Ver 10</option>
+					    	@endif
+					    </select>
+				    
 					    <select name="order_by" onchange="this.form.submit()">
 					    	<option value="">Ordenar por</option>
 					    	
@@ -125,25 +166,26 @@
 				<div class="uk-panel uk-margin-top">					
 					<ul class="uk-list">
 						@foreach($listings as $listing)
-			                <li class="uk-panel uk-panel-box uk-panel-box-secondary uk-margin-bottom">
-			                	<!-- Featured tag -->
-			                	@if($listing->featured_expires_at && Carbon::createFromFormat('Y-m-d H:i:s', $listing->featured_expires_at, 'America/Bogota') > Carbon::now())
-			                		<img src="{{asset($listing->featuredType->image_path)}}" style="position:absolute; top:0; left:0; max-width:150px">
-			                	@endif
-
-			                	<!-- Featured tag -->
+			                <li class="uk-panel uk-panel-box uk-panel-box-secondary uk-margin-bottom" id="listing-{{ $listing->id }}">
 			                	<div class="uk-grid">
-			                		<div class="uk-width-2-10">
-			                			<a href="{{ url('/admin/listings/'.$listing->id.'/edit') }}"><img src="{{ asset(Image::url($listing->image_path(),['map_mini'])) }}"></a>
+			                		<div class="uk-width-large-2-10 uk-width-medium-2-10 uk-width-small-1-1">
+			                			<a href="{{ url('/admin/listings/'.$listing->id.'/edit') }}">
+				                			<!-- Featured tag -->
+						                	@if($listing->featured_expires_at && $listing->featuredType->id > 1 && Carbon::createFromFormat('Y-m-d H:i:s', $listing->featured_expires_at, 'America/Bogota') > Carbon::now())
+						                		<img src="{{asset($listing->featuredType->image_path)}}" style="position:absolute; top:0; left:0; max-width:150px">
+						                	@endif
+						                	<!-- Featured tag -->
+			                				<img src="{{ asset(Image::url($listing->image_path(),['map_mini'])) }}">
+			                			</a>
 			                		</div>
 
-			                		<div class="uk-width-6-10">
+			                		<div class="uk-width-large-6-10 uk-width-medium-6-10 uk-width-small-1-1">
 			                			<!-- Listing title -->
 			                			<a class="uk-h3 uk-text-bold" style="color:black;" href="{{ url('/admin/listings/'.$listing->id.'/edit') }}">{{ $listing->title }}</a>
 			                			<!-- Listing title -->
 
 			                			<!-- Listing info and share -->
-			                			<div class="uk-grid uk-margin-top">
+			                			<div class="uk-grid uk-margin-top uk-hidden-small">
 
 			                    			<ul class="uk-list uk-list-line uk-width-4-10">
 			                    				<li><i class="uk-text-muted">{{ trans('admin.price') }}</i> {{ money_format('$%!.0i', $listing->price) }}</li>
@@ -154,7 +196,7 @@
 			                    					<li><i class="uk-text-muted">{{ trans('admin.mt2_price') }}</i> {{ money_format('$%!.0i', $listing->price/$listing->lot_area) }}</li>
 			                    					<li><i class="uk-text-muted">{{ trans('admin.area') }}</i> {{ number_format($listing->lot_area, 0) }} mt2</li>
 			                    				@endif
-			                    				<li><i class="uk-text-muted">{{ trans('admin.stratum') }}</i> {{ $listing->stratum }}</li>
+			                    				<li><i class="uk-text-muted">{{ trans('admin.code') }}</i> #{{ $listing->code }}</li>
 			                    			</ul>
 
 			                    			<ul class="uk-list uk-list-line uk-width-4-10">
@@ -163,7 +205,7 @@
 			                    					@if(count($listing->images)>0)
 			                    					 	<i class="uk-icon-check uk-text-success"> </i>
 			                    					@else
-			                    						<i class="uk-icon-remove uk-text-danger"> </i>
+			                    						<i class="uk-icon-remove uk-text-danger" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.images_check_tooltip') }}"> </i>
 			                    					@endif
 													<i class="uk-text-muted">{{ trans('admin.images') }}</i>
 													</a>
@@ -173,7 +215,7 @@
 			                    					@if(Cookie::get('shared_listing_'.$listing->id))
 														<i class="uk-icon-check uk-text-success"> </i>
 			                    					@else
-			                    						<i class="uk-icon-remove uk-text-danger"> </i>
+			                    						<i class="uk-icon-remove uk-text-danger" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.shared_check_tooltip') }}"> </i>
 			                    					@endif
 			                    					<i class="uk-text-muted">{{ trans('admin.shared') }}</i>
 			                    					</a>
@@ -182,7 +224,7 @@
 			                    					@if(strlen($listing->description) > 50)
 														<i class="uk-icon-check uk-text-success"> </i>
 			                    					@else
-			                    						<i class="uk-icon-remove uk-text-danger"> </i>
+			                    						<i class="uk-icon-remove uk-text-danger" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.aditional_check_tooltip') }}"> </i>
 			                    					@endif
 			                    					<i class="uk-text-muted">{{ trans('admin.description') }}</i>
 			                    					</a>
@@ -192,7 +234,7 @@
 			                    					@if(count($listing->features) > 5)
 														<i class="uk-icon-check uk-text-success"> </i>
 			                    					@else
-			                    						<i class="uk-icon-remove uk-text-danger"> </i>
+			                    						<i class="uk-icon-remove uk-text-danger" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.features_check_tooltip') }}"> </i>
 			                    					@endif
 			                    					<i class="uk-text-muted">{{ trans('admin.features') }}</i>
 			                    					</a>
@@ -218,13 +260,18 @@
 			                			<!-- Listing info and share -->
 			                		</div>
 
-			                		<div class="uk-width-2-10">
+			                		<div class="uk-width-large-2-10 uk-width-medium-2-10 uk-width-small-1-1">
 			                			@if(!$listing->deleted_at)
 			                				<!-- If listing is featured and is not expired yet -->
 				                			@if($listing->featured_expires_at && $listing->featured_expires_at > Carbon::now())
 				                				<!-- If listing iexpires in the next 5 days -->
 				                				@if($listing->featured_expires_at <= Carbon::now()->addDays(5))
-					                				<a class="uk-text-danger uk-text-bold uk-h4" href="{{ url('/admin/listings/'.$listing->id.'/renovate') }}">{{ trans('admin.featured_expires') }} {{ $listing->featured_expires_at->diffForHumans() }}</a>
+				                					@if($listing->featured_expires_at < Carbon::now())
+					                					<a class="uk-text-danger uk-text-bold uk-h4" href="{{ url('/admin/listings/'.$listing->id.'/renovate') }}">{{ trans('admin.featured_expired') }} {{ $listing->featured_expires_at->diffForHumans() }}</a>
+				                					@else
+					                					<a class="uk-text-danger uk-text-bold uk-h4" href="{{ url('/admin/listings/'.$listing->id.'/renovate') }}">{{ trans('admin.featured_expires') }} {{ $listing->featured_expires_at->diffForHumans() }}</a>
+				                					@endif
+
 					                				<a class="uk-button uk-button-large uk-button-success uk-width-1-1 uk-margin-small-bottom" href="{{ url('/admin/listings/'.$listing->id.'/renovate') }}">{{ trans('admin.renovate') }}</a>
 						                        @else
 					                				<b>{{ trans('admin.featured_expires') }} {{ $listing->featured_expires_at->diffForHumans() }}</b>
@@ -235,7 +282,12 @@
 					                			@endif
 				                			@else
 				                				@if($listing->expires_at <= Carbon::now()->addDays(5))
-					                				<a class="uk-text-danger uk-text-bold uk-h4" href="{{ url('/admin/listings/'.$listing->id.'/renovate') }}">{{ trans('admin.expires') }} {{ $listing->expires_at->diffForHumans() }}</a>
+				                					@if($listing->expires_at < Carbon::now())
+					                					<a class="uk-text-danger uk-text-bold uk-h4" href="{{ url('/admin/listings/'.$listing->id.'/renovate') }}">{{ trans('admin.expired') }} {{ $listing->expires_at->diffForHumans() }}</a>
+				                					@else
+					                					<a class="uk-text-danger uk-text-bold uk-h4" href="{{ url('/admin/listings/'.$listing->id.'/renovate') }}">{{ trans('admin.expires') }} {{ $listing->expires_at->diffForHumans() }}</a>
+				                					@endif
+
 					                				<a class="uk-button uk-button-large uk-button-success uk-width-1-1 uk-margin-small-bottom" href="{{ url('/admin/listings/'.$listing->id.'/renovate') }}">{{ trans('admin.renovate') }}</a>
 						                        @else
 					                				<b>{{ trans('admin.expires') }} {{ $listing->expires_at->diffForHumans() }}</b>
@@ -250,9 +302,9 @@
 					                			@endif
 				                			@endif
 
-				                			<!-- Banner button -->
-				                            <a class="uk-button uk-width-1-1 uk-margin-small-bottom" href="{{ url('/admin/banners/create') }}">{{ trans('admin.print_banner') }}</a>
-				                            <!-- Banner button -->
+				                			<!-- View in frontend button -->
+				                            <a class="uk-button uk-width-1-1 uk-margin-small-bottom" href="{{ url($listing->path()) }}" target="_blank">{{ trans('admin.view_listing') }}</a>
+				                			<!-- View in frontend button -->
 
 				                			<!-- Edit and delete buttons -->
 					                		<div class="uk-flex uk-flex-center uk-flex-space-between">
@@ -279,25 +331,30 @@
 					            <th style="width:50%">{{ trans('admin.title') }}</th>
 					            <th style="width:50px">{{ trans('admin.area') }}</th>
 					            <th style="width:50px">{{ trans('admin.price') }}</th>
-					            <th style="width:50px">{{ trans('admin.recover') }}</th>
+					            <th style="width:9%">{{ trans('admin.recover') }}</th>
 					        </tr>
 					    </thead>
 					    <tbody>
 						@foreach($listings as $listing)
-					        <tr>
+					        <tr id="listing-{{ $listing->id }}">
 					            <td>{{ $listing->id }}</td>
 					            <td><img src="{{ asset(Image::url($listing->image_path(),['map_mini'])) }}" style="width:40px"></td>
 					            <td class="uk-text-bold">{{ $listing->title }}</td>
 					            <td>{{ number_format($listing->area, 0) }} mt2</td>
 					            <td>{{ money_format('$%!.0i', $listing->price) }}</td>
-					            <td><a href="{{ url('/admin/listings/'.$listing->id.'/recover') }}" class="uk-button uk-button-success uk-width-1-1"><i class="uk-icon-undo"></i></a></td>
+					            <td>
+					            	<div class="uk-flex uk-flex-space-between">
+					            		<a href="{{ url('/admin/listings/'.$listing->id.'/recover') }}" class="uk-button uk-button-success"><i class="uk-icon-undo"></i></a>
+					            		<button class="uk-button uk-button-danger" onclick="deleteObject(this)" id="{{ $listing->id }}"><i class="uk-icon-remove"></i></button>
+					            	</div>
+					            </td>
 					        </tr>
 						@endforeach
 						</tbody>
 					</table>
 				@else
 					<div class="uk-text-center uk-margin-top">
-						<h2 style="color:#95979a" class="uk-text-bold">{{ trans('admin.you_have_no_deleted_listings') }}</h2>
+						<h2 class="uk-text-bold uk-text-muted">{{ trans('admin.you_have_no_deleted_listings') }}</h2>
 
 						<div class="" style="margin-top:35px">
 			    			<a href="{{ url('/admin/listings/create') }}" class="uk-button uk-button-large uk-button-primary">{{ trans('admin.publish_property') }}</a>
@@ -309,12 +366,12 @@
 				@endif
 			@else
 				<div class="uk-text-center uk-margin-top">
-					<h2 style="color:#95979a" class="uk-text-bold">{{ trans('admin.you_have_no_listings') }}</h2>
+					<h2 class="uk-text-bold uk-text-muted">{{ trans('admin.you_have_no_listings') }}</h2>
 					<a href="{{ url('/admin/listings/create') }}" class="uk-h3">{{ trans('admin.publish_property_4_steps') }}</a>
 					<br>
 					<br>
 					<a href="{{ url('/admin/listings/create') }}">
-						<img src="{{ asset('/images/support/publica.png') }}" width="75%">
+						<img src="{{ asset('/images/support/listings/publica.png') }}" width="75%">
 					</a>
 		    		
 		    		<div class="" style="margin-top:35px">
@@ -332,8 +389,8 @@
 @endsection
 
 @section('js')
-	<link href="{{ asset('/css/components/tooltip.almost-flat.min.css') }}" rel="stylesheet">
 	@parent
+	<link href="{{ asset('/css/components/tooltip.almost-flat.min.css') }}" rel="stylesheet">
 	<script src="{{ asset('/js/components/tooltip.min.js') }}"></script>
 
 	<script type="text/javascript">
@@ -357,9 +414,10 @@
 			  	method: 'share_open_graph',
 			  	action_type: 'og.shares',
 			  	action_properties: JSON.stringify({
-			    object:'{{ url('/') }}'+path,
+			    object: path,
 			})
 			}, function(response, id){
+				UIkit.notify('<i class="uk-icon-check-circle"></i> {{ trans("admin.listing_shared") }}', {pos:'top-right', status:'success', timeout: 15000});
 				$.post("{{ url('/cookie/set') }}", {_token: "{{ csrf_token() }}", key: "shared_listing_"+id, value: true, time:11520}, function(result){
 	                
 	            });
@@ -368,6 +426,19 @@
 			});
        	}
 
+	    function deleteObject(sender) {
+	    	UIkit.modal.confirm("{{ trans('admin.sure') }}", function(){
+			    // will be executed on confirm.
+			    $.post("{{ url('/admin/listings') }}/" + sender.id, {_token: "{{ csrf_token() }}", _method:"DELETE"}, function(result){
+			    	if(result.success){
+			    		UIkit.notify('<i class="uk-icon-check-circle"></i> '+result.success, {pos:'top-right', status:'success', timeout: 15000});
+			    		$('#listing-'+sender.id).fadeOut(500, function() { $(this).remove(); });
+			    	}else if(result.error){
+			    		UIkit.notify('<i class="uk-icon-remove"></i> '+result.error, {pos:'top-right', status:'danger', timeout: 15000});
+			    	}
+		        });
+			}, {labels:{Ok:'{{trans("admin.yes")}}', Cancel:'{{trans("admin.cancel")}}'}});
+	    }
 
 	    // function toggle(source){
 	    //     checkboxes = document.getElementsByName('checkedLine');
@@ -375,15 +446,6 @@
 	    //         checkboxes[i].checked = source.checked;
 	    //     }
 	    // }
-
-	    function deleteObject(sender) {
-	    	UIkit.modal.confirm("{{ trans('admin.sure') }}", function(){
-			    // will be executed on confirm.
-			    $.post("{{ url('/admin/listings') }}/" + sender.id, {_token: "{{ csrf_token() }}", _method:"DELETE"}, function(result){
-		            location.reload();
-		        });
-			}, {labels:{Ok:'{{trans("admin.yes")}}', Cancel:'{{trans("admin.cancel")}}'}});
-	    }
 
 	    // function deleteObjects() {
      //        var checkedValues = $('input[name="checkedLine"]:checked').map(function() {

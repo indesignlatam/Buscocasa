@@ -42,6 +42,7 @@ class MailExpiringListings extends Command {
 		// Email all users where listings are expiring
 		// Todo or where featured is expiring
 		$listings = Listing::whereRaw('featured_expires_at < ? AND featured_expires_at > ?', [Carbon::now()->addDays(5), Carbon::now()])
+						   ->where('expire_notified', false)
 						   ->orWhereRaw('expires_at < ? AND expires_at > ?', [Carbon::now()->addDays(5), Carbon::now()])
 						   ->where('expire_notified', false)
 						   ->with('broker')

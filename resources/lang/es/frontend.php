@@ -24,6 +24,8 @@ return [
     'search_button' 			=> 'Buscar',
     'search_select_option' 		=> 'Seleccione una opción',
 
+    'register_publish_title'    => 'Publica tus inmuebles totalmente Gratis en BuscoCasa.co',
+
     //Latest listings
     'latest_listings_sale' 		=> 'Nuevos inmuebles en venta',
     'latest_listings_lease' 	=> 'Nuevos inmuebles en arriendo',
@@ -50,10 +52,11 @@ return [
     'contact_vendor' 			=> 'Contacta al vendedor',
     'contact_comments' 			=> 'Comentarios',
     'contact_show_info' 		=> 'Ver información del vendedor',
-    'contact_button' 			=> 'Enviar solicitud',
+    'contact_button'            => 'Enviar solicitud',
+    'contact_default_text'      => 'Quisiera mas información sobre este inmueble.',
     'price_mt' 					=> 'Valor mt2',
     'similar_listings' 			=> 'Inmuebles similares',
-    'already_contacted_vendor' 	=> 'Ya has contactado al vendedor',
+    'already_contacted_vendor' 	=> 'Ya has contactado al vendedor hoy',
     'other_user_listings'       => 'Otros inmuebles del usuario',
 
     // Map marker info window

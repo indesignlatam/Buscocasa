@@ -48,7 +48,7 @@
 		<h2 class="uk-hidden-small" style="float:left; display:inline">{{ $listing->title }}</h2>
 		<h2 class="uk-visible-small">{{ $listing->title }}</h2>
 		<div style="float:right; display:inline" class="uk-hidden-small">
-			<i class="uk-h2 uk-text-right">{{ $listing->listingType->name }} </i>
+			<i class="uk-h2 uk-text-right">{{ trans('admin.price') }} </i>
 			<i class="uk-h2 uk-text-primary uk-text-right"> ${{ money_format('%!.0i', $listing->price) }}</i>
 		</div>
 
@@ -89,7 +89,7 @@
 			            
 			            	<input class="uk-width-large-10-10 uk-margin-small-bottom uk-form-large" type="email" name="email" placeholder="{{ trans('admin.email') }}" value="{{ old('email') }}" onchange="showCaptcha()">
 			                
-				            <textarea class="uk-width-large-10-10 uk-form-large" name="comments" placeholder="{{ trans('frontend.contact_comments') }}" rows="5">{{ old('comments') }}</textarea>
+				            <textarea class="uk-width-large-10-10 uk-form-large" name="comments" placeholder="{{ trans('frontend.contact_comments') }}" rows="5">@if(old('comments')){{ old('comments') }}@else{{ trans('frontend.contact_default_text') }}@endif</textarea>
 
 				            @if(!Auth::check())
 				                <!-- ReCaptcha -->
@@ -182,7 +182,8 @@
     				@if($listing->administration > 0)
     					<li><i class="uk-text-muted">{{ trans('admin.administration_fees') }}</i> {{ money_format('$%!.0i', $listing->administration) }}</li>
     				@endif
-    				
+
+    				<li><i class="uk-text-muted">{{ trans('admin.code') }}</i> <b>#{{ $listing->code }}</b></li>
     			</ul>
 
     			<a href="#new_appointment_modal" class="uk-button uk-button-large uk-button-primary uk-width-1-1" data-uk-modal>{{ trans('frontend.contact_vendor') }}</a>
@@ -190,48 +191,50 @@
 
     			<hr>
 
-    			
-    			<div class="uk-margin-medium-top uk-hidden-small">
-    				<h2 class="uk-text-bold">{{ trans('frontend.similar_listings') }}</h2>
-    				@foreach($related as $rlisting)
-	    				<div class="uk-overlay uk-overlay-hover uk-margin-small">
-	    					<img class="uk-border-rounded" src="{{ asset($rlisting->image_path()) }}" alt="{{$rlisting->title}}">
-						    <div class="uk-overlay-panel uk-overlay-background uk-overlay-fade">
-						    	<h4 class="uk-margin-remove">{{ $rlisting->title }}</h4>
-						    	<h4 class="uk-margin-top-remove uk-margin-small-bottom uk-text-bold">{{ money_format('$%!.0i', $rlisting->price) }}</h4>
-						    	<ul style="list-style-type: none;margin-top:-5px; margin-left:-30px" class="uk-text-contrast">
-				    				@if($listing->rooms)
-				    				<li><i class="uk-icon-check"></i> {{ $listing->rooms }} {{ trans('admin.rooms') }}</li>
-				    				@endif
+    			@if(count($related) > 0)
+	    			<div class="uk-margin-medium-top uk-hidden-small">
+	    				<h2 class="uk-text-bold">{{ trans('frontend.similar_listings') }}</h2>
+	    				@foreach($related as $rlisting)
+		    				<div class="uk-overlay uk-overlay-hover uk-margin-small">
+		    					<img class="uk-border-rounded" src="{{ asset(Image::url( $rlisting->image_path(), ['map_mini']) ) }}" alt="{{$rlisting->title}}" data-uk-scrollspy="{cls:'uk-animation-slide-left'}">
+							    <div class="uk-overlay-panel uk-overlay-background uk-overlay-fade">
+							    	<h4 class="uk-margin-remove">{{ $rlisting->title }}</h4>
+							    	<h4 class="uk-margin-top-remove uk-margin-small-bottom uk-text-bold">{{ money_format('$%!.0i', $rlisting->price) }}</h4>
+							    	<ul style="list-style-type: none;margin-top:-5px; margin-left:-30px" class="uk-text-contrast">
+					    				@if($rlisting->rooms)
+					    				<li><i class="uk-icon-check"></i> {{ $rlisting->rooms }} {{ trans('admin.rooms') }}</li>
+					    				@endif
 
-				    				@if($listing->bathrooms)
-				    				<li><i class="uk-icon-check"></i> {{ $listing->bathrooms }} {{ trans('admin.bathrooms') }}</li>
-				    				@endif
+					    				@if($rlisting->bathrooms)
+					    				<li><i class="uk-icon-check"></i> {{ $rlisting->bathrooms }} {{ trans('admin.bathrooms') }}</li>
+					    				@endif
 
-				    				@if($listing->stratum)
-				    				<li><i class="uk-icon-check"></i> {{ trans('admin.stratum') }} {{ $listing->stratum }}</li>
-				    				@endif
+					    				@if($rlisting->stratum)
+					    				<li><i class="uk-icon-check"></i> {{ trans('admin.stratum') }} {{ $rlisting->stratum }}</li>
+					    				@endif
 
-				    				@if($listing->area)
-				    				<li><i class="uk-icon-check"></i> {{ number_format($listing->area, 0, ',', '.') }} mt2</li>
-				    				@endif
+					    				@if($rlisting->area)
+					    				<li><i class="uk-icon-check"></i> {{ number_format($rlisting->area, 0, ',', '.') }} mt2</li>
+					    				@endif
 
-				    				@if($listing->lot_area)
-				    				<li id="lot_area"><i class="uk-icon-check"></i> {{ number_format($listing->lot_area, 0, ',', '.') }} {{ trans('frontend.lot_area') }}</li>
-				    				@endif
-				    			</ul>
-						    </div>
-						    <a class="uk-position-cover" href="{{ url($rlisting->path()) }}"></a>
-						</div>
-					@endforeach
-    			</div>
+					    				@if($rlisting->lot_area)
+					    				<li id="lot_area"><i class="uk-icon-check"></i> {{ number_format($rlisting->lot_area, 0, ',', '.') }} {{ trans('frontend.lot_area') }}</li>
+					    				@endif
+					    			</ul>
+							    </div>
+							    <a class="uk-position-cover" href="{{ url($rlisting->path()) }}"></a>
+							</div>
+						@endforeach
+	    			</div>
+    			@endif
 	    	</div>
+
 	    	<div class="uk-width-large-3-4 uk-width-medium-3-4 uk-width-small-1-1">
 	    		<div class="uk-margin-bottom uk-h3">
 	    			{{ $listing->description }}
 	    		</div>
 
-	    		<hr class="uk-visible-small">
+	    		<hr>
 
 	    		<h3>{{ trans('admin.interior') }}</h3>
 				<div class="uk-grid uk-margin-bottom">
@@ -309,13 +312,18 @@
 @endsection
 
 @section('js')
+	@parent
+
+	<!-- CSS -->
 	<link href="{{ asset('/css/components/slideshow.almost-flat.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/components/slidenav.almost-flat.min.css') }}" rel="stylesheet">
+	<!-- CSS -->
 
-	@parent
+	<!-- CSS -->
 	<script src='https://www.google.com/recaptcha/api.js'></script>
     <script src="{{ asset('/js/components/slideshow.min.js') }}"></script>
-	<?php echo $map['js']; ?>
+	<!-- CSS -->
+	
 	<script type="text/javascript">
 		window.fbAsyncInit = function() {
         	FB.init({
@@ -337,7 +345,7 @@
 			  	method: 'share_open_graph',
 			  	action_type: 'og.shares',
 			  	action_properties: JSON.stringify({
-			    object:'{{ url('/') }}'+path,
+			    object: path,
 			})
 			}, function(response, id){
 				$.post("{{ url('/cookie/set') }}", {_token: "{{ csrf_token() }}", key: "shared_listing_"+id, value: true, time:11520}, function(result){
@@ -353,7 +361,7 @@
 			  	method: 'share_open_graph',
 			  	action_type: 'og.likes',
 			  	action_properties: JSON.stringify({
-			    object:'{{ url('/') }}'+path,
+			    object: path,
 			})
 			}, function(response, id){
 			  	console.log(response);
@@ -388,5 +396,8 @@
 			$('#phone_2').html(phoneFormat($('#phone_2').html()));
 		});
 	</script>
-	
+
+	<!-- Google maps js -->
+	<?php echo $map['js']; ?>
+	<!-- Google maps js -->
 @endsection

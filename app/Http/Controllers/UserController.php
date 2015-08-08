@@ -5,12 +5,25 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 
-use Auth, Queue;
+use Auth;
+use Queue;
 
 use App\User;
 use App\Commands\SendUserConfirmationEmail;
 
 class UserController extends Controller {
+
+	/**
+	 * Create a new authentication controller instance.
+	 *
+	 * @param  \Illuminate\Contracts\Auth\Guard  $auth
+	 * @param  \Illuminate\Contracts\Auth\Registrar  $registrar
+	 * @return void
+	 */
+	public function __construct(){
+		$this->middleware('throttle.auth', ['only' => ['update']]);
+		$this->middleware('throttle', ['only' => ['confirm', 'sendConfirmationEmail']]);
+	}
 
 	/**
 	 * Display a listing of the resource.
@@ -52,11 +65,7 @@ class UserController extends Controller {
 		$user = User::where('username', $username)->first();
 
 		if(!$user){
-			$user = User::find($username);
-
-			if(!$user){
-				return redirect('/')->withErrors(['No se encontro ningun usuario']);
-			}
+			abort(404);
 		}
 
 		$user->load('listings', 'listings.listingType', 'listings.featuredType');
@@ -70,12 +79,11 @@ class UserController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id){
+	public function edit($id, Request $request){
 		// Security check
 	    if(!Auth::user()->is('admin')){
 	    	if(!$id || $id != Auth::user()->id){
 	    		if($request->ajax()){
-					Session::flash('success', [trans('responses.no_permission')]);
 					return response()->json(['error' => trans('responses.no_permission')]);
 				}
 	        	return redirect('/admin/user/'.Auth::user()->id.'/edit')->withErrors([trans('responses.no_permission')]);
@@ -83,6 +91,10 @@ class UserController extends Controller {
 		}
 
 	    $user = User::find($id);
+
+	    if(!$user){
+			abort(404);
+		}
 
 		return view('admin.users.edit', ['user' => $user]);
 	}
@@ -98,16 +110,16 @@ class UserController extends Controller {
 	    if(!Auth::user()->is('admin')){
 	    	if(!$id || $id != Auth::user()->id){
 	    		if($request->ajax()){
-					Session::flash('error', [trans('responses.no_permission')]);
 					return response()->json(['error' => trans('responses.no_permission')]);
 				}
 	        	return redirect('/admin/user/'.Auth::user()->id.'/edit')->withErrors([trans('responses.no_permission')]);
 	    	}
 		}
 
-		$user 		= new User;
+		$user = new User;
 
 		$input 					= $request->all();
+		$input['email'] 		= Auth::user()->email;
 		$input['phone_1'] 		= preg_replace("/[^0-9]/", "", $input['phone_1']);
 		$input['phone_2'] 		= preg_replace("/[^0-9]/", "", $input['phone_2']);
 		$input['description'] 	= preg_replace("/[^a-zA-Z0-9.,?¿#%&ñáéíóú ]+/", "", $input['description']);
@@ -118,8 +130,15 @@ class UserController extends Controller {
 
 	    $user = User::find($id);
 
+	    if(!$user){
+			abort(404);
+		}
+
 		$user->fill($input)->save();
 
+		if($request->ajax()){
+			return response()->json(['success' => trans('responses.user_saved')]);
+		}
 		return redirect('/admin/user/'.$id.'/edit')->withSuccess([trans('responses.user_saved')]);
 	}
 
@@ -132,8 +151,13 @@ class UserController extends Controller {
 	public function confirm($id, $code){
 		//
 	    $user = User::where('id', $id)->where('confirmation_code', $code)->first();
-	    $user->confirmed 			= true;
-	    $user->confirmation_code 	= null;
+
+	    if(!$user){
+			abort(403);
+		}
+	    
+	    $user->confirmed = true;
+	    $user->confirmation_code = null;
 	    $user->save();
 
 	    Auth::login($user);
@@ -157,11 +181,9 @@ class UserController extends Controller {
 		if(!Auth::user()->confirmed){
 			return view('admin.users.not_confirmed');
 		}else{
-			return redirect('admin');
+			return redirect('admin')->withErrors([trans('responses.no_permission')]);
 		}
 	}
-
-
 
 	
 	/**
@@ -170,14 +192,13 @@ class UserController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id){
+	public function destroy($id, Request $request){
 		$self = false;
 		// Security check
 	    if(!Auth::user()->is('admin')){
 	    	if(!$id || $id != Auth::user()->id){
 	    		$self = true;
 	    		if($request->ajax()){
-					Session::flash('error', [trans('responses.no_permission')]);
 					return response()->json(['error' => trans('responses.no_permission')]);
 				}
 	        	return redirect('/admin/user/'.Auth::user()->id.'/edit')->withErrors([trans('responses.no_permission')]);
@@ -195,6 +216,9 @@ class UserController extends Controller {
 		$user = User::find($id);
 		$user->delete();
 
+		if($request->ajax()){
+			return response()->json(['success' => trans('responses.no_permission')]);
+		}
 		return redirect('/admin/users')->withSuccess([trans('responses.account_removed')]);
 	}
 

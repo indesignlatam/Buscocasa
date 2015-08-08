@@ -4,8 +4,12 @@ use App\Models\IndesignModel;
 
 class ListingType extends IndesignModel {
 
+	/**
+	 * Dont update my timestamps! I dont have any.
+	 *
+	 * @var string
+	 */
 	public $timestamps = false;
-	protected $softDelete = false;
 
 	/**
 	 * The name of the table.
@@ -13,13 +17,6 @@ class ListingType extends IndesignModel {
 	 * @var string
 	 */
     protected $table = 'listing_types';
-
-    /**
-	 * The primary key of the table.
-	 *
-	 * @var string
-	 */
-	//protected $primaryKey = 'pid';
 
 	/**
 	 * The rules to verify when creating.
@@ -46,38 +43,25 @@ class ListingType extends IndesignModel {
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['name', 'image_path', 'published'];
+	protected $fillable = [ 'name', 
+							'image_path', 
+							'published',
+							];
 
 	/**
-	 * The attributes that are hidden to JSON responces.
-	 *
-	 * @var array
-	 */
-	protected $hidden = ['created_at', 'deleted_at', 'image_path'];
-
-	/**
-	 * The attributes that are appended to JSON responces.
-	 *
-	 * @var array
-	 */
-	protected $appends = ['image_url'];
-
-	/**
-	 * The method that appends the attribute to JSON responces.
-	 *
-	 * @var null or attribute
-	 */
-	public function getImageUrlAttribute(){
-		if($this->image_path){
-			return asset($this->image_path);
-		}
-		return null;
-	}
-
+     * Scope a query to only include ventas
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
 	public function scopeVentas($query){
-        return $query->where('name', '=', 'Venta');
+        return $query->where('id', 1);
     }
 
+    /**
+     * Relationship with listing which the message belongs to
+     *
+     * @return \App\Models\Listing
+     */
 	public function listings(){
         return $this->hasMany('App\Models\Listing', 'listing_type');
     }

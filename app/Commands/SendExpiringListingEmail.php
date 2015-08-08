@@ -36,7 +36,10 @@ class SendExpiringListingEmail extends Command implements SelfHandling, ShouldBe
 		$listing = $this->listing;
 		// If mail not confirmed dont send email
 		if($listing->broker->confirmed){
-			Mail::send('emails.listing_expiring', ['listing' => $listing], function ($message) use ($listing) {
+			Mail::send('emails.listing_expiring', [ 'listing' 	=> $listing, 
+													'user' 		=> $listing->broker,
+												  ], 
+			function ($message) use ($listing) {
 			    $message->from(Settings::get('email_from'), Settings::get('email_from_name'))
 						->to($listing->broker->email, $listing->broker->name)
 			    		->subject(trans('emails.expiring_listing_subject'));

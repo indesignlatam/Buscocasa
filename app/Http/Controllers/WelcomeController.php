@@ -1,21 +1,14 @@
 <?php namespace App\Http\Controllers;
 
-use DB, Settings;
+use DB;
+use Settings;
 
-use App\Models\Listing, App\Models\City, App\Models\ListingType, App\Models\Category;
+use App\Models\Listing;
+use App\Models\City;
+use App\Models\ListingType;
+use App\Models\Category;
 
 class WelcomeController extends Controller {
-
-	/*
-	|--------------------------------------------------------------------------
-	| Welcome Controller
-	|--------------------------------------------------------------------------
-	|
-	| This controller renders the "marketing page" for the application and
-	| is configured to only allow guests. Like most of the other sample
-	| controllers, you are free to modify or remove it as you desire.
-	|
-	*/
 
 	/**
 	 * Create a new controller instance.
@@ -34,22 +27,24 @@ class WelcomeController extends Controller {
 	public function index(){
 		$sales 					= Listing::remember(Settings::get('query_cache_time_extra_short'))
 										 ->where('listing_type', 1)
-										 //->featured()
+										 ->where('featured_type', '>', 2)
 										 ->with('city', 'listingType', 'featuredType')
+										 ->orderBy('featured_type', 'asc')
 										 ->orderBy('id', 'desc')
 										 ->take(10)
 										 ->get();
 
 		$leases 				= Listing::remember(Settings::get('query_cache_time_extra_short'))
 										 ->where('listing_type', 2)
-										 //->featured()
+										 ->where('featured_type', '>', 2)
 										 ->with('city', 'listingType', 'featuredType')
+										 ->orderBy('featured_type', 'asc')
 										 ->orderBy('id', 'desc')
 										 ->take(10)
 										 ->get();
 
 		$featured 				= Listing::remember(Settings::get('query_cache_time_extra_short'))
-										 ->featured()
+										 ->where('featured_type', '>', 2)
 										 ->orderBy(DB::raw('RAND()'))
 										 ->take(2)
 										 ->get();
@@ -57,7 +52,6 @@ class WelcomeController extends Controller {
 		$featuredFullScreen 	= Listing::remember(Settings::get('query_cache_time_extra_short'))
 										 ->where('listing_type', 1)
 										 ->where('featured', 1)
-										 ->where('price', '>', 1200000000)
 										 ->orderBy(DB::raw('RAND()'))
 										 ->first();
 

@@ -63,9 +63,7 @@
 				<form id="search_form" class="uk-form uk-form-stacked" method="GET" action="{{ url(Request::path()) }}">
 			@else
 				<form id="search_form" class="uk-form uk-form-stacked" method="GET" action="{{ url(Request::path()) }}">
-			@endif	    		
-					{{-- <input type="hidden" name="_token" value="{{ csrf_token() }}"> --}}
-
+			@endif
 					<input class="uk-width-large-10-10 uk-margin-large-bottom uk-form-large" type="text" name="listing_code" placeholder="{{ trans('frontend.search_field') }}" value="">
 
 					<div class="uk-form-row">
@@ -134,7 +132,7 @@
 					</p>
 		            <div id="slider-range-area"></div>
 		            <input type="hidden" id="area_min" name="area_min" value="{{Request::get('area_min')}}">
-					<input type="hidden" id="area_max" name="area_max" value="{{Request::get('area_min')}}">
+					<input type="hidden" id="area_max" name="area_max" value="{{Request::get('area_max')}}">
 
                 	<button type="submit" class="uk-button uk-button-primary uk-align-right uk-margin-large-top">{{ trans('frontend.search_button') }}</button>
 				</form>
@@ -142,36 +140,57 @@
 	    	<!-- End search bar -->
 
 	    	<div class="uk-width-large-3-4 uk-width-small-1-1 uk-margin-left">
-	    		<div class="uk-form uk-align-right">
-				    <select form="search_form" name="order_by" onchange="this.form.submit()">
-				    	<option value="">Ordenar por</option>
-				    	@if(Request::get('order_by') && Request::get('order_by') == 'id_desc')
-				    		<option value="id_desc" selected>Fecha creación</option>
-				    	@elseif(Cookie::get('listings_order_by') == 'id_desc')
-				    		<option value="id_desc" selected>Fecha creación</option>
-				    	@else
-				    		<option value="id_desc">Fecha creación</option>
-				    	@endif
-
-				    	@if(Request::get('order_by') && Request::get('order_by') == 'price_max')
-				    		<option value="price_max" selected>Mayor a menor valor</option>
-				    	@elseif(Cookie::get('listings_order_by') == 'price_max')
-				    		<option value="price_max" selected>Mayor a menor valor</option>
-				    	@else
-				    		<option value="price_max">Mayor a menor valor</option>
-				    	@endif
-
-				    	@if(Request::get('order_by') && Request::get('order_by') == 'price_min')
-				    		<option value="price_min" selected>Menor a mayor valor</option>
-				    	@elseif(Cookie::get('listings_order_by') == 'price_min')
-				    		<option value="price_min" selected>Menor a mayor valor</option>
-				    	@else
-				    		<option value="price_min">Menor a mayor valor</option>
-				    	@endif
-				    </select>
-				</div>
-				
 	    		@if(count($listings))
+	    			<div class="uk-form uk-align-right uk-hidden-small">
+		    			<select form="search_form" name="take" onchange="this.form.submit()">
+					    	<option value="">Cantidad de publicaciones</option>
+					    	@if(Request::get('take') == 50)
+					    		<option value="50" selected>Ver 50</option>
+					    	@else
+					    		<option value="50">Ver 50</option>
+					    	@endif
+
+					    	@if(Request::get('take') == 30)
+					    		<option value="30" selected>Ver 30</option>
+					    	@else
+					    		<option value="30">Ver 30</option>
+					    	@endif
+
+					    	@if(Request::get('take') == 10)
+					    		<option value="10" selected>Ver 10</option>
+					    	@else
+					    		<option value="10">Ver 10</option>
+					    	@endif
+					    </select>
+
+					    <select form="search_form" name="order_by" onchange="this.form.submit()">
+					    	<option value="">Ordenar por</option>
+					    	@if(Request::get('order_by') && Request::get('order_by') == 'id_desc')
+					    		<option value="id_desc" selected>Fecha creación</option>
+					    	@elseif(Cookie::get('listings_order_by') == 'id_desc')
+					    		<option value="id_desc" selected>Fecha creación</option>
+					    	@else
+					    		<option value="id_desc">Fecha creación</option>
+					    	@endif
+
+					    	@if(Request::get('order_by') && Request::get('order_by') == 'price_max')
+					    		<option value="price_max" selected>Mayor a menor valor</option>
+					    	@elseif(Cookie::get('listings_order_by') == 'price_max')
+					    		<option value="price_max" selected>Mayor a menor valor</option>
+					    	@else
+					    		<option value="price_max">Mayor a menor valor</option>
+					    	@endif
+
+					    	@if(Request::get('order_by') && Request::get('order_by') == 'price_min')
+					    		<option value="price_min" selected>Menor a mayor valor</option>
+					    	@elseif(Cookie::get('listings_order_by') == 'price_min')
+					    		<option value="price_min" selected>Menor a mayor valor</option>
+					    	@else
+					    		<option value="price_min">Menor a mayor valor</option>
+					    	@endif
+					    </select>
+					</div>
+					
 		    		<!-- This is the container of the toggling elements -->
 					<ul class="uk-tab" data-uk-switcher="{connect:'#my-id'}">
 						@if(!Cookie::get('show_mosaic'))
@@ -185,20 +204,20 @@
 						@endif
 					    
 					</ul>
-					<div class="uk-panel uk-panel-box uk-panel-box-primary uk-margin">
+					<div class="uk-panel uk-margin">
 						<div class="uk-grid">
 							@foreach($listings1 = array_slice($featuredListings->all(), 0, 4) as $listing)
 								<div class="uk-width-large-1-4 uk-width-medium-1-2 uk-width-small-1-1" style="position:relative;">
 									<!-- Tags start -->
-						    		@if($listing->featuredType && $listing->featured_expires_at > Carbon::now())
+									<a href="{{ url($listing->path()) }}">
+						    		@if($listing->featuredType && $listing->featuredType->id > 1 && $listing->featured_expires_at > Carbon::now())
 						    			<img src="{{asset($listing->featuredType->image_path)}}" style="position:absolute; top:0; left:30; max-width:100px">
 						    		@else
 							    		@if(Carbon::createFromFormat('Y-m-d H:i:s', $listing->created_at)->diffInDays(Carbon::now()) < 5)
-							    			<img src="{{asset('/images/defaults/new.png')}}" style="position:absolute; top:0; left:0; max-width:100px">
+							    			<img src="{{asset('/images/defaults/new.png')}}" style="position:absolute; top:0; left:30; max-width:100px">
 							    		@endif
 						    		@endif
 							    	<!-- Tags end -->
-									<a href="{{ url($listing->path()) }}">
 			                            <img src="{{ asset(Image::url($listing->image_path(),['mini_front'])) }}" class="uk-margin-small-bottom" style="max-width=150px">
 			                        </a>
 			                        <br class="uk-visible-small">
@@ -215,21 +234,21 @@
 					    <li>
 					    	<?php $i = 0; ?>
 					    	@foreach($listings as $listing)
-					    		@if($i == ceil(count($listings)/2))
-					    			<div class="uk-panel uk-panel-box uk-panel-box-primary uk-margin">
+					    		@if(count($listings) > 10 && $i == ceil(count($listings)/2))
+					    			<div class="uk-panel uk-margin">
 										<div class="uk-grid">
 											@foreach($listings1 = array_slice($featuredListings->all(), -4, 4) as $listing)
 												<div class="uk-width-large-1-4 uk-width-medium-1-2 uk-width-small-1-1" style="position:relative;">
 													<!-- Tags start -->
-										    		@if($listing->featuredType && $listing->featured_expires_at > Carbon::now())
+													<a href="{{ url($listing->path()) }}">
+										    		@if($listing->featuredType && $listing->featuredType->id > 1 && $listing->featured_expires_at > Carbon::now())
 										    			<img src="{{asset($listing->featuredType->image_path)}}" style="position:absolute; top:0; left:30; max-width:100px">
 										    		@else
 											    		@if(Carbon::createFromFormat('Y-m-d H:i:s', $listing->created_at)->diffInDays(Carbon::now()) < 5)
-											    			<img src="{{asset('/images/defaults/new.png')}}" style="position:absolute; top:0; left:0; max-width:100px">
+											    			<img src="{{asset('/images/defaults/new.png')}}" style="position:absolute; top:0; left:30; max-width:100px">
 											    		@endif
 										    		@endif
 											    	<!-- Tags end -->
-													<a href="{{ url($listing->path()) }}">
 							                            <img src="{{ asset(Image::url($listing->image_path(),['mini_front'])) }}" class="uk-margin-small-bottom" style="max-width=150px">
 							                        </a>
 							                        <br class="uk-visible-small">
@@ -286,15 +305,17 @@
 
 @section('js')
 	@parent
+
+	<!-- CSS -->
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+	<link href="{{ asset('/css/select2.min.css') }}" rel="stylesheet"/>
+	<!-- CSS -->
+
+	<!-- JS -->
 	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 	<script src="{{ asset('/js/accounting.min.js') }}"></script>
-
-	<link href="{{ asset('/css/select2.min.css') }}" rel="stylesheet" />
 	<script src="{{ asset('/js/select2.min.js') }}"></script>
-
-	<script type="text/javascript">var centreGot = false;</script>
-	{!! $map['js'] !!}
+	<!-- JS -->
 
 	<script type="text/javascript">
 		function setHideMap(hideMap) {
@@ -312,26 +333,12 @@
             });
         }
 
-        function getMarkers() {
-            // $.post("{{ url('/listingView') }}", {_token: "{{ csrf_token() }}", status: showMosaic}, function(response){
-            	// console.log(map.getBounds());
-            	// marker.setMap(null);
-                
-             //    marker.setMap(map);
-            // });
-        }
-
-        $(document).ready(function() {
-		  	$("#city").select2();
-		});
-
-
-
-
 		$(function() {
+			$("#city").select2();
+
 		    $( "#slider-range-price" ).slider({
 		      	range: true,
-		      	step: 5000000,
+		      	step: 10000000,
 		      	min: 0,// TODO get from settings
 		      	max: 2000000000,// TODO get from settings
 
@@ -403,4 +410,9 @@
 		      	" - " + accounting.formatNumber($( "#slider-range-area" ).slider( "values", 1 )) + "+ mt2" );
 	  	});
 	</script>
+
+	<!-- Google map js -->
+	<script type="text/javascript">var centreGot = false;</script>
+	{!! $map['js'] !!}
+	<!-- Google map js -->
 @endsection

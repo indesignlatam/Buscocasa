@@ -2,10 +2,11 @@
 
 return [
     // AppointmentController
-    'message_success'                       => 'Su mensaje ha sido enviado exitosamente.',
-    'message_deleted'                       => 'El mensaje fue borrado.',
+    'message_success'                       => 'El mensaje ha sido enviado exitosamente.',
+    'message_deleted'                       => 'El mensaje fue borrado exitosamente.',
     'message_sent'                          => 'El mensaje fue enviado exitosamente.',
-    'message_marked'                        => 'El mensaje fue marcado exitosamente.',
+    'message_marked_0'                      => 'El mensaje fue marcado como no visto.',
+    'message_marked_1'                      => 'El mensaje fue marcado como visto.',
 
     // ListingController
     'listing_created' 				        => 'Su inmueble fue creado exitosamente.',
@@ -17,8 +18,11 @@ return [
 
     // General
     'no_object_found'                       => 'No se encontro ningun objeto.',
+    'file_to_large'                         => 'El archivo es muy pesado',
     'error_saving_image'                    => 'Hubo un error al guardar la imagen.',
     'no_permission'                         => 'No tienes permiso para realizar esta acción.',
+    'rate_limit_exeeded'                    => 'Has hecho demasiadas solicitudes en poco tiempo! Espera un momento y vuelve a intentar.',
+    'invalid_token'                         => 'La sesión expiro! Porfavor intenta nuevamente.',
 
     //UserController
     'user_saved'                            => 'Los datos de usuario fueron guardados exitosamente.',
@@ -33,11 +37,12 @@ return [
     'your_account_removed'                  => 'Tu cuenta fue eliminada.',
 
     // ImageController
-    'image_limit'                           => 'Haz alcanzado tu limite de fotos.',
+    'image_limit'                           => 'Haz alcanzado tu limite maximo de fotos.',
     
     // PaymentController
     'payment_canceled'                      => 'Pago cancelado exitosamente',
     'cant_cancel_payment'                   => 'No puedes cancelar este pago',
+    'payment_unconfirmed_for_listing'       => 'Hay pagos aun no confirmados para este inmueble',
     
     'features111'                           => 'publicados',
     'features111'                           => 'publicados',

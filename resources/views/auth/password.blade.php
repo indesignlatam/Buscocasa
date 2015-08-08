@@ -36,8 +36,8 @@
 		@endif
 
 		@if (Session::has('success') && count(Session::get('success')) > 0)
-			<div class="uk-alert uk-alert-danger">
-				<strong>{{ trans('frontend.oops') }}</strong> {{ trans('frontend.input_error') }}<br><br>
+			<div class="uk-alert uk-alert-success uk-width-large-8-10 uk-align-center" data-uk-alert>
+    			<a href="" class="uk-alert-close uk-close"></a>
 				<ul class="uk-list">
 					@foreach (Session::get('success') as $error)
 						<li><i class="uk-icon-check"></i> {{ $error }}</li>
@@ -48,11 +48,12 @@
 
 		<form class="uk-form uk-form-horizontal uk-margin-large-top uk-text-center" role="form" method="POST" action="{{ url('/password/email') }}">
 			@if (session('status'))
-				<div class="uk-alert uk-alert-success uk-width-large-8-10 uk-align-center">
+				<div class="uk-alert uk-alert-success uk-width-large-8-10 uk-align-center" data-uk-alert>
 					<a href="" class="uk-alert-close uk-close"></a>
 					{{ session('status') }}
 				</div>
 			@endif
+			
 			<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
 			<div class="uk-form-row">

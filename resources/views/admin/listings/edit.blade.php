@@ -22,8 +22,9 @@
 		<hr>
 	    
 	    <div class="uk-panel">
-			<a class="uk-button uk-button-large uk-float-right uk-margin-left" href="{{ url('/admin/listings') }}">{{ trans('admin.close') }}</a>
-	        <button form="create_form" type="submit" class="uk-button uk-button-large uk-button-success uk-form-width-medium uk-float-right" onclick="blockUI()">{{ trans('admin.save') }}</button>
+			<a class="uk-button uk-button-large uk-width-small-1-1 uk-width-medium-2-10 uk-width-large-1-10 uk-align-right" href="{{ url('/admin/listings') }}">{{ trans('admin.close') }}</a>
+			<button form="create_form" type="submit" class="uk-button uk-button-large uk-width-small-1-1 uk-width-medium-3-10 uk-width-large-2-10 uk-align-right" onclick="saveClose()" >{{ trans('admin.save_close') }}</button>
+	        <button form="create_form" type="submit" class="uk-button uk-button-large uk-button-success uk-width-small-1-1 uk-width-medium-3-10 uk-width-large-2-10 uk-align-right" onclick="blockUI()">{{ trans('admin.save') }}</button>
 	    </div>
 
 		<form id="create_form" class="uk-form uk-form-stacked" method="POST" action="{{ url('/admin/listings/'.$listing->id) }}" enctype="multipart/form-data">
@@ -34,6 +35,7 @@
         	<input id="longitude" type="hidden" name="longitude" value="{{ $listing->longitude }}">
         	<input id="main_image_id" type="hidden" name="main_image_id" value="{{ $listing->main_image_id }}">
         	<input id="image_path" type="hidden" name="image_path" value="{{ $listing->image_path }}">
+        	<input id="save_close" type="hidden" name="save_close" value="0">
 
 			<div class="uk-grid uk-margin-top">
 
@@ -276,7 +278,7 @@
 					<div id="5">
 						<h2 class="uk-text-primary uk-text-bold" style="text-transform: uppercase">{{ trans('admin.listing_description') }}</h2>
 						<p class="uk-margin-top-remove">{{ trans('admin.listing_description_help') }}</p>
-						<textarea class="uk-width-large-10-10 uk-margin-small-bottom" rows="5" name="description">{{ $listing->description }}</textarea>
+						<textarea class="uk-width-large-10-10 uk-margin-small-bottom" rows="5" name="description" maxlength="2000">{{ $listing->description }}</textarea>
 					</div>
 					<!-- Informacion adicional -->
 
@@ -287,12 +289,8 @@
 						<h2 class="uk-text-primary uk-text-bold" style="text-transform: uppercase">{{ trans('admin.images') }}</h2>
 						<p>{{ trans('admin.add_images_to_listing') }}</p>
 
-						<div id="images_uploaded">
-						   
-						</div>
-
 				    	<div id="upload-drop" class="uk-placeholder uk-placeholder-large uk-text-center uk-margin-top">
-						    <i class="uk-icon-large uk-icon-cloud-upload"></i> {{ trans('admin.drag_listing_images_or') }} <a class="uk-form-file">{{ trans('admin.select_an_image') }}<input id="upload-select" type="file"></a>
+						    <i class="uk-icon-large uk-icon-cloud-upload"></i> {{ trans('admin.drag_listing_images_or') }} <a class="uk-form-file">{{ trans('admin.select_an_image') }}<input id="upload-select" type="file" multiple></a>
 						</div>
 
 						<div id="progressbar" class="uk-progress uk-hidden">
@@ -342,10 +340,10 @@
 				    </div>
 				    <!-- Share listing -->
 
-					<div class="uk-margin-top uk-flex">
+					<div class="uk-margin-top uk-grid">
 				        <!-- This is a button toggling the modal -->
-				        <button form="create_form" type="submit" class="uk-button uk-button-large uk-button-success uk-text-bold uk-width-5-10 uk-margin-right" onclick="blockUI()">{{ trans('admin.save') }}</button>
-				        <button form="create_form" type="submit" class="uk-button uk-button-large uk-text-bold uk-width-5-10" onclick="blockUI()" >{{ trans('admin.save_close') }}</button>
+				        <button form="create_form" type="submit" class="uk-button uk-button-large uk-button-success uk-text-bold uk-width-small-1-1 uk-width-medium-5-10 uk-width-large-5-10 uk-margin-bottom" onclick="blockUI()">{{ trans('admin.save') }}</button>
+				        <button form="create_form" type="submit" class="uk-button uk-button-large uk-text-bold uk-width-small-1-1 uk-width-medium-5-10 uk-width-large-5-10 uk-margin-bottom" onclick="saveClose()" >{{ trans('admin.save_close') }}</button>
 				    </div>
 				</div>
 
@@ -355,7 +353,7 @@
 	</div>
 </div>
 
-@if($listing->featured_expires_at && $listing->featured_expires_at < Carbon::now()->addDays(5))
+@if($listing->featured_expires_at && $listing->featured_expires_at < Carbon::now()->addDays(5) && $listing->featured_expires_at > Carbon::now())
 	<!-- This is the modal -->
 	<div id="expires_modal" class="uk-modal">
 	    <div class="uk-modal-dialog">
@@ -364,11 +362,17 @@
 	        	{{ trans('admin.listing_expiring_soon') }}
 	        </div>
 
-	        <h2 class="uk-text-danger">El inmueble expira {{ Carbon::createFromFormat('Y-m-d H:i:s', $listing->featured_expires_at)->diffForHumans() }}</h2>
-	        <a href="{{ url('/admin/listings/'.$listing->id.'/renovate') }}">Renovar</a>
-		    <div class="uk-modal-footer">
-		    	<a href="" class="uk-button uk-button-danger uk-modal-close">{{ trans('admin.close') }}</a>
-		    </div>
+	        <div class="uk-text-center">
+	        	<img src="{{ asset('/images/support/listings/expiring_listing.png') }}" style="max-width:80%">
+
+	        	@if($listing->featured_expires_at < Carbon::now())
+	        		<h2 class="uk-text-danger">{{ trans('admin.listing_featured_expired') }} {{ $listing->featured_expires_at->diffForHumans() }}</h2>
+				@else
+	        		<h2 class="uk-text-danger">{{ trans('admin.listing_featured_expires') }} {{ $listing->featured_expires_at->diffForHumans() }}</h2>
+				@endif
+
+		        <a class="uk-button uk-button-large uk-button-success" href="{{ url('/admin/listings/'.$listing->id.'/renovate') }}">{{ trans('admin.renovate') }}</a>
+	        </div>
 	    </div>
 	</div>
 @elseif($listing->expires_at && $listing->expires_at < Carbon::now()->addDays(5))
@@ -379,11 +383,18 @@
 	        	{{ trans('admin.listing_expiring_soon') }}
 	        </div>
 
-	        <h2 class="uk-text-danger">El inmueble expira {{ Carbon::createFromFormat('Y-m-d H:i:s', $listing->expires_at)->diffForHumans() }}</h2>
-	        <a href="{{ url('/admin/listings/'.$listing->id.'/renovate') }}">Renovar</a>
-		    <div class="uk-modal-footer">
-		    	<a href="" class="uk-button uk-button-danger uk-modal-close">{{ trans('admin.close') }}</a>
-		    </div>
+	        <div class="uk-text-center">
+	        	<img src="{{ asset('/images/support/listings/expiring_listing.png') }}" style="max-width:80%">
+
+		        @if($listing->expires_at < Carbon::now())
+	        		<h2 class="uk-text-danger">{{ trans('admin.listing_expired') }} {{ $listing->expires_at->diffForHumans() }}</h2>
+				@else
+	        		<h2 class="uk-text-danger">{{ trans('admin.listing_expires') }} {{ $listing->expires_at->diffForHumans() }}</h2>
+				@endif
+
+		        <a class="uk-button uk-button-large uk-button-success" href="{{ url('/admin/listings/'.$listing->id.'/renovate') }}">{{ trans('admin.renovate') }}</a>
+	        </div>
+	        
 	    </div>
 	</div>
 @endif
@@ -397,21 +408,10 @@
 	        	{{ trans('admin.add_images_to_listing') }}
 	        </div>
 
-	        <div id="images_uploaded_modal" class="uk-alert uk-alert-success uk-animation-fade uk-hidden" data-uk-alert>
-			    <a href="" class="uk-alert-close uk-close"></a>
-			    <p>{{ trans('admin.images_uploaded_succesfuly') }}</p>
-			</div>
-
 	        <div class="uk-grid uk-grid-collapse">
-	        	<div class="uk-width-1-2">
-	        		<a onclick="uplink()">
-	        			<img src="{{ asset('/images/support/upload-images.png') }}">
-	        		</a>
-	        	</div>
-
-	        	<div class="uk-width-1-2">
+	        	<div class="uk-width-1-1">
 	        		<div id="upload_drop_modal" class="uk-placeholder uk-placeholder-large uk-text-center uk-margin-top">
-					    <i class="uk-icon-large uk-icon-cloud-upload"></i> {{ trans('admin.drag_listing_images_or') }} <a class="uk-form-file">{{ trans('admin.select_an_image') }}<input id="upload_select_modal" type="file"></a>
+					    <i class="uk-icon-large uk-icon-cloud-upload"></i> {{ trans('admin.drag_listing_images_or') }} <a class="uk-form-file">{{ trans('admin.select_an_image') }}<input id="upload_select_modal" type="file" multiple></a>
 					</div>
 
 					<div id="progressbar_modal" class="uk-progress uk-hidden">
@@ -425,7 +425,7 @@
 			</div>
 
 		    <div class="uk-modal-footer">
-		    	<a href="" class="uk-button uk-button-danger uk-modal-close">{{ trans('admin.close') }}</a>
+		    	<a href="" class="uk-button uk-button-success uk-modal-close">{{ trans('admin.save') }}</a>
 		    </div>
 	    </div>
 	</div>
@@ -433,25 +433,26 @@
 @endsection
 
 @section('js')
+	@parent
+
+	<!-- Styles -->
 	<link href="{{ asset('/css/components/form-file.almost-flat.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/components/upload.almost-flat.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/components/placeholder.almost-flat.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/components/progress.almost-flat.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/components/tooltip.almost-flat.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/components/sticky.almost-flat.min.css') }}" rel="stylesheet">
+	<link href="{{ asset('/css/select2.min.css') }}" rel="stylesheet" />
+	<!-- Styles -->
 
-	@parent
+	<!-- JS -->
 	<script src="{{ asset('/js/components/upload.min.js') }}"></script>
     <script src="{{ asset('/js/components/tooltip.min.js') }}"></script>
 	<script src="{{ asset('/js/components/sticky.min.js') }}"></script>
-
 	<script src="{{ asset('/js/accounting.min.js') }}"></script>
-
-	<link href="{{ asset('/css/select2.min.css') }}" rel="stylesheet" />
 	<script src="{{ asset('/js/select2.min.js') }}"></script>
+	<!-- JS -->
 
-	<script type="text/javascript">var centreGot = false;</script>
-	<?php echo $map['js']; ?>
 	<script type="text/javascript">
 		$(function() {
 			$("#city").select2();
@@ -476,7 +477,7 @@
 		});
 
 		function blockUI(){
-	        var modal = UIkit.modal.blockUI('<h3 class="uk-text-center">Guardando inmueble, porfavor espere.</h3><div class="uk-text-center uk-text-primary"><i class="uk-icon-large uk-icon-spinner uk-icon-spin"</i></div>'); // modal.hide() to unblock
+	        var modal = UIkit.modal.blockUI('<h3 class="uk-text-center">Guardando inmueble, porfavor espere.</h3><div class="uk-text-center uk-text-primary"><i class="uk-icon-large uk-icon-spinner uk-icon-spin"</i></div>');
 	    }
 
 		function format(field){
@@ -493,14 +494,23 @@
 	    	$('#image_path').val(path);
 	    }
 
-        function deleteImage(sender) {
+        function deleteImage(sender, modal) {
 	        $.post("{{ url('/admin/images') }}/" + sender.id, {_token: "{{ csrf_token() }}", _method:"DELETE"}, function(result){
-	            $("#image-"+sender.id).remove();
-	            if(sender.id == $('#main_image_id').val()){
-                	$('#main_image_id').val(null);
-                	$('#image_path').val(null);
-                }
-                $("#images_uploaded").prepend('<div id="images_uploaded" class="uk-alert uk-alert-success" data-uk-alert><a href="" class="uk-alert-close uk-close"></a><p>{{ trans("admin.image_deleted_succesfuly") }}</p></div>');
+	        	if(result.success){
+	        		$("#image-"+sender.id).fadeOut(500, function() { $(this).remove(); });
+	        		if(modal){
+	            		$("#image-modal-"+sender.id).fadeOut(500, function() { $(this).remove(); });
+	        		}
+
+		            if(sender.id == $('#main_image_id').val()){
+	                	$('#main_image_id').val(null);
+	                	$('#image_path').val(null);
+	                }
+	                UIkit.notify('<i class="uk-icon-check-circle"></i> '+result.success, {pos:'top-right', status:'success', timeout: 15000});
+	        	}else if(response.error){
+		            UIkit.notify('<i class="uk-icon-remove"></i> '+response.error, {pos:'top-right', status:'danger', timeout: 15000});
+	        	}
+	            
 	        });
 	    }
 
@@ -531,26 +541,21 @@
 		            },
 
 		            complete: function(response) {
-		            	if(!response.error && response.image){
-		            		$("#images_uploaded_modal").html('<p>Imagen cargada exitosamente</>');
-		            		$("#images_uploaded_modal").removeClass('uk-hidden');
-		            		$("#images_div_modal").prepend('<div class="uk-width-1-4" id="image-'+response.image.id+'"><figure class="uk-overlay uk-overlay-hover uk-margin-bottom"><img src="{{asset("")}}'+response.image.image_path+'"><div class="uk-overlay-panel uk-overlay-background uk-overlay-fade uk-text-center uk-vertical-align"><i class="uk-icon-large uk-icon-remove uk-vertical-align-middle" id="'+response.image.id+'" onclick="deleteImage(this)"></i> <i class="uk-icon-large uk-icon-check uk-vertical-align-middle" onclick="selectMainImage('+response.image.id+', '+response.image.image_path+')"></i></div></figure></div>');
+		            	if(response.image && response.success){
+		            		UIkit.notify('<i class="uk-icon-check-circle"></i> '+response.success, {pos:'top-right', status:'success', timeout: 15000});
+
+		            		$("#images_div_modal").append('<div class="uk-width-1-4" id="image-modal-'+response.image.id+'" style="display: none;"><figure class="uk-overlay uk-overlay-hover uk-margin-bottom"><img src="{{asset("")}}'+response.image.image_path+'"><div class="uk-overlay-panel uk-overlay-background uk-overlay-fade uk-text-center uk-vertical-align"><i class="uk-icon-large uk-icon-remove uk-vertical-align-middle" id="'+response.image.id+'" onclick="deleteImage(this, true)"></i></div></figure></div>');
+		            		$("#image-modal-"+response.image.id).show('normal');
 
 		            		// Insite uploader images
-		            		$("#images-div").prepend('<div class="uk-width-large-1-4 uk-width-medium-1-3" id="image-'+response.image.id+'"><figure class="uk-overlay uk-overlay-hover uk-margin-bottom"><img src="{{asset("")}}'+response.image.image_path+'"><div class="uk-overlay-panel uk-overlay-background uk-overlay-fade uk-text-center"><i class="uk-icon-large uk-icon-remove" id="'+response.image.id+'" onclick="deleteImage(this)" data-uk-tooltip="{pos:"top"}" title="{{ trans("admin.eliminate_image") }}"></i> <i class="uk-icon-large uk-icon-check" onclick="selectMainImage('+response.image.id+', '+response.image.image_path+')" data-uk-tooltip="{pos:"top"}" title="{{ trans("admin.set_as_main_image") }}"></i></div></figure></div>');
-		            	}else{
-		            		$("#images_uploaded_modal").removeClass('uk-hidden');
-		            		$("#images_uploaded_modal").removeClass('uk-alert-success');
-		            		$("#images_uploaded_modal").addClass('uk-alert-danger');
+		            		$("#images-div").append('<div class="uk-width-large-1-4 uk-width-medium-1-3" id="image-'+response.image.id+'"><figure class="uk-overlay uk-overlay-hover uk-margin-bottom"><img src="{{asset("")}}'+response.image.image_path+'"><div class="uk-overlay-panel uk-overlay-background uk-overlay-fade uk-text-center"><i class="uk-icon-large uk-icon-remove" id="'+response.image.id+'" onclick="deleteImage(this)" data-uk-tooltip="{pos:"top"}" title="{{ trans("admin.eliminate_image") }}"></i> <i class="uk-icon-large uk-icon-check" onclick="selectMainImage('+response.image.id+', \''+response.image.image_path+'\')" data-uk-tooltip="{pos:"top"}" title="{{ trans("admin.set_as_main_image") }}"></i></div></figure></div>');
+		            	}else if(response.error){
 		            		if(response.error instanceof Array){
-		            			html = '<ul>'
 		            			response.error.forEach(function(entry) {
-								    html = html+'<li>'+entry['image']+'</li>';
+		            				UIkit.notify('<i class="uk-icon-remove"></i> '+entry['image'], {pos:'top-right', status:'danger', timeout: 15000});
 								});
-								html = html+'</ul>'
-								$("#images_uploaded_modal").html(html);
 		            		}else{
-		            			$("#images_uploaded_modal").html('<p>'+ response.error +'</p>');
+		            			UIkit.notify('<i class="uk-icon-remove"></i> '+response.error, {pos:'top-right', status:'danger', timeout: 15000});
 		            		}
 		            	}
 		            },
@@ -560,11 +565,6 @@
 		                setTimeout(function(){
 		                    progressbar.addClass("uk-hidden");
 		                }, 250);
-
-		                $('#images_uploaded_modal').delay(10000).queue(function(next){
-						    $(this).addClass("uk-hidden", 500, "fadeOut");
-						    next();
-						});
 		            }
 		        };
 
@@ -604,19 +604,18 @@
 		            },
 
 		            complete: function(response) {
-		            	if(!response.error && response.image){
-		            		$("#images_uploaded").prepend('<div id="images_uploaded" class="uk-alert uk-alert-success" data-uk-alert><a href="" class="uk-alert-close uk-close"></a><p>{{ trans("admin.images_uploaded_succesfuly") }}</p></div>');
-		            		$("#images-div").prepend('<div class="uk-width-large-1-4 uk-width-medium-1-3" id="image-'+response.image.id+'"><figure class="uk-overlay uk-overlay-hover uk-margin-bottom"><img src="{{asset("")}}'+response.image.image_path+'"><div class="uk-overlay-panel uk-overlay-background uk-overlay-fade uk-text-center"><i class="uk-icon-large uk-icon-remove" id="'+response.image.id+'" onclick="deleteImage(this)" data-uk-tooltip="{pos:"top"}" title="{{ trans("admin.eliminate_image") }}"></i> <i class="uk-icon-large uk-icon-check" onclick="selectMainImage('+response.image.id+', '+response.image.image_path+')" data-uk-tooltip="{pos:"top"}" title="{{ trans("admin.set_as_main_image") }}"></i></div></figure></div>');
-		            	}else{
+		            	if(response.image && response.success){
+		            		UIkit.notify('<i class="uk-icon-check-circle"></i> '+response.success, {pos:'top-right', status:'success', timeout: 15000});
+
+		            		$("#images-div").append('<div class="uk-width-large-1-4 uk-width-medium-1-3" id="image-'+response.image.id+'" style="display: none;"><figure class="uk-overlay uk-overlay-hover uk-margin-bottom"><img src="{{asset("")}}'+response.image.image_path+'"><div class="uk-overlay-panel uk-overlay-background uk-overlay-fade uk-text-center"><i class="uk-icon-large uk-icon-remove" id="'+response.image.id+'" onclick="deleteImage(this)" data-uk-tooltip="{pos:"top"}" title="{{ trans("admin.eliminate_image") }}"></i> <i class="uk-icon-large uk-icon-check" onclick="selectMainImage('+response.image.id+', \''+response.image.image_path+'\')" data-uk-tooltip="{pos:"top"}" title="{{ trans("admin.set_as_main_image") }}"></i></div></figure></div>');
+		            		$("#image-"+response.image.id).show('normal');
+		            	}else if(response.error){
 		            		if(response.error instanceof Array){
-		            			html = '<div id="images_uploaded" class="uk-alert uk-alert-danger" data-uk-alert><a href="" class="uk-alert-close uk-close"></a><ul>'
 		            			response.error.forEach(function(entry) {
-								    html = html+'<li>'+entry['image']+'</li>';
+		            				UIkit.notify('<i class="uk-icon-remove"></i> '+entry['image'], {pos:'top-right', status:'danger', timeout: 15000});
 								});
-								html = html+'</ul></div>'
-								$("#images_uploaded").prepend(html);
 		            		}else{
-		            			$("#images_uploaded").prepend('<div id="images_uploaded" class="uk-alert uk-alert-danger" data-uk-alert><a href="" class="uk-alert-close uk-close"></a><p>'+response.error+'</p></div>');
+		            			UIkit.notify('<i class="uk-icon-remove"></i> '+response.error, {pos:'top-right', status:'danger', timeout: 15000});
 		            		}
 		            	}
 		            },
@@ -626,8 +625,6 @@
 		                setTimeout(function(){
 		                    progressbar.addClass("uk-hidden");
 		                }, 250);
-
-		                
 		            }
 		        };
 
@@ -657,20 +654,23 @@
 			  	method: 'share_open_graph',
 			  	action_type: 'og.shares',
 			  	action_properties: JSON.stringify({
-			    object:'{{ url('+path+') }}',
+			    object: path,
 			})
 			}, function(response){
+				UIkit.notify('<i class="uk-icon-check-circle"></i> {{ trans("admin.listing_shared") }}', {pos:'top-right', status:'success', timeout: 15000});
 				$.post("{{ url('/cookie/set') }}", {_token: "{{ csrf_token() }}", key: "shared_listing_"+{{ $listing->id }}, value: true, time:11520}, function(result){
 	                
 	            });
-
-			  	// Debug response (optional)
-			  	console.log(response);
 			});
        	}
 
-       	function setShared(){
-       		// TODO set shared cookie
+       	function saveClose(){
+       		$("#save_close").val('1');
+       		blockUI();
        	}
 	</script>
+
+	<!-- Google map js -->
+	<script type="text/javascript">var centreGot = false;</script>
+	<?php echo $map['js']; ?>
 @endsection

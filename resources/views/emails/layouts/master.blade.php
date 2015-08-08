@@ -5,23 +5,17 @@
     </style>
 
     <body style="background:#fafafa">
+    	<div class="uk-panel" style="height:30px">
+    	</div>
+
         <div class="uk-container uk-container-center" style="margin-top:30px">
-            <div class="uk-panel uk-panel-box uk-panel-box-secondary uk-margin-large-bottom">
+            <div class="uk-panel uk-panel-box uk-panel-box-secondary uk-margin-large">
 		        @section('header')
 		            <div style="text-align:center;">
-		                <a href="{{ url('/') }}"><img src="{{ $message->embed(public_path().'/images/logo_h.png') }}" width="40%"></a>
+		                <a href="{{ url('/') }}"><img src="{{ $message->embed(public_path().'/images/logo_h.png') }}" style="width:300px; max-width:300px"></a>
 		            </div>
-
-		            @if(isset($listing))
-		                <h3>{{ trans('emails.apreciated') }} {{ $listing->broker->name }},</h3>
-		            @elseif(isset($userMessage))
-		                <h3>{{ trans('emails.apreciated') }} {{ $userMessage->listing->broker->name }},</h3>
-		            @elseif(isset($user))
+		            @if(isset($user))
 		                <h3>{{ trans('emails.apreciated') }} {{ $user->name }},</h3>
-		            @elseif(isset($messageToAnswer))
-		                <h3>{{ trans('emails.apreciated') }} {{ $messageToAnswer->name }},</h3>
-		            @elseif(isset($payment))
-		                <h3>{{ trans('emails.apreciated') }} {{ $payment->listing->user->name }},</h3>
 		            @else
 		                <h3>{{ trans('emails.apreciated') }} {{ trans('emails.user') }},</h3>
 		            @endif
@@ -42,6 +36,9 @@
 		            <div style="margin-top:50px">
 		                <p><b>{{ trans('emails.already_sold') }}</b> {{ trans('emails.click') }} <a href="{{ url('/admin/listings/') }}">{{ trans('emails.here') }}</a> {{ trans('emails.to_delete_listing') }}</p>
 		            </div>
+		        @show
+
+		        @section('share_unregister')
 		        @show
 		    </div>
 		</div>

@@ -34,10 +34,13 @@ class SendPaymentConfirmationEmail extends Command implements SelfHandling, Shou
 	public function handle(){
 		//
 		$payment = $this->payment;
-		
-		Mail::send('emails.paymentConfirmation', ['payment' => $payment], function ($message) use ($payment) {
+
+		Mail::send('emails.payment_confirmation', ['payment' 	=> $payment, 
+												   'user' 		=> $payment->user,
+												   ], 
+		function ($message) use ($payment) {
 		    $message->from(Settings::get('email_from'), Settings::get('email_from_name'))
-		    		->to($payment->listing->broker->email, $payment->listing->broker->name)
+		    		->to($payment->user->email, $payment->user->name)
 		    		//->cc($object->email)
 		    		->subject(trans('emails.payment_confirmation_subject'));
 		});

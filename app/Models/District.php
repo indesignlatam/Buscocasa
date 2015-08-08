@@ -4,8 +4,12 @@ use App\Models\IndesignModel;
 
 class District extends IndesignModel {
 
+	/**
+	 * Dont update my timestamps! I dont have any.
+	 *
+	 * @var string
+	 */
 	public $timestamps = false;
-	protected $softDelete = false;
 
 	/**
 	 * The name of the table.
@@ -13,13 +17,6 @@ class District extends IndesignModel {
 	 * @var string
 	 */
     protected $table = 'districts';
-
-    /**
-	 * The primary key of the table.
-	 *
-	 * @var string
-	 */
-	//protected $primaryKey = 'pid';
 
 	/**
 	 * The rules to verify when creating.
@@ -44,34 +41,16 @@ class District extends IndesignModel {
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['name', 'city_id'];
+	protected $fillable = [ 'name', 
+							'city_id',
+							];
+
 
 	/**
-	 * The attributes that are hidden to JSON responces.
-	 *
-	 * @var array
-	 */
-	protected $hidden = ['created_at', 'deleted_at'];
-
-	/**
-	 * The attributes that are appended to JSON responces.
-	 *
-	 * @var array
-	 */
-	//protected $appends = ['image_url'];
-
-	/**
-	 * The method that appends the attribute to JSON responces.
-	 *
-	 * @var null or attribute
-	 */
-	// public function getImageUrlAttribute(){
-	// 	if($this->image_path){
-	// 		return asset($this->image_path);
-	// 	}
-	// 	return null;
-	// }
-
+     * Relationship with city
+     *
+     * @return \App\Models\City
+     */
 	public function city(){
         return $this->belongsTo('App\Models\City', 'city_id');
     }

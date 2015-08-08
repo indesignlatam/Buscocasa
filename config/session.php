@@ -44,7 +44,7 @@ return [
 	|
 	*/
 
-	'encrypt' => false,
+	'encrypt' => true,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -109,7 +109,7 @@ return [
 	|
 	*/
 
-	'cookie' => 'laravel_session',
+	'cookie' => env('SESSION_COOKIE_NAME', 'buscocasa_session'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -135,7 +135,7 @@ return [
 	|
 	*/
 
-	'domain' => null,
+	'domain' => env('SESSION_COOKIE_DOMAIN', 'buscocasa'),
 
 	/*
 	|--------------------------------------------------------------------------

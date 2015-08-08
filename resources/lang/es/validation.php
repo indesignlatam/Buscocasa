@@ -108,6 +108,9 @@ return [
         'price' => [
             'required' => 'El campo valor es obligatorio.',
         ],
+        'image' => [
+            'max' => 'La imagen no debe pesar mas de :max',
+        ],
 
         // Auth
         'password' => [

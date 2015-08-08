@@ -27,7 +27,7 @@
 				<div class="">
 					<a class="uk-button uk-button-large" href="{{ url('/admin/pagos/?unconfirmed=true') }}" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.unconfirmed_payments') }}"><i class="uk-icon-trash"></i></a>
 
-					<form action="{{url(Request::path())}}" method="GET" class="uk-form uk-align-right">
+					<form action="{{url(Request::path())}}" method="GET" class="uk-form uk-align-right uk-hidden-small">
 					    <select name="order_by" onchange="this.form.submit()">
 					    	<option value="">{{ trans('admin.order_by') }}</option>
 					    	
@@ -53,13 +53,13 @@
 									<th style="width:15px"></th>
 									<th>{{ trans('admin.reference') }}</th>
 									<th>{{ trans('admin.price') }}</th>
-									<th style="width:15%">{{ trans('admin.payment_method') }}</th>
-									<th style="width:12%">{{ trans('admin.updated') }}</th>
+									<th style="width:15%" class="uk-hidden-small">{{ trans('admin.payment_method') }}</th>
+									<th style="width:12%" class="uk-hidden-small">{{ trans('admin.updated') }}</th>
 									<th style="width:5%"></th>
 								</tr>
 							</thead>
 							@foreach($payments as $payment)
-								<tr>
+								<tr id="payment-{{ $payment->id }}">
 									@if($payment->confirmed)
 										<td class="uk-text-center uk-text-success"><i class="uk-icon-check-circle" data-uk-tooltip="{pos:'top'}" title="El pago ya fue confirmado por la entidad financiera."></i></td>
 									@elseif($payment->canceled)
@@ -71,9 +71,14 @@
 									@endif
 									<td>{{ $payment->description }}</td>
 									<td>{{ money_format('$%!.1i', $payment->amount) }}</td>
-									<td>{{ $payment->payment_method_name }}</td>								
-									<td>{{ Carbon::createFromFormat('Y-m-d H:i:s', $payment->updated_at, 'America/Bogota')->diffForHumans() }}</td>
-									<td><a href="{{ url('/admin/pagos/'.$payment->id.'/cancel') }}" class="uk-button uk-button-small uk-button-danger"><i class="uk-icon-remove"></i></a></td>
+									<td class="uk-hidden-small">{{ $payment->payment_method_name }}</td>								
+									<td class="uk-hidden-small">{{ Carbon::createFromFormat('Y-m-d H:i:s', $payment->updated_at, 'America/Bogota')->diffForHumans() }}</td>
+
+									@if($payment->confirmed || $payment->canceled || $payment->state_pol)
+										<td><button class="uk-button uk-button-small uk-button-danger" id="{{ $payment->id }}" onclick="cancel(this)" disabled><i class="uk-icon-remove"></i></button></td>
+									@else
+										<td><button class="uk-button uk-button-small uk-button-danger" id="{{ $payment->id }}" onclick="cancel(this)"><i class="uk-icon-remove"></i></button></td>
+									@endif
 								</tr>
 							@endforeach
 						</table>
@@ -92,7 +97,22 @@
 @endsection
 
 @section('js')
-	<link href="{{ asset('/css/components/tooltip.almost-flat.min.css') }}" rel="stylesheet">
 	@parent
+	<link href="{{ asset('/css/components/tooltip.almost-flat.min.css') }}" rel="stylesheet">
 	<script src="{{ asset('/js/components/tooltip.min.js') }}"></script>
+	
+	<script type="text/javascript">
+		function cancel(sender) {
+	    	UIkit.modal.confirm("{{ trans('admin.cancel_payment_sure') }}", function(){
+			    $.post("{{ url('/admin/pagos') }}/" + sender.id, {_token: "{{ csrf_token() }}", _method:"DELETE"}, function(result){
+			    	if(result.success){
+		            	$( "#payment-"+sender.id ).animate({ height: 'toggle', opacity: 'toggle' }, 'slow');
+		            	UIkit.notify('<i class="uk-icon-check-circle"></i> '+result.success, {pos:'top-right', status:'success', timeout: 15000});
+			    	}else if(result.error){
+			    		UIkit.notify('<i class="uk-icon-remove"></i> '+result.error, {pos:'top-right', status:'danger', timeout: 15000});
+			    	}
+		        });			    
+			}, {labels:{Ok:'{{trans("admin.yes")}}', Cancel:'{{trans("admin.cancel")}}'}});
+	    }
+	</script>
 @endsection

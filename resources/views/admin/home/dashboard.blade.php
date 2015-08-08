@@ -67,31 +67,33 @@
  
 @section('content')
 
-<div class="uk-container uk-container-center">
-    <h1>{{ trans('admin.dashboard') }}</h1>
-
+<div class="uk-container uk-container-center uk-margin-top">
+    <div class="uk-panel">
+        <h1 class="uk-float-left">{{ trans('admin.dashboard') }}</h1>
+        <a href="{{ url('/admin/listings/create') }}" class="uk-button uk-button-primary uk-button-large uk-float-right">{{ trans('admin.publish_property') }}</a>
+    </div>
+    
     <div class="uk-grid uk-grid-match" data-uk-grid-match="{target:'.uk-panel'}">
         @if(Auth::user()->confirmed)
             <!-- First row -->
-            <div class="uk-width-1-4 uk-margin-bottom">
+            <div class="uk-width-small-1-1 uk-width-medium-1-4 uk-width-large-1-4 uk-margin-top">
                 <div class="uk-panel uk-panel-box uk-panel-box-secondary">
-                    <h3 class="uk-panel-title">{{ trans('admin.listings') }}</h3>
+                    <a href="{{ url('/admin/listings') }}" style="text-decoration:none"><h3 class="uk-panel-title">{{ trans('admin.listings') }}</h3></a>
                     <h1 class="uk-text-center">{{ $listingCount }}</h1>
                 </div>
             </div>
-            <div class="uk-width-1-4 uk-margin-bottom">
+            <div class="uk-width-small-1-1 uk-width-medium-1-4 uk-width-large-1-4 uk-margin-top">
                 <div class="uk-panel uk-panel-box uk-panel-box-secondary">
-                    <h3 class="uk-panel-title">{{ trans('admin.unanswered_messages') }}</h3>
+                    <a href="{{ url('/admin/messages') }}" style="text-decoration:none"><h3 class="uk-panel-title">{{ trans('admin.unanswered_messages') }}</h3></a>
 
                     @if($notAnsweredMessages == 0)
                         <h1 class="uk-text-center uk-text-success">{{ $notAnsweredMessages }}</h1>
                     @else
                         <h1 class="uk-text-center uk-text-warning">{{ $notAnsweredMessages }}</h1>
                     @endif
-                    
                 </div>
             </div>
-            <div class="uk-width-1-4 uk-margin-bottom">
+            <div class="uk-width-1-4 uk-hidden-small uk-margin-top">
                 <div class="uk-panel uk-panel-box uk-panel-box-secondary">
                     <h3 class="uk-panel-title">{{ trans('admin.views_over_spent') }}</h3>
 
@@ -104,7 +106,7 @@
                     @endif
                 </div>
             </div>
-            <div class="uk-width-1-4 uk-margin-bottom">
+            <div class="uk-width-1-4 uk-hidden-small uk-margin-top">
                 <div class="uk-panel uk-panel-box uk-panel-box-secondary">
                     <h3 class="uk-panel-title">{{ trans('admin.messages_over_spent') }}</h3>
 
@@ -120,7 +122,7 @@
             <!-- First row -->
         @endif
 
-        <div class="uk-width-1-3">
+        <div class="uk-width-small-1-1 uk-width-medium-1-2 uk-width-large-1-3 uk-margin-top">
             <div class="uk-panel uk-panel-box uk-panel-box-secondary">
                 <h3>{{ trans('admin.visit_stats') }}</h3>
                 <div class="uk-text-center">
@@ -129,51 +131,52 @@
                 </div>
             </div>
         </div>
-        <div class="uk-width-1-3">
+        <div class="uk-width-small-1-1 uk-width-medium-1-2 uk-width-large-1-3 uk-margin-top">
             <div class="uk-panel uk-panel-box uk-panel-box-secondary">
                 <h3>{{ trans('admin.notifications_dash') }}</h3>
                 @if(count($listings->all()) > 0)
                     <ul class="uk-list uk-list-striped">
                         @foreach($listings as $listing)
                             @if($listing->featured_expires_at && $listing->featured_expires_at > Carbon::now())
-                                <li><a class="" href="{{ url($listing->pathEdit()) }}">Inmueble {{ $listing->id }} {{ strtolower(trans('admin.expires')) }} {{ Carbon::createFromFormat('Y-m-d H:i:s', $listing->featured_expires_at)->diffForHumans() }}</a></li>
+                                <li><a class="" href="{{ url($listing->pathEdit()) }}">Inmueble #{{ $listing->code }} {{ strtolower(trans('admin.expires')) }} {{ Carbon::createFromFormat('Y-m-d H:i:s', $listing->featured_expires_at)->diffForHumans() }}</a></li>
                             @else
-                                <li><a class="" href="{{ url($listing->pathEdit()) }}">Inmueble {{ $listing->id }} {{ strtolower(trans('admin.expires')) }} {{ Carbon::createFromFormat('Y-m-d H:i:s', $listing->expires_at)->diffForHumans() }}</a></li>
+                                <li><a class="" href="{{ url($listing->pathEdit()) }}">Inmueble #{{ $listing->code }} {{ strtolower(trans('admin.expires')) }} {{ Carbon::createFromFormat('Y-m-d H:i:s', $listing->expires_at)->diffForHumans() }}</a></li>
                             @endif
                         @endforeach
                     </ul>
                 @else
                     <div class="uk-text-center">
-                        <img src="{{ asset('/images/support/mail/no_notifications.png') }}" width="50%" class="uk-margin-large-top">
+                        <img src="{{ asset('/images/support/notifications/no_notifications.png') }}" width="70%" style="margin-top:30px">
                     </div>
                 @endif
             </div>
         </div>
-        <div class="uk-width-1-3">
+        <div class="uk-width-small-1-1 uk-width-medium-1-2 uk-width-large-1-3 uk-margin-top">
             <div class="uk-panel uk-panel-box uk-panel-box-secondary">
                 <h3>{{ trans('admin.unanswered_messages') }}</h3>
                 @if(count($messages->all()) > 0)
                     <ul class="uk-list uk-list-striped">
                         @foreach($messages as $message)
-                            <li><a class="" href="{{ url('/admin/messages') }}">{{ $message->name }} - {{ $message->listing->id }}</a></li>
+                            <li><a class="" href="{{ url('/admin/messages') }}">{{ $message->name }} #{{ $message->listing->code }}</a></li>
                         @endforeach
                     </ul>
                 @else
                     <div class="uk-text-center">
-                        <img src="{{ asset('/images/support/mail/no_messages.png') }}" width="50%" class="uk-margin-large-top">
+                        <img src="{{ asset('/images/support/messages/no_messages.png') }}" width="70%" style="margin-top:30px">
                     </div>
                 @endif
             </div>
         </div>
 
-        <div class="uk-width-1-3 uk-margin-top">
+        <div class="uk-width-small-1-1 uk-width-medium-1-2 uk-width-large-1-3 uk-margin-top">
             <div class="uk-panel uk-panel-box uk-panel-box-secondary">
                 <h3>{{ trans('admin.social_share') }}</h3>
-                <img src="{{ asset('/images/indesign/logo.png') }}" style="width:150px; height:150px;" align="left">
+                <img src="{{ asset('/images/support/share.png') }}" style="width:150px; height:150px;" align="left">
                 <p>{{ trans('admin.social_share_dash_text') }}</p>
             </div>
         </div>
-        <div class="uk-width-2-3 uk-margin-top">
+
+        <div class="uk-width-small-1-1 uk-width-medium-1-1 uk-width-large-2-3 uk-margin-top">
             <div class="uk-panel uk-panel-box uk-panel-box-secondary">
                 <h3>{{ trans('admin.get_more_views') }}</h3>
                 

@@ -10,13 +10,8 @@
 
 @section('content')
 
-<div class="uk-container uk-container-center uk-margin">
-    <button form="create_form" type="submit" class="uk-button uk-button-large uk-button-success uk-form-width-medium" onclick="blockUI()">{{ trans('admin.save') }}</button>
-	<a class="uk-button uk-button-large" href="{{ url('/admin/listings') }}">{{ trans('admin.close') }}</a>
-</div>
-
 <div class="uk-cover-background uk-position-relative">
-    <img class="" src="{{ asset('/images/defaults/user_front.jpg') }}" width="100%" alt="">
+    <img class="" src="{{ asset(Image::url('/images/defaults/user_front.jpg',['full_page'])) }}" width="100%" alt="">
     <div class="uk-position-cover uk-flex uk-flex-center uk-flex-middle uk-visible-small">
         <h1 class="uk-text-contrast uk-text-bold">{{ strtoupper($user->name) }}</h1>
     </div>
@@ -48,7 +43,7 @@
 					<div class="uk-form-row">
 				        <label class="uk-form-label">{{ trans('auth.username') }} <i class="uk-text-danger">*</i></label>
 				        <div class="uk-form-controls">
-							<input class="uk-width-1-1 uk-form-large" type="text" name="username" placeholder="{{ trans('admin.username') }}" value="{{ $user->username }}">
+							<input class="uk-width-1-1 uk-form-large" type="text" name="username" placeholder="{{ trans('admin.username') }}" value="{{ $user->username }}" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.username_tooltip') }}">
 						</div>
 					</div>
 				</div>
@@ -57,7 +52,7 @@
 					<div class="uk-form-row">
 				        <label class="uk-form-label">{{ trans('admin.email') }} <i class="uk-text-danger">*</i></label>
 				        <div class="uk-form-controls">
-							<input class="uk-width-1-1 uk-form-large" id="email" type="email" name="email" placeholder="{{ trans('admin.email') }}" value="{{ $user->email }}">
+							<input class="uk-width-1-1 uk-form-large" id="email" type="email" name="email" placeholder="{{ trans('admin.email') }}" value="{{ $user->email }}" disabled>
 						</div>
 					</div>
 				</div>
@@ -111,4 +106,7 @@
 
 @section('js')
 	@parent
+
+	<link href="{{ asset('/css/components/tooltip.almost-flat.min.css') }}" rel="stylesheet">
+	<script src="{{ asset('/js/components/tooltip.min.js') }}"></script>
 @endsection

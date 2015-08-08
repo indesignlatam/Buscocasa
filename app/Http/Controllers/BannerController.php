@@ -12,8 +12,7 @@ class BannerController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function index()
-	{
+	public function index(){
 		//
 	}
 
@@ -22,8 +21,7 @@ class BannerController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function create()
-	{
+	public function create(){
 		//
 		return view('admin.banners.new');
 	}
@@ -33,8 +31,7 @@ class BannerController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store()
-	{
+	public function store(){
 		//
 	}
 
@@ -44,8 +41,7 @@ class BannerController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
-	{
+	public function show($id){
 		//
 	}
 
@@ -55,8 +51,7 @@ class BannerController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
-	{
+	public function edit($id){
 		//
 	}
 
@@ -66,8 +61,7 @@ class BannerController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
-	{
+	public function update($id){
 		//
 	}
 
@@ -77,8 +71,7 @@ class BannerController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id)
-	{
+	public function destroy($id){
 		//
 	}
 

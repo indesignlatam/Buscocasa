@@ -2,7 +2,9 @@
 
 use Illuminate\Support\ServiceProvider;
 
-use Image, Validator, Request;
+use Image;
+use App;
+use Carbon;
 
 class AppServiceProvider extends ServiceProvider {
 
@@ -13,7 +15,26 @@ class AppServiceProvider extends ServiceProvider {
 	 */
 	public function boot(){
 		//
+		App::setLocale('es');
+		Carbon::setLocale('es');
+		setlocale(LC_ALL, 'es_ES');
+		setlocale(LC_MONETARY, 'en_US');
+		date_default_timezone_set('America/Bogota');
+
+
+		Image::filter('full_page', [
+		    'width' 	=> 1200,
+		    'height' 	=> 350,
+		    'crop' 		=> true,
+		]);
+
 		Image::filter('full_image', [
+		    'width' 	=> 800,
+		    'height' 	=> 400,
+		    'crop' 		=> true,
+		]);
+
+		Image::filter('facebook_share', [
 		    'width' 	=> 800,
 		    'height' 	=> 400,
 		    'crop' 		=> true,

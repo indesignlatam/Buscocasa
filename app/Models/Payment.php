@@ -3,19 +3,13 @@
 use App\Models\IndesignModel;
 
 class Payment extends IndesignModel {
+	
 	/**
 	 * The name of the table.
 	 *
 	 * @var string
 	 */
     protected $table = 'payments';
-
-    /**
-	 * The primary key of the table.
-	 *
-	 * @var string
-	 */
-	//protected $primaryKey = 'pid';
 
 	/**
 	 * The rules to verify when creating.
@@ -60,41 +54,44 @@ class Payment extends IndesignModel {
 	 *
 	 * @var array
 	 */
-	protected $fillable = [ 'user_id', 'listing_id', 'featured_id', 'description', 'reference_code', 'amount', 'tax', 'tax_return_base', 
-							'currency', 'signature', 'confirmed', 'canceled'];
+	protected $fillable = [ 'user_id', 
+							'listing_id', 
+							'featured_id', 
+							'description', 
+							'reference_code', 
+							'amount', 
+							'tax', 
+							'tax_return_base', 
+							'currency', 
+							'signature', 
+							'confirmed', 
+							'canceled',
+							];
+
 
 	/**
-	 * The attributes that are hidden to JSON responces.
-	 *
-	 * @var array
-	 */
-	protected $hidden = ['created_at', 'deleted_at'];
-
-	/**
-	 * The attributes that are appended to JSON responces.
-	 *
-	 * @var array
-	 */
-	// protected $appends = ['email'];
-
-	/**
-	 * The method that appends the attribute to JSON responces.
-	 *
-	 * @var null or attribute
-	 */
-
-	// public function getEmailAttribute(){
-	// 	return $this->user->email;
-	// }
-
+     * Relationship with user
+     *
+     * @return \App\User
+     */
 	public function user(){
         return $this->belongsTo('App\User', 'user_id');
     }
 
+    /**
+     * Relationship with listing
+     *
+     * @return \App\Models\Listing
+     */
     public function listing(){
         return $this->belongsTo('App\Models\Listing', 'listing_id');
     }
 
+    /**
+     * Relationship with featured type
+     *
+     * @return \App\Models\FeaturedType
+     */
     public function FeaturedType(){
         return $this->belongsTo('App\Models\FeaturedType', 'featured_id');
     }

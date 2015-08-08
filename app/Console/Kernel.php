@@ -16,6 +16,8 @@ class Kernel extends ConsoleKernel {
 		'App\Console\Commands\CleanTempFolder',
 		'App\Console\Commands\DeleteExpiredListings',
 		'App\Console\Commands\ArchiveDeletedListings',
+		'App\Console\Commands\TestPaymentEmail',
+		'App\Console\Commands\FlushCache',
 	];
 
 	/**
@@ -28,14 +30,14 @@ class Kernel extends ConsoleKernel {
 		$schedule->command('mail:expiring_listings')
 				 ->dailyAt('5:00');
 
-		$schedule->command('listings:archive')
-				 ->dailyAt('1:00');
-
 		$schedule->command('mail:tips')
-				 ->dailyAt('5:30');
+				 ->dailyAt('7:00');
+
+		$schedule->command('listings:archive')
+				 ->dailyAt('1:10');
 
 		$schedule->command('images:clean_temp')
-				 ->dailyAt('3:00');
+				 ->dailyAt('1:00');
 	}
 
 }

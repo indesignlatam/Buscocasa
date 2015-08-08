@@ -3,7 +3,7 @@
 @section('head')
     <title>{{ Settings::get('site_name') }}</title>
     <meta property="og:title" content="{{ Settings::get('site_name') }}"/>
-    <meta property="og:image" content="{{ asset('/images/facebook-share.jpg') }}"/>
+    <meta property="og:image" content="{{ asset('/images/defaults/facebook-share.jpg') }}"/>
     <meta property="og:type" content="website"/>
     <meta property="og:description" content="{{ Settings::get('site_description') }}"/>
 @endsection
@@ -44,7 +44,11 @@
 @section('content')
 	@include('includes.navbarHome')
 	<div class="uk-cover-background uk-position-relative">
+    @if($featuredFullScreen)
         <img class="" src="{{ asset(Image::url($featuredFullScreen->image_path(),['featured_front'])) }}" width="100%" alt="">
+    @else
+        <img class="" src="{{ asset(Image::url('/images/defaults/welcome.jpg',['featured_front'])) }}" width="100%" alt="">
+    @endif
         <div class="uk-position-cover uk-flex uk-flex-center uk-flex-middle uk-visible-small">
             <h1 class="uk-text-contrast uk-text-bold">{{ trans('frontend.mobile_greeting') }}</h1>
         </div>
@@ -147,18 +151,10 @@
             <div class="uk-grid">
                 @foreach($sales as $sale)
                     <div class="uk-width-large-2-10 uk-width-medium-1-3 uk-width-small-1-1" style="position:relative">
-
-                        @if($sale->featuredType && $sale->featured_expires_at > Carbon::now())
-                            <img src="{{ asset($sale->featuredType->image_path) }}" style="position:absolute; top:0; left:30; max-width:100px">
-                        @else
-                            @if(Carbon::createFromFormat('Y-m-d H:i:s', $sale->created_at)->diffInDays(Carbon::now()) < 5)
-                                <img src="{{asset('/images/defaults/new.png')}}" style="position:absolute; top:0; left:30; max-width:100px">
-                            @endif
-                        @endif
-
                         <a href="{{ url($sale->path()) }}">
-                            <img src="{{ asset(Image::url($sale->image_path(),['mini_front'])) }}" class="uk-margin-small-bottom" style="max-width=150px">
+                            <img src="{{ asset(Image::url($sale->image_path(),['mini_front'])) }}" class="uk-margin-small-bottom" style="max-width=150px" data-uk-scrollspy="{cls:'uk-animation-fade'}">                        
                         </a>
+
                         <br class="uk-visible-small">
                         <a href="{{ url($sale->path()) }}">{{ $sale->title }}</a>
                         <p class="uk-text-muted" style="font-size:10px;margin-top:-4px">{{ $sale->area }} mt2 - {{ money_format('$%!.0i', $sale->price) }}</p>
@@ -167,22 +163,23 @@
                 @endforeach
             </div>
             <div class="uk-margin-large-bottom">
-                <a href="{{ url('ventas') }}" class="uk-button uk-float-right">Ver más inmuebles</a>
+                <a href="{{ url('ventas') }}" class="uk-button uk-float-right">{{ trans('admin.view_more_listings') }}</a>
             </div>
+
+            <hr>
         @endif
         <!-- latest listings on sale-->
-
-        <hr>
 
         <!-- latest listings on lease-->
         @if(count($leases))
             <h1 class="uk-text-bold">{{ trans('frontend.latest_listings_lease') }}</h1>
             <div class="uk-grid">
                 @foreach($leases as $lease)
-                    <div class="uk-width-large-2-10 uk-width-medium-1-3 uk-width-small-1-1">
+                    <div class="uk-width-large-2-10 uk-width-medium-1-3 uk-width-small-1-1" style="position:relative">
                         <a href="{{ url($lease->path()) }}">
-                            <img src="{{ asset(Image::url($lease->image_path(),['mini_front'])) }}" class="uk-margin-small-bottom" style="max-width=150px">
+                            <img src="{{ asset(Image::url($lease->image_path(),['mini_front'])) }}" class="uk-margin-small-bottom" style="max-width=150px" data-uk-scrollspy="{cls:'uk-animation-fade'}">
                         </a>
+                        
                         <a href="{{ url($lease->path()) }}">{{ $lease->title }}</a>
                         <p class="uk-text-muted" style="font-size:10px;margin-top:-4px">{{ $lease->area }} mt2 - {{ money_format('$%!.0i', $lease->price) }}</p>
                         <hr class="uk-visible-small uk-margin-bottom">
@@ -190,21 +187,34 @@
                 @endforeach
             </div>
             <div class="uk-margin-large-bottom ">
-                <a href="{{ url('arriendos') }}" class="uk-button uk-float-right">Ver más inmuebles</a>
+                <a href="{{ url('arriendos') }}" class="uk-button uk-float-right">{{ trans('admin.view_more_listings') }}</a>
             </div>
+
+            <hr>
         @endif
         <!-- latest listings on lease-->
+
+        <!-- Register and publish -->
+        <div class="uk-text-center">
+            <h1 class="uk-text-bold">{{ trans('frontend.register_publish_title') }}</h1>
+            @if(!Auth::check())
+                <a href="{{ url('/auth/register') }}" class="uk-button uk-button-primary uk-button-xlarge">{{ trans('admin.register_publish_free') }}</a>
+            @else
+                <a href="{{ url('/admin/listings/create') }}" class="uk-button uk-button-primary uk-button-xlarge">{{ trans('admin.publish_property') }}</a>
+            @endif
+        </div>
+        <!-- Register and publish -->
 
         <hr>
 
         <!-- Featured listings -->
-        <h1 class="uk-margin-bottom uk-margin-top uk-text-bold">{{ trans('frontend.featured_listing') }}</h1>
-
+        
         @if(count($featured) > 0)
+            <h1 class="uk-margin-bottom uk-margin-top uk-text-bold">{{ trans('frontend.featured_listing') }}</h1>
     		<div class="uk-grid uk-margin-large-bottom">
                 <div class="uk-width-large-3-5 uk-width-small-1-1">
                     <a href="{{ url($featured[0]->path()) }}">
-                        <img src="{{ asset(Image::url($featured[0]->image_path(),['mini_image_2x'])) }}" class="uk-margin-remove">
+                        <img src="{{ asset(Image::url($featured[0]->image_path(),['mini_image_2x'])) }}" class="uk-margin-remove" data-uk-scrollspy="{cls:'uk-animation-fade'}">
                     </a>
                 </div>
                 <div class="uk-width-large-2-5 uk-width-small-1-1">
@@ -250,14 +260,13 @@
                 </div>
                 <div class="uk-width-large-3-5 uk-width-small-1-1">
                     <a href="{{ url($featured[1]->path()) }}">
-                        <img src="{{ asset(Image::url($featured[1]->image_path(),['mini_image_2x'])) }}" class="uk-margin-remove">
+                        <img src="{{ asset(Image::url($featured[1]->image_path(),['mini_image_2x'])) }}" class="uk-margin-remove" data-uk-scrollspy="{cls:'uk-animation-fade'}">
                     </a>
                 </div>
             </div>
         @endif
         <!-- Featured listings -->
     </div>
-</html>
 @endsection
 
 @section('js')

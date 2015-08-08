@@ -23,7 +23,7 @@
 			{{ trans('auth.reset_password') }}
 		</div>
 		@if (count($errors) > 0)
-			<div class="uk-alert uk-alert-danger">
+			<div class="uk-alert uk-alert-danger" data-uk-alert>
 				<a href="" class="uk-alert-close uk-close"></a>
 				<strong>{{ trans('frontend.oops') }}</strong> {{ trans('frontend.input_error') }}<br><br>
 				<ul class="uk-list">

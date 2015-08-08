@@ -6,35 +6,30 @@
 @section('content')
 	<p>{{ trans('emails.tips_title') }}</p>
 
-	<div class="uk-grid uk-grid-collapse">
-		<div class="uk-width-large-1-5">
+	<div class="uk-text-center">
+		<div class="uk-text-center">
 			<a href="{{ url($listing->pathEdit()) }}">
-				<img src="{{ $message->embed(public_path().'/images/support/messages/consejo1.png') }}">
-				{{-- <img src="{{ asset('/images/support/messages/consejo1.png') }}"> --}}
+				<img src="{{ $message->embed(public_path().'/images/support/messages/consejo1.png') }}" style="width:300px; max-width:300px">
 			</a>
 		</div>
-		<div class="uk-width-large-1-5">
+		<div class="uk-text-center">
 			<a href="{{ url($listing->pathEdit()) }}">
-				<img src="{{ $message->embed(public_path().'/images/support/messages/consejo2.png') }}">
-				{{-- <img src="{{ asset('/images/support/messages/consejo2.png') }}"> --}}
+				<img src="{{ $message->embed(public_path().'/images/support/messages/consejo2.png') }}" style="width:300px; max-width:300px">
 			</a>
 		</div>
-		<div class="uk-width-large-1-5">
+		<div class="uk-text-center">
 			<a href="{{ url($listing->pathEdit()) }}">
-				<img src="{{ $message->embed(public_path().'/images/support/messages/consejo3.png') }}">
-				{{-- <img src="{{ asset('/images/support/messages/consejo3.png') }}"> --}}
+				<img src="{{ $message->embed(public_path().'/images/support/messages/consejo3.png') }}" style="width:300px; max-width:300px">
 			</a>
 		</div>
-		<div class="uk-width-large-1-5">
+		<div class="uk-text-center">
 			<a href="{{ url($listing->pathEdit()) }}">
-				<img src="{{ $message->embed(public_path().'/images/support/messages/consejo4.png') }}">
-				{{-- <img src="{{ asset('/images/support/messages/consejo4.png') }}"> --}}
+				<img src="{{ $message->embed(public_path().'/images/support/messages/consejo4.png') }}" style="width:300px; max-width:300px">
 			</a>
 		</div>
-		<div class="uk-width-large-1-5">
+		<div class="uk-text-center">
 			<a href="{{ url($listing->pathEdit()) }}">
-				<img src="{{ $message->embed(public_path().'/images/support/messages/consejo5.png') }}">
-				{{-- <img src="{{ asset('/images/support/messages/consejo5.png') }}"> --}}
+				<img src="{{ $message->embed(public_path().'/images/support/messages/consejo5.png') }}" style="width:300px; max-width:300px">
 			</a>
 		</div>
 	</div>
@@ -48,5 +43,9 @@
 @endsection
 
 @section('footer')
+	@parent
+@endsection
+
+@section('share_unregister')
 	@parent
 @endsection

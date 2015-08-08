@@ -5,12 +5,19 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 
-use Auth, Session, Gmaps, File, Image, Geocoder, Carbon, Settings;
-use App\Models\Listing, App\Models\Category, 
-	App\Models\ListingType, App\Models\ListingStatus, 
-	App\Models\Feature, App\Models\City, App\Models\FeaturedType, App\User;
+use Auth;
+use Gmaps;
+use Geocoder;
+use Carbon;
+use Settings;
 
-use App\Models\Image as ImageModel;
+use App\Models\Listing;
+use App\Models\Category;
+use	App\Models\ListingType;
+use	App\Models\ListingStatus;
+use	App\Models\Feature;
+use	App\Models\City;
+use	App\Models\FeaturedType;
 
 class ListingController extends Controller {
 
@@ -20,22 +27,26 @@ class ListingController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request){
-		//
-		$query = Listing::with('city');
+		$query;
+		$take = Settings::get('pagination_objects');
 
+		// Create the principal query
 		if(Auth::user()->isAdmin()){
 			if($request->get('deleted')){
 				$query = Listing::onlyTrashed();
+			}else{
+				$query = Listing::whereNotNull('id');
 			}
 		}else{
 			if($request->get('deleted')){
 				$query = Listing::where('broker_id', Auth::user()->id)
-								  ->onlyTrashed();
+								->onlyTrashed();
 			}else{
 				$query = Listing::where('broker_id', Auth::user()->id);
 			}
 		}
 
+		// Order the objects
 		if($request->get('order_by')){
 			if($request->get('order_by') == 'exp_desc'){
 				$query 		= $query->orderBy('expires_at', 'DESC');
@@ -43,10 +54,16 @@ class ListingController extends Controller {
 				$query 		= $query->orderBy('id', 'DESC');
 			}					
 		}else{
-			$query 	= $query->orderBy('id', 'DESC');
+			$query 	= $query->orderBy('expires_at', 'DESC')->orderBy('id', 'DESC');
 		}
 
-		$objects = $query->with('listingType', 'featuredType','images', 'features')->paginate(Settings::get('pagination_objects'));
+		// Take n objects
+		if($request->has('take') && is_int($request->get('take'))){
+			$take = $request->get('take');
+		}
+
+		// Execute the query
+		$objects = $query->with('listingType', 'featuredType', 'images', 'features')->paginate($take);
 
 		return view('admin.listings.index', ['listings' => $objects]);
 	}
@@ -57,8 +74,6 @@ class ListingController extends Controller {
 	 * @return Response
 	 */
 	public function create(Request $request){
-		//
-
 		// Max free listings limit
 		if(!Auth::user()->confirmed && Auth::user()->freeListingCount > 0){
 			return redirect('admin/user/not_confirmed');
@@ -66,10 +81,10 @@ class ListingController extends Controller {
 			return redirect('admin/listings/limit');
 		}
 
-		$categories 		= Category::remember(Settings::get('query_cache_time'))->get();
-		$listingTypes 		= ListingType::remember(Settings::get('query_cache_time'))->get();
-		$features 			= Feature::remember(Settings::get('query_cache_time'))->with('category')->get();
-		$cities 			= City::remember(Settings::get('query_cache_time'))->with('department')->get();
+		$categories 	= Category::remember(Settings::get('query_cache_time'))->get();
+		$listingTypes 	= ListingType::remember(Settings::get('query_cache_time'))->get();
+		$features 		= Feature::remember(Settings::get('query_cache_time'))->with('category')->get();
+		$cities 		= City::remember(Settings::get('query_cache_time'))->with('department')->get();
 
 		$config = array();
 		$config['scrollwheel'] 	= false;
@@ -135,13 +150,13 @@ class ListingController extends Controller {
 		$input['stratum'] 	= preg_replace("/[^0-9]/", "", $input['stratum']);
 		$input['garages'] 	= preg_replace("/[^0-9]/", "", $input['garages']);
 		$input['floor'] 	= preg_replace("/[^0-9]/", "", $input['floor']);
-		$input['construction_year'] 	= preg_replace("/[^0-9]/", "", $input['construction_year']);
-		$input['administration'] 		= preg_replace("/[^0-9]/", "", $input['administration']);
-		$input['district'] 				= preg_replace("/[^a-zA-Z0-9ñáéíóú ]+/", "", $input['district']);
-		$input['description'] 			= preg_replace("/[^a-zA-Z0-9.,?¿ñáéíóú ]+/", "", $input['description']);
-		$input['direction'] 			= preg_replace("/[^a-zA-Z0-9# -]+/", "", $input['direction']);
-		$input['broker_id'] 			= Auth::user()->id;
-		$input['listing_status'] 		= 2;
+		$input['construction_year'] = preg_replace("/[^0-9]/", "", $input['construction_year']);
+		$input['administration'] 	= preg_replace("/[^0-9]/", "", $input['administration']);
+		$input['district'] 			= preg_replace("/[^a-zA-Z0-9ñáéíóúÁÉÍÓÚÑ ]+/u", "", $input['district']);
+		//$input['description'] 			= preg_replace("/[^a-zA-Z0-9.,;:+$%/?¿!¡ñáéíóúüÁÉÍÓÚÜÑ ]+/", "", $input['description']);
+		$input['direction'] = preg_replace("/[^a-zA-Z0-9# -]+/", "", $input['direction']);
+		$input['broker_id'] = Auth::user()->id;
+		$input['listing_status'] = 2;
 		
 
 		if(!$input['district']){
@@ -154,6 +169,7 @@ class ListingController extends Controller {
 
 		$listing = $listing->create($input);
 
+	    $listing->code 	= str_random(3).$listing->id;
 
 		$unwanted_array = [ 'Š'=>'S', 'š'=>'s', 'Ž'=>'Z', 'ž'=>'z', 'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E',
                             'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 'Ï'=>'I', 'Ñ'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O', 'Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O', 'Ù'=>'U',
@@ -168,11 +184,11 @@ class ListingController extends Controller {
 				 			  $listing->listingType->name . 
 							  ', ' .
 							  $district)) .
-							  ' ' .  
+							  ' ' . 
 							  $listing->city->name;
 							  
 		$listing->title 	= str_limit($title, $limit = 245, $end = '');
-		$listing->slug 		= str_limit(str_slug($listing->title.'-'.'15638'.$listing->id, '-'), $limit = 245, $end = '');
+		$listing->slug 		= str_limit(str_slug($listing->title.'-'.$listing->code, '-'), $limit = 245, $end = '');
 
 		// Set expiring date
 		$listing->expires_at = Carbon::now()->addDays(Settings::get('listing_expiring'));
@@ -209,20 +225,20 @@ class ListingController extends Controller {
 	 * @return Response
 	 */
 	public function edit($id){
-		//
-		$listing = Listing::find($id);// Eager loading is not nesessary when only getting one object
+		// Get the object requested
+		$listing = Listing::find($id);
 
 		// Security check
 	    if(!Auth::user()->isAdmin()){
-	    	if(!$listing || $listing->broker->id != Auth::user()->id){
+	    	if(!$listing || $listing->broker_id != Auth::user()->id){
 	        	return redirect('admin/listings')->withErrors([trans('responses.no_permission')]);
 	    	}
 		}
 
-		$categories 		= Category::remember(Settings::get('query_cache_time'))->get();
-		$listingTypes 		= ListingType::remember(Settings::get('query_cache_time'))->get();
-		$features 			= Feature::remember(Settings::get('query_cache_time'))->with('category')->get();
-		$cities 			= City::remember(Settings::get('query_cache_time'))->with('department')->get();
+		$categories 	= Category::remember(Settings::get('query_cache_time'))->get();
+		$listingTypes 	= ListingType::remember(Settings::get('query_cache_time'))->get();
+		$features 		= Feature::remember(Settings::get('query_cache_time'))->with('category')->get();
+		$cities 		= City::remember(Settings::get('query_cache_time'))->with('department')->get();
 
 		$config = array();
 		$config['scrollwheel'] 	= false;
@@ -257,7 +273,8 @@ class ListingController extends Controller {
 											'listingTypes' 		=> $listingTypes, 
 											'cities' 			=> $cities,
 											'features' 			=> $features, 
-											'map' 				=> $map]);
+											'map' 				=> $map
+											]);
 	}
 
 	/**
@@ -267,8 +284,18 @@ class ListingController extends Controller {
 	 * @return Response
 	 */
 	public function update($id, Request $request){
-		//
+		// Get the object requested
 		$listing = Listing::find($id);
+
+		// Security check
+	    if(!Auth::user()->is('admin')){
+	    	if(!$listing || $listing->broker_id != Auth::user()->id){
+	    		if($request->ajax()){
+					return response()->json(['error' => trans('responses.no_permission')]);
+				}
+	        	return redirect('admin/listings')->withErrors([trans('responses.no_permission')]);
+	    	}
+		}
 
 		$input 				= $request->all();
 		$input['price'] 	= preg_replace("/[^0-9]/", "", $input['price']);
@@ -279,16 +306,17 @@ class ListingController extends Controller {
 		$input['stratum'] 	= preg_replace("/[^0-9]/", "", $input['stratum']);
 		$input['garages'] 	= preg_replace("/[^0-9]/", "", $input['garages']);
 		$input['floor'] 	= preg_replace("/[^0-9]/", "", $input['floor']);
-		$input['construction_year'] 	= preg_replace("/[^0-9]/", "", $input['construction_year']);
-		$input['administration'] 		= preg_replace("/[^0-9]/", "", $input['administration']);
-		$input['district'] 		= preg_replace("/[^a-zA-Z0-9ñáéíóú ]+/", "", $input['district']);
-		$input['description'] 	= preg_replace("/[^a-zA-Z0-9.,?¿ñáéíóú ]+/", "", $input['description']);
-		$input['direction'] 	= preg_replace("/[^a-zA-Z0-9# -]+/", "", $input['direction']);
+		$input['construction_year'] = preg_replace("/[^0-9]/", "", $input['construction_year']);
+		$input['administration'] 	= preg_replace("/[^0-9]/", "", $input['administration']);
+		$input['district'] 	= preg_replace("/[^a-zA-Z0-9ñáéíóúÁÉÍÓÚÜÑ ]+/u", "", $input['district']);
+		//$input['description'] 	= preg_replace("/[^a-zA-Z0-9.,;:+$%/?¿!¡ñáéíóúüÁÉÍÓÚÜÑ ]+/u", "", $input['description']);
+		$input['direction'] = preg_replace("/[^a-zA-Z0-9# -]+/", "", $input['direction']);
 
 		if($input['main_image_id'] == ""){
 			$input['main_image_id'] = null;
 		}
 
+		// If no image_path set use the first image
 		if($input['image_path'] == ""){
 			if(count($listing->images) > 0){
 				$input['image_path'] = $listing->images->first()->image_path;
@@ -299,24 +327,17 @@ class ListingController extends Controller {
 	        return redirect('admin/listings/'.$id.'/edit')->withErrors($listing->errors())->withInput();
 	    }
 
-		// Security check
-	    if(!Auth::user()->is('admin')){
-	    	if(!$listing || $listing->broker->id != Auth::user()->id){
-	    		if($request->ajax()){// If request was sent using ajax
-					Session::flash('errors', [trans('responses.no_permission')]);
-					return response()->json(['error' => trans('responses.no_permission')]);
-				}
-				// If nos usign ajax return redirect
-	        	return redirect('admin/listings')->withErrors([trans('responses.no_permission')]);
-	    	}
-		}
-
+	    // Set district if coordinates change or if no district set
 	    if($listing->latitude != $input['latitude'] || $listing->longitude != $input['longitude'] || !$listing->district){
 			$listing->district = Geocoder::reverse($input['latitude'], $input['longitude'])->getCityDistrict();
 		}
 
+		// Update the listing
 	    $listing->fill($input);
 
+	    if(!$listing->code){
+	    	$listing->code = str_random(3).$listing->id;
+	    }
 
 	    $unwanted_array = [ 'Š'=>'S', 'š'=>'s', 'Ž'=>'Z', 'ž'=>'z', 'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E',
                             'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 'Ï'=>'I', 'Ñ'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O', 'Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O', 'Ù'=>'U',
@@ -335,7 +356,7 @@ class ListingController extends Controller {
 							  $listing->city->name;
 							  
 		$listing->title 	= str_limit($title, $limit = 245, $end = '');
-		$listing->slug 		= str_limit(str_slug($listing->title.'-'.'15638'.$listing->id, '-'), $limit = 245, $end = '');
+		$listing->slug 		= str_limit(str_slug($listing->title.'-'.$listing->code, '-'), $limit = 245, $end = '');
 
 		// Set listing features
 	    $features = Feature::all();
@@ -349,6 +370,10 @@ class ListingController extends Controller {
 
 	    $listing->save();
 
+		// If save and close button redirect to my listings	    
+	    if($request->get('save_close')){
+			return redirect('admin/listings')->withSuccess([trans('responses.listing_saved')]);
+	    }
 		return redirect('admin/listings/'.$id.'/edit')->withSuccess([trans('responses.listing_saved')]);
 	}
 
@@ -369,22 +394,25 @@ class ListingController extends Controller {
 	 * @return Response
 	 */
 	public function renovateShow($id, Request $request){
+		// Get the object requested
 		$listing = Listing::find($id);
-		$featuredTypes = FeaturedType::remember(Settings::get('query_cache_time'))->get();
 
 		// Security check
 	    if(!Auth::user()->is('admin')){
-	    	if(!$listing || $listing->broker->id != Auth::user()->id){
+	    	if(!$listing || $listing->broker_id != Auth::user()->id){
 	    		if($request->ajax()){// If request was sent using ajax
-	    			Session::flash('errors', [trans('responses.no_permission')]);
 					return response()->json(['error' => trans('responses.no_permission')]);
 	    		}
 	        	return redirect('admin/listings')->withErrors([trans('responses.no_permission')]);
 	    	}
 		}
 
+		// Get all featured types and cache them
+		$featuredTypes = FeaturedType::remember(Settings::get('query_cache_time'))->get();
+
 		return view('admin.listings.renovate', ['listing' 		=> $listing,
-												'featuredTypes' => $featuredTypes]);
+												'featuredTypes' => $featuredTypes,
+												]);
 	}
 
 	/**
@@ -394,13 +422,13 @@ class ListingController extends Controller {
 	 * @return Response
 	 */
 	public function renovate($id, Request $request){
+		// Get the object requested
 		$listing = Listing::find($id);
 
 		// Security check
 	    if(!Auth::user()->is('admin')){
-	    	if(!$listing || $listing->broker->id != Auth::user()->id){
-	    		if($request->ajax()){// If request was sent using ajax
-	    			Session::flash('errors', [trans('responses.no_permission')]);
+	    	if(!$listing || $listing->broker_id != Auth::user()->id){
+	    		if($request->ajax()){
 					return response()->json(['error' => trans('responses.no_permission')]);
 	    		}
 	        	return redirect('admin/listings')->withErrors([trans('responses.no_permission')]);
@@ -409,16 +437,17 @@ class ListingController extends Controller {
 
 		// Only renovate if is expiring in less than 5 days
 		if($listing->expires_at > Carbon::now()->addDays(5)){
-			return redirect('admin/listings/')->withErrors([trans('responses.listing_renovation_error')]);
+			return redirect('admin/listings')->withErrors([trans('responses.listing_renovation_error')]);
 		}
 
+		// The listing will expire in n days from now
 		$listing->expires_at 		= Carbon::now()->addDays(Settings::get('listing_expiring'));
 		$listing->expire_notified 	= false;
 
 		$listing->save();
 
-		if($request->ajax()){// If request was sent using ajax
-			Session::flash('errors', [trans('responses.listing_renovated')]);
+		// Return response in ajax or sync
+		if($request->ajax()){
 			return response()->json(['success' => trans('responses.listing_renovated')]);
 		}
 		return redirect('admin/listings/')->withSuccess([trans('responses.listing_renovated')]);
@@ -431,13 +460,13 @@ class ListingController extends Controller {
 	 * @return Response
 	 */
 	public function recover($id, Request $request){
-		$listing = Listing::withTrashed()->where('id', $id)->first();
+		// Get the object requested
+		$listing = Listing::onlyTrashed()->where('id', $id)->first();
 
 		// Security check
 	    if(!Auth::user()->is('admin')){
-	    	if(!$listing || $listing->broker->id != Auth::user()->id){
-	    		if($request->ajax()){// If request was sent using ajax
-	    			Session::flash('errors', [trans('responses.no_permission')]);
+	    	if(!$listing || $listing->broker_id != Auth::user()->id){
+	    		if($request->ajax()){
 					return response()->json(['error' => trans('responses.no_permission')]);
 	    		}
 	        	return redirect('admin/listings')->withErrors([trans('responses.no_permission')]);
@@ -451,6 +480,7 @@ class ListingController extends Controller {
 			return redirect('admin/listings/limit');
 		}
 
+		// Restore the listing
 		$listing->restore();
 
 		return redirect('admin/listings')->withSuccess([trans('responses.listing_recovered')]);
@@ -463,13 +493,13 @@ class ListingController extends Controller {
 	 * @return Response
 	 */
 	public function destroy($id, Request $request){
-		$listing = Listing::find($id);
+		// Get the object requested
+		$listing = Listing::where('id', $id)->withTrashed()->first();
 
 		// Security check
 	    if(!Auth::user()->is('admin')){
 	    	if(!$listing || $listing->broker->id != Auth::user()->id){
 	    		if($request->ajax()){// If request was sent using ajax
-					Session::flash('errors', [trans('responses.no_permission')]);
 					return response()->json(['error' => trans('responses.no_permission')]);
 				}
 				// If nos usign ajax return redirect
@@ -477,16 +507,20 @@ class ListingController extends Controller {
 	    	}
 		}
 
-		// Delete listing
-		$listing->delete();
+		// If listing is already softdeleted force it deletes
+		if($listing->deleted_at){
+			$listing->forceDelete();
+		}else{
+			// Delete listing
+			$listing->delete();
+		}
 
 
 		if($request->ajax()){// If request was sent using ajax
-			Session::flash('success', [trans('responses.listing_deleted')]);
-			return response()->json(['error' => trans('responses.listing_deleted')]);
+			return response()->json(['success' => trans('responses.listing_deleted')]);
 		}
 		// If nos usign ajax return redirect
-		return redirect('admin/listings')->withErrors([trans('responses.listing_deleted')]);
+		return redirect('admin/listings')->withSuccess([trans('responses.listing_deleted')]);
 	}
 
 }

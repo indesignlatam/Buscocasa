@@ -4,7 +4,8 @@ use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
-use File, Settings;
+use File, Settings, Carbon, Queue, DB;
+use App\Models\Listing;
 use App\Commands\SendTipsEmail;
 
 class TipsEmail extends Command {
@@ -43,7 +44,7 @@ class TipsEmail extends Command {
 		// less than n views
 		// OR less than n messages?
 		// TODO send one message per user
-		$listings = Listing::where('created_at', Carbon::now()->addDays(Settings::get('tips_days_from_created', 15)))
+		$listings = Listing::where('created_at', '>', Carbon::now()->subDays(Settings::get('tips_days_from_created', 15)))
 						   ->where('views', '<', Settings::get('tips_min_views', 30))
 						   ->with('broker')
 						   ->get();
@@ -54,16 +55,18 @@ class TipsEmail extends Command {
 
 			$ids = [];
 			foreach ($listings as $listing) {
-				$this->info('Sending tip email to '.$listing->broker->email);
-				Queue::push(new SendTipsEmail($listing));
-				
-				$ids[] = $listing->id;
-				// $this->output->progressAdvance();//Only for laravel 5.1
+				if($listing->broker->tips_sent_at > Carbon::now()->addDays(30) || in_array($listing->broker->id, $ids)){
+					$this->info('Sending tip email to '.$listing->broker->email);
+					Queue::push(new SendTipsEmail($listing));
+					
+					$ids[] = $listing->broker->id;
+					// $this->output->progressAdvance();//Only for laravel 5.1
+				}
 			}
 
-			DB::table('listings')
+			DB::table('users')
 	            ->whereIn('id', $ids)
-	            ->update(['expire_notified' => true]);
+	            ->update(['tips_sent_at' => Carbon::now()]);
 			// $this->output->progressFinish(); //Only for laravel 5.1
 			$this->info('Finished sending tip emails');
 		}else{

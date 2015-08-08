@@ -29,10 +29,6 @@
 
         @section('header')
         @show
-
-        @section('alerts')
-            @include('includes.alerts')
-        @show
         
         @yield ('content')
         
@@ -40,7 +36,6 @@
             @include('includes.footer')
         @show
         
-
         <!-- Scripts -->
         @section('js')
             <!-- Necessary Scripts -->
@@ -48,7 +43,13 @@
             <script src="{{ asset('/js/uikit.min.js') }}"></script>
 
             <!-- Other Scripts -->
+            <link href="{{ asset('/css/components/notify.almost-flat.css') }}" rel="stylesheet">
+            <script src="{{ asset('/js/components/notify.min.js') }}"></script>
             {!! Analytics::render() !!}
+        @show
+
+        @section('alerts')
+            @include('includes.alerts')
         @show
 
     </body>

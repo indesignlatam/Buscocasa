@@ -37,7 +37,10 @@ class SendTipsEmail extends Command implements SelfHandling, ShouldBeQueued {
 
 		// If mail account not confirmed dont send email
 		if($listing->broker->confirmed){
-			Mail::send('emails.tips', ['listing' => $listing], function ($message) use ($listing) {
+			Mail::send('emails.tips', [ 'listing' => $listing, 
+										'user' => $listing->broker,
+									  ], 
+			function ($message) use ($listing) {
 			    $message->from(Settings::get('email_from'), Settings::get('email_from_name'))
 						->to($listing->broker->email, $listing->broker->name)
 			    		->subject(trans('emails.tips_subject'));

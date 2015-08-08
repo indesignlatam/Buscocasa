@@ -17,7 +17,7 @@
 	    <hr>
 
 	    <div class="uk-grid">
-	    	<div class="uk-width-7-10">
+	    	<div class="uk-width-small-1-1 uk-width-medium-1-1 uk-width-large-7-10">
 			   	<div>
 					<h3>{{ trans('admin.confirm_payment_title') }}</h3>
 					<p>{{ trans('admin.confirm_payment_text') }}</p>
@@ -25,7 +25,9 @@
 
     			<a href="#" style="text-decoration:none">
 			    	<div class="uk-panel uk-panel-box uk-panel-box-primary uk-margin-remove" id="listing">
-			    		<img src="{{asset($payment->featuredType->image_path)}}" style="position:absolute; top:0; left:0; max-width:150px">
+			    		@if($payment->featuredType->id > 1)
+							<img src="{{asset($payment->featuredType->image_path)}}" style="position:absolute; top:0; left:0; max-width:150px">
+						@endif
 
 			    		<img src="{{ asset(Image::url($payment->listing->image_path(),['mini_image_2x'])) }}" style="width:350px; height:200px; float:left" class="uk-margin-right">
 			    		<h4 class="uk-margin-top-remove">{{ $payment->listing->title }}</h4>
@@ -65,7 +67,9 @@
 			    </a>
 	    	</div>
 
-	    	<div class="uk-width-3-10">
+	    	<div class="uk-hidden-large uk-margin-top"></div>
+
+	    	<div class="uk-width-small-1-1 uk-width-medium-1-1 uk-width-large-3-10">
 	    		<div class="uk-panel uk-panel-box">
 	    		<h3 class="uk-panel-title">{{ trans('admin.shop_basket') }}</h3>
 		    		<table class="uk-table">
@@ -114,7 +118,7 @@
 						    <input name="confirmationUrl" type="hidden"  value="{{ config('payu.confirmation_url') }}" />
 
 							<div class="uk-margin-top uk-text-center">
-						        <button form="payu" type="submit" class="uk-button uk-button-large uk-button-success uk-width-1-1" onclick="blockUI()">{{ trans('admin.pay') }}</button>
+						        <button form="payu" type="submit" class="uk-button uk-button-large uk-button-success uk-width-1-1" onclick="blockUI()">{{ trans('admin.confirm_payment') }}</button>
 								<a class="uk-button uk-margin-top uk-width-1-1" onclick="cancelPayment()">{{ trans('admin.cancel') }}</a>
 						    </div>
 						</form>
@@ -124,9 +128,9 @@
 							<input name="accountId" 	type="hidden"  value="{{ config('payu.account_id') }}"/>
 						    <input name="description"   type="hidden"  value="{{ $payment->description }}"  />
 						    <input name="referenceCode" type="hidden"  value="{{ $payment->reference_code }}" />
-						    <input name="amount"        type="hidden"  value="{{ number_format($payment->amount, 2, '.', '') }}"   />
-						    <input name="tax"           type="hidden"  value="{{ number_format($payment->tax, 2, '.', '') }}"  />
-						    <input name="taxReturnBase" type="hidden"  value="{{ number_format($payment->tax_return_base, 2, '.', '') }}" />
+						    <input name="amount"        type="hidden"  value="{{ number_format($payment->amount, 0, '.', '') }}"   />
+						    <input name="tax"           type="hidden"  value="{{ number_format($payment->tax, 0, '.', '') }}"  />
+						    <input name="taxReturnBase" type="hidden"  value="{{ number_format($payment->tax_return_base, 0, '.', '') }}" />
 						    <input name="currency"      type="hidden"  value="{{ $payment->currency }}" />
 						    <input name="signature"     type="hidden"  value="{{ $payment->signature }}"  />
 						    <input name="test"          type="hidden"  value="0" />
@@ -170,8 +174,7 @@
 	    	UIkit.modal.confirm("{{ trans('admin.cancel_payment_sure') }}", function(){
 			    // will be executed on confirm.
 			    $.post("{{ url('/admin/pagos/'.$payment->id) }}", {_token: "{{ csrf_token() }}", _method:"DELETE"}, function(response){
-	                console.log(response);
-	                window.location.href = "{{url('/admin/pagos')}}";
+	                window.location.replace("{{url('/admin/pagos')}}");
 	            });
 			}, {labels:{Ok:'{{trans("admin.yes")}}', Cancel:'{{trans("admin.cancel")}}'}});
             

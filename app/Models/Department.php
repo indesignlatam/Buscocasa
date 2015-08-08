@@ -4,8 +4,12 @@ use App\Models\IndesignModel;
 
 class Department extends IndesignModel {
 
+	/**
+	 * Dont update my timestamps! I dont have any.
+	 *
+	 * @var string
+	 */
 	public $timestamps = false;
-	protected $softDelete = false;
 
 	/**
 	 * The name of the table.
@@ -14,21 +18,14 @@ class Department extends IndesignModel {
 	 */
     protected $table = 'departments';
 
-    /**
-	 * The primary key of the table.
-	 *
-	 * @var string
-	 */
-	//protected $primaryKey = 'pid';
-
 	/**
 	 * The rules to verify when creating.
 	 *
 	 * @var array
 	 */
-	protected $rules = ['name'  							=> 'required|string|max:255',
-				        'country_id'  						=> 'required|numeric|exists:countries,id',
-				        ];
+	protected $rules 	= [ 'name'  					=> 'required|string|max:255',
+					        'country_id'  				=> 'required|numeric|exists:countries,id',
+					        ];
 
 	/**
 	 * The rules to verify when editing.
@@ -44,38 +41,24 @@ class Department extends IndesignModel {
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['name', 'country_id'];
+	protected $fillable = [ 'name', 
+							'country_id'];
+
 
 	/**
-	 * The attributes that are hidden to JSON responces.
-	 *
-	 * @var array
-	 */
-	protected $hidden = ['created_at', 'deleted_at'];
-
-	/**
-	 * The attributes that are appended to JSON responces.
-	 *
-	 * @var array
-	 */
-	//protected $appends = ['image_url'];
-
-	/**
-	 * The method that appends the attribute to JSON responces.
-	 *
-	 * @var null or attribute
-	 */
-	// public function getImageUrlAttribute(){
-	// 	if($this->image_path){
-	// 		return asset($this->image_path);
-	// 	}
-	// 	return null;
-	// }
-
+     * Relationship with country
+     *
+     * @return \App\Models\Country
+     */
 	public function country(){
         return $this->belongsTo('App\Models\Country', 'country_id');
     }
 
+    /**
+     * Relationship with cities
+     *
+     * @return \App\Models\City
+     */
     public function cities(){
         return $this->hasMany('App\Models\City', 'department_id');
     }

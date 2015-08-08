@@ -40,7 +40,11 @@ class RespondMessageEmail extends Command implements SelfHandling, ShouldBeQueue
 
 		// If mail not confirmed dont send email
 		if($messageToAnswer->listing->broker->confirmed){
-			Mail::send('emails.message_answer', ['messageToAnswer' => $messageToAnswer, 'comments' => $comments], function ($message) use ($messageToAnswer) {
+			Mail::send('emails.message_answer', ['messageToAnswer' 	=> $messageToAnswer, 
+												 'comments' 		=> $comments, 
+												 'user' 			=> $messageToAnswer,
+												],
+			function ($message) use ($messageToAnswer) {
 			    $message->from(Settings::get('email_from'), Settings::get('email_from_name'))
 			    		->replyTo($messageToAnswer->listing->broker->email)
 						->to($messageToAnswer->email, $messageToAnswer->name)

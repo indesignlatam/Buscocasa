@@ -5,6 +5,7 @@ return [
     'listings' 					=> 'Inmuebles',
     'new' 						=> 'Nuevo',
     'publish_property'          => 'Publica tu inmueble Gratis',
+    'register_publish_free'     => 'Registrate y Publica Gratis',
     'publish_property_4_steps'  => 'Vende o arrienda tu inmueble en cuatro pasos',
     'id' 						=> 'id',
     'published' 				=> 'Publicado',
@@ -27,10 +28,16 @@ return [
     'mt2_price' 				=> 'Valor mt2',
     'area' 						=> 'Area',
     'area_tooltip'              => 'Cuantos metros cuadrados construidos tiene tu inmueble.',
-    'stratum' 					=> 'Estrato',
+    'stratum'                   => 'Estrato',
+    'code'                      => 'Codigo',
     'share' 					=> 'Compartir',
-    'expires' 					=> 'Expira ',
+    'expires'                   => 'Expira ',
+    'listing_expires'           => 'La publicación expira ',
+    'listing_featured_expires'  => 'La publicación destacada expira ',
+    'listing_expired'           => 'La publicación expiro ',
+    'listing_featured_expired'  => 'La publicación destacada expiro ',
     'featured_expires'          => 'Destacado expira ',
+    'featured_expired'          => 'Destacado expiro ',
     'feature' 					=> 'Destacar',
     'print_banner'              => 'Imprimir aviso',
     'renovate'                  => 'Renovar publicación',
@@ -41,6 +48,12 @@ return [
     'order_by'                  => 'Ordenar por',
     'eliminated_listings'       => 'Ver inmuebles eliminados',
     'go_back_listings'          => 'Vuelve a tus inmuebles publicados',
+    'view_listing'              => 'Ver inmueble',
+    'images_check_tooltip'      => 'No has subido imagenes',
+    'shared_check_tooltip'      => 'No has compartido tu inmueble',
+    'aditional_check_tooltip'   => 'No has escrito una descripción adicional completa',
+    'features_check_tooltip'    => 'Tu inmueble no tiene suficientes caracteristicas',
+
 
     // Create Listing
     'new_listing' 				=> 'Nueva publicación',
@@ -90,6 +103,7 @@ return [
     'edit_listing' 				=> 'Editar inmueble publicado',
     'add_images_to_listing'		=> 'Agrega imagenes para mejorar la visibilidad de tu publicación',
     'images_uploaded_succesfuly'=> 'Las imagenes fueron cargadas exitosamente.',
+    'image_uploaded_succesfuly' => 'La imagen fue cargada exitosamente.',
     'image_deleted_succesfuly'  => 'La imagen fue eliminida exitosamente.',
     'listing_expiring_soon'     => 'Tu inmueble expira pronto',
 
@@ -102,11 +116,10 @@ return [
     'steps_6'                    => 'Comparte en redes',
     'steps_7'                    => 'Destacado',
 
-
     //
     'my_listings_menu' 			=> 'Mis publicaciones',
     'my_messages_menu' 			=> 'Mensajes',
-    'profile_menu' 				=> 'Datos de usuario',
+    'profile_menu' 				=> 'Perfil de usuario',
     'login' 					=> 'Iniciar sesión',
     'logout' 					=> 'Cerrar sesión',
     'register' 					=> 'Registrate',
@@ -125,6 +138,9 @@ return [
     'categories' 				=> 'Categorias',
     'message'                   => 'Mensaje',
     'messages'                  => 'Mensajes',
+    'reply'                     => 'Responder mensaje',
+    'mark_as_answered'          => 'Marcar como respondido',
+    'delete_message'            => 'Eliminar mensaje',
 
     // Confirmation
     'user_not_confirmed'        => 'No has confirmado tu cuenta de correo',
@@ -146,13 +162,14 @@ return [
     'confirmation_sent_title'   => 'Hemos enviado un mensaje a tu cuenta de correo electronico',
     'confirmation_sent_spam'    => 'Revisa tu cuenta de correo, si no encuentras el mensaje en tu carpeta de recibidos revisa la carpeta de spam.',
     //
-    'user_data'                 => 'Datos de usuario',
+    'user_data'                 => 'Perfil de usuario',
     'change_image' 				=> 'Cambiar imagen',
     'name' 						=> 'Nombre',
     'phone_alt' 				=> 'Telefono 2',
     'phone' 					=> 'Telefono',
     'email' 					=> 'Correo',
     'description'               => 'Descripción',
+    'alt_phone'                 => 'Telefono 2',
 
     // Appointments
     'answer'                    => 'Responder',
@@ -166,6 +183,7 @@ return [
     'view_messages' 			=> 'Ver mensajes',
     'send' 				        => 'Enviar',
     'show_deleted_messages'     => 'Buscar en los mensajes eliminados',
+    'no_messages_text'          => 'Sigue estos pasos para mejorar la visibilidad de tu publicación',
 
     // Payments
     'payments'                  => 'Pagos',
@@ -178,16 +196,17 @@ return [
     'reference'                 => 'Referencia',
     'payment_method'            => 'Metodo de pago',
     'updated'                   => 'Actualizado',
+    'cancel_payment_sure'       => 'Estas seguro que deseas cancelar el pago?',
 
     // Confirm payment
-    'confirm_payment'           => 'Confirma tu pago',
+    'confirm_payment'           => 'Confirmar pago',
     'confirm_payment_title'     => 'Por favor verifica todos los datos de la transaccion',
     'confirm_payment_text'      => 'A continuación seras redirigido de forma segura al sitio web de PayU Latino America en donde podras elegir un medio de pago para realizar tu transaccion y destacar tu publicación en BuscoCasa.co.',
     
     // Payment response
     'transaction_result'        => 'Resultado de la transacción',
     'transaction_info'          => 'Información de la transacción',
-    'transaction_state'         => 'Estado de la transacción',
+    'transaction_state'         => 'Estado de transacción',
     'transaction_approved'      => 'Transacción aprobada',
     'transaction_denied'        => 'Transacción rechazada',
     'transaction_error'         => 'Error al realizar la transacción',
@@ -202,6 +221,10 @@ return [
     'transaction_description'   => 'Descripción',
     'transaction_entity'        => 'Entidad',
     'error_validating_signature'=> 'La transacción no es valida, la firma digital no coincide.',
+    'payment_signature_error'   => 'Payment verification error.',
+    'payment_no_listing_error'  => 'No encontramos ningun inmueble relacionado con este pago.',
+    'payment_response_success_text' => 'El pago fue exitoso. Tu inmueble sera destacado por 30 dias y sera visto por mas posibles compradores.',
+    'payment_response_error_text' => 'El pago fue rechazado por la entidad financiera. Verifica que los datos de la transaccion sean correctos y vuelvo a intentarlo.',
 
 
     // Configuration
@@ -246,7 +269,13 @@ return [
     'pay'                       => 'Realizar pago',
     'listing_preview'           => 'Vista previa del inmueble',
     'highlight_listing_text'    => 'Destaca la publicacion de tu inmueble para que sea vista por mas personas y tener la posibilidad de concretar una venta en el menor tiempo posible.',
-    'features111'               => 'publicados',
+    'homepage_rotation_tooltip' => 'La publicación saldra aleatoriamente en la pagina principal',
+    'social_publish_tooltip'    => 'El inmueble sera publicado en nuestra pagina de facebook',
+    'listing_expiring_tooltip'  => 'La cantidad de días que durara la publicación',
+    'outstanding_container_tooltip'     => 'La publicación aparecera en un contenedor que sobresale sobre los demas',
+    'better_search_positions_tooltip'   => 'La publicación aparecera en mejores posiciones en las paginas de busqueda',
+    'featured_image_limit_tooltip'      => 'Cantidad maxima de fotos que podra tener la publicación',
+    'listing_container_ribbon_tooltip'  => 'La publicación tendra un liston que lo hace destacar aun mas',
 
     // Listings limit
     'listings_limit_title'      => 'Alcanzaste la cantidad maxima de publicaciones gratis',
@@ -262,15 +291,20 @@ return [
     'days'                      => 'días',
     'photos'                    => 'fotos',
     'homepage_rotation'         => 'Rotación en pagina pricipal',
-    'outstanding_container'      => 'Contenedor que sobresale',
+    'outstanding_container'     => 'Contenedor que sobresale',
+    'listing_container_ribbon'  => 'Liston de destacado',
+    'better_search_positions'   => 'Posición en busquedas',
+    'social_publish'            => 'Publicado en redes',
 
     'recaptcha_error'           => 'Por favor realiza la prueba para verificar que no eres un robot',
     'recaptcha_help'            => 'Debes hacer click en el anterior campo para verificar que no eres un robot.',
 
-    'features111'               => 'publicados',
-    'features111'               => 'publicados',
-    'features111'               => 'publicados',
-    'features111'               => 'publicados',
+    'username_tooltip'          => 'El nombre de usuario sera el que te identifique en la barra de navegacion para que otros usuarios puedan ver todos tus inmuebles.',
+
+    // Welcome
+    'view_more_listings'        => 'Ver más inmuebles',
+    'welcome_new_user'          => 'Estas un paso mas cerca de publicar tu inmueble. Te hemos enviado un mensaje para que confirmes tu correo electronico y puedas acceder a todos los beneficios de BuscoCasa.co',
+    'open'                      => 'Ir a',
     'features111'               => 'publicados',
     'features111'               => 'publicados',
     'features111'               => 'publicados',

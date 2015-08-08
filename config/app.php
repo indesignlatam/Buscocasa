@@ -13,7 +13,7 @@ return [
 	|
 	*/
 
-	'debug' => true,
+	'debug' => env('APP_DEBUG', FALSE),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -26,7 +26,7 @@ return [
 	|
 	*/
 
-	'url' => 'http://localhost',
+	'url' => 'http://www.buscocasa.co',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -156,6 +156,7 @@ return [
 		'Efriandika\LaravelSettings\SettingsServiceProvider',
 		Barryvdh\Debugbar\ServiceProvider::class,
 		'IndesignColombia\Phpgmaps\PhpgmapsServiceProvider',
+		'GrahamCampbell\Throttle\ThrottleServiceProvider',
 	],
 
 	/*
@@ -213,6 +214,7 @@ return [
 		'Carbon' 	=> 'Carbon\Carbon',
 		'Analytics' => 'Ipunkt\LaravelAnalytics\AnalyticsFacade',
 		'Settings'  => Efriandika\LaravelSettings\Facades\Settings::class,
+		'Throttle' => 'GrahamCampbell\Throttle\Facades\Throttle',
 	],
 
 ];

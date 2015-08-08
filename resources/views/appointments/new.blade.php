@@ -30,7 +30,7 @@
             
             <input class="uk-width-large-1-1 uk-margin-small-bottom uk-form-large" type="email" name="email" placeholder="Correo" value="{{ old('email') }}">
 
-            <textarea class="uk-width-large-10-10 uk-form-large" name="comments" placeholder="Comentarios" rows="5">{{ old('comments') }}</textarea>
+            <textarea class="uk-width-large-10-10 uk-form-large" name="comments" placeholder="Comentarios" rows="5">@if(old('comments')){{ old('comments') }}@else{{ trans('frontend.contact_default_text') }}@endif</textarea>
 
             @if(!Auth::check())
                 <!-- ReCaptcha -->
