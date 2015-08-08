@@ -18,8 +18,8 @@
 @section('css')
 	@parent
 	<script type="text/javascript">
-		loadCss("//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css", "loadcss");
-		loadCss("{{ asset('/css/select2.min.css') }}", "loadcss");
+		loadCSS("//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css");
+		loadCSS("{{ asset('/css/select2.min.css') }}");
 	</script>
 @endsection
 
@@ -309,11 +309,15 @@
 
 @section('js')
 	@parent
+	<!-- CSS -->
+	<noscript><link href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet"></noscript>
+	<noscript><link href="{{ asset('/css/select2.min.css') }}" rel="stylesheet"></noscript>
+	<!-- CSS -->
 
 	<!-- JS -->
-	<script async src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-	<script async src="{{ asset('/js/accounting.min.js') }}"></script>
-	<script async src="{{ asset('/js/select2.min.js') }}"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	<script src="{{ asset('/js/accounting.min.js') }}"></script>
+	<script src="{{ asset('/js/select2.min.js') }}"></script>
 	<!-- JS -->
 
 	<script type="text/javascript">
