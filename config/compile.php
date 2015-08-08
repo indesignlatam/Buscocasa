@@ -22,7 +22,10 @@ return [
 		realpath(__DIR__.'/../app/Providers/RouteServiceProvider.php'),
 
 		// Custom
-		realpath(__DIR__.'/../app/Http\Middleware\VerifyCsrfToken'),
+		realpath(__DIR__.'/../app/Http/Middleware/VerifyCsrfToken.php'),
+		realpath(__DIR__.'/../app/Http/Controllers/ListingFEController.php'),
+		realpath(__DIR__.'/../app/Models/Listing.php'),
+		realpath(__DIR__.'/../app/User.php'),
 	],
 
 	/*
