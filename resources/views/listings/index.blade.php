@@ -161,7 +161,7 @@
 				</form>
 	    	</div>
 	    	<!-- End search bar -->
-
+	    	
 	    	<div class="uk-width-large-3-4 uk-width-small-1-1 uk-margin-left">
 	    		@if(count($listings))
 	    			<div class="uk-form uk-align-right uk-hidden-small">
@@ -169,17 +169,23 @@
 					    	<option value="">Cantidad de publicaciones</option>
 					    	@if(Request::get('take') == 50)
 					    		<option value="50" selected>Ver 50</option>
+					    	@elseif(Session::get('listings_take') == 50)
+					    		<option value="50" selected>Ver 50</option>
 					    	@else
 					    		<option value="50">Ver 50</option>
 					    	@endif
 
 					    	@if(Request::get('take') == 30)
 					    		<option value="30" selected>Ver 30</option>
+					    	@elseif(Session::get('listings_take') == 30)
+					    		<option value="30" selected>Ver 30</option>
 					    	@else
 					    		<option value="30">Ver 30</option>
 					    	@endif
 
 					    	@if(Request::get('take') == 10)
+					    		<option value="10" selected>Ver 10</option>
+					    	@elseif(Session::get('listings_take') == 10)
 					    		<option value="10" selected>Ver 10</option>
 					    	@else
 					    		<option value="10">Ver 10</option>

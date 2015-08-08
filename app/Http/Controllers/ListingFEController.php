@@ -164,6 +164,7 @@ class ListingFEController extends Controller {
 			}// If user didnt input listing code
 		}// Has params end
 
+		// Order the query by cookie
 		if(!$request->has('order_by') && $request->session()->has('listings_order_by')){
 			if($request->session()->get('listings_order_by') == 'price_min'){
 					$query = $query->orderBy('price', 'ASC');
@@ -176,6 +177,13 @@ class ListingFEController extends Controller {
 				}
 		}else{
 			$query = $query->orderBy('featured_type', 'DESC');
+		}
+
+		// Take n objects by cookie
+		if(!$request->has('take') && $request->session()->has('listings_take')){
+			if(is_int($request->session()->get('listings_take'))){
+				$take = $request->session()->get('listings_take');
+			}
 		}
 
 		if(!$request->has('listing_code')){
