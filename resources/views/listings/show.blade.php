@@ -57,7 +57,7 @@
 				@if(count($listing->images) > 0)
 					<div class="uk-slidenav-position" data-uk-slideshow="{autoplay:true, autoplayInterval:7000}">
 					    <ul class="uk-slideshow">
-					    	@foreach($listing->images as $image)
+					    	@foreach($listing->images->sortBy('ordering') as $image)
 					    		<li>
 					    			<img src="{{ asset($image->image_path) }}" alt="{{ $listing->title }}" style="max-width:800px; max-height:540px">
 					    		</li>

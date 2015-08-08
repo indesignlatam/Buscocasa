@@ -297,32 +297,17 @@
 						    <div class="uk-progress-bar" style="width: 0%;"></div>
 						</div>
 
-						<div class="uk-margin-large-top uk-grid" id="images-div">
-							@foreach($listing->images as $image)
-								@if($image->id == $listing->main_image_id)
-									<div class="uk-width-large-1-4 uk-width-medium-1-3" id="image-{{ $image->id }}">
-										<figure class="uk-overlay uk-overlay-hover uk-margin-bottom main-image">
-											<img src="{{ asset($image->image_path) }}">
-										    <div class="uk-overlay-panel uk-overlay-background uk-overlay-fade uk-text-center">
-										    	<i class="uk-icon-large uk-icon-remove" id="{{ $image->id }}" onclick="deleteImage(this)" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.eliminate_image') }}"></i> 
-										    	<i class="uk-icon-large uk-icon-check" onclick="selectMainImage({{ $image->id }}, '{{ $image->image_path }}')" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.set_as_main_image') }}"></i>
-										    </div>
-										</figure>
-									</div>
-								@else
-									<div class="uk-width-large-1-4 uk-width-medium-1-3" id="image-{{ $image->id }}">
-										<figure class="uk-overlay uk-overlay-hover uk-margin-bottom">
-											<img src="{{ asset($image->image_path) }}">
-										    <div class="uk-overlay-panel uk-overlay-background uk-overlay-fade uk-text-center">
-										    	<i class="uk-icon-large uk-icon-remove" id="{{ $image->id }}" onclick="deleteImage(this)" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.eliminate_image') }}"></i> 
-										    	<i class="uk-icon-large uk-icon-check" onclick="selectMainImage({{ $image->id }}, '{{ $image->image_path }}')" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.set_as_main_image') }}"></i>
-										    </div>
-										</figure>
-									</div>
-								@endif
-							@endforeach
-						</div>
-				    </div>
+						<ul class="uk-sortable uk-margin-large-top uk-grid" data-uk-sortable="{handleClass:'uk-panel'}"  id="images-div">
+						@foreach($listing->images->sortBy('ordering') as $image)
+							<li data-id="{{ $image->id }}" class="uk-width-large-1-4 uk-width-medium-1-3 uk-panel uk-margin-small-bottom" id="image-{{ $image->id }}">
+								<i class="uk-close uk-close-alt uk-panel-badge" id="{{ $image->id }}" onclick="deleteImage(this)" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.eliminate_image') }}"></i>
+								<input type="hidden" name="image[{{ $image->id }}]" value="{{ $image->ordering }}">
+						    	<img src="{{ asset($image->image_path) }}">
+						    	<div class="uk-badge uk-badge-notification uk-panel-badge" style="right:40%;">0</div>
+							</li>
+						@endforeach
+						</ul>
+				    </div>				    
 				    <!-- Image upload -->
 
 				    <hr>
@@ -436,6 +421,7 @@
 	@parent
 
 	<!-- Styles -->
+    <link href="{{ asset('/css/components/sortable.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/components/form-file.almost-flat.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/components/upload.almost-flat.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/components/placeholder.almost-flat.min.css') }}" rel="stylesheet">
@@ -446,6 +432,7 @@
 	<!-- Styles -->
 
 	<!-- JS -->
+    <script src="{{ asset('/js/components/sortable.min.js') }}"></script>
 	<script src="{{ asset('/js/components/upload.min.js') }}"></script>
     <script src="{{ asset('/js/components/tooltip.min.js') }}"></script>
 	<script src="{{ asset('/js/components/sticky.min.js') }}"></script>
@@ -454,7 +441,15 @@
 	<!-- JS -->
 
 	<script type="text/javascript">
+		var sortable = null;
 		$(function() {
+			sortable = $('[data-uk-sortable]');
+            sortable.on('stop.uk.sortable', function (e, el, type) {
+                setOrdering(sortable, el);
+            });
+            setOrdering(sortable);
+
+
 			$("#city").select2();
 
 			$('#price').val(accounting.formatNumber(document.getElementById('price').value));
@@ -475,6 +470,21 @@
 
 
 		});
+
+		function setOrdering(sortable, activeEl) {
+            var ordering = 1;
+            sortable.find('>li').each(function () {
+                var $ele = $(this);
+                $ele.data('ordering', ordering);
+                $ele.find('div.uk-badge').text(ordering);
+                $ele.find('input[type=hidden]').val(ordering);
+                ordering++;
+            });
+            if (activeEl) {
+                activeEl.find('div.uk-badge').addClass('uk-animation-scale-down');
+            }
+        }
+  		
 
 		function blockUI(){
 	        var modal = UIkit.modal.blockUI('<h3 class="uk-text-center">Guardando inmueble, porfavor espere.</h3><div class="uk-text-center uk-text-primary"><i class="uk-icon-large uk-icon-spinner uk-icon-spin"</i></div>');
@@ -497,7 +507,7 @@
         function deleteImage(sender, modal) {
 	        $.post("{{ url('/admin/images') }}/" + sender.id, {_token: "{{ csrf_token() }}", _method:"DELETE"}, function(result){
 	        	if(result.success){
-	        		$("#image-"+sender.id).fadeOut(500, function() { $(this).remove(); });
+	        		$("#image-"+sender.id).fadeOut(500, function() { $(this).remove(); setOrdering(sortable); });
 	        		if(modal){
 	            		$("#image-modal-"+sender.id).fadeOut(500, function() { $(this).remove(); });
 	        		}
@@ -542,20 +552,21 @@
 
 		            complete: function(response) {
 		            	if(response.image && response.success){
-		            		UIkit.notify('<i class="uk-icon-check-circle"></i> '+response.success, {pos:'top-right', status:'success', timeout: 15000});
+		            		UIkit.notify('<i class="uk-icon-check-circle"></i> '+response.success, {pos:'top-right', status:'success', timeout: 5000});
 
 		            		$("#images_div_modal").append('<div class="uk-width-1-4" id="image-modal-'+response.image.id+'" style="display: none;"><figure class="uk-overlay uk-overlay-hover uk-margin-bottom"><img src="{{asset("")}}'+response.image.image_path+'"><div class="uk-overlay-panel uk-overlay-background uk-overlay-fade uk-text-center uk-vertical-align"><i class="uk-icon-large uk-icon-remove uk-vertical-align-middle" id="'+response.image.id+'" onclick="deleteImage(this, true)"></i></div></figure></div>');
 		            		$("#image-modal-"+response.image.id).show('normal');
 
 		            		// Insite uploader images
-		            		$("#images-div").append('<div class="uk-width-large-1-4 uk-width-medium-1-3" id="image-'+response.image.id+'"><figure class="uk-overlay uk-overlay-hover uk-margin-bottom"><img src="{{asset("")}}'+response.image.image_path+'"><div class="uk-overlay-panel uk-overlay-background uk-overlay-fade uk-text-center"><i class="uk-icon-large uk-icon-remove" id="'+response.image.id+'" onclick="deleteImage(this)" data-uk-tooltip="{pos:"top"}" title="{{ trans("admin.eliminate_image") }}"></i> <i class="uk-icon-large uk-icon-check" onclick="selectMainImage('+response.image.id+', \''+response.image.image_path+'\')" data-uk-tooltip="{pos:"top"}" title="{{ trans("admin.set_as_main_image") }}"></i></div></figure></div>');
+		            		$("#images-div").append('<li data-id="{{ $image->id }}" class="uk-width-large-1-4 uk-width-medium-1-3 uk-panel" id="image-'+response.image.id+'"><i class="uk-close uk-close-alt uk-panel-badge" id="'+response.image.id+'" onclick="deleteImage(this)" data-uk-tooltip="{pos:"top"}" title="{{ trans("admin.eliminate_image") }}"></i><input type="hidden" name="image['+response.image.id+']" value><img src="{{asset("/")}}'+response.image.image_path+'"><div class="uk-badge uk-badge-notification uk-panel-badge" style="right:40%;">0</div></li>');
+		            		setOrdering(sortable);
 		            	}else if(response.error){
 		            		if(response.error instanceof Array){
 		            			response.error.forEach(function(entry) {
-		            				UIkit.notify('<i class="uk-icon-remove"></i> '+entry['image'], {pos:'top-right', status:'danger', timeout: 15000});
+		            				UIkit.notify('<i class="uk-icon-remove"></i> '+entry['image'], {pos:'top-right', status:'danger', timeout: 5000});
 								});
 		            		}else{
-		            			UIkit.notify('<i class="uk-icon-remove"></i> '+response.error, {pos:'top-right', status:'danger', timeout: 15000});
+		            			UIkit.notify('<i class="uk-icon-remove"></i> '+response.error, {pos:'top-right', status:'danger', timeout: 5000});
 		            		}
 		            	}
 		            },
@@ -605,17 +616,18 @@
 
 		            complete: function(response) {
 		            	if(response.image && response.success){
-		            		UIkit.notify('<i class="uk-icon-check-circle"></i> '+response.success, {pos:'top-right', status:'success', timeout: 15000});
+		            		UIkit.notify('<i class="uk-icon-check-circle"></i> '+response.success, {pos:'top-right', status:'success', timeout: 5000});
 
-		            		$("#images-div").append('<div class="uk-width-large-1-4 uk-width-medium-1-3" id="image-'+response.image.id+'" style="display: none;"><figure class="uk-overlay uk-overlay-hover uk-margin-bottom"><img src="{{asset("")}}'+response.image.image_path+'"><div class="uk-overlay-panel uk-overlay-background uk-overlay-fade uk-text-center"><i class="uk-icon-large uk-icon-remove" id="'+response.image.id+'" onclick="deleteImage(this)" data-uk-tooltip="{pos:"top"}" title="{{ trans("admin.eliminate_image") }}"></i> <i class="uk-icon-large uk-icon-check" onclick="selectMainImage('+response.image.id+', \''+response.image.image_path+'\')" data-uk-tooltip="{pos:"top"}" title="{{ trans("admin.set_as_main_image") }}"></i></div></figure></div>');
+		            		$("#images-div").append('<li data-id="{{ $image->id }}" class="uk-width-large-1-4 uk-width-medium-1-3 uk-panel" id="image-'+response.image.id+'"><i class="uk-close uk-close-alt uk-panel-badge" id="'+response.image.id+'" onclick="deleteImage(this)" data-uk-tooltip="{pos:"top"}" title="{{ trans("admin.eliminate_image") }}"></i><input type="hidden" name="image['+response.image.id+']" value><img src="{{asset("/")}}'+response.image.image_path+'"><div class="uk-badge uk-badge-notification uk-panel-badge" style="right:40%;">0</div></li>');
 		            		$("#image-"+response.image.id).show('normal');
+		            		setOrdering(sortable);
 		            	}else if(response.error){
 		            		if(response.error instanceof Array){
 		            			response.error.forEach(function(entry) {
-		            				UIkit.notify('<i class="uk-icon-remove"></i> '+entry['image'], {pos:'top-right', status:'danger', timeout: 15000});
+		            				UIkit.notify('<i class="uk-icon-remove"></i> '+entry['image'], {pos:'top-right', status:'danger', timeout: 5000});
 								});
 		            		}else{
-		            			UIkit.notify('<i class="uk-icon-remove"></i> '+response.error, {pos:'top-right', status:'danger', timeout: 15000});
+		            			UIkit.notify('<i class="uk-icon-remove"></i> '+response.error, {pos:'top-right', status:'danger', timeout: 5000});
 		            		}
 		            	}
 		            },
