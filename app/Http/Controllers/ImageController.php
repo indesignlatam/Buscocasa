@@ -21,7 +21,7 @@ class ImageController extends Controller {
      * @return void
      */
     public function __construct(){
-    	//
+        $this->middleware('file_max_upload_size', ['only' => 'store']);
     }
 
 	/**

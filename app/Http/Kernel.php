@@ -15,7 +15,6 @@ class Kernel extends HttpKernel {
 		'Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse',
 		'Illuminate\Session\Middleware\StartSession',
 		'Illuminate\View\Middleware\ShareErrorsFromSession',
-		'App\Http\Middleware\MaxUploadFileSize',
 		'App\Http\Middleware\VerifyCsrfToken',
 	];
 
@@ -32,6 +31,7 @@ class Kernel extends HttpKernel {
 		'listings.view.throttle' 	=> 'App\Http\Middleware\ListingViewThrottle',
 		'throttle'					=> 'App\Http\Middleware\ThrottleMiddleware',
 		'throttle.auth'				=> 'App\Http\Middleware\AuthThrottleMiddleware',
+		'file_max_upload_size'		=> 'App\Http\Middleware\MaxUploadFileSize',
 	];
 
 }
