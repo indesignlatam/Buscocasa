@@ -312,9 +312,6 @@ class ListingController extends Controller {
 		//$input['description'] 	= preg_replace("/[^a-zA-Z0-9.,;:+$%/?¿!¡ñáéíóúüÁÉÍÓÚÜÑ ]+/u", "", $input['description']);
 		$input['direction'] = preg_replace("/[^a-zA-Z0-9# -]+/", "", $input['direction']);
 
-		if($input['main_image_id'] == ""){
-			$input['main_image_id'] = null;
-		}
 
 		if (!$listing->validate($input, null, true)){
 	        return redirect('admin/listings/'.$id.'/edit')->withErrors($listing->errors())->withInput();

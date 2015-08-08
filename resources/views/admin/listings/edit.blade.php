@@ -6,11 +6,6 @@
 
 @section('css')
 	@parent
-    <style type="text/css">
-    	.main-image{
-    		border: 4px solid #8AC007;
-    	}
-    </style>
 @endsection
 
 @section('content')
@@ -33,8 +28,6 @@
 
 			<input id="latitude" type="hidden" name="latitude" value="{{ $listing->latitude }}">
         	<input id="longitude" type="hidden" name="longitude" value="{{ $listing->longitude }}">
-        	<input id="main_image_id" type="hidden" name="main_image_id" value="{{ $listing->main_image_id }}">
-        	<input id="image_path" type="hidden" name="image_path" value="{{ $listing->image_path }}">
         	<input id="save_close" type="hidden" name="save_close" value="0">
 
 			<div class="uk-grid uk-margin-top">
@@ -307,7 +300,7 @@
 							</li>
 						@endforeach
 						</ul>
-				    </div>				    
+				    </div>
 				    <!-- Image upload -->
 
 				    <hr>
@@ -494,31 +487,17 @@
 	        field.value = accounting.formatNumber(field.value);
 	    }
 
-	    function selectMainImage(mainImageId, path){
-	    	value = $('#main_image_id').val();
-
-	    	$("#image-"+value+" > figure").removeClass('main-image');
-	    	$("#image-"+mainImageId+" > figure").addClass('main-image');
-
-	    	$('#main_image_id').val(mainImageId);
-	    	$('#image_path').val(path);
-	    }
-
         function deleteImage(sender, modal) {
 	        $.post("{{ url('/admin/images') }}/" + sender.id, {_token: "{{ csrf_token() }}", _method:"DELETE"}, function(result){
 	        	if(result.success){
 	        		$("#image-"+sender.id).fadeOut(500, function() { $(this).remove(); setOrdering(sortable); });
 	        		if(modal){
-	            		$("#image-modal-"+sender.id).fadeOut(500, function() { $(this).remove(); });
+	            		$("#image-modal-"+sender.id).fadeOut(500, function() { $(this).remove(); setOrdering(sortable); });
 	        		}
 
-		            if(sender.id == $('#main_image_id').val()){
-	                	$('#main_image_id').val(null);
-	                	$('#image_path').val(null);
-	                }
-	                UIkit.notify('<i class="uk-icon-check-circle"></i> '+result.success, {pos:'top-right', status:'success', timeout: 15000});
+	                UIkit.notify('<i class="uk-icon-check-circle"></i> '+result.success, {pos:'top-right', status:'success', timeout: 5000});
 	        	}else if(response.error){
-		            UIkit.notify('<i class="uk-icon-remove"></i> '+response.error, {pos:'top-right', status:'danger', timeout: 15000});
+		            UIkit.notify('<i class="uk-icon-remove"></i> '+response.error, {pos:'top-right', status:'danger', timeout: 5000});
 	        	}
 	            
 	        });
@@ -583,10 +562,6 @@
 	            drop   = UIkit.uploadDrop($("#upload_drop_modal"), settings);
 	    });
 		// Modal uploader
-
-		function uplink(){
-			$('#upload_select_modal').click();
-		}
 
 		// Inpage uploader
 		$(function(){
