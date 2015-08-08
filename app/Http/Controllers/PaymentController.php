@@ -278,11 +278,11 @@ class PaymentController extends Controller {
 				// TODO If user pays again but changes the type the type will change and add the time
 				$payment->listing->featured_type = $payment->featuredType->id;
 				if($payment->listing->featured_expires_at && $payment->listing->featured_expires_at < Carbon::now()){
-					$payment->listing->featured_expires_at = $payment->listing->featured_expires_at->addDays(30);
+					$payment->listing->featured_expires_at = $payment->listing->featured_expires_at->addDays(Settings::get('listing_expiring', 30));
 				}else{
-					$payment->listing->featured_expires_at = Carbon::now()->addDays(30);
+					$payment->listing->featured_expires_at = Carbon::now()->addDays(Settings::get('listing_expiring', 30));
 				}
-				$payment->listing->expires_at = $payment->listing->featured_expires_at->addDays(10);
+				$payment->listing->expires_at = $payment->listing->featured_expires_at;
 				$payment->listing->save();
 
 				// Send confirmation email to user and generate billing
