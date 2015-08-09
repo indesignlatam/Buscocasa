@@ -309,7 +309,7 @@
 				                			<!-- Edit and delete buttons -->
 					                		<div class="uk-flex uk-flex-center uk-flex-space-between">
 					                			<a class="uk-button" href="{{ url('/admin/listings/'.$listing->id.'/edit') }}">{{ trans('admin.edit') }}</a>
-					                			<a class="uk-button" href="{{ url('/admin/banners/create') }}" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.print_banner') }}"><i class="uk-icon-print"></i></a>
+					                			<button class="uk-button" href="{{ url('/admin/banners/create') }}" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.print_banner') }}" disabled><i class="uk-icon-print"></i></button>
 					                            <a class="uk-button uk-button-danger" id="{{ $listing->id }}" onclick="deleteObject(this)" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.eliminate_listing') }}"><i class="uk-icon-trash"></i></a>
 				                			</div>
 				                			<!-- Edit and delete buttons -->
