@@ -179,10 +179,10 @@ class PaymentController extends Controller {
 	 */
 	public function payUResponse(Request $request){
 		//
-		$merchantId = config('payu.test_merchant_id');
+		$apiKey = config('payu.test_api_key');
 
 		if(!Settings::get('payu_test', 1)){
-			$merchantId = config('payu.merchant_id');
+			$apiKey = config('payu.api_key');
 		}
 
 		$merchantId 		= $request->get('merchantId');
