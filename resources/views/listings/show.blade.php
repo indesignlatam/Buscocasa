@@ -132,6 +132,7 @@
 							@endif
 						</div>
 					</div>
+					<button class="uk-button uk-button-large uk-width-1-1 uk-margin-top" onclick="select(this)" id="{{ $listing->id }}">Comparar</button>
 				</div>
 			</div>
 		</div>
@@ -256,7 +257,7 @@
 									<?php $featureChecked = false; ?>
 								@else
 									<i class="uk-icon-minus-circle uk-text-muted"> {{ $feature->name }}</i>
-								@endif										
+								@endif
 							</div>
 						@endif
 					@endforeach
@@ -393,6 +394,14 @@
 
 		function showCaptcha(){
 			$('#captcha').removeClass('uk-hidden', 1000);
+		}
+
+		function select(sender){
+			$.post("{{ url('/cookie/select') }}", {_token: "{{ csrf_token() }}", key: "selected_listings", value: sender.id}, function(result){
+				UIkit.modal.confirm("{{ trans('frontend.listing_selected') }}", function(){
+				    window.location.href("{{ url('/compare') }}");
+				}, {labels:{Ok:'{{trans("frontend.compare_now")}}', Cancel:'{{trans("frontend.keep_looking")}}'}});
+            });
 		}
 
 		$(function (){

@@ -58,6 +58,7 @@ return [
     'similar_listings' 			=> 'Inmuebles similares',
     'already_contacted_vendor' 	=> 'Ya has contactado al vendedor hoy',
     'other_user_listings'       => 'Otros inmuebles del usuario',
+    'listing_selected'          => 'El inmueble fue seleccionado para comparar. ¿Deseas ir a comparar los inmuebles seleccionados?',
 
     // Map marker info window
     'goto_listing' 				=> 'Ver inmueble',
@@ -69,8 +70,10 @@ return [
     'listings_sale'             => 'Inmuebles en venta',
     'listings_rent'             => 'Inmuebles en arriendo',
     'user_listings' 			=> 'Inmuebles publicados',
-    'features111' 				=> 'publicados',
-    'features111' 				=> 'publicados',
-    'features111' 				=> 'publicados',
+
+
+    'compare_title'             => 'Comparar inmuebles',
+    'keep_looking' 				=> 'Seguir navegando',
+    'compare_now' 				=> 'Comparar',
     'features111' 				=> 'publicados',
 ];

@@ -15,6 +15,7 @@ Route::get('/', 'WelcomeController@index');
 
 Route::resource('ventas', 'ListingFEController');
 Route::resource('arriendos', 'ListingFEController');
+Route::get('compare', 'ListingFEController@compare');
 Route::resource('buscar', 'ListingFEController', ['only' => ['index']]);
 
 Route::post('appointments', 'AppointmentController@store');

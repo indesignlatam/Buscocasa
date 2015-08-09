@@ -27,7 +27,6 @@ class ListingFEController extends Controller {
 	 * @return void
 	 */
 	public function __construct(){
-		//
         $this->middleware('listings.view.throttle', ['only' => ['show']]);
 	}
 
@@ -308,5 +307,26 @@ class ListingFEController extends Controller {
 										'features' 		=> $features,
 										'map' 			=> $map
 									]);
+	}
+
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function compare(Request $request){
+		$listingsIds = Cookie::get('selected_listings');
+		$listings = null;
+		if(count($listingsIds) > 1){
+			$listings = Listing::whereIn('id', $listingsIds)->take(4)->with('features', 'listingType')->get();
+		}else if($listingsIds){
+			$listings = Listing::where('id', $listingsIds)->take(4)->with('features', 'listingType')->get();
+		}
+		$features 	= Feature::remember(Settings::get('query_cache_time'))->with('category')->get();
+
+		return view('listings.compare', ['listings' => $listings,
+										 'features' => $features
+										 ]);
 	}
 }
