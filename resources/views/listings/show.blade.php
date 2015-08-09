@@ -6,16 +6,20 @@
 	<meta property="og:image" content="{{ asset($listing->image_path()) }}"/>
 	<meta property="og:type" content="article"/>
 	@if(strlen($listing->description) > 100)
-		<meta property="og:description" content="{{ strip_tags($listing->description) }}" />
-		<meta name="description" content="{{ strip_tags($listing->description) }}">
+		<meta property="og:description" content="{{ $listing->description }}"/>
+		<meta name="description" content="{{ $listing->description }}">
 	@else
-		<meta property="og:description" content="{{ strip_tags($listing->description). '. ' . Settings::get('listings_description') }}" />
-		<meta name="description" content="{{ strip_tags($listing->description). '. ' . Settings::get('listings_description') }}">
+		<meta property="og:description" content="{{ $listing->description. '. ' . Settings::get('listings_description') }}" />
+		<meta name="description" content="{{ $listing->description. '. ' . Settings::get('listings_description') }}">
 	@endif
 @endsection
 
 @section('css')
 	@parent
+	<script type="text/javascript">
+		loadCSS("{{ asset('/css/components/slideshow.almost-flat.min.css') }}");
+		loadCSS("{{ asset('/css/components/slidenav.almost-flat.min.css') }}");
+	</script>
 @endsection
 
 @section('content')
@@ -315,14 +319,14 @@
 	@parent
 
 	<!-- CSS -->
-	<link href="{{ asset('/css/components/slideshow.almost-flat.min.css') }}" rel="stylesheet">
-	<link href="{{ asset('/css/components/slidenav.almost-flat.min.css') }}" rel="stylesheet">
+	<noscript><link href="{{ asset('/css/components/slideshow.almost-flat.min.css') }}" rel="stylesheet"></noscript>
+	<noscript><link href="{{ asset('/css/components/slidenav.almost-flat.min.css') }}" rel="stylesheet"></noscript>
 	<!-- CSS -->
 
-	<!-- CSS -->
+	<!-- JS -->
 	<script src='https://www.google.com/recaptcha/api.js'></script>
     <script src="{{ asset('/js/components/slideshow.min.js') }}"></script>
-	<!-- CSS -->
+	<!-- JS -->
 	
 	<script type="text/javascript">
 		window.fbAsyncInit = function() {
