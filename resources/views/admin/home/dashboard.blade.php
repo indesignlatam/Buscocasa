@@ -138,9 +138,9 @@
                     <ul class="uk-list uk-list-striped">
                         @foreach($listings as $listing)
                             @if($listing->featured_expires_at && $listing->featured_expires_at > Carbon::now())
-                                <li><a class="" href="{{ url($listing->pathEdit()) }}">Inmueble #{{ $listing->code }} {{ strtolower(trans('admin.expires')) }} {{ Carbon::createFromFormat('Y-m-d H:i:s', $listing->featured_expires_at)->diffForHumans() }}</a></li>
+                                <li><a class="" href="{{ url($listing->pathEdit()) }}">Inmueble #{{ $listing->code }} {{ strtolower(trans('admin.expires')) }} {{ $listing->featured_expires_at->diffForHumans() }}</a></li>
                             @else
-                                <li><a class="" href="{{ url($listing->pathEdit()) }}">Inmueble #{{ $listing->code }} {{ strtolower(trans('admin.expires')) }} {{ Carbon::createFromFormat('Y-m-d H:i:s', $listing->expires_at)->diffForHumans() }}</a></li>
+                                <li><a class="" href="{{ url($listing->pathEdit()) }}">Inmueble #{{ $listing->code }} {{ strtolower(trans('admin.expires')) }} {{ $listing->expires_at->diffForHumans() }}</a></li>
                             @endif
                         @endforeach
                     </ul>

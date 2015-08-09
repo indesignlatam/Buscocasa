@@ -7,7 +7,7 @@
     @else
     	<div class="uk-panel uk-panel-hover uk-margin-remove">
     		<div class="uk-overlay uk-overlay-hover">
-    		@if(Carbon::createFromFormat('Y-m-d H:i:s', $listing->created_at)->diffInDays(Carbon::now()) < 5)
+    		@if($listing->created_at->diffInDays(Carbon::now()) < 5)
 				<img src="{{asset('/images/defaults/new.png')}}" style="position:absolute; top:0; left:0; max-width:150px">
 			@endif
     @endif

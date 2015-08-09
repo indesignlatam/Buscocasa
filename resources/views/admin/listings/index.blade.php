@@ -171,7 +171,7 @@
 			                		<div class="uk-width-large-2-10 uk-width-medium-2-10 uk-width-small-1-1">
 			                			<a href="{{ url('/admin/listings/'.$listing->id.'/edit') }}">
 				                			<!-- Featured tag -->
-						                	@if($listing->featured_expires_at && $listing->featuredType->id > 1 && Carbon::createFromFormat('Y-m-d H:i:s', $listing->featured_expires_at, 'America/Bogota') > Carbon::now())
+						                	@if($listing->featured_expires_at && $listing->featuredType->id > 1 && $listing->featured_expires_at > Carbon::now())
 						                		<img src="{{asset($listing->featuredType->image_path)}}" style="position:absolute; top:0; left:0; max-width:150px">
 						                	@endif
 						                	<!-- Featured tag -->

@@ -242,7 +242,7 @@
 						    		@if($listing->featuredType && $listing->featuredType->id > 1 && $listing->featured_expires_at > Carbon::now())
 						    			<img src="{{asset($listing->featuredType->image_path)}}" style="position:absolute; top:0; left:30; max-width:100px">
 						    		@else
-							    		@if(Carbon::createFromFormat('Y-m-d H:i:s', $listing->created_at)->diffInDays(Carbon::now()) < 5)
+							    		@if($listing->created_at->diffInDays(Carbon::now()) < 5)
 							    			<img src="{{asset('/images/defaults/new.png')}}" style="position:absolute; top:0; left:30; max-width:100px">
 							    		@endif
 						    		@endif
@@ -273,7 +273,7 @@
 										    		@if($listing->featuredType && $listing->featuredType->id > 1 && $listing->featured_expires_at > Carbon::now())
 										    			<img src="{{asset($listing->featuredType->image_path)}}" style="position:absolute; top:0; left:30; max-width:100px">
 										    		@else
-											    		@if(Carbon::createFromFormat('Y-m-d H:i:s', $listing->created_at)->diffInDays(Carbon::now()) < 5)
+											    		@if($listing->created_at->diffInDays(Carbon::now()) < 5)
 											    			<img src="{{asset('/images/defaults/new.png')}}" style="position:absolute; top:0; left:30; max-width:100px">
 											    		@endif
 										    		@endif
