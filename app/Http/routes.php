@@ -1,39 +1,5 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Frontend Routes
-|--------------------------------------------------------------------------
-|
-| Here are all the API routes for external consumption.
-|
-| 
-|
-*/
-
-Route::get('/', 'WelcomeController@index');
-
-Route::resource('ventas', 'ListingFEController');
-Route::resource('arriendos', 'ListingFEController');
-Route::get('compare', 'ListingFEController@compare');
-Route::resource('buscar', 'ListingFEController', ['only' => ['index']]);
-
-Route::post('appointments', 'AppointmentController@store');
-
-Route::get('user/{id}/confirm/{code}', 'UserController@confirm');
-Route::get('/{username}', 'UserController@show');
-
-Route::post('pagos/confirmar', 'PaymentController@confirm');
-Route::post('pagos/disputas', 'PaymentController@dispute');
-
-Route::controllers([
-	'auth' 		=> 'Auth\AuthController',
-	'password' 	=> 'Auth\PasswordController',
-	'cookie' 	=> 'CookieController',
-]);
-Route::get('social-auth/{provider?}', 'Auth\AuthController@redirectToProvider');
-Route::get('social-auth/{provider?}/redirects', 'Auth\AuthController@handleProviderCallback');
-
 
 /*
 |--------------------------------------------------------------------------
@@ -101,3 +67,37 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth.admin'], function(){
 	Route::resource('permissions', 'PermissionController');
 	Route::post('permissions/delete', 'PermissionController@destroyMultiple');
 });
+
+/*
+|--------------------------------------------------------------------------
+| Frontend Routes
+|--------------------------------------------------------------------------
+|
+| Here are all the API routes for external consumption.
+|
+| 
+|
+*/
+
+Route::get('/', 'WelcomeController@index');
+
+Route::resource('ventas', 'ListingFEController');
+Route::resource('arriendos', 'ListingFEController');
+Route::get('compare', 'ListingFEController@compare');
+Route::resource('buscar', 'ListingFEController', ['only' => ['index']]);
+
+Route::post('appointments', 'AppointmentController@store');
+
+Route::get('user/{id}/confirm/{code}', 'UserController@confirm');
+Route::get('/{username}', 'UserController@show');
+
+Route::post('pagos/confirmar', 'PaymentController@confirm');
+Route::post('pagos/disputas', 'PaymentController@dispute');
+
+Route::controllers([
+	'auth' 		=> 'Auth\AuthController',
+	'password' 	=> 'Auth\PasswordController',
+	'cookie' 	=> 'CookieController',
+]);
+Route::get('social-auth/{provider?}', 'Auth\AuthController@redirectToProvider');
+Route::get('social-auth/{provider?}/redirects', 'Auth\AuthController@handleProviderCallback');
