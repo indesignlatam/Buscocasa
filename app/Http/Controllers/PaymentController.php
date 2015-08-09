@@ -32,7 +32,7 @@ class PaymentController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request){
-		$query;
+		$query = null;
 		$take = Settings::get('pagination_objects');
 
 		if(Auth::user()->is('admin')){
