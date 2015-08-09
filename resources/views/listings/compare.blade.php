@@ -92,7 +92,8 @@
 
 	    				<div class="uk-h3">
 	    					<i>{{ trans('admin.interior') }}</i>
-	    					<button class="uk-button uk-button-link" style="text-decoration:none;" data-uk-toggle="{target:'.interior'}">Ver</button>
+	    					<button class="uk-button uk-button-link interior" style="text-decoration:none;" data-uk-toggle="{target:'.interior'}">Ver</button>
+	    					<button class="uk-button uk-button-link uk-hidden interior" style="text-decoration:none;" data-uk-toggle="{target:'.interior'}">Cerrar</button>
 	    				</div>
 		    			<ul class="uk-list uk-list-line uk-hidden interior">
 	    					@foreach($features as $feature)
@@ -114,7 +115,8 @@
 
 	    				<div class="uk-h3">
 	    					<i>{{ trans('admin.exterior') }}</i>
-	    					<button class="uk-button uk-button-link" style="text-decoration:none;" data-uk-toggle="{target:'.exterior'}">Ver</button>
+	    					<button class="uk-button uk-button-link exterior" style="text-decoration:none;" data-uk-toggle="{target:'.exterior'}">Ver</button>
+	    					<button class="uk-button uk-button-link uk-hidden exterior" style="text-decoration:none;" data-uk-toggle="{target:'.exterior'}">Cerrar</button>
 	    				</div>
 		    			<ul class="uk-list uk-list-line uk-hidden exterior">
 	    					@foreach($features as $feature)
@@ -136,7 +138,8 @@
 
 	    				<div class="uk-h3">
 	    					<i>{{ trans('admin.sector') }}</i>
-	    					<button class="uk-button uk-button-link" style="text-decoration:none;" data-uk-toggle="{target:'.sector'}">Ver</button>
+	    					<button class="uk-button uk-button-link sector" style="text-decoration:none;" data-uk-toggle="{target:'.sector'}">Ver</button>
+	    					<button class="uk-button uk-button-link uk-hidden sector" style="text-decoration:none;" data-uk-toggle="{target:'.sector'}">Cerrar</button>
 	    				</div>
 		    			<ul class="uk-list uk-list-line uk-hidden sector">
 	    					@foreach($features as $feature)
@@ -182,70 +185,158 @@
 		function calculatePoints(){
 			var listings = {!! $listings !!};
 			var points = [];
+			var totalPoints = 0;
 			
 			// Price points
-			listings.sort(function(a, b) {
-			    return parseFloat(a.price) - parseFloat(b.price);
-			});
+			var lowest = Number.POSITIVE_INFINITY;
+			var highest = Number.NEGATIVE_INFINITY;
+			var tmp;
+			for (var i=listings.length-1; i>=0; i--) {
+			    tmp = listings[i].price;
+			    if (tmp < lowest) lowest = tmp;
+			}
 			listings.forEach(function(listing) {
-				points[listing.id] = parseFloat(50*parseFloat(listings[0].price/listing.price));
+				points[listing.id] = 50 * (lowest/listing.price);
 			});
 			console.log(points);
 
 			// mt2 price points
-			listings.sort(function(a, b) {
-				if(a.area > 0 && b.area > 0){
-					return parseFloat(a.price/a.area) - parseFloat(b.price/b.area);
-				}else if(a.lot_area > 0 && b.lot_area > 0){
-					return parseFloat(a.price/a.lot_area) - parseFloat(b.price/b.lot_area);
-				}else{
-					return parseFloat(a.price/a.area) - parseFloat(b.price/b.area);
-				}
-			});
+			lowest = Number.POSITIVE_INFINITY;
+			tmp = null;
+			var lowestI;
+			for (var i=listings.length-1; i>=0; i--) {
+			    tmp = listings[i].area;
+			    if (tmp < lowest){
+			    	lowest = tmp;
+			    	lowestI = i;
+			    }
+			}
 			listings.forEach(function(listing) {
 				if(listing.area > 0){
-					points[listing.id] += parseFloat(100*((listings[0].price/listings[0].area)/(listing.price/listing.area)));
-				}else if(listing.lot_area > 0){
-					points[listing.id] += parseFloat(100*((listings[0].price/listings[0].lot_area)/(listing.price/listing.lot_area)));
+					points[listing.id] += 100 * (listings[lowestI].price/lowest)/(listing.price/listing.area);
 				}
 			});
 			console.log(points);
 
 			// Stratum points
-			listings.sort(function(a, b) {
-				return parseFloat(a.stratum) + parseFloat(b.stratum);
-			});
+			highest = Number.NEGATIVE_INFINITY;
+			tmp = null;
+			for (var i=listings.length-1; i>=0; i--) {
+			    tmp = listings[i].stratum;
+			    if (tmp > highest){
+			    	highest = tmp;
+			    }
+			}
 			listings.forEach(function(listing) {
-				points[listing.id] += parseFloat(10*parseFloat(listing.stratum/listings[0].stratum));
+				points[listing.id] += 10 * (listing.stratum/highest);
 			});
 			console.log(points);
 
 			// Area points
-			listings.sort(function(a, b) {
-				return parseFloat(a.area) + parseFloat(b.area);
-			});
+			highest = Number.NEGATIVE_INFINITY;
+			tmp = null;
+			for (var i=listings.length-1; i>=0; i--) {
+			    tmp = listings[i].area;
+			    if (tmp > highest){
+			    	highest = tmp;
+			    }
+			}
 			listings.forEach(function(listing) {
-				if(listings[0].area){
-					points[listing.id] += parseFloat(20*parseFloat(listing.area/listings[0].area));
+				if(highest > 0){
+					points[listing.id] += 20 * (listing.area/highest);
 				}
 			});
 			console.log(points);
 
 			// Lot area points
-			listings.sort(function(a, b) {
-				return parseFloat(a.lot_area) - parseFloat(b.lot_area);
-			});
+			highest = Number.NEGATIVE_INFINITY;
+			tmp = null;
+			for (var i=listings.length-1; i>=0; i--) {
+			    tmp = listings[i].lot_area;
+			    if (tmp > highest){
+			    	highest = tmp;
+			    }
+			}
 			listings.forEach(function(listing) {
-				if(listings[0].lot_area){
-					points[listing.id] += parseFloat(20*parseFloat(listing.lot_area/listings[0].lot_area));
+				if(highest > 0){
+					points[listing.id] += 20 * (listing.lot_area/highest);
 				}
+			});
+			console.log(points);
+
+			// Rooms points
+			highest = Number.NEGATIVE_INFINITY;
+			tmp = null;
+			for (var i=listings.length-1; i>=0; i--) {
+			    tmp = listings[i].rooms;
+			    if (tmp > highest){
+			    	highest = tmp;
+			    }
+			}
+			listings.forEach(function(listing) {
+				if(highest > 0){
+					points[listing.id] += 20 * (listing.rooms/highest);
+				}
+			});
+			console.log(points);
+
+			// Bathrooms points
+			highest = Number.NEGATIVE_INFINITY;
+			tmp = null;
+			for (var i=listings.length-1; i>=0; i--) {
+			    tmp = listings[i].bathrooms;
+			    if (tmp > highest){
+			    	highest = tmp;
+			    }
+			}
+			listings.forEach(function(listing) {
+				if(highest > 0){
+					points[listing.id] += 20 * (listing.bathrooms/highest);
+				}
+			});
+			console.log(points);
+
+			// Garages points
+			highest = Number.NEGATIVE_INFINITY;
+			tmp = null;
+			for (var i=listings.length-1; i>=0; i--) {
+			    tmp = listings[i].garages;
+			    if (tmp > highest){
+			    	highest = tmp;
+			    }
+			}
+			listings.forEach(function(listing) {
+				if(highest > 0){
+					
+					points[listing.id] += 20 * (listing.garages/highest);
+				}
+			});
+			console.log(points);
+
+			// Admin fees points
+			lowest = Number.POSITIVE_INFINITY;
+			tmp = null;
+			for (var i=listings.length-1; i>=0; i--) {
+			    tmp = listings[i].administration;
+			    if (tmp < lowest){
+			    	lowest = tmp;
+			    }
+			}
+			if(lowest == 0){
+				lowest = 1;
+			}
+			listings.forEach(function(listing) {
+				if(listing.administration == 0){
+					listing.administration = 1;
+				}
+				points[listing.id] += 20 * (lowest/listing.administration);
 			});
 			console.log(points);
 
 
 			listings.forEach(function(listing) {
-				$('#points-'+listing.id).html(parseInt((points[listing.id]/200)*100)+'/100');
-				$('#points2-'+listing.id).html(parseInt((points[listing.id]/200)*100)+'/100 puntos');
+				$('#points-'+listing.id).html(parseInt((points[listing.id]/280)*100)+'/100');
+				$('#points2-'+listing.id).html(parseInt((points[listing.id]/280)*100)+'/100 puntos');
 			});
 		}
 
