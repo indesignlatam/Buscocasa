@@ -399,7 +399,7 @@
 		function select(sender){
 			$.post("{{ url('/cookie/select') }}", {_token: "{{ csrf_token() }}", key: "selected_listings", value: sender.id}, function(result){
 				UIkit.modal.confirm("{{ trans('frontend.listing_selected') }}", function(){
-				    window.location.href("{{ url('/compare') }}");
+				    window.location.href = "{{ url('/compare') }}";
 				}, {labels:{Ok:'{{trans("frontend.compare_now")}}', Cancel:'{{trans("frontend.keep_looking")}}'}});
             });
 		}
