@@ -124,13 +124,10 @@ class PaymentController extends Controller {
 		$referenceCode = $input['reference_code'];
 		$amount = $input['amount'];
 		$currency = Settings::get('currency', 'COP');
-		$merchantId;
-		$apiKey;
+		$merchantId = config('payu.test_merchant_id');
+		$apiKey = config('payu.test_api_key');
 
-		if(Settings::get('payu_test', 1)){
-			$merchantId = config('payu.test_merchant_id');
-			$apiKey = config('payu.test_api_key');
-		}else{
+		if(!Settings::get('payu_test', 1)){
 			$merchantId = config('payu.merchant_id');
 			$apiKey = config('payu.api_key');
 		}
@@ -182,11 +179,10 @@ class PaymentController extends Controller {
 	 */
 	public function payUResponse(Request $request){
 		//
-		$apiKey;
-		if(Settings::get('payu_test', 1)){
-			$apiKey = config('payu.test_api_key');
-		}else{
-			$apiKey = config('payu.api_key');
+		$merchantId = config('payu.test_merchant_id');
+
+		if(!Settings::get('payu_test', 1)){
+			$merchantId = config('payu.merchant_id');
 		}
 
 		$merchantId 		= $request->get('merchantId');
@@ -223,10 +219,9 @@ class PaymentController extends Controller {
 	 */
 	public function confirm(Request $request){
 		//
-		$apiKey;
-		if(Settings::get('payu_test', 1)){
-			$apiKey = config('payu.test_api_key');
-		}else{
+		$apiKey = config('payu.test_api_key');
+
+		if(!Settings::get('payu_test', 1)){
 			$apiKey = config('payu.api_key');
 		}
 		
