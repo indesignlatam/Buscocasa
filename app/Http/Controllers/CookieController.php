@@ -68,7 +68,7 @@ class CookieController extends Controller {
             if(!in_array($request->get('value'), $data)){
             	array_push($data, $request->get('value'));
             	if(count($data) > 4){
-            		array_pop($data);
+            		array_shift($data);
             	}
             }
         }else{
