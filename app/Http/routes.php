@@ -8,7 +8,7 @@
 |
 | Here are all the API routes for external consumption.
 |
-| 
+|
 |
 */
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){

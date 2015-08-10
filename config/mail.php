@@ -93,7 +93,7 @@ return [
 	|
 	*/
 
-	'password' => env('MAIL_PASSWORD', '6D9evxuYpCYq_1JY1v_vtA'),
+	'password' => env('MAIL_PASSWORD'),
 
 	/*
 	|--------------------------------------------------------------------------
