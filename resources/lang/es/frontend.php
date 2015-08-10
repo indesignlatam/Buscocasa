@@ -59,6 +59,7 @@ return [
     'already_contacted_vendor' 	=> 'Ya has contactado al vendedor hoy',
     'other_user_listings'       => 'Otros inmuebles del usuario',
     'listing_selected'          => 'El inmueble fue seleccionado para comparar. ¿Deseas ir a comparar los inmuebles seleccionados?',
+    'compare'                   => 'Comparar',
 
     // Map marker info window
     'goto_listing' 				=> 'Ver inmueble',

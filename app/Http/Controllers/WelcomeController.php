@@ -1,6 +1,5 @@
 <?php namespace App\Http\Controllers;
 
-use DB;
 use Settings;
 
 use App\Models\Listing;
@@ -16,7 +15,7 @@ class WelcomeController extends Controller {
 	 * @return void
 	 */
 	public function __construct(){
-		//$this->middleware('guest');
+		//
 	}
 
 	/**
@@ -46,7 +45,7 @@ class WelcomeController extends Controller {
 		$featured 	= Listing::remember(Settings::get('query_cache_time_extra_short'))
 							 ->where('featured_type', '>', 2)
 							 ->with('listingType')
-							 ->orderBy(DB::raw('RAND()'))
+							 ->orderByRaw('RAND()')
 							 ->take(2)
 							 ->get();
 

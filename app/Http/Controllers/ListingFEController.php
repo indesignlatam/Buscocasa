@@ -270,13 +270,13 @@ class ListingFEController extends Controller {
 		$features 	= Feature::remember(Settings::get('query_cache_time'))->with('category')->get();
 
 		$related 	= Listing::remember(Settings::get('query_cache_time_short'))
-							 ->select(DB::raw("*,
+							 ->selectRaw("*,
                               ( 6371 * acos( cos( radians(?) ) *
                                 cos( radians( latitude ) )
                                 * cos( radians( longitude ) - radians(?)
                                 ) + sin( radians(?) ) *
                                 sin( radians( latitude ) ) )
-                              ) AS distance"))
+                              ) AS distance")
 							 ->setBindings([$listing->latitude, $listing->longitude, $listing->latitude])
 							 ->where('id', '<>', $listing->id)
 							 ->where('category_id', $listing->category_id)
@@ -287,7 +287,7 @@ class ListingFEController extends Controller {
 							 ->get();
 
 
-		$config 	= array();
+		$config = [];
 	    $config['center'] 		= $listing->latitude.','.$listing->longitude;
 	    $config['zoom'] 		= '14';
 	    $config['scrollwheel'] 	= false;

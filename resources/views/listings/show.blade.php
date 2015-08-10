@@ -26,29 +26,6 @@
 
 <div class="uk-container uk-container-center uk-margin-top" id="secondContent">
 	<div class="uk-panel">
-		@if (count($errors) > 0)
-			<div class="uk-alert uk-alert-danger" data-uk-alert>
-    			<a href="" class="uk-alert-close uk-close"></a>
-				<strong>{{ trans('frontend.oops') }}</strong> {{ trans('frontend.input_error') }}<br><br>
-				<ul class="uk-list">
-					@foreach ($errors->all() as $error)
-						<li><i class="uk-icon-remove"></i> {{ $error }}</li>
-					@endforeach
-				</ul>
-			</div>
-		@endif
-
-		@if (Session::has('success'))
-			<div class="uk-alert uk-alert-success" data-uk-alert>
-    			<a href="" class="uk-alert-close uk-close"></a>
-				<ul class="uk-list">
-					@foreach (Session::get('success') as $error)
-						<li><i class="uk-icon-check"></i> {{ $error }}</li>
-					@endforeach
-				</ul>
-			</div>
-		@endif
-
 		<h2 class="uk-hidden-small" style="float:left; display:inline">{{ $listing->title }}</h2>
 		<h2 class="uk-visible-small">{{ $listing->title }}</h2>
 		<div style="float:right; display:inline" class="uk-hidden-small">
@@ -77,9 +54,32 @@
 			</div>
 			<div class="uk-width-3-10 uk-hidden-small">
 				<div class="uk-panel uk-panel-box" style="width:100%">
+					@if (Session::has('success'))
+						<div class="uk-alert uk-alert-success" data-uk-alert>
+			    			<a href="" class="uk-alert-close uk-close"></a>
+							<ul class="uk-list">
+								@foreach (Session::get('success') as $error)
+									<li><i class="uk-icon-check"></i> {{ $error }}</li>
+								@endforeach
+							</ul>
+						</div>
+					@endif
+
 					@if(!Cookie::get('listing_message_'.$listing->id) || Cookie::get('listing_message_'.$listing->id) > Carbon::now())
 						<h3>{{ trans('frontend.contact_vendor') }}</h3>
-						<form id="create_form" class="uk-form uk-form-horizontal" method="POST" action="{{ url('/appointments') }}">
+
+						@if (count($errors) > 0)
+							<div class="uk-alert uk-alert-danger" data-uk-alert>
+				    			<a href="" class="uk-alert-close uk-close"></a>
+								<ul class="uk-list">
+									@foreach ($errors->all() as $error)
+										<li>{{ $error }}</li>
+									@endforeach
+								</ul>
+							</div>
+						@endif
+
+						<form id="send_message_inpage" class="uk-form uk-form-horizontal" method="POST" action="{{ url('/appointments') }}">
 							<input type="hidden" name="_token" value="{{ csrf_token() }}">
 				            <input type="hidden" name="listing_id" value="{{ $listing->id }}">
 
@@ -104,14 +104,14 @@
 				                <!-- ReCaptcha -->
 				            @endif
 
-				            <button form="create_form" type="submit" class="uk-button uk-button-large uk-width-1-1  uk-button-primary uk-margin-top">{{ trans('frontend.contact_button') }}</button>
+				            <button form="send_message_inpage" type="submit" class="uk-button uk-button-large uk-width-1-1  uk-button-primary uk-margin-top">{{ trans('frontend.contact_button') }}</button>
 						</form>
 					@else
 						<h3 class="uk-text-primary">{{ trans('frontend.already_contacted_vendor') }}</h3>
 					@endif
 					
 					<div class="uk-margin-top">
-						<button id="my-id2" class="uk-button uk-button-large uk-width-1-1 uk-button-success" data-uk-toggle="{target:'#my-id, #my-id2'}">{{ trans('frontend.contact_show_info') }}</button>
+						<button id="my-id2" class="uk-button uk-button-large uk-width-1-1" data-uk-toggle="{target:'#my-id, #my-id2'}">{{ trans('frontend.contact_show_info') }}</button>
 
 						<div id="my-id" class="uk-hidden">
 							@if(!$listing->broker->phone_1 && !$listing->broker->phone_2)
@@ -132,7 +132,7 @@
 							@endif
 						</div>
 					</div>
-					<button class="uk-button uk-button-large uk-width-1-1 uk-margin-top" onclick="select(this)" id="{{ $listing->id }}">Comparar</button>
+					<button class="uk-button uk-button-large uk-width-1-1 uk-margin-top" onclick="select(this)" id="{{ $listing->id }}">{{ trans('frontend.compare') }}</button>
 				</div>
 			</div>
 		</div>
@@ -192,7 +192,7 @@
     			</ul>
 
     			<a href="#new_appointment_modal" class="uk-button uk-button-large uk-button-primary uk-width-1-1" data-uk-modal>{{ trans('frontend.contact_vendor') }}</a>
-    			<a href="{{ url($listing->broker->path()) }}" class="uk-button uk-button-success uk-width-1-1 uk-margin-top">{{ trans('frontend.other_user_listings') }}</a>
+    			<a href="{{ url($listing->broker->path()) }}" class="uk-button uk-button-large uk-width-1-1 uk-margin-top">{{ trans('frontend.other_user_listings') }}</a>
 
     			<hr>
 
@@ -254,7 +254,6 @@
 								@endforeach
 								@if($featureChecked)
 									<i class="uk-icon-check uk-text-primary"></i> {{ $feature->name }}
-									<?php $featureChecked = false; ?>
 								@else
 									<i class="uk-icon-minus-circle uk-text-muted"> {{ $feature->name }}</i>
 								@endif
@@ -276,7 +275,6 @@
 								@endforeach
 								@if($featureChecked)
 									<i class="uk-icon-check uk-text-primary"></i> {{ $feature->name }}
-									<?php $featureChecked = false; ?>
 								@else
 									<i class="uk-icon-minus-circle uk-text-muted"> {{ $feature->name }}</i>
 								@endif										
@@ -298,7 +296,6 @@
 								@endforeach
 								@if($featureChecked)
 									<i class="uk-icon-check uk-text-primary"></i> {{ $feature->name }}
-									<?php $featureChecked = false; ?>
 								@else
 									<i class="uk-icon-minus-circle uk-text-muted"> {{ $feature->name }}</i>
 								@endif										
@@ -325,7 +322,7 @@
 	<!-- CSS -->
 
 	<!-- JS -->
-	@if(Auth::check())
+	@if(!Auth::check())
 	<script async src='https://www.google.com/recaptcha/api.js'></script>
 	@endif
     <script src="{{ asset('/js/components/slideshow.min.js') }}"></script>
