@@ -6,7 +6,7 @@ use Symfony\Component\Console\Input\InputArgument;
 
 use Queue;
 use App\Models\Payment;
-use App\Commands\SendPaymentConfirmationEmail;
+use App\Jobs\SendPaymentConfirmationEmail;
 
 class TestPaymentEmail extends Command {
 
@@ -15,7 +15,7 @@ class TestPaymentEmail extends Command {
 	 *
 	 * @var string
 	 */
-	protected $name = 'mail:test_payment';
+	protected $signature = 'mail:test_payment';
 
 	/**
 	 * The console command description.

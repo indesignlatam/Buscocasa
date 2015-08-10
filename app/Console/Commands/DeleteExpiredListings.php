@@ -14,7 +14,7 @@ class DeleteExpiredListings extends Command {
 	 *
 	 * @var string
 	 */
-	protected $name = 'listings:delete_expired';
+	protected $signature = 'listings:delete_expired';
 
 	/**
 	 * The console command description.

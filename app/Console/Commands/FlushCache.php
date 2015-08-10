@@ -13,14 +13,14 @@ class FlushCache extends Command {
 	 *
 	 * @var string
 	 */
-	protected $name = 'cache:flush';
+	protected $signature = 'cache:flush';
 
 	/**
 	 * The console command description.
 	 *
 	 * @var string
 	 */
-	protected $description = 'Command description.';
+	protected $description = 'Deletes cache files from cache, views, sessions, logs.';
 
 	/**
 	 * Create a new command instance.

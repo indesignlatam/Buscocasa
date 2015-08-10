@@ -15,7 +15,7 @@ class ArchiveDeletedListings extends Command {
 	 *
 	 * @var string
 	 */
-	protected $name = 'listings:archive';
+	protected $signature = 'listings:archive';
 
 	/**
 	 * The console command description.

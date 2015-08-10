@@ -6,7 +6,7 @@ use Symfony\Component\Console\Input\InputArgument;
 
 use Carbon, Log, DB, Queue;
 use App\Models\Listing;
-use App\Commands\SendExpiringListingEmail;
+use App\Jobs\SendExpiringListingEmail;
 
 class MailExpiringListings extends Command {
 
@@ -15,7 +15,7 @@ class MailExpiringListings extends Command {
 	 *
 	 * @var string
 	 */
-	protected $name = 'mail:expiring_listings';
+	protected $signature = 'mail:expiring_listings';
 
 	/**
 	 * The console command description.

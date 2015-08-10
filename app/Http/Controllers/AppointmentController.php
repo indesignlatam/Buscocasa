@@ -14,8 +14,8 @@ use Analytics;
 
 use App\Models\Appointment;
 use	App\Models\Listing;
-use App\Commands\SendNewMessageEmail;
-use	App\Commands\RespondMessageEmail;
+use App\Jobs\SendNewMessageEmail;
+use	App\Jobs\RespondMessageEmail;
 use	App\Events\ListingMessaged;
 
 class AppointmentController extends Controller {

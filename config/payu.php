@@ -9,10 +9,10 @@ return [
 	|
 	*/
     'url'				=> 'https://gateway.payulatam.com/ppp-web-gateway',
-    'api_key' 			=> 'L9vjXNr5rys1M3UPsVp6n4CHTd',
-    'merchant_id' 		=> '536780',
-    'api_login'			=> '41UfK63y9Z0tCb5',
-    'account_id' 		=> '538794',
+    'api_key' 			=> env('PAYU_KEY'),
+    'merchant_id' 		=> env('PAYU_MERCHANT_ID'),
+    'api_login'			=> env('PAYU_API_LOGIN'),
+    'account_id' 		=> env('PAYU_ACCOUNT_ID'),
 
     'response_url'		=> 'http://buscocasa.co/admin/pagos/respuesta',
     'confirmation_url'	=> 'http://buscocasa.co/pagos/confirmar',

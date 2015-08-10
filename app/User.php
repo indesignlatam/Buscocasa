@@ -6,55 +6,57 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
-use Bican\Roles\Contracts\HasRoleAndPermissionContract;
 use Bican\Roles\Traits\HasRoleAndPermission;
-use Validator, Settings, Carbon;
+use Bican\Roles\Contracts\HasRoleAndPermission as HasRoleAndPermissionContract;
+
+use Validator;
+use Settings;
+use Carbon;
 
 use App\Models\Appointment;
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract, HasRoleAndPermissionContract {
-
-	use Authenticatable, CanResetPassword, HasRoleAndPermission;
+    use Authenticatable, CanResetPassword, HasRoleAndPermission;
 
     protected $errors;
 
     /**
-	 * The rules to verify when creating.
-	 *
-	 * @var array
-	 */
-	protected $rules = ['name'     						=> 'required|string|max:255',
+     * The rules to verify when creating.
+     *
+     * @var array
+     */
+    protected $rules = ['name'                          => 'required|string|max:255',
                         'username'                      => 'alpha_dash|unique:users,username,{:id}',
                         'email'                         => 'required|email|unique:users,email,{:id}',
                         'password'                      => 'string|min:6|max:100',
                         'phone_1'                       => 'digits_between:7,15',
                         'phone_2'                       => 'digits_between:7,15',
                         'description'                   => 'string|max:1500',
-				        ];
+                        ];
+    /**
+     * The database table used by the model.
+     *
+     * @var string
+     */
+    protected $table = 'users';
 
-	/**
-	 * The database table used by the model.
-	 *
-	 * @var string
-	 */
-	protected $table = 'users';
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['name' ,'username', 'email', 'phone_1', 'phone_2', 'description', 'password', 'confirmation_code'];
 
-	/**
-	 * The attributes that are mass assignable.
-	 *
-	 * @var array
-	 */
-	protected $fillable = ['name' ,'username', 'email', 'phone_1', 'phone_2', 'description', 'password', 'confirmation_code'];
-
-	/**
-	 * The attributes excluded from the model's JSON form.
-	 *
-	 * @var array
-	 */
-	protected $hidden = ['password', 'remember_token', 'confirmation_code', 'created_at'];
+    /**
+     * The attributes excluded from the model's JSON form.
+     *
+     * @var array
+     */
+    protected $hidden = ['password', 'remember_token', 'confirmation_code'];
 
 
-	public function validate($data, $rulesAdd = null, $isEdit = false, $id = null){
+
+    public function validate($data, $rulesAdd = null, $isEdit = false, $id = null){
 
         $rules = $this->rules;
 
@@ -62,15 +64,15 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             $rules = $this->editRules;
         }
 
-    	if($rulesAdd){
-    		array_merge($rules,$rulesAdd);
-    	}
+        if($rulesAdd){
+            array_merge($rules,$rulesAdd);
+        }
 
         $replace = ($id > 0) ? $id : '';
         foreach ($rules as $key => $rule){
             $rules[$key] = str_replace('{:id}', $replace, $rule);
         }
-    	
+        
         // make a new validator object
         $validator = Validator::make($data, $rules);
 
@@ -88,8 +90,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function errors(){
         return $this->errors;
     }
-
-
 
 
     // Path to user listings
@@ -205,5 +205,4 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function appointments(){
         return $this->hasManyThrough('App\Models\Appointment', 'App\Models\Listing', 'broker_id');
     }
-
 }

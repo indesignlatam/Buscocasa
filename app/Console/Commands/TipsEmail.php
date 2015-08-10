@@ -6,7 +6,7 @@ use Symfony\Component\Console\Input\InputArgument;
 
 use File, Settings, Carbon, Queue, DB;
 use App\Models\Listing;
-use App\Commands\SendTipsEmail;
+use App\Jobs\SendTipsEmail;
 
 class TipsEmail extends Command {
 
@@ -15,7 +15,7 @@ class TipsEmail extends Command {
 	 *
 	 * @var string
 	 */
-	protected $name = 'mail:tips';
+	protected $signature = 'mail:tips';
 
 	/**
 	 * The console command description.

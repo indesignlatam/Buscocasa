@@ -13,7 +13,7 @@ class CleanTempFolder extends Command {
 	 *
 	 * @var string
 	 */
-	protected $name = 'images:clean_temp';
+	protected $signature = 'images:clean_temp';
 
 	/**
 	 * The console command description.

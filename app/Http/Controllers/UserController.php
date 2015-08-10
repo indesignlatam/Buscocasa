@@ -9,7 +9,7 @@ use Auth;
 use Queue;
 
 use App\User;
-use App\Commands\SendUserConfirmationEmail;
+use App\Jobs\SendUserConfirmationEmail;
 
 class UserController extends Controller {
 

@@ -15,8 +15,8 @@ use App\Models\Payment;
 use	App\Models\Listing;
 use	App\Models\FeaturedType;
 
-use App\Commands\SendPaymentConfirmationEmail;
-use App\Commands\PostListingToFacebookPage;
+use App\Jobs\SendPaymentConfirmationEmail;
+use App\Jobs\PostListingToFacebookPage;
 
 class PaymentController extends Controller {
 
