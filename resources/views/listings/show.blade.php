@@ -104,13 +104,13 @@
 				                <!-- ReCaptcha -->
 				            @endif
 
-				            <button form="send_message_inpage" type="submit" class="uk-button uk-button-large uk-width-1-1  uk-button-primary uk-margin-top">{{ trans('frontend.contact_button') }}</button>
+				            <button form="send_message_inpage" type="submit" class="uk-button uk-button-large uk-width-1-1 uk-button-primary uk-margin-top">{{ trans('frontend.contact_button') }}</button>
 						</form>
 					@else
 						<h3 class="uk-text-primary">{{ trans('frontend.already_contacted_vendor') }}</h3>
 					@endif
 					
-					<div class="uk-margin-top">
+					<div class="uk-margin-small-top">
 						<button id="my-id2" class="uk-button uk-button-large uk-width-1-1" data-uk-toggle="{target:'#my-id, #my-id2'}">{{ trans('frontend.contact_show_info') }}</button>
 
 						<div id="my-id" class="uk-hidden">
@@ -132,7 +132,7 @@
 							@endif
 						</div>
 					</div>
-					<button class="uk-button uk-button-large uk-width-1-1 uk-margin-top" onclick="select(this)" id="{{ $listing->id }}">{{ trans('frontend.compare') }}</button>
+					<button class="uk-button uk-button-large uk-width-1-1 uk-margin-small-top" onclick="select(this)" id="{{ $listing->id }}">{{ trans('frontend.compare') }}</button>
 				</div>
 			</div>
 		</div>

@@ -345,7 +345,7 @@
 
 	<!-- JS -->
 	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-	<script async src="{{ asset('/js/accounting.min.js') }}"></script>
+	<script src="{{ asset('/js/accounting.min.js') }}"></script>
 	<script src="{{ asset('/js/select2.min.js') }}"></script>
 	<!-- JS -->
 
