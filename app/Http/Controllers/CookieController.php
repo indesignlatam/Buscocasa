@@ -24,19 +24,6 @@ class CookieController extends Controller {
 	 */
 	public function postSet(Request $request){
 		//
-		if ($cookie_data = $request->cookie->get('name')) {
-            if(!is_array($cookie_data)){
-                $data 	= [];
-                $data[] = $cookie_data;
-            }else{
-                $data = $cookie_data;
-            }
-            array_push($data, $request->get('value'));
-        }else{
-            $data = $request->get('value');
-        }
-
-
 		if($request->has('time')){
 			Cookie::queue($request->get('key'), $request->get('value'), $request->get('time'));
 		}else{

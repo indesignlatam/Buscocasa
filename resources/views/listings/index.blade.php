@@ -17,6 +17,10 @@
 
 @section('css')
 	@parent
+	<script type="text/javascript">
+		loadCSS("//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css");
+		loadCSS("{{ asset('/css/select2.min.css') }}");
+	</script>
 @endsection
 
 @section('content')
@@ -63,7 +67,7 @@
 	    	<div class="uk-width-large-1-4 uk-panel uk-panel-box uk-panel-box-secondary uk-visible-large">
 				<form id="search_form" class="uk-form uk-form-stacked" method="GET" action="{{ url(Request::path()) }}">
 
-					<input class="uk-width-large-10-10 uk-margin-large-bottom uk-form-large" type="text" name="listing_code" placeholder="{{ trans('frontend.search_field') }}" value="">
+					<input class="uk-width-large-10-10 uk-margin-large-bottom uk-form-large" type="text" name="listing_code" placeholder="{{ trans('frontend.search_field') }}" value>
 
 					<div class="uk-form-row">
 						<label class="uk-form-label">{{ trans('frontend.search_category') }}</label>
@@ -85,7 +89,7 @@
 			                <option value>{{ trans('frontend.search_select_option') }}</option>
 			                @foreach($cities as $city)
 			                	@if($city->id == Request::get('city_id'))
-			                		<option value="{{ $city->id }}" selected="true">{{ $city->name }}</option>
+			                		<option value="{{ $city->id }}" selected>{{ $city->name }}</option>
 			                	@else
 			                		<option value="{{ $city->id }}">{{ $city->name }}</option>
 			                	@endif
@@ -163,13 +167,13 @@
 	    	<!-- End search bar -->
 	    	
 	    	<div class="uk-width-large-3-4 uk-width-small-1-1 uk-margin-left">
-	    		@if(count($listings))
+	    		@if(count($listings) > 0)
 	    			<div class="uk-form uk-align-right uk-hidden-small">
 		    			<select form="search_form" name="take" onchange="this.form.submit()">
 					    	<option value="">Cantidad de publicaciones</option>
 					    	@if(Request::get('take') == 50)
 					    		<option value="50" selected>Ver 50</option>
-					    	@elseif(Session::get('listings_take') == 50)
+					    	@elseif(Cookie::get('listings_take') == 50)
 					    		<option value="50" selected>Ver 50</option>
 					    	@else
 					    		<option value="50">Ver 50</option>
@@ -177,7 +181,7 @@
 
 					    	@if(Request::get('take') == 30)
 					    		<option value="30" selected>Ver 30</option>
-					    	@elseif(Session::get('listings_take') == 30)
+					    	@elseif(Cookie::get('listings_take') == 30)
 					    		<option value="30" selected>Ver 30</option>
 					    	@else
 					    		<option value="30">Ver 30</option>
@@ -185,7 +189,7 @@
 
 					    	@if(Request::get('take') == 10)
 					    		<option value="10" selected>Ver 10</option>
-					    	@elseif(Session::get('listings_take') == 10)
+					    	@elseif(Cookie::get('listings_take') == 10)
 					    		<option value="10" selected>Ver 10</option>
 					    	@else
 					    		<option value="10">Ver 10</option>
@@ -231,7 +235,6 @@
 					    	<li class="uk-tab-active uk-active uk-hidden-small"><a href=""><i class="uk-icon-th-large"></i> {{ trans('frontend.tab_mosaic') }}</a></li>
 					    	{{-- <li class="uk-visible-small"><a href=""><i class="uk-icon-map-marker"></i> {{ trans('frontend.tab_map') }}</a></li> --}}
 						@endif
-					    
 					</ul>
 					<div class="uk-panel uk-margin">
 						<div class="uk-grid">
@@ -263,7 +266,7 @@
 					    <li>
 					    	<?php $i = 0; ?>
 					    	@foreach($listings as $listing)
-					    		@if(count($listings) > 10 && $i == ceil(count($listings)/2))
+					    		@if(count($listings) >= 10 && $i == ceil(count($listings)/2))
 					    			<div class="uk-panel uk-margin">
 										<div class="uk-grid">
 											@foreach($listings1 = array_slice($featuredListings->all(), -4, 4) as $listing)
@@ -336,13 +339,13 @@
 	@parent
 
 	<!-- CSS -->
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-	<link href="{{ asset('/css/select2.min.css') }}" rel="stylesheet"/>
+	<noscript><link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"></noscript>
+	<noscript><link href="{{ asset('/css/select2.min.css') }}" rel="stylesheet"/></noscript>
 	<!-- CSS -->
 
 	<!-- JS -->
 	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-	<script src="{{ asset('/js/accounting.min.js') }}"></script>
+	<script async src="{{ asset('/js/accounting.min.js') }}"></script>
 	<script src="{{ asset('/js/select2.min.js') }}"></script>
 	<!-- JS -->
 
