@@ -157,6 +157,7 @@ return [
 		Barryvdh\Debugbar\ServiceProvider::class,
 		IndesignColombia\Phpgmaps\PhpgmapsServiceProvider::class,
 		GrahamCampbell\Throttle\ThrottleServiceProvider::class,
+        enssegers\Agent\AgentServiceProvider::class
 
     ],
 
@@ -218,6 +219,7 @@ return [
 		'Analytics' => Ipunkt\LaravelAnalytics\AnalyticsFacade::class,
 		'Settings'  => Efriandika\LaravelSettings\Facades\Settings::class,
 		'Throttle' 	=> GrahamCampbell\Throttle\Facades\Throttle::class,
+        'Agent'     => Jenssegers\Agent\Facades\Agent::class,
     ],
 
 ];
