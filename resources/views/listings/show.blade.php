@@ -325,7 +325,9 @@
 	<!-- CSS -->
 
 	<!-- JS -->
-	<script src='https://www.google.com/recaptcha/api.js'></script>
+	@if(Auth::check())
+	<script async src='https://www.google.com/recaptcha/api.js'></script>
+	@endif
     <script src="{{ asset('/js/components/slideshow.min.js') }}"></script>
 	<!-- JS -->
 	

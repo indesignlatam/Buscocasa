@@ -36,6 +36,9 @@
             -webkit-border-radius: 0 0 0 0;
         }
     </style>
+    <script type="text/javascript">
+        loadCSS("{{ asset('/css/select2front.min.css') }}");
+    </script>
 @endsection
 
 @section('navbar')
@@ -43,12 +46,9 @@
 
 @section('content')
 	@include('includes.navbarHome')
+
 	<div class="uk-cover-background uk-position-relative">
-    @if($featuredFullScreen)
-        <img class="" src="{{ asset(Image::url($featuredFullScreen->image_path(),['featured_front'])) }}" width="100%" alt="">
-    @else
         <img class="" src="{{ asset(Image::url('/images/defaults/welcome.jpg',['featured_front'])) }}" width="100%" alt="">
-    @endif
         <div class="uk-position-cover uk-flex uk-flex-center uk-flex-middle uk-visible-small">
             <h1 class="uk-text-contrast uk-text-bold">{{ trans('frontend.mobile_greeting') }}</h1>
         </div>
@@ -58,8 +58,8 @@
                 <form id="create_form" class="uk-form" method="GET" action="{{ url('/buscar') }}">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-                    <select class="uk-width-2-10 uk-form-large" id="city" name="city_id" placeholder="City" style="width:20%">
-                        <option value="">{{ trans('frontend.search_city') }}</option>
+                    <select class="uk-width-2-10 uk-form-large" id="city" name="city_id" style="width:20%">
+                        <option value>{{ trans('frontend.search_city') }}</option>
                         @foreach($cities as $city)
                             @if($city->id == Request::get('city_id'))
                                 <option value="{{ $city->id }}" selected>{{ $city->name }}</option>
@@ -69,8 +69,8 @@
                         @endforeach
                     </select>
 
-                    <select class="uk-width-2-10 uk-form-large" id="category" name="category_id" placeholder="Category">
-                        <option value="">{{ trans('frontend.search_category') }}</option>
+                    <select class="uk-width-2-10 uk-form-large" id="category" name="category_id">
+                        <option value>{{ trans('frontend.search_category') }}</option>
                         @foreach($categories as $city)
                             @if($city->id == Request::get('city_id'))
                                 <option value="{{ $city->id }}" selected>{{ str_singular($city->name) }}</option>
@@ -80,8 +80,8 @@
                         @endforeach
                     </select>
 
-                    <select class="uk-width-2-10 uk-form-large" id="type" name="listing_type_id" placeholder="Type">
-                        <option value="">{{ trans('frontend.search_listing_types') }}</option>
+                    <select class="uk-width-2-10 uk-form-large" id="type" name="listing_type_id">
+                        <option value>{{ trans('frontend.search_listing_types') }}</option>
                         @foreach($listingTypes as $city)
                             @if($city->id == Request::get('city_id'))
                                 <option value="{{ $city->id }}" selected>{{ $city->name }}</option>
@@ -91,23 +91,22 @@
                         @endforeach
                     </select>
 
-                    <input class="uk-form-large" id="code" type="text" name="listing_code" placeholder="{{ trans('frontend.search_field') }}" value="" style="width:25%">
+                    <input class="uk-form-large" id="code" type="text" name="listing_code" placeholder="{{ trans('frontend.search_field') }}" value style="width:25%">
 
                     <button form="create_form" id="send_button" type="submit" class="uk-button uk-button-primary uk-button-large" style="width:15%">{{ trans('frontend.search_button') }}</button>
                 </form>
             </div>
 	    </div>
-		
 	</div>
 
-	<div class="uk-container uk-container-center uk-margin-large-top" id="secondContent">
+	<div class="uk-container uk-container-center uk-margin-top" id="secondContent">
         <div class="uk-visible-small">
             <h3 class="uk-text-primary">{{trans('frontend.search_properties')}}</h3>
-            <form id="create_form" class="uk-form" method="POST" action="{{ url('/search') }}">
+            <form id="create_form" class="uk-form" method="GET" action="{{ url('/buscar') }}">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-                <select class="uk-width-1-1 uk-margin-small-bottom uk-form-large" name="city_id" placeholder="City">
-                    <option value="">{{ trans('frontend.search_city') }}</option>
+                <select class="uk-width-1-1 uk-margin-small-bottom uk-form-large" name="city_id">
+                    <option value>{{ trans('frontend.search_city') }}</option>
                     @foreach($cities as $city)
                         @if($city->id == Request::get('city_id'))
                             <option value="{{ $city->id }}" selected>{{ $city->name }}</option>
@@ -117,8 +116,8 @@
                     @endforeach
                 </select>
 
-                <select class="uk-width-1-1 uk-margin-small-bottom uk-form-large" name="category_id" placeholder="Category">
-                    <option value="">{{ trans('frontend.search_category') }}</option>
+                <select class="uk-width-1-1 uk-margin-small-bottom uk-form-large" name="category_id">
+                    <option value>{{ trans('frontend.search_category') }}</option>
                     @foreach($categories as $city)
                         @if($city->id == Request::get('city_id'))
                             <option value="{{ $city->id }}" selected>{{ str_singular($city->name) }}</option>
@@ -128,8 +127,8 @@
                     @endforeach
                 </select>
 
-                <select class="uk-width-1-1 uk-margin-small-bottom uk-form-large" name="listing_type_id" placeholder="Type">
-                    <option value="">{{ trans('frontend.search_listing_types') }}</option>
+                <select class="uk-width-1-1 uk-margin-small-bottom uk-form-large" name="listing_type_id">
+                    <option value>{{ trans('frontend.search_listing_types') }}</option>
                     @foreach($listingTypes as $city)
                         @if($city->id == Request::get('city_id'))
                             <option value="{{ $city->id }}" selected>{{ $city->name }}</option>
@@ -139,7 +138,7 @@
                     @endforeach
                 </select>
 
-                <input class="uk-width-1-1 uk-margin-small-bottom uk-form-large" type="text" name="listing_code" placeholder="{{ trans('frontend.search_field') }}" value="">
+                <input class="uk-width-1-1 uk-margin-small-bottom uk-form-large" type="text" name="listing_code" placeholder="{{ trans('frontend.search_field') }}" value>
 
                 <button form="create_form" type="submit" class="uk-button uk-button-primary uk-button-large uk-width-1-1">{{ trans('frontend.search_button') }}</button>
             </form>
@@ -152,7 +151,7 @@
                 @foreach($sales as $sale)
                     <div class="uk-width-large-2-10 uk-width-medium-1-3 uk-width-small-1-1" style="position:relative">
                         <a href="{{ url($sale->path()) }}">
-                            <img src="{{ asset(Image::url($sale->image_path(),['mini_front'])) }}" class="uk-margin-small-bottom" style="max-width=150px" data-uk-scrollspy="{cls:'uk-animation-fade'}">                        
+                            <img src="{{ asset(Image::url($sale->image_path(),['mini_front'])) }}" class="uk-margin-small-bottom" style="max-width=150px" data-uk-scrollspy="{cls:'uk-animation-fade'}">
                         </a>
 
                         <br class="uk-visible-small">
@@ -208,7 +207,6 @@
         <hr>
 
         <!-- Featured listings -->
-        
         @if(count($featured) > 0)
             <h1 class="uk-margin-bottom uk-margin-top uk-text-bold">{{ trans('frontend.featured_listing') }}</h1>
     		<div class="uk-grid uk-margin-large-bottom">
@@ -255,7 +253,7 @@
                         <li><i class="uk-icon-check"></i> {{ money_format('$%!.0i', $featured[1]->administration) }} {{ trans('admin.administration_fees') }}</li>
                     </ul> 
                     <div class="uk-text-muted">
-                        {!! str_limit($featured[1]->description, $limit = 250, $end = '...') !!}
+                        {{ str_limit($featured[1]->description, $limit = 250, $end = '...') }}
                     </div>
                 </div>
                 <div class="uk-width-large-3-5 uk-width-small-1-1">
@@ -272,7 +270,7 @@
 @section('js')
 	@parent
 
-    <link href="{{ asset('/css/select2front.min.css') }}" rel="stylesheet" />
+    <noscript><link href="{{ asset('/css/select2front.min.css') }}" rel="stylesheet"/></noscript>
     <script src="{{ asset('/js/select2.min.js') }}"></script>
 
     <script type="text/javascript">
