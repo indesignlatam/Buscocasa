@@ -157,7 +157,7 @@ return [
 		Barryvdh\Debugbar\ServiceProvider::class,
 		IndesignColombia\Phpgmaps\PhpgmapsServiceProvider::class,
 		GrahamCampbell\Throttle\ThrottleServiceProvider::class,
-        enssegers\Agent\AgentServiceProvider::class
+        Jenssegers\Agent\AgentServiceProvider::class
 
     ],
 
