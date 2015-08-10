@@ -2,11 +2,11 @@
 
 @section('head')
     <title>{{ $user->name }} - {{ Settings::get('site_name') }}</title>
-    <meta property="og:title" content=""/>
-	<meta property="og:image" content=""/>
+    <meta property="og:title" content="{{ $user->name }}"/>
+	<meta property="og:image" content="{{ $user->image_path }}"/>
 	<meta property="og:type" content="article"/>
-	<meta property="og:description" content=""/>
-	<meta name="description" content="">
+	<meta property="og:description" content="{{ $user->name }}"/>
+	<meta name="description" content="{{ $user->name }}">
 @endsection
 
 @section('css')
@@ -53,23 +53,13 @@
 @endsection
 
 @section('js')
+	@parent
+
 	<link href="{{ asset('/css/components/slideshow.almost-flat.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/components/slidenav.almost-flat.min.css') }}" rel="stylesheet">
 	<script src="{{ asset('/js/components/slideshow.min.js') }}"></script>
-	<!--
-	<link href="{{ asset('/css/medium.min.css') }}" rel="stylesheet">
-    <script src="{{ asset('/js/undo.min.js') }}"></script>
-    <script src="{{ asset('/js/rangy-core.min.js') }}"></script>
-    <script src="{{ asset('/js/medium.min.js') }}"></script>
-    -->
-	@parent
     
-	<?php //echo $map['js']; ?>
 	<script type="text/javascript">
-		function open(url){
-			window.open(url, "Popup", "location=1,status=1,scrollbars=1, resizable=1, directories=1, toolbar=1, titlebar=1, width=800, height=600");
-		}
-
 		function phoneFormat(phone) {
 			phone = phone.replace(/\D/g,'');
 			if(phone.length == 10){
@@ -89,9 +79,9 @@
 			return phone;
 		}
 
-		$(function (){
+		// $(function (){
 
-		});
+		// });
 	</script>
 	
 @endsection

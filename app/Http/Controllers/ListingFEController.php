@@ -5,18 +5,17 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 
-use Gmaps, 
-	Image, 
-	DB, 
-	Cookie,
-	Settings,
-	Carbon;
+use Gmaps;
+use Image;
+use Cookie;
+use	Settings;
+use	Carbon;
 
-use App\Models\Listing, 
-	App\Models\ListingType, 
-	App\Models\Feature, 
-	App\Models\City, 
-	App\Models\Category;
+use App\Models\Listing;
+use	App\Models\ListingType;
+use	App\Models\Feature;
+use	App\Models\City;
+use	App\Models\Category;
 use	App\Events\ListingViewed;
 
 class ListingFEController extends Controller {
@@ -155,7 +154,7 @@ class ListingFEController extends Controller {
 
 				// Take n objects
 				if($request->has('take')){
-					if(is_int($request->get('take'))){
+					if($request->get('take')){
 						$request->session()->put('listings_take', $request->get('take'));
 						$take = $request->get('take');
 					}
@@ -180,7 +179,7 @@ class ListingFEController extends Controller {
 
 		// Take n objects by cookie
 		if(!$request->has('take') && $request->session()->has('listings_take')){
-			if(is_int($request->session()->get('listings_take'))){
+			if($request->session()->get('listings_take')){
 				$take = $request->session()->get('listings_take');
 			}
 		}
@@ -318,12 +317,14 @@ class ListingFEController extends Controller {
 	public function compare(Request $request){
 		$listingsIds = Cookie::get('selected_listings');
 		$listings = null;
+
 		if(count($listingsIds) > 1){
 			$listings = Listing::whereIn('id', $listingsIds)->take(4)->with('features', 'listingType')->get();
 		}else if($listingsIds){
 			$listings = Listing::where('id', $listingsIds)->take(4)->with('features', 'listingType')->get();
 		}
-		$features 	= Feature::remember(Settings::get('query_cache_time'))->with('category')->get();
+
+		$features = Feature::remember(Settings::get('query_cache_time'))->with('category')->get();
 
 		return view('listings.compare', ['listings' => $listings,
 										 'features' => $features
