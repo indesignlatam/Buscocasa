@@ -35,7 +35,7 @@ class ListingFEController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request){
-		$query 			= Listing::active();
+		$query 			= Listing::remember(Settings::get('query_cache_time_extra_short'))->active();
 		$listingType 	= 'Venta';
 		$listingTypeID 	= 1;
 		$listingTypes	= null;
@@ -185,7 +185,7 @@ class ListingFEController extends Controller {
 		}
 
 		if(!$request->has('listing_code')){
-			$listings = $query->orderBy('id', 'DESC')->with('listingType', 'featuredType')->paginate(20);
+			$listings = $query->orderBy('id', 'DESC')->with('listingType')->paginate(20);
 		}
 
 
@@ -194,7 +194,7 @@ class ListingFEController extends Controller {
 		$cities = City::remember(Settings::get('query_cache_time'))->orderBy('ordering')->get();
 
 		// Featured Listings Top
-		$fTopQuery = Listing::where('featured_expires_at', '>', Carbon::now());
+		$fTopQuery = Listing::remember(Settings::get('query_cache_time_extra_short', 1))->where('featured_expires_at', '>', 'now()');
 		if($listingTypeID){
 			$fTopQuery = $fTopQuery->where('listing_type', $listingTypeID);
 		}
