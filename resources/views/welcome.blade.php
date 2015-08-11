@@ -102,7 +102,7 @@
 	<div class="uk-container uk-container-center uk-margin-top" id="secondContent">
         <div class="uk-visible-small">
             <h3 class="uk-text-primary">{{trans('frontend.search_properties')}}</h3>
-            <form id="create_form" class="uk-form" method="GET" action="{{ url('/buscar') }}">
+            <form id="mobile_search_form" class="uk-form" method="GET" action="{{ url('/buscar') }}">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
                 <select class="uk-width-1-1 uk-margin-small-bottom uk-form-large" name="city_id">
@@ -140,7 +140,7 @@
 
                 <input class="uk-width-1-1 uk-margin-small-bottom uk-form-large" type="text" name="listing_code" placeholder="{{ trans('frontend.search_field') }}" value>
 
-                <button form="create_form" type="submit" class="uk-button uk-button-primary uk-button-large uk-width-1-1">{{ trans('frontend.search_button') }}</button>
+                <button form="mobile_search_form" type="submit" class="uk-button uk-button-primary uk-button-large uk-width-1-1">{{ trans('frontend.search_button') }}</button>
             </form>
         </div>
 

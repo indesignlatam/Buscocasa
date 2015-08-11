@@ -64,7 +64,7 @@
 
 	    <div class="uk-flex uk-margin-top" id="secondContent">
 	    	<!-- Search bar for pc -->
-	    	<div class="uk-width-large-1-4 uk-panel uk-panel-box uk-panel-box-secondary uk-visible-large">
+	    	<div class="uk-width-large-1-4 uk-panel uk-panel-box uk-panel-box-secondary uk-visible-large uk-margin-right">
 				<form id="search_form" class="uk-form uk-form-stacked" method="GET" action="{{ url(Request::path()) }}">
 
 					<input class="uk-width-large-10-10 uk-margin-large-bottom uk-form-large" type="text" name="listing_code" placeholder="{{ trans('frontend.search_field') }}" value>
@@ -166,7 +166,7 @@
 	    	</div>
 	    	<!-- End search bar -->
 	    	
-	    	<div class="uk-width-large-3-4 uk-width-small-1-1 uk-margin-left">
+	    	<div class="uk-width-large-3-4 uk-width-small-1-1">
 	    		@if(count($listings) > 0)
 	    			<div class="uk-form uk-align-right uk-hidden-small">
 		    			<select form="search_form" name="take" onchange="this.form.submit()">
@@ -237,6 +237,7 @@
 						@endif
 					</ul>
 					<div class="uk-panel uk-margin">
+						<!-- Featured listings top -->
 						<div class="uk-grid">
 							@foreach($listings1 = array_slice($featuredListings->all(), 0, 4) as $listing)
 								<div class="uk-width-large-1-4 uk-width-medium-1-2 uk-width-small-1-1" style="position:relative;">
@@ -259,9 +260,10 @@
 								</div>
 							@endforeach
 						</div>
+						<!-- Featured listings top -->
 					</div>
 					<!-- This is the container of the content items -->
-					<ul id="my-id" class="uk-switcher">
+					<ul id="my-id" class="uk-switcher uk-margin-top">
 						<!-- Full list -->
 					    <li>
 					    	<?php $i = 0; ?>
