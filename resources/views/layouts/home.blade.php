@@ -52,9 +52,8 @@
                     });
                     return ss;
                 }
-                loadCSS("{{ asset('/css/uikit.buscocasa.min.css') }}");
             </script>
-            <noscript><link href="{{ asset('/css/uikit.buscocasa.min.css') }}" rel="stylesheet"></noscript>
+            <link href="{{ asset('/css/uikit.buscocasa.min.css') }}" rel="stylesheet">
         @show
     </head>
 
