@@ -185,7 +185,8 @@ class ListingFEController extends Controller {
 		}
 
 		if(!$request->has('listing_code')){
-			$listings = $query->orderBy('id', 'DESC')->with('listingType')->paginate(20);
+			$listings = $query->orderBy('id', 'DESC')->with('listingType', 'featuredType');//->paginate($take);
+			return json_encode(dd($listings));
 		}
 
 
