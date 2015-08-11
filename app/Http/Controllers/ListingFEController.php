@@ -35,7 +35,7 @@ class ListingFEController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request){
-		$query 			= Listing::remember(1)->active();
+		$query 			= Listing::active();
 		$listingType 	= 'Venta';
 		$listingTypeID 	= 1;
 		$listingTypes	= null;
@@ -185,7 +185,7 @@ class ListingFEController extends Controller {
 		}
 
 		if(!$request->has('listing_code')){
-			$listings = $query->orderBy('id', 'DESC')->with('listingType', 'featuredType')->paginate($take);
+			$listings = $query->orderBy('id', 'DESC')->with('listingType', 'featuredType')->paginate(20);
 		}
 
 
