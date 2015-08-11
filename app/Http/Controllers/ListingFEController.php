@@ -11,6 +11,7 @@ use Cookie;
 use	Settings;
 use	Carbon;
 use DB;
+use Agent;
 
 use App\Models\Listing;
 use	App\Models\ListingType;
@@ -36,6 +37,7 @@ class ListingFEController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request){
+		$mobile 		= Agent::isMobile();
 		$query 			= Listing::remember(Settings::get('query_cache_time_extra_short'))->active();
 		$listingType 	= 'Venta';
 		$listingTypeID 	= 1;
@@ -194,60 +196,69 @@ class ListingFEController extends Controller {
 		$categories = Category::remember(Settings::get('query_cache_time'))->get();
 		$cities = City::remember(Settings::get('query_cache_time'))->orderBy('ordering')->get();
 
-		// Featured Listings Top
-		$fTopQuery = Listing::remember(Settings::get('query_cache_time_extra_short', 1))->where('featured_expires_at', '>', DB::raw('now()'));
-		if($listingTypeID){
-			$fTopQuery = $fTopQuery->where('listing_type', $listingTypeID);
-		}
-		$featuredTop = $fTopQuery->take(8)
-							  	 ->orderByRaw("RAND()")
-							  	 ->with('listingType', 'featuredType')
-							  	 ->get();
-		// Featured Listings Top End
+		// Only if not mobile
+		$featuredTop = null;
+		$map 		= null;
+		$view 		= 'listings.index';
 
-		// MAPS
-		$listingsCount = count($listings);
-		$map = null;
-	  	if($listingsCount > 0){
-	  		$config = [];
-		    if($listingsCount > 1){
-				$config['zoom'] = 'auto';
-			}else if($listingsCount == 1){
-				$config['center'] = $listings->first()->latitude.','.$listings->first()->longitude;
-				$config['zoom'] = '15';
+		if(!$mobile){
+			// Featured Listings Top
+			$fTopQuery 	= null;
+			$fTopQuery = Listing::remember(Settings::get('query_cache_time_extra_short', 1))->where('featured_expires_at', '>', DB::raw('now()'));
+			if($listingTypeID){
+				$fTopQuery = $fTopQuery->where('listing_type', $listingTypeID);
 			}
-			$config['scrollwheel'] = false;
-		    
-		    foreach ($listings as $listing) {
-		    	$marker = [];
-				$marker['position'] = $listing->latitude.','.$listing->longitude;
-				if($listing->featuredType && $listing->featured_expires_at > Carbon::now()){
-					$marker['icon'] 				= asset('/images/maps/marker_icon.png');
-					$marker['icon_scaledSize']		= '50,30';
-					$marker['infowindow_content'] 	= '<a href="'.url($listing->path()).'" style="text-decoration:none"><h3 class="uk-margin-small-bottom">'. $listing->title .'</h3></a><div class="uk-grid" style="width:500px"><div class="uk-width-1-2"><a href="'.url($listing->path()).'" style="text-decoration:none"><img src="'.asset($listing->featuredType->image_path).'" style="position:absolute; top:30; left:0; max-width:100px"><img src="'. asset(Image::url($listing->image_path(),['map_mini'])) .'" style="width:250px; height:200px"></a></div><div class="uk-width-1-2"><h3 class="uk-margin-left uk-margin-top-remove uk-text-primary">'. money_format('$%!.0i', $listing->price) .'</h3><ul class="uk-list uk-list-line uk-margin-left uk-width-1-1" style="margin-top:-px"><li>'.$listing->rooms.' '.trans("frontend.rooms").'</li><li>'.$listing->bathrooms.' '.trans("frontend.bathrooms").'</li><li>'.$listing->area.' mt2</li><li>'.$listing->garages.' '.trans("frontend.garages").'</li></ul><a href="'.url($listing->path()).'" class="uk-button uk-button-primary uk-margin-left">'.trans("frontend.goto_listing").'</a></div></div>';
-				}else{
-					$marker['icon'] 				= asset('/images/maps/marker_icon.png');
-					$marker['icon_scaledSize']		= '50,30';
-					$marker['infowindow_content'] 	= '<a href="'.url($listing->path()).'" style="text-decoration:none"><h3 class="uk-margin-small-bottom">'. $listing->title .'</h3></a><div class="uk-grid" style="width:500px"><div class="uk-width-1-2"><a href="'.url($listing->path()).'" style="text-decoration:none"><img src="'. asset(Image::url($listing->image_path(),['map_mini'])) .'" style="width:250px; height:200px"></a></div><div class="uk-width-1-2"><h3 class="uk-margin-left uk-margin-top-remove uk-text-primary">'. money_format('$%!.0i', $listing->price) .'</h3><ul class="uk-list uk-list-line uk-margin-left uk-width-1-1" style="margin-top:-px"><li>'.$listing->rooms.' '.trans("frontend.rooms").'</li><li>'.$listing->bathrooms.' '.trans("frontend.bathrooms").'</li><li>'.$listing->area.' mt2</li><li>'.$listing->garages.' '.trans("frontend.garages").'</li></ul><a href="'.url($listing->path()).'" class="uk-button uk-button-primary uk-margin-left">'.trans("frontend.goto_listing").'</a></div></div>';
+			$featuredTop = $fTopQuery->take(8)
+								  	 ->orderByRaw("RAND()")
+								  	 ->with('listingType', 'featuredType')
+								  	 ->get();
+			// Featured Listings Top End
+
+			// MAPS
+			$listingsCount = count($listings);
+			
+		  	if($listingsCount > 0){
+		  		$config = [];
+			    if($listingsCount > 1){
+					$config['zoom'] = 'auto';
+				}else if($listingsCount == 1){
+					$config['center'] = $listings->first()->latitude.','.$listings->first()->longitude;
+					$config['zoom'] = '15';
 				}
-				$marker['animation'] = 'DROP';
-				Gmaps::add_marker($marker);
-		    }
+				$config['scrollwheel'] = false;
+			    
+			    foreach ($listings as $listing) {
+			    	$marker = [];
+					$marker['position'] = $listing->latitude.','.$listing->longitude;
+					if($listing->featuredType && $listing->featured_expires_at > Carbon::now()){
+						$marker['icon'] 				= asset('/images/maps/marker_icon.png');
+						$marker['icon_scaledSize']		= '50,30';
+						$marker['infowindow_content'] 	= '<a href="'.url($listing->path()).'" style="text-decoration:none"><h3 class="uk-margin-small-bottom">'. $listing->title .'</h3></a><div class="uk-grid" style="width:500px"><div class="uk-width-1-2"><a href="'.url($listing->path()).'" style="text-decoration:none"><img src="'.asset($listing->featuredType->image_path).'" style="position:absolute; top:30; left:0; max-width:100px"><img src="'. asset(Image::url($listing->image_path(),['map_mini'])) .'" style="width:250px; height:200px"></a></div><div class="uk-width-1-2"><h3 class="uk-margin-left uk-margin-top-remove uk-text-primary">'. money_format('$%!.0i', $listing->price) .'</h3><ul class="uk-list uk-list-line uk-margin-left uk-width-1-1" style="margin-top:-px"><li>'.$listing->rooms.' '.trans("frontend.rooms").'</li><li>'.$listing->bathrooms.' '.trans("frontend.bathrooms").'</li><li>'.$listing->area.' mt2</li><li>'.$listing->garages.' '.trans("frontend.garages").'</li></ul><a href="'.url($listing->path()).'" class="uk-button uk-button-primary uk-margin-left">'.trans("frontend.goto_listing").'</a></div></div>';
+					}else{
+						$marker['icon'] 				= asset('/images/maps/marker_icon.png');
+						$marker['icon_scaledSize']		= '50,30';
+						$marker['infowindow_content'] 	= '<a href="'.url($listing->path()).'" style="text-decoration:none"><h3 class="uk-margin-small-bottom">'. $listing->title .'</h3></a><div class="uk-grid" style="width:500px"><div class="uk-width-1-2"><a href="'.url($listing->path()).'" style="text-decoration:none"><img src="'. asset(Image::url($listing->image_path(),['map_mini'])) .'" style="width:250px; height:200px"></a></div><div class="uk-width-1-2"><h3 class="uk-margin-left uk-margin-top-remove uk-text-primary">'. money_format('$%!.0i', $listing->price) .'</h3><ul class="uk-list uk-list-line uk-margin-left uk-width-1-1" style="margin-top:-px"><li>'.$listing->rooms.' '.trans("frontend.rooms").'</li><li>'.$listing->bathrooms.' '.trans("frontend.bathrooms").'</li><li>'.$listing->area.' mt2</li><li>'.$listing->garages.' '.trans("frontend.garages").'</li></ul><a href="'.url($listing->path()).'" class="uk-button uk-button-primary uk-margin-left">'.trans("frontend.goto_listing").'</a></div></div>';
+					}
+					$marker['animation'] = 'DROP';
+					Gmaps::add_marker($marker);
+			    }
 
-		    Gmaps::initialize($config);
-	    	$map = Gmaps::create_map();
-  		}
-		
+			    Gmaps::initialize($config);
+		    	$map = Gmaps::create_map();
+	  		}
+	  	}else{ // If is mobile
+	  		// Set the view to mobile view
+	  		$view = 'listings.mobile.index';
+	  	}
 
-
-		return view('listings.index', [ 'listings' 			=> $listings,
-										'featuredListings' 	=> $featuredTop,
-										'listingType' 		=> $listingType,
-										'listingTypes' 		=> $listingTypes,
-										'cities' 			=> $cities, 
-										'categories' 		=> $categories ,
-										'map' 				=> $map,
-										]);
+		return view($view, ['listings' 			=> $listings,
+							'featuredListings' 	=> $featuredTop,
+							'listingType' 		=> $listingType,
+							'listingTypes' 		=> $listingTypes,
+							'cities' 			=> $cities, 
+							'categories' 		=> $categories ,
+							'map'				=> $map,
+							]);
 	}
 
 	/**

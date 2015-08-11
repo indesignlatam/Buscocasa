@@ -26,15 +26,18 @@
 
 <div class="uk-container uk-container-center uk-margin-top" id="secondContent">
 	<div class="uk-panel">
-		<h2 class="uk-hidden-small" style="float:left; display:inline">{{ $listing->title }}</h2>
-		<h2 class="uk-visible-small">{{ $listing->title }}</h2>
-		<div style="float:right; display:inline" class="uk-hidden-small">
-			<i class="uk-h2 uk-text-right">{{ trans('admin.price') }} </i>
-			<i class="uk-h2 uk-text-primary uk-text-right"> ${{ money_format('%!.0i', $listing->price) }}</i>
+		<div>
+			<h2 class="uk-hidden-small" style="display:inline">{{ $listing->title }}</h2>
+			<h2 class="uk-visible-small">{{ $listing->title }}</h2>
+			<div style="display:inline" class="uk-hidden-small uk-float-right">
+				<i class="uk-h2 uk-text-right">{{ trans('admin.price') }} </i>
+				<i class="uk-h2 uk-text-primary uk-text-right"> ${{ money_format('%!.0i', $listing->price) }}</i>
+			</div>
 		</div>
+		
 
-		<div class="uk-grid" style="width:100%">
-			<div class="uk-width-large-7-10 uk-width-medium-7-10">	
+		<div class="uk-grid uk-margin-small-top">
+			<div class="uk-width-large-7-10 uk-width-medium-7-10 uk-width-small-1-1">	
 				@if(count($listing->images) > 0)
 					<div class="uk-slidenav-position" data-uk-slideshow="{autoplay:true, autoplayInterval:7000}">
 					    <ul class="uk-slideshow">
@@ -50,10 +53,10 @@
 				@else
 					<img src="{{ asset($listing->image_path()) }}" alt="{{ $listing->title }}" >
 				@endif
-				
 			</div>
+
 			<div class="uk-width-3-10 uk-hidden-small">
-				<div class="uk-panel uk-panel-box" style="width:100%">
+				<div class="uk-panel uk-panel-box">
 					@if (Session::has('success'))
 						<div class="uk-alert uk-alert-success" data-uk-alert>
 			    			<a href="" class="uk-alert-close uk-close"></a>

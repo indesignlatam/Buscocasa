@@ -283,7 +283,7 @@
 				                			@else
 				                				@if($listing->expires_at <= Carbon::now()->addDays(5))
 				                					@if($listing->expires_at < Carbon::now())
-					                					<a class="uk-text-danger uk-text-bold uk-h4" href="{{ url('/admin/listings/'.$listing->id.'/renovate') }}">{{ trans('admin.expired') }} {{ $listing->expires_at->diffForHumans() }}</a>
+					                					<a class="uk-text-danger uk-text-bold uk-h4" href="{{ url('/admin/listings/'.$listing->id.'/renovate') }}">{{ trans('admin.listing_expired') }} {{ $listing->expires_at->diffForHumans() }}</a>
 				                					@else
 					                					<a class="uk-text-danger uk-text-bold uk-h4" href="{{ url('/admin/listings/'.$listing->id.'/renovate') }}">{{ trans('admin.expires') }} {{ $listing->expires_at->diffForHumans() }}</a>
 				                					@endif
