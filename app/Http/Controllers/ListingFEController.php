@@ -194,7 +194,7 @@ class ListingFEController extends Controller {
 		$cities = City::remember(Settings::get('query_cache_time'))->orderBy('ordering')->get();
 
 		// Featured Listings Top
-		$fTopQuery = Listing::remember(Settings::get('query_cache_time_extra_short', 1))->where('featured_expires_at', '>', Carbon::now());
+		$fTopQuery = Listing::where('featured_expires_at', '>', Carbon::now());
 		if($listingTypeID){
 			$fTopQuery = $fTopQuery->where('listing_type', $listingTypeID);
 		}
