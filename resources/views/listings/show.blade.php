@@ -132,7 +132,6 @@
 							@endif
 						</div>
 					</div>
-					<button class="uk-button uk-button-large uk-width-1-1 uk-margin-small-top" onclick="select(this)" id="{{ $listing->id }}">{{ trans('frontend.compare') }}</button>
 				</div>
 			</div>
 		</div>
@@ -191,8 +190,9 @@
     				<li><i class="uk-text-muted">{{ trans('admin.code') }}</i> <b>#{{ $listing->code }}</b></li>
     			</ul>
 
-    			<a href="#new_appointment_modal" class="uk-button uk-button-large uk-button-primary uk-width-1-1" data-uk-modal>{{ trans('frontend.contact_vendor') }}</a>
-    			<a href="{{ url($listing->broker->path()) }}" class="uk-button uk-button-large uk-width-1-1 uk-margin-top">{{ trans('frontend.other_user_listings') }}</a>
+				<button class="uk-button uk-button-large uk-button-success uk-width-1-1" onclick="select(this)" id="{{ $listing->id }}">{{ trans('frontend.compare') }}</button>
+    			<a href="#new_appointment_modal" class="uk-button uk-button-large uk-width-1-1 uk-margin-small-top" data-uk-modal>{{ trans('frontend.contact_vendor') }}</a>
+    			<a href="{{ url($listing->broker->path()) }}" class="uk-button uk-button-large uk-width-1-1 uk-margin-small-top">{{ trans('frontend.other_user_listings') }}</a>
 
     			<hr>
 
