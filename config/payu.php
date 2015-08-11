@@ -14,8 +14,8 @@ return [
     'api_login'			=> env('PAYU_API_LOGIN'),
     'account_id' 		=> env('PAYU_ACCOUNT_ID'),
 
-    'response_url'		=> 'http://buscocasa.co/admin/pagos/respuesta',
-    'confirmation_url'	=> 'http://buscocasa.co/pagos/confirmar',
+    'response_url'		=> env('PAYU_RESPONSE_URL', 'http://buscocasa.co/admin/pagos/respuesta'),
+    'confirmation_url'	=> env('PAYU_CONFIRMATION_URL', 'http://buscocasa.co/pagos/confirmar'),
     'dispute_url'		=> 'http://buscocasa.co/pagos/disputa',
 
 
