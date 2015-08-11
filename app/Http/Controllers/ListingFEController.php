@@ -10,6 +10,7 @@ use Image;
 use Cookie;
 use	Settings;
 use	Carbon;
+use DB;
 
 use App\Models\Listing;
 use	App\Models\ListingType;
@@ -185,8 +186,7 @@ class ListingFEController extends Controller {
 		}
 
 		if(!$request->has('listing_code')){
-			$listings = $query->orderBy('id', 'DESC')->with('listingType', 'featuredType');//->paginate($take);
-			return json_encode(dd($listings));
+			$listings = $query->orderBy('id', 'DESC')->with('listingType', 'featuredType')->paginate($take);
 		}
 
 
@@ -195,7 +195,7 @@ class ListingFEController extends Controller {
 		$cities = City::remember(Settings::get('query_cache_time'))->orderBy('ordering')->get();
 
 		// Featured Listings Top
-		$fTopQuery = Listing::remember(Settings::get('query_cache_time_extra_short', 1))->where('featured_expires_at', '>', 'now()');
+		$fTopQuery = Listing::remember(Settings::get('query_cache_time_extra_short', 1))->where('featured_expires_at', '>', DB::raw('now()'));
 		if($listingTypeID){
 			$fTopQuery = $fTopQuery->where('listing_type', $listingTypeID);
 		}

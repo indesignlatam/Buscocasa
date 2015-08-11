@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-use Carbon;
+use DB;
 use App\Models\IndesignModel;
 
 class Listing extends IndesignModel {
@@ -176,7 +176,7 @@ class Listing extends IndesignModel {
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeActive($query){
-        return $query->where('expires_at', '>', Carbon::now());
+        return $query->where('expires_at', '>', DB::raw('now()'));
     }
 
     /**
@@ -185,7 +185,7 @@ class Listing extends IndesignModel {
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeFeatured($query){
-        return $query->where('featured_expires_at', '>', Carbon::now());
+        return $query->where('featured_expires_at', '>', DB::raw('now()'));
     }
 
 
