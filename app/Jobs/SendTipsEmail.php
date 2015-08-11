@@ -5,12 +5,12 @@ use App\Jobs\Job;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Bus\SelfHandling;
-use Illuminate\Contracts\Queue\ShouldBeQueued;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 use Mail, Settings;
 use App\Models\Listing;
 
-class SendTipsEmail extends Job implements SelfHandling, ShouldBeQueued {
+class SendTipsEmail extends Job implements SelfHandling, ShouldQueue {
 
 	use InteractsWithQueue, SerializesModels;
 

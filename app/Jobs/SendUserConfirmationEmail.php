@@ -10,7 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Mail, Log, Settings;
 use App\User;
 
-class SendUserConfirmationEmail extends Job implements SelfHandling, ShouldBeQueued {
+class SendUserConfirmationEmail extends Job implements SelfHandling, ShouldQueue {
 
 	use InteractsWithQueue, SerializesModels;
 
