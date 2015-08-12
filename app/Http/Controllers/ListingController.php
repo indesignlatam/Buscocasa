@@ -161,6 +161,13 @@ class ListingController extends Controller {
 		if((int)$input['construction_year'] < 500){
 			$input['construction_year'] = date('Y') - $input['construction_year'];
 		}
+
+		if(!$input['latitude'] || !$input['longitude']){
+			$geocode = Geocoder::geocode($input['direction'].', '.City::find($input['city_id'])->name);
+
+			$input['latitude'] = $geocode->getLatitude();
+			$input['longitude'] = $geocode->getLongitude();
+		}
 		
 
 		if(!$input['district']){
@@ -367,13 +374,16 @@ class ListingController extends Controller {
 	    $listing->features()->sync($featuresSelected);
 
 	    // Set image ordering
-	    $ordering = $input['image'];
-	    foreach ($listing->images as $image) {
-	    	$image->ordering = array_get($ordering, $image->id, null);
-	    	if($image->ordering == 1){
-	    		$listing->image_path = $image->image_path;
-	    	}
+	    if(isset($input['image'])){
+	    	$ordering = $input['image'];
+		    foreach ($listing->images as $image) {
+		    	$image->ordering = array_get($ordering, $image->id, null);
+		    	if($image->ordering == 1){
+		    		$listing->image_path = $image->image_path;
+		    	}
+		    }
 	    }
+	    
 
 	    // Save the listing and its relationships
 	    $listing->push();
