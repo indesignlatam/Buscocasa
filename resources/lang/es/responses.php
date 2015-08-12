@@ -26,6 +26,8 @@ return [
 
     //UserController
     'user_saved'                            => 'Los datos de usuario fueron guardados exitosamente.',
+    'password_dont_match'                   => 'La contraseña no coincide con nuestra base de datos',
+    'password_changed_sucessfuly'           => 'La contraseña fue modificada exitosamente',
 
     // ImageController
     'error_deleting_image'                  => 'Se produjo un error al eliminar la imagen.',

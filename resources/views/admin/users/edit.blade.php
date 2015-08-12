@@ -98,14 +98,6 @@
 							</div>
 						</div>
 
-						<div class="uk-width-1-1">
-							<div class="uk-form-row uk-margin-small-top">
-						        <label class="uk-form-label">{{ trans('admin.change_image') }}</label>
-						        <div class="uk-form-controls">
-						        	<input type="file" name="image" id="image">
-						        </div>
-							</div>
-						</div>
 					</div>
 				</div>
 
@@ -159,6 +151,9 @@
 							</div>
 						</div>
 					</div>
+					<div class="uk-margin-top">
+						<a href="#password_modal" data-uk-modal="{center:true}">{{ trans('admin.change_password') }}</a>
+					</div>
 				</div>
 			</div>
 		</form>
@@ -176,7 +171,7 @@
     <div class="uk-modal-dialog">
         <a href="" class="uk-modal-close uk-close uk-close-alt"></a>
         <div class="uk-modal-header uk-text-bold">
-        	{{ trans('admin.add_images_to_listing') }}
+        	{{ trans('admin.change_profile_image') }}
         </div>
 
         <div class="uk-grid uk-grid-collapse">
@@ -197,6 +192,49 @@
 
 	    <div class="uk-modal-footer">
 	    	<a href="" class="uk-button uk-button-success uk-modal-close">{{ trans('admin.save') }}</a>
+	    </div>
+    </div>
+</div>
+
+<!-- This is the modal -->
+<div id="password_modal" class="uk-modal">
+    <div class="uk-modal-dialog">
+        <a href="" class="uk-modal-close uk-close uk-close-alt"></a>
+        <div class="uk-modal-header uk-text-bold">
+        	{{ trans('admin.change_password') }}
+        </div>
+
+        <form id="password" class="uk-form uk-form-stacked" action="{{ url('admin/user/'.Auth::user()->id.'/password') }}" method="POST">
+			<input type="hidden" name="_token" value="{{ csrf_token() }}">
+        	<div class="uk-width-large-1-2 uk-align-center uk-text-center">
+				<div class="uk-form-row uk-margin-small-top">
+			        <label class="uk-form-label">{{ trans('admin.current_password') }}</label>
+			        <div class="uk-form-controls">
+			        	<input class="uk-form-large" type="text" name="current_password">
+					</div>
+				</div>
+			</div>
+        	<div class="uk-width-large-1-2 uk-align-center uk-text-center">
+				<div class="uk-form-row uk-margin-small-top">
+			        <label class="uk-form-label">{{ trans('admin.new_password') }}</label>
+			        <div class="uk-form-controls">
+			        	<input class="uk-form-large" type="text" name="password">
+					</div>
+				</div>
+			</div>
+        	<div class="uk-width-large-1-2 uk-align-center uk-text-center">
+				<div class="uk-form-row uk-margin-small-top">
+			        <label class="uk-form-label">{{ trans('admin.confirm_new_password') }}</label>
+			        <div class="uk-form-controls">
+			        	<input class="uk-form-large" type="text" name="password_confirmation">
+					</div>
+				</div>
+			</div>
+        </form>
+
+	    <div class="uk-modal-footer">
+	    	<button class="uk-button uk-button-success" type="submit" form="password">{{ trans('admin.change_password') }}</button>
+	    	<a href="" class="uk-button uk-modal-close">{{ trans('admin.cancel') }}</a>
 	    </div>
     </div>
 </div>

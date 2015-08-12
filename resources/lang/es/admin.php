@@ -174,6 +174,11 @@ return [
     'privacy_name'              => 'Mostrar mi nombre',
     'privacy_phone'             => 'Mostrar mis telefonos',
     'drag_user_image_or'        => 'Arrastra una imagen para tu perfil o ',
+    'change_password'           => 'Cambiar contraseña',
+    'change_profile_image'      => 'Seleccionar imagen principal',
+    'current_password'          => 'Contraseña actual',
+    'new_password'              => 'Nueva contraseña',
+    'confirm_new_password'      => 'Confirmar nueva contraseña',
 
     // Appointments
     'answer'                    => 'Responder',

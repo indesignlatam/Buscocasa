@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use Auth;
 use Queue;
+use Hash;
 
 use App\User;
 use App\Jobs\SendUserConfirmationEmail;
@@ -140,6 +141,44 @@ class UserController extends Controller {
 			return response()->json(['success' => trans('responses.user_saved')]);
 		}
 		return redirect('/admin/user/'.$id.'/edit')->withSuccess([trans('responses.user_saved')]);
+	}
+
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function password($id, Request $request){
+		// Security check
+	    if(!Auth::user()->is('admin')){
+	    	if(!$id || $id != Auth::user()->id){
+	    		if($request->ajax()){
+					return response()->json(['error' => trans('responses.no_permission')]);
+				}
+	        	return redirect('/admin/user/'.Auth::user()->id.'/edit')->withErrors([trans('responses.no_permission')]);
+	    	}
+		}
+
+	    $user = User::find($id);
+
+	    if(!$user){
+			abort(404);
+		}
+
+		$this->validate($request, [
+        	'current_password' 	=> 'required|string',
+            'password' 			=> 'required|string|min:6|confirmed',
+    	]);
+
+    	if( Hash::check($request->get('current_password'), $user->password) ){
+	    	$user->password = $request->get('password');
+	    	$user->save();
+    	}else{
+    		return redirect('/admin/user/'.$id.'/edit')->withErrors([trans('responses.password_dont_match')]);
+    	}
+
+		return redirect('/admin/user/'.$id.'/edit')->withSuccess([trans('responses.password_changed_sucessfuly')]);
 	}
 
 	/**

@@ -47,6 +47,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
 	Route::post('user/{id}/images', 'ImageController@user');// Secured
 	Route::get('user/send_confirmation_email', 'UserController@sendConfirmationEmail');// Secured
 	Route::get('user/not_confirmed', 'UserController@notConfirmed');// Secured
+	Route::post('user/{id}/password', 'UserController@password');// Secured
 	Route::resource('user', 'UserController', ['only' => ['edit', 'update']]);// Secured
 });
 
