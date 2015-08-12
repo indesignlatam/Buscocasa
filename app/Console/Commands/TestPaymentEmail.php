@@ -6,7 +6,7 @@ use Symfony\Component\Console\Input\InputArgument;
 
 use Queue;
 use App\Models\Payment;
-use App\Commands\SendPaymentConfirmationEmail;
+use App\Jobs\SendPaymentConfirmationEmail;
 
 class TestPaymentEmail extends Command {
 
@@ -15,7 +15,7 @@ class TestPaymentEmail extends Command {
 	 *
 	 * @var string
 	 */
-	protected $name = 'mail:test_payment';
+	protected $signature = 'mail:test_payment';
 
 	/**
 	 * The console command description.
@@ -43,27 +43,5 @@ class TestPaymentEmail extends Command {
 		// Send confirmation email to user and generate billing
 		Queue::push(new SendPaymentConfirmationEmail($payment));
 	}
-
-	/**
-	 * Get the console command arguments.
-	 *
-	 * @return array
-	 */
-	protected function getArguments(){
-		return [
-			// ['example', InputArgument::REQUIRED, 'An example argument.'],
-		];
-	}
-
-	/**
-	 * Get the console command options.
-	 *
-	 * @return array
-	 */
-	protected function getOptions(){
-		return [
-			// ['example', null, InputOption::VALUE_OPTIONAL, 'An example option.', null],
-		];
-	}
-
+	
 }

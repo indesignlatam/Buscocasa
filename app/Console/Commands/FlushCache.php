@@ -13,14 +13,14 @@ class FlushCache extends Command {
 	 *
 	 * @var string
 	 */
-	protected $name = 'cache:flush';
+	protected $signature = 'cache:flush {--views} {--sessions} {--logs} {--all}';
 
 	/**
 	 * The console command description.
 	 *
 	 * @var string
 	 */
-	protected $description = 'Command description.';
+	protected $description = 'Deletes cache files from cache, views, sessions, logs.';
 
 	/**
 	 * Create a new command instance.
@@ -103,31 +103,6 @@ class FlushCache extends Command {
 				}
 			}
 		}
-	}
-
-	/**
-	 * Get the console command arguments.
-	 *
-	 * @return array
-	 */
-	protected function getArguments(){
-		return [
-			// ['example', InputArgument::REQUIRED, 'An example argument.'],
-		];
-	}
-
-	/**
-	 * Get the console command options.
-	 *
-	 * @return array
-	 */
-	protected function getOptions(){
-		return [
-			['views', null, InputOption::VALUE_NONE, 'Clean views cache.', null],
-			['sessions', null, InputOption::VALUE_NONE, 'Clean sessions directory.', null],
-			['logs', null, InputOption::VALUE_NONE, 'Clean logs directory.', null],
-			['all', null, InputOption::VALUE_NONE, 'Clean all files. Cache, sessions and logs.', null],
-		];
 	}
 
 }

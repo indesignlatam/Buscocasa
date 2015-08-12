@@ -86,10 +86,10 @@
 @endsection
 
 @section('js')
-	<script src='https://www.google.com/recaptcha/api.js'></script>
+	<script async src='https://www.google.com/recaptcha/api.js'></script>
 	<script src="{{ asset('/js/jquery.min.js') }}"></script>
     <script src="{{ asset('/js/uikit.min.js') }}"></script>
-    <script src="{{ asset('/js/strength.min.js') }}"></script>
+    <script async src="{{ asset('/js/strength.min.js') }}"></script>
 
     <script>
 		$(document).ready(function($) {

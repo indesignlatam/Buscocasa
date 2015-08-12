@@ -17,6 +17,10 @@
 
 @section('css')
 	@parent
+	<script type="text/javascript">
+		loadCSS("//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css");
+		loadCSS("{{ asset('/css/select2.min.css') }}");
+	</script>
 @endsection
 
 @section('content')
@@ -32,6 +36,7 @@
 				@endif
 			</div>
 			<div class="uk-width-3-10 uk-hidden-small">
+			@if($map)
 				@if(Cookie::get('hide_map'))
 					<a id="map_button_hide" class="uk-align-right uk-hidden" data-uk-toggle="{target:'#map_div, #map_button_show, #map_button_hide', animation:'uk-animation-fade'}" onclick="setHideMap(1)">{{ trans('frontend.hide_map') }}</a>
 					<a id="map_button_show" class="uk-align-right" data-uk-toggle="{target:'#map_div, #map_button_show, #map_button_hide', animation:'uk-animation-fade'}" onclick="setHideMap(0)">{{ trans('frontend.show_map') }}</a>
@@ -39,10 +44,11 @@
 					<a id="map_button_hide" class="uk-align-right" data-uk-toggle="{target:'#map_div, #map_button_show, #map_button_hide', animation:'uk-animation-fade'}" onclick="setHideMap(1)">{{ trans('frontend.hide_map') }}</a>
 					<a id="map_button_show" class="uk-align-right uk-hidden" data-uk-toggle="{target:'#map_div, #map_button_show, #map_button_hide', animation:'uk-animation-fade'}" onclick="setHideMap(0)">{{ trans('frontend.show_map') }}</a>
 				@endif
+			@endif
 			</div>
 		</div>
 
-		@if(count($listings))
+		@if($map)
 			@if(Cookie::get('hide_map'))
 				<div id="map_div" class="uk-hidden uk-hidden-small">
 					<?php echo $map['html']; ?>
@@ -58,18 +64,15 @@
 
 	    <div class="uk-flex uk-margin-top" id="secondContent">
 	    	<!-- Search bar for pc -->
-	    	<div class="uk-width-large-1-4 uk-panel uk-panel-box uk-panel-box-secondary uk-visible-large">
-    		@if($listingType == 'Buscar')
+	    	<div class="uk-width-large-1-4 uk-panel uk-panel-box uk-panel-box-secondary uk-visible-large uk-margin-right">
 				<form id="search_form" class="uk-form uk-form-stacked" method="GET" action="{{ url(Request::path()) }}">
-			@else
-				<form id="search_form" class="uk-form uk-form-stacked" method="GET" action="{{ url(Request::path()) }}">
-			@endif
-					<input class="uk-width-large-10-10 uk-margin-large-bottom uk-form-large" type="text" name="listing_code" placeholder="{{ trans('frontend.search_field') }}" value="">
+
+					<input class="uk-width-large-10-10 uk-margin-large-bottom uk-form-large" type="text" name="listing_code" placeholder="{{ trans('frontend.search_field') }}" value>
 
 					<div class="uk-form-row">
 						<label class="uk-form-label">{{ trans('frontend.search_category') }}</label>
 						<select class="uk-width-large-10-10 uk-margin-small-bottom uk-form-large" id="category" name="category_id">
-			                <option value="">{{ trans('frontend.search_select_option') }}</option>
+			                <option value>{{ trans('frontend.search_select_option') }}</option>
 			                @foreach($categories as $category)
 			                	@if($category->id == Request::get('category_id'))
 			                		<option value="{{ $category->id }}" selected>{{ $category->name }}</option>
@@ -83,10 +86,10 @@
 			        <div class="uk-form-row">
 						<label class="uk-form-label">{{ trans('frontend.search_city') }}</label>
 			            <select class="uk-width-large-10-10 uk-margin-small-bottom uk-form-large" id="city" name="city_id">
-			                <option value="0">{{ trans('frontend.search_select_option') }}</option>
+			                <option value>{{ trans('frontend.search_select_option') }}</option>
 			                @foreach($cities as $city)
 			                	@if($city->id == Request::get('city_id'))
-			                		<option value="{{ $city->id }}" selected="true">{{ $city->name }}</option>
+			                		<option value="{{ $city->id }}" selected>{{ $city->name }}</option>
 			                	@else
 			                		<option value="{{ $city->id }}">{{ $city->name }}</option>
 			                	@endif
@@ -98,7 +101,7 @@
 			        <div class="uk-form-row">
 						<label class="uk-form-label">{{ trans('frontend.search_listing_types') }}</label>
 			            <select class="uk-width-large-10-10 uk-margin-small-bottom uk-form-large" id="type" name="listing_type_id">
-			                <option value="">{{ trans('frontend.search_select_option') }}</option>
+			                <option value>{{ trans('frontend.search_select_option') }}</option>
 			                @foreach($listingTypes as $listingType)
 			                	@if($listingType->id == Request::get('listing_type_id'))
 			                		<option value="{{ $listingType->id }}" selected>{{ $listingType->name }}</option>
@@ -111,40 +114,66 @@
 			        @endif
 
 		            <p>
-					  <label for="price_range" class="uk-form-label">{{ trans('admin.price') }}</label>
-					  <input type="text" id="price_range" class="uk-width-large-10-10 uk-text-primary" readonly style="border:0; font-weight:bold; background-color:#fff; font-size:12px; margin-bottom:-10px">
+					  	<label for="price_range" class="uk-form-label">{{ trans('admin.price') }}</label>
+					  	<input type="text" id="price_range" class="uk-width-large-10-10 uk-text-primary" readonly style="border:0; font-weight:bold; background-color:#fff; font-size:12px; margin-bottom:-10px">
 					</p>
 					<div id="slider-range-price"></div>
 					<input type="hidden" id="price_min" name="price_min" value="{{Request::get('price_min')}}">
 					<input type="hidden" id="price_max" name="price_max" value="{{Request::get('price_max')}}">
 
 					<p>
-					  <label for="room_range" class="uk-form-label">{{ trans('admin.rooms') }}</label>
-					  <input type="text" id="room_range" class="uk-width-large-10-10 uk-text-primary" readonly style="border:0; font-weight:bold; background-color:#fff; font-size:12px; margin-bottom:-10px">
+					  	<label for="room_range" class="uk-form-label">{{ trans('admin.rooms') }}</label>
+					  	<input type="text" id="room_range" class="uk-width-large-10-10 uk-text-primary" readonly style="border:0; font-weight:bold; background-color:#fff; font-size:12px; margin-bottom:-10px">
 					</p>
 					<div id="slider-range-rooms"></div>
 					<input type="hidden" id="rooms_min" name="rooms_min" value="{{Request::get('rooms_min')}}">
 					<input type="hidden" id="rooms_max" name="rooms_max" value="{{Request::get('rooms_max')}}">
 
 					<p>
-					  <label for="area_range" class="uk-form-label">{{ trans('admin.area') }}</label>
-					  <input type="text" id="area_range" class="uk-width-large-10-10 uk-text-primary" readonly style="border:0; font-weight:bold; background-color:#fff; font-size:12px; margin-bottom:-10px">
+					  	<label for="area_range" class="uk-form-label">{{ trans('admin.area') }}</label>
+					  	<input type="text" id="area_range" class="uk-width-large-10-10 uk-text-primary" readonly style="border:0; font-weight:bold; background-color:#fff; font-size:12px; margin-bottom:-10px">
 					</p>
 		            <div id="slider-range-area"></div>
 		            <input type="hidden" id="area_min" name="area_min" value="{{Request::get('area_min')}}">
 					<input type="hidden" id="area_max" name="area_max" value="{{Request::get('area_max')}}">
 
-                	<button type="submit" class="uk-button uk-button-primary uk-align-right uk-margin-large-top">{{ trans('frontend.search_button') }}</button>
+					<p>
+					  	<label for="lot_area_range" class="uk-form-label">{{ trans('admin.lot_area') }}</label>
+					  	<input type="text" id="lot_area_range" class="uk-width-large-10-10 uk-text-primary" readonly style="border:0; font-weight:bold; background-color:#fff; font-size:12px; margin-bottom:-10px">
+					</p>
+		            <div id="slider-range-lot-area"></div>
+		            <input type="hidden" id="lot_area_min" name="lot_area_min" value="{{Request::get('lot_area_min')}}">
+					<input type="hidden" id="lot_area_max" name="lot_area_max" value="{{Request::get('lot_area_max')}}">
+
+					<p>
+					  	<label for="stratum_range" class="uk-form-label">{{ trans('admin.stratum') }}</label>
+					  	<input type="text" id="stratum_range" class="uk-width-large-10-10 uk-text-primary" readonly style="border:0; font-weight:bold; background-color:#fff; font-size:12px; margin-bottom:-10px">
+					</p>
+		            <div id="slider-range-stratum"></div>
+		            <input type="hidden" id="stratum_min" name="stratum_min" value="{{Request::get('stratum_min')}}">
+					<input type="hidden" id="stratum_max" name="stratum_max" value="{{Request::get('stratum_max')}}">
+
+					<p>
+					  	<label for="garages_range" class="uk-form-label">{{ trans('admin.garages') }}</label>
+					  	<input type="text" id="garages_range" class="uk-width-large-10-10 uk-text-primary" readonly style="border:0; font-weight:bold; background-color:#fff; font-size:12px; margin-bottom:-10px">
+					</p>
+		            <div id="slider-range-garages"></div>
+		            <input type="hidden" id="garages_min" name="garages_min" value="{{Request::get('garages_min')}}">
+					<input type="hidden" id="garages_max" name="garages_max" value="{{Request::get('garages_max')}}">
+
+                	<button type="submit" class="uk-button uk-button-primary uk-button-large uk-width-1-1 uk-margin-large-top">{{ trans('frontend.search_button') }}</button>
 				</form>
 	    	</div>
 	    	<!-- End search bar -->
-
-	    	<div class="uk-width-large-3-4 uk-width-small-1-1 uk-margin-left">
-	    		@if(count($listings))
+	    	
+	    	<div class="uk-width-large-3-4 uk-width-small-1-1">
+	    		@if(count($listings) > 0)
 	    			<div class="uk-form uk-align-right uk-hidden-small">
 		    			<select form="search_form" name="take" onchange="this.form.submit()">
 					    	<option value="">Cantidad de publicaciones</option>
 					    	@if(Request::get('take') == 50)
+					    		<option value="50" selected>Ver 50</option>
+					    	@elseif(Cookie::get('listings_take') == 50)
 					    		<option value="50" selected>Ver 50</option>
 					    	@else
 					    		<option value="50">Ver 50</option>
@@ -152,11 +181,15 @@
 
 					    	@if(Request::get('take') == 30)
 					    		<option value="30" selected>Ver 30</option>
+					    	@elseif(Cookie::get('listings_take') == 30)
+					    		<option value="30" selected>Ver 30</option>
 					    	@else
 					    		<option value="30">Ver 30</option>
 					    	@endif
 
 					    	@if(Request::get('take') == 10)
+					    		<option value="10" selected>Ver 10</option>
+					    	@elseif(Cookie::get('listings_take') == 10)
 					    		<option value="10" selected>Ver 10</option>
 					    	@else
 					    		<option value="10">Ver 10</option>
@@ -202,9 +235,9 @@
 					    	<li class="uk-tab-active uk-active uk-hidden-small"><a href=""><i class="uk-icon-th-large"></i> {{ trans('frontend.tab_mosaic') }}</a></li>
 					    	{{-- <li class="uk-visible-small"><a href=""><i class="uk-icon-map-marker"></i> {{ trans('frontend.tab_map') }}</a></li> --}}
 						@endif
-					    
 					</ul>
 					<div class="uk-panel uk-margin">
+						<!-- Featured listings top -->
 						<div class="uk-grid">
 							@foreach($listings1 = array_slice($featuredListings->all(), 0, 4) as $listing)
 								<div class="uk-width-large-1-4 uk-width-medium-1-2 uk-width-small-1-1" style="position:relative;">
@@ -213,7 +246,7 @@
 						    		@if($listing->featuredType && $listing->featuredType->id > 1 && $listing->featured_expires_at > Carbon::now())
 						    			<img src="{{asset($listing->featuredType->image_path)}}" style="position:absolute; top:0; left:30; max-width:100px">
 						    		@else
-							    		@if(Carbon::createFromFormat('Y-m-d H:i:s', $listing->created_at)->diffInDays(Carbon::now()) < 5)
+							    		@if($listing->created_at->diffInDays(Carbon::now()) < 5)
 							    			<img src="{{asset('/images/defaults/new.png')}}" style="position:absolute; top:0; left:30; max-width:100px">
 							    		@endif
 						    		@endif
@@ -227,14 +260,15 @@
 								</div>
 							@endforeach
 						</div>
+						<!-- Featured listings top -->
 					</div>
 					<!-- This is the container of the content items -->
-					<ul id="my-id" class="uk-switcher">
+					<ul id="my-id" class="uk-switcher uk-margin-top">
 						<!-- Full list -->
 					    <li>
 					    	<?php $i = 0; ?>
 					    	@foreach($listings as $listing)
-					    		@if(count($listings) > 10 && $i == ceil(count($listings)/2))
+					    		@if(count($listings) >= 10 && $i == ceil(count($listings)/2))
 					    			<div class="uk-panel uk-margin">
 										<div class="uk-grid">
 											@foreach($listings1 = array_slice($featuredListings->all(), -4, 4) as $listing)
@@ -244,7 +278,7 @@
 										    		@if($listing->featuredType && $listing->featuredType->id > 1 && $listing->featured_expires_at > Carbon::now())
 										    			<img src="{{asset($listing->featuredType->image_path)}}" style="position:absolute; top:0; left:30; max-width:100px">
 										    		@else
-											    		@if(Carbon::createFromFormat('Y-m-d H:i:s', $listing->created_at)->diffInDays(Carbon::now()) < 5)
+											    		@if($listing->created_at->diffInDays(Carbon::now()) < 5)
 											    			<img src="{{asset('/images/defaults/new.png')}}" style="position:absolute; top:0; left:30; max-width:100px">
 											    		@endif
 										    		@endif
@@ -307,8 +341,8 @@
 	@parent
 
 	<!-- CSS -->
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-	<link href="{{ asset('/css/select2.min.css') }}" rel="stylesheet"/>
+	<noscript><link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"></noscript>
+	<noscript><link href="{{ asset('/css/select2.min.css') }}" rel="stylesheet"/></noscript>
 	<!-- CSS -->
 
 	<!-- JS -->
@@ -387,16 +421,16 @@
 		      	range: true,
 		      	animate: "fast",
 		      	step: 10,
-		      	min: 1,// TODO get from settings
-		      	max: 501,// TODO get from settings
+		      	min: 0,// TODO get from settings
+		      	max: 500,// TODO get from settings
 
 				@if(Request::has('area_min') && Request::has('area_max'))
 					values: [{{Request::get('area_min')}}, {{Request::get('area_max')}}],
 				@else
-					values: [1, 501],// TODO get from settings
+					values: [0, 500],// TODO get from settings
 		      	@endif
 		      	slide: function( event, ui ) {
-		      		if(ui.values[ 1 ] == 501){
+		      		if(ui.values[ 1 ] == 500){
 		      			tag = "+ mt2";
 		      		}else{
 		      			tag = " mt2";
@@ -408,11 +442,86 @@
 		    });
 		    $( "#area_range" ).val( accounting.formatNumber($( "#slider-range-area" ).slider( "values", 0 )) + " mt2" +
 		      	" - " + accounting.formatNumber($( "#slider-range-area" ).slider( "values", 1 )) + "+ mt2" );
+
+		    $( "#slider-range-lot-area" ).slider({
+		      	range: true,
+		      	animate: "fast",
+		      	step: 50,
+		      	min: 0,// TODO get from settings
+		      	max: 2000,// TODO get from settings
+
+				@if(Request::has('lot_area_min') && Request::has('lot_area_max'))
+					values: [{{Request::get('lot_area_min')}}, {{Request::get('lot_area_max')}}],
+				@else
+					values: [1, 2000],// TODO get from settings
+		      	@endif
+		      	slide: function( event, ui ) {
+		      		if(ui.values[ 1 ] == 2000){
+		      			tag = "+ mt2";
+		      		}else{
+		      			tag = " mt2";
+		      		}
+		        	$( "#lot_area_range" ).val( accounting.formatNumber(ui.values[ 0 ]) + " mt2" + " - " + accounting.formatNumber(ui.values[ 1 ]) + tag );
+		        	$( "#lot_area_min" ).val(ui.values[ 0 ]);
+		        	$( "#lot_area_max" ).val(ui.values[ 1 ]);
+		      	}
+		    });
+		    $( "#lot_area_range" ).val( accounting.formatNumber($( "#slider-range-lot-area" ).slider( "values", 0 )) + " mt2" +
+		      	" - " + accounting.formatNumber($( "#slider-range-lot-area" ).slider( "values", 1 )) + "+ mt2" );
+
+		    $( "#slider-range-stratum" ).slider({
+		      	range: true,
+		      	animate: "fast",
+		      	step: 1,
+		      	min: 1,// TODO get from settings
+		      	max: 6,// TODO get from settings
+
+				@if(Request::has('stratum_min') && Request::has('stratum_max'))
+					values: [{{Request::get('stratum_min')}}, {{Request::get('stratum_max')}}],
+				@else
+					values: [1, 6],// TODO get from settings
+		      	@endif
+		      	slide: function( event, ui ) {
+		        	$( "#stratum_range" ).val( accounting.formatNumber(ui.values[ 0 ]) + " - " + accounting.formatNumber(ui.values[ 1 ]) );
+		        	$( "#stratum_min" ).val(ui.values[ 0 ]);
+		        	$( "#stratum_max" ).val(ui.values[ 1 ]);
+		      	}
+		    });
+		    $( "#stratum_range" ).val( accounting.formatNumber($( "#slider-range-stratum" ).slider( "values", 0 )) +
+		      	" - " + accounting.formatNumber($( "#slider-range-stratum" ).slider( "values", 1 )) );
+
+		    $( "#slider-range-garages" ).slider({
+		      	range: true,
+		      	animate: "fast",
+		      	step: 1,
+		      	min: 0,// TODO get from settings
+		      	max: 5,// TODO get from settings
+
+				@if(Request::has('garages_min') && Request::has('garages_max'))
+					values: [{{Request::get('garages_min')}}, {{Request::get('garages_max')}}],
+				@else
+					values: [0, 5],// TODO get from settings
+		      	@endif
+		      	slide: function( event, ui ) {
+		      		if(ui.values[ 1 ] == 5){
+		      			tag = "+";
+		      		}else{
+		      			tag = "";
+		      		}
+		        	$( "#garages_range" ).val( accounting.formatNumber(ui.values[ 0 ]) + " - " + accounting.formatNumber(ui.values[ 1 ]) + tag );
+		        	$( "#garages_min" ).val(ui.values[ 0 ]);
+		        	$( "#garages_max" ).val(ui.values[ 1 ]);
+		      	}
+		    });
+		    $( "#garages_range" ).val( accounting.formatNumber($( "#slider-range-garages" ).slider( "values", 0 )) +
+		      	" - " + accounting.formatNumber($( "#slider-range-garages" ).slider( "values", 1 )) + "+" );
 	  	});
 	</script>
 
+	@if($map)
 	<!-- Google map js -->
 	<script type="text/javascript">var centreGot = false;</script>
 	{!! $map['js'] !!}
 	<!-- Google map js -->
+	@endif
 @endsection

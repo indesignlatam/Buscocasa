@@ -14,7 +14,7 @@
         </div>
         
 
-        <form id="create_form" class="uk-form uk-form-horizontal" method="POST" action="{{ url('/appointments') }}">
+        <form id="send_message" class="uk-form uk-form-horizontal" method="POST" action="{{ url('/appointments') }}">
 			<input type="hidden" name="_token" value="{{ csrf_token() }}">
             <input type="hidden" name="listing_id" value="{{ $listing->id }}">
 
@@ -43,7 +43,7 @@
 		</form>
 
 		<div class="uk-modal-footer">
-			<button form="create_form" type="submit" class="uk-button uk-button-primary">{{ trans('frontend.contact_button') }}</button>
+			<button form="send_message" type="submit" class="uk-button uk-button-primary">{{ trans('frontend.contact_button') }}</button>
 	        <a href="" class="uk-button uk-modal-close">{{ trans('admin.cancel') }}</a>
 	    </div>
 	    

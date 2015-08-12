@@ -5,7 +5,6 @@
 @endsection
 
 @section('css')
-	<link href="{{ asset('/css/uikit.buscocasa.min.css') }}" rel="stylesheet">
 	<style type="text/css">
 		body {
 		    background-color: #2089cf;
@@ -84,7 +83,9 @@
 @endsection
 
 @section('js')
-	<script src='https://www.google.com/recaptcha/api.js'></script>
+	<link href="{{ asset('/css/uikit.buscocasa.min.css') }}" rel="stylesheet">
+
+	<script async src='https://www.google.com/recaptcha/api.js'></script>
 	<script src="{{ asset('/js/jquery.min.js') }}"></script>
     <script src="{{ asset('/js/uikit.min.js') }}"></script>
 @endsection

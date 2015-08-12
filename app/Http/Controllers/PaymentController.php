@@ -15,8 +15,8 @@ use App\Models\Payment;
 use	App\Models\Listing;
 use	App\Models\FeaturedType;
 
-use App\Commands\SendPaymentConfirmationEmail;
-use App\Commands\PostListingToFacebookPage;
+use App\Jobs\SendPaymentConfirmationEmail;
+use App\Jobs\PostListingToFacebookPage;
 
 class PaymentController extends Controller {
 
@@ -32,7 +32,7 @@ class PaymentController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request){
-		$query;
+		$query = null;
 		$take = Settings::get('pagination_objects');
 
 		if(Auth::user()->is('admin')){
@@ -124,13 +124,10 @@ class PaymentController extends Controller {
 		$referenceCode = $input['reference_code'];
 		$amount = $input['amount'];
 		$currency = Settings::get('currency', 'COP');
-		$merchantId;
-		$apiKey;
+		$merchantId = config('payu.test_merchant_id');
+		$apiKey = config('payu.test_api_key');
 
-		if(Settings::get('payu_test', 1)){
-			$merchantId = config('payu.test_merchant_id');
-			$apiKey = config('payu.test_api_key');
-		}else{
+		if(!Settings::get('payu_test', 1)){
 			$merchantId = config('payu.merchant_id');
 			$apiKey = config('payu.api_key');
 		}
@@ -182,10 +179,9 @@ class PaymentController extends Controller {
 	 */
 	public function payUResponse(Request $request){
 		//
-		$apiKey;
-		if(Settings::get('payu_test', 1)){
-			$apiKey = config('payu.test_api_key');
-		}else{
+		$apiKey = config('payu.test_api_key');
+
+		if(!Settings::get('payu_test', 1)){
 			$apiKey = config('payu.api_key');
 		}
 
@@ -223,10 +219,9 @@ class PaymentController extends Controller {
 	 */
 	public function confirm(Request $request){
 		//
-		$apiKey;
-		if(Settings::get('payu_test', 1)){
-			$apiKey = config('payu.test_api_key');
-		}else{
+		$apiKey = config('payu.test_api_key');
+
+		if(!Settings::get('payu_test', 1)){
 			$apiKey = config('payu.api_key');
 		}
 		

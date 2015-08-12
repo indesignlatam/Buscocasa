@@ -6,58 +6,42 @@
 	<meta property="og:image" content="{{ asset($listing->image_path()) }}"/>
 	<meta property="og:type" content="article"/>
 	@if(strlen($listing->description) > 100)
-		<meta property="og:description" content="{{ strip_tags($listing->description) }}" />
-		<meta name="description" content="{{ strip_tags($listing->description) }}">
+		<meta property="og:description" content="{{ $listing->description }}"/>
+		<meta name="description" content="{{ $listing->description }}">
 	@else
-		<meta property="og:description" content="{{ strip_tags($listing->description). '. ' . Settings::get('listings_description') }}" />
-		<meta name="description" content="{{ strip_tags($listing->description). '. ' . Settings::get('listings_description') }}">
+		<meta property="og:description" content="{{ $listing->description. '. ' . Settings::get('listings_description') }}" />
+		<meta name="description" content="{{ $listing->description. '. ' . Settings::get('listings_description') }}">
 	@endif
 @endsection
 
 @section('css')
 	@parent
+	<script type="text/javascript">
+		loadCSS("{{ asset('/css/components/slideshow.almost-flat.min.css') }}");
+		loadCSS("{{ asset('/css/components/slidenav.almost-flat.min.css') }}");
+	</script>
 @endsection
 
 @section('content')
 
 <div class="uk-container uk-container-center uk-margin-top" id="secondContent">
 	<div class="uk-panel">
-		@if (count($errors) > 0)
-			<div class="uk-alert uk-alert-danger" data-uk-alert>
-    			<a href="" class="uk-alert-close uk-close"></a>
-				<strong>{{ trans('frontend.oops') }}</strong> {{ trans('frontend.input_error') }}<br><br>
-				<ul class="uk-list">
-					@foreach ($errors->all() as $error)
-						<li><i class="uk-icon-remove"></i> {{ $error }}</li>
-					@endforeach
-				</ul>
+		<div>
+			<h2 class="uk-hidden-small" style="display:inline">{{ $listing->title }}</h2>
+			<h2 class="uk-visible-small">{{ $listing->title }}</h2>
+			<div style="display:inline" class="uk-hidden-small uk-float-right">
+				<i class="uk-h2 uk-text-right">{{ trans('admin.price') }} </i>
+				<i class="uk-h2 uk-text-primary uk-text-right"> ${{ money_format('%!.0i', $listing->price) }}</i>
 			</div>
-		@endif
-
-		@if (Session::has('success'))
-			<div class="uk-alert uk-alert-success" data-uk-alert>
-    			<a href="" class="uk-alert-close uk-close"></a>
-				<ul class="uk-list">
-					@foreach (Session::get('success') as $error)
-						<li><i class="uk-icon-check"></i> {{ $error }}</li>
-					@endforeach
-				</ul>
-			</div>
-		@endif
-
-		<h2 class="uk-hidden-small" style="float:left; display:inline">{{ $listing->title }}</h2>
-		<h2 class="uk-visible-small">{{ $listing->title }}</h2>
-		<div style="float:right; display:inline" class="uk-hidden-small">
-			<i class="uk-h2 uk-text-right">{{ trans('admin.price') }} </i>
-			<i class="uk-h2 uk-text-primary uk-text-right"> ${{ money_format('%!.0i', $listing->price) }}</i>
 		</div>
+		
 
-		<div class="uk-grid" style="width:100%">
-			<div class="uk-width-large-7-10 uk-width-medium-7-10">	
+		<div class="uk-grid uk-margin-small-top">
+			<div class="uk-width-large-7-10 uk-width-medium-7-10 uk-width-small-1-1">	
 				@if(count($listing->images) > 0)
 					<div class="uk-slidenav-position" data-uk-slideshow="{autoplay:true, autoplayInterval:7000}">
 					    <ul class="uk-slideshow">
-					    	@foreach($listing->images as $image)
+					    	@foreach($listing->images->sortBy('ordering') as $image)
 					    		<li>
 					    			<img src="{{ asset($image->image_path) }}" alt="{{ $listing->title }}" style="max-width:800px; max-height:540px">
 					    		</li>
@@ -69,13 +53,36 @@
 				@else
 					<img src="{{ asset($listing->image_path()) }}" alt="{{ $listing->title }}" >
 				@endif
-				
 			</div>
+
 			<div class="uk-width-3-10 uk-hidden-small">
-				<div class="uk-panel uk-panel-box" style="width:100%">
+				<div class="uk-panel uk-panel-box">
+					@if (Session::has('success'))
+						<div class="uk-alert uk-alert-success" data-uk-alert>
+			    			<a href="" class="uk-alert-close uk-close"></a>
+							<ul class="uk-list">
+								@foreach (Session::get('success') as $error)
+									<li><i class="uk-icon-check"></i> {{ $error }}</li>
+								@endforeach
+							</ul>
+						</div>
+					@endif
+
 					@if(!Cookie::get('listing_message_'.$listing->id) || Cookie::get('listing_message_'.$listing->id) > Carbon::now())
 						<h3>{{ trans('frontend.contact_vendor') }}</h3>
-						<form id="create_form" class="uk-form uk-form-horizontal" method="POST" action="{{ url('/appointments') }}">
+
+						@if (count($errors) > 0)
+							<div class="uk-alert uk-alert-danger" data-uk-alert>
+				    			<a href="" class="uk-alert-close uk-close"></a>
+								<ul class="uk-list">
+									@foreach ($errors->all() as $error)
+										<li>{{ $error }}</li>
+									@endforeach
+								</ul>
+							</div>
+						@endif
+
+						<form id="send_message_inpage" class="uk-form uk-form-horizontal" method="POST" action="{{ url('/appointments') }}">
 							<input type="hidden" name="_token" value="{{ csrf_token() }}">
 				            <input type="hidden" name="listing_id" value="{{ $listing->id }}">
 
@@ -100,14 +107,14 @@
 				                <!-- ReCaptcha -->
 				            @endif
 
-				            <button form="create_form" type="submit" class="uk-button uk-button-large uk-width-1-1  uk-button-primary uk-margin-top">{{ trans('frontend.contact_button') }}</button>
+				            <button form="send_message_inpage" type="submit" class="uk-button uk-button-large uk-width-1-1 uk-button-primary uk-margin-top">{{ trans('frontend.contact_button') }}</button>
 						</form>
 					@else
 						<h3 class="uk-text-primary">{{ trans('frontend.already_contacted_vendor') }}</h3>
 					@endif
 					
-					<div class="uk-margin-top">
-						<button id="my-id2" class="uk-button uk-button-large uk-width-1-1 uk-button-success" data-uk-toggle="{target:'#my-id, #my-id2'}">{{ trans('frontend.contact_show_info') }}</button>
+					<div class="uk-margin-small-top">
+						<button id="my-id2" class="uk-button uk-button-large uk-width-1-1" data-uk-toggle="{target:'#my-id, #my-id2'}">{{ trans('frontend.contact_show_info') }}</button>
 
 						<div id="my-id" class="uk-hidden">
 							@if(!$listing->broker->phone_1 && !$listing->broker->phone_2)
@@ -186,8 +193,9 @@
     				<li><i class="uk-text-muted">{{ trans('admin.code') }}</i> <b>#{{ $listing->code }}</b></li>
     			</ul>
 
-    			<a href="#new_appointment_modal" class="uk-button uk-button-large uk-button-primary uk-width-1-1" data-uk-modal>{{ trans('frontend.contact_vendor') }}</a>
-    			<a href="{{ url($listing->broker->path()) }}" class="uk-button uk-button-success uk-width-1-1 uk-margin-top">{{ trans('frontend.other_user_listings') }}</a>
+				<button class="uk-button uk-button-large uk-button-success uk-width-1-1" onclick="select(this)" id="{{ $listing->id }}">{{ trans('frontend.compare') }}</button>
+    			<a href="#new_appointment_modal" class="uk-button uk-button-large uk-width-1-1 uk-margin-small-top" data-uk-modal>{{ trans('frontend.contact_vendor') }}</a>
+    			<a href="{{ url($listing->broker->path()) }}" class="uk-button uk-button-large uk-width-1-1 uk-margin-small-top">{{ trans('frontend.other_user_listings') }}</a>
 
     			<hr>
 
@@ -249,10 +257,9 @@
 								@endforeach
 								@if($featureChecked)
 									<i class="uk-icon-check uk-text-primary"></i> {{ $feature->name }}
-									<?php $featureChecked = false; ?>
 								@else
 									<i class="uk-icon-minus-circle uk-text-muted"> {{ $feature->name }}</i>
-								@endif										
+								@endif
 							</div>
 						@endif
 					@endforeach
@@ -271,7 +278,6 @@
 								@endforeach
 								@if($featureChecked)
 									<i class="uk-icon-check uk-text-primary"></i> {{ $feature->name }}
-									<?php $featureChecked = false; ?>
 								@else
 									<i class="uk-icon-minus-circle uk-text-muted"> {{ $feature->name }}</i>
 								@endif										
@@ -293,7 +299,6 @@
 								@endforeach
 								@if($featureChecked)
 									<i class="uk-icon-check uk-text-primary"></i> {{ $feature->name }}
-									<?php $featureChecked = false; ?>
 								@else
 									<i class="uk-icon-minus-circle uk-text-muted"> {{ $feature->name }}</i>
 								@endif										
@@ -315,14 +320,16 @@
 	@parent
 
 	<!-- CSS -->
-	<link href="{{ asset('/css/components/slideshow.almost-flat.min.css') }}" rel="stylesheet">
-	<link href="{{ asset('/css/components/slidenav.almost-flat.min.css') }}" rel="stylesheet">
+	<noscript><link href="{{ asset('/css/components/slideshow.almost-flat.min.css') }}" rel="stylesheet"></noscript>
+	<noscript><link href="{{ asset('/css/components/slidenav.almost-flat.min.css') }}" rel="stylesheet"></noscript>
 	<!-- CSS -->
 
-	<!-- CSS -->
-	<script src='https://www.google.com/recaptcha/api.js'></script>
+	<!-- JS -->
+	@if(!Auth::check())
+	<script async src='https://www.google.com/recaptcha/api.js'></script>
+	@endif
     <script src="{{ asset('/js/components/slideshow.min.js') }}"></script>
-	<!-- CSS -->
+	<!-- JS -->
 	
 	<script type="text/javascript">
 		window.fbAsyncInit = function() {
@@ -389,6 +396,14 @@
 
 		function showCaptcha(){
 			$('#captcha').removeClass('uk-hidden', 1000);
+		}
+
+		function select(sender){
+			$.post("{{ url('/cookie/select') }}", {_token: "{{ csrf_token() }}", key: "selected_listings", value: sender.id}, function(result){
+				UIkit.modal.confirm("{{ trans('frontend.listing_selected') }}", function(){
+				    window.location.href = "{{ url('/compare') }}";
+				}, {labels:{Ok:'{{trans("frontend.compare_now")}}', Cancel:'{{trans("frontend.keep_looking")}}'}});
+            });
 		}
 
 		$(function (){

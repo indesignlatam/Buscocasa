@@ -6,7 +6,7 @@ use Symfony\Component\Console\Input\InputArgument;
 
 use Carbon, Log, DB, Queue;
 use App\Models\Listing;
-use App\Commands\SendExpiringListingEmail;
+use App\Jobs\SendExpiringListingEmail;
 
 class MailExpiringListings extends Command {
 
@@ -15,7 +15,7 @@ class MailExpiringListings extends Command {
 	 *
 	 * @var string
 	 */
-	protected $name = 'mail:expiring_listings';
+	protected $signature = 'mail:expiring_listings';
 
 	/**
 	 * The console command description.
@@ -69,28 +69,6 @@ class MailExpiringListings extends Command {
 		}else{
 			$this->info('There are no expiring listings');
 		}
-	}
-
-	/**
-	 * Get the console command arguments.
-	 *
-	 * @return array
-	 */
-	protected function getArguments(){
-		return [
-			//['example', InputArgument::REQUIRED, 'An example argument.'],
-		];
-	}
-
-	/**
-	 * Get the console command options.
-	 *
-	 * @return array
-	 */
-	protected function getOptions(){
-		return [
-			//['example', null, InputOption::VALUE_OPTIONAL, 'An example option.', null],
-		];
 	}
 
 }

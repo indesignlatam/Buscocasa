@@ -119,7 +119,7 @@ return [
     //
     'my_listings_menu' 			=> 'Mis publicaciones',
     'my_messages_menu' 			=> 'Mensajes',
-    'profile_menu' 				=> 'Perfil de usuario',
+    'profile_menu' 				=> 'Mis datos',
     'login' 					=> 'Iniciar sesión',
     'logout' 					=> 'Cerrar sesión',
     'register' 					=> 'Registrate',
@@ -162,7 +162,7 @@ return [
     'confirmation_sent_title'   => 'Hemos enviado un mensaje a tu cuenta de correo electronico',
     'confirmation_sent_spam'    => 'Revisa tu cuenta de correo, si no encuentras el mensaje en tu carpeta de recibidos revisa la carpeta de spam.',
     //
-    'user_data'                 => 'Perfil de usuario',
+    'user_data'                 => 'Mis datos',
     'change_image' 				=> 'Cambiar imagen',
     'name' 						=> 'Nombre',
     'phone_alt' 				=> 'Telefono 2',
@@ -170,6 +170,15 @@ return [
     'email' 					=> 'Correo',
     'description'               => 'Descripción',
     'alt_phone'                 => 'Telefono 2',
+    'email_notifications'       => 'Notificaciones via email',
+    'privacy_name'              => 'Mostrar mi nombre',
+    'privacy_phone'             => 'Mostrar mis telefonos',
+    'drag_user_image_or'        => 'Arrastra una imagen para tu perfil o ',
+    'change_password'           => 'Cambiar contraseña',
+    'change_profile_image'      => 'Seleccionar imagen principal',
+    'current_password'          => 'Contraseña actual',
+    'new_password'              => 'Nueva contraseña',
+    'confirm_new_password'      => 'Confirmar nueva contraseña',
 
     // Appointments
     'answer'                    => 'Responder',
@@ -177,7 +186,8 @@ return [
     'mark_as_unread'            => 'Marcar como no leido',
     'messages' 				    => 'Mensajes recibidos de clientes',
     'you_have_no_messages' 		=> '¿Aún no tienes ningún mensaje?',
-    'sure'       				=> '¿Esta seguro? Esta acción eliminara el objeto permanentemente.',
+    'sure'                      => '¿Esta seguro? Esta acción eliminara el objeto permanentemente.',
+    'sure_leave'                => '¿Esta seguro que desea salir de esta pagina? Si ha realizado cambios estos no sera guardados.',
     'yes' 				        => 'Si',
     'answer_message_prompt' 	=> 'Escribe un mensaje para el cliente interesado, adjunto se le enviara la información del inmueble.',
     'view_messages' 			=> 'Ver mensajes',

@@ -14,7 +14,7 @@ class DeleteExpiredListings extends Command {
 	 *
 	 * @var string
 	 */
-	protected $name = 'listings:delete_expired';
+	protected $signature = 'listings:delete_expired';
 
 	/**
 	 * The console command description.
@@ -53,28 +53,6 @@ class DeleteExpiredListings extends Command {
 
         $this->info('Listings succesfuly deleted');
         // $this->output->progressFinish(); //Only for laravel 5.1
-	}
-
-	/**
-	 * Get the console command arguments.
-	 *
-	 * @return array
-	 */
-	protected function getArguments(){
-		return [
-			// ['example', InputArgument::REQUIRED, 'An example argument.'],
-		];
-	}
-
-	/**
-	 * Get the console command options.
-	 *
-	 * @return array
-	 */
-	protected function getOptions(){
-		return [
-			// ['example', null, InputOption::VALUE_OPTIONAL, 'An example option.', null],
-		];
 	}
 
 }

@@ -9,6 +9,7 @@ use Image;
 use File;
 use Auth;
 use Carbon;
+use Validator;
 use Settings;
 use App\Models\Image as ImageModel;
 use App\Models\Listing;
@@ -21,7 +22,7 @@ class ImageController extends Controller {
      * @return void
      */
     public function __construct(){
-        $this->middleware('file_max_upload_size', ['only' => 'store']);
+        $this->middleware('file_max_upload_size', ['only' => ['store', 'user']]);
     }
 
 	/**
@@ -55,7 +56,7 @@ class ImageController extends Controller {
 	    if(!Auth::user()->is('admin')){
 	    	if(!$listing || $listing->broker_id != Auth::user()->id){
 	    		if($request->ajax()){
-					return response()->json(['error' => trans('responses.no_permission'.$id)]);
+					return response()->json(['error' => trans('responses.no_permission')]);
 				}
 	        	return redirect('admin/listings')->withErrors([trans('responses.no_permission')]);
 	    	}
@@ -151,6 +152,95 @@ class ImageController extends Controller {
 		// Return ajax response with image and success message
 		return response()->json(['image' 	=> $image,
 								 'success'	=> trans('admin.image_uploaded_succesfuly'),
+								 ]);
+	}
+
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @return Response
+	 */
+	public function user($id, Request $request){
+		// Security check
+	    if(!Auth::user()->is('admin')){
+	    	if(!$id || $id != Auth::user()->id){
+	    		if($request->ajax()){
+					return response()->json(['error' => trans('responses.no_permission')]);
+				}
+	        	return redirect('admin/listings')->withErrors([trans('responses.no_permission')]);
+	    	}
+		}
+
+		// Create an image object
+		$image = new ImageModel;
+
+	    $file 	= $request->file("image");
+		$name 	= md5($id).'.'.$file->getClientOriginalExtension();
+		$input 	= $request->all();
+		$input['image_path'] = '/images/users/'.$name;
+
+
+		$validator = Validator::make($request->all(), [
+            'image' => 'required|image|max:10000',
+        ]);
+
+        if ($validator->fails()) {
+        	return response()->json(['error' => $validator,
+									 'image' => null
+									]);
+        }
+
+
+	    // Move file to temp folder
+		if(!$file->move("images/temp", $name)){
+			return response()->json(['error' => [trans('responses.error_saving_image')],
+									 'image' => null
+									]);
+		}
+
+		// Get image orientation
+		$exif = exif_read_data(public_path().'/images/temp/'.$name, 'IFD0');
+		$rotation = 0;
+		if(!empty($exif['Orientation'])) {
+		    switch($exif['Orientation']) {
+		        case 8:
+		            $rotation = -90;
+		            break;
+		        case 3:
+		            $rotation = 180;
+		            break;
+		        case 6:
+		            $rotation = 90;
+		            break;
+		    }
+		}
+
+		// Rotate the image if necessary
+		if($rotation != 0){
+			$img = Image::open(public_path().'/images/temp/'.$name);
+			$img->rotate($rotation);
+			$img->save('images/temp/'.$name);
+		}
+		
+		// Crop image, watermark
+		$img 			= Image::make('/images/temp/'.$name, ['width' => 1200, 'height' => 350, 'crop' => true]);
+		$watermark 		= Image::open(public_path().'/images/watermark_contrast.png');// Or use watermark.png for color watermark
+		$size      		= $img->getSize();
+		$wSize     		= $watermark->getSize();
+		$bottomRight 	= new \Imagine\Image\Point($size->getWidth() - $wSize->getWidth()-15, $size->getHeight() - $wSize->getHeight()-15);
+		$img->paste($watermark, $bottomRight);
+		$img->save('images/users/'.$name);
+
+		// Delete the temp file
+		File::delete(public_path().'/images/temp/'.$name);
+
+
+		Auth::user()->image_path = 'images/users/'.$name;
+		Auth::user()->save();
+
+		// Return ajax response with image and success message
+		return response()->json(['image_path' 	=> Auth::user()->image_path,
+								 'success'		=> trans('admin.image_uploaded_succesfuly'),
 								 ]);
 	}
 

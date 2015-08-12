@@ -1,203 +1,250 @@
 <?php namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Contracts\Auth\Registrar;
+use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
-
 use Illuminate\Http\Request;
 
-use App\Commands\SendUserConfirmationEmail;
+use Validator;
 use Auth;
 use Socialize; 
 use Queue;
 use Analytics;
-use	App\Models\Role;
-use App\User; 
+
+use App\Models\Role;
+use App\User;
+
+use App\Jobs\SendUserConfirmationEmail;
+
 
 class AuthController extends Controller {
+    /*
+    |--------------------------------------------------------------------------
+    | Registration & Login Controller
+    |--------------------------------------------------------------------------
+    |
+    | This controller handles the registration of new users, as well as the
+    | authentication of existing users. By default, this controller uses
+    | a simple trait to add these behaviors. Why don't you explore it?
+    |
+    */
 
-	/*
-	|--------------------------------------------------------------------------
-	| Registration & Login Controller
-	|--------------------------------------------------------------------------
-	|
-	| This controller handles the registration of new users, as well as the
-	| authentication of existing users. By default, this controller uses
-	| a simple trait to add these behaviors. Why don't you explore it?
-	|
-	*/
+    use AuthenticatesAndRegistersUsers, ThrottlesLogins;
 
-	use AuthenticatesAndRegistersUsers;
+    /**
+     * Create a new authentication controller instance.
+     *
+     * @return void
+     */
+    public function __construct(){
+        $this->middleware('guest', ['except' => 'getLogout']);
+    }
 
-	/**
-	 * Create a new authentication controller instance.
-	 *
-	 * @param  \Illuminate\Contracts\Auth\Guard  $auth
-	 * @param  \Illuminate\Contracts\Auth\Registrar  $registrar
-	 * @return void
-	 */
-	public function __construct(Guard $auth, Registrar $registrar){
-		$this->auth = $auth;
-		$this->registrar = $registrar;
+    /**
+     * Get a validator for an incoming registration request.
+     *
+     * @param  array  $data
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    protected function validator(array $data){
+        return Validator::make($data, [
+            'name'      => 'required|max:255',
+            'username'  => 'alpha_dash|max:255|unique:users',
+            'phone'     => 'required|digits_between:7,15|unique:users,phone_1|unique:users,phone_2',
+            'email'     => 'required|email|max:255|unique:users',
+            'password'  => 'required|min:6',
+        ]);
+    }
 
-		$this->middleware('guest', ['except' => 'getLogout']);
-		$this->middleware('throttle.auth', ['only' => ['postLogin']]);
-	}
+    /**
+     * Create a new user instance after a valid registration.
+     *
+     * @param  array  $data
+     * @return User
+     */
+    protected function create(array $data){
+        return User::create([
+            'name'                  => $data['name'],
+            'username'              => md5($data['email']),
+            'email'                 => $data['email'],
+            'phone_1'               => $data['phone'],
+            'password'              => bcrypt($data['password']),
+            'confirmation_code'     => str_random(64),
+        ]);
+    }
 
-	/**
-	 * Get the failed login message.
-	 *
-	 * @return string
-	 */
-	protected function getFailedLoginMessage(){
-		return trans('auth.login_failed');
-	}
+    /**
+     * Get the failed login message.
+     *
+     * @return string
+     */
+    // protected function getFailedLoginMessage(){
+    //     return trans('auth.login_failed');
+    // }
 
-	/**
-	 * Handle a registration request for the application.
-	 *
-	 * @param  \Illuminate\Http\Request  $request
-	 * @return \Illuminate\Http\Response
-	 */
-	public function postRegister(Request $request){
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function postRegister(Request $request){
+        // Captcha verify ################################
+        // If captcha error redirect back
+        if(!$request->has('g-recaptcha-response')){
+            return redirect('/auth/register')->withErrors([trans('auth.recaptcha_error')])->withInput();
+        }
 
-		if(!$request->has('g-recaptcha-response')){
-			return redirect('/auth/register')->withErrors([trans('auth.recaptcha_error')])->withInput();
-		}
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL,"https://www.google.com/recaptcha/api/siteverify");
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, 
+                 http_build_query(['secret'     => '6Ldv5wgTAAAAAKsrEHnUTD2wKdUtrfQUxFo_S3lq',
+                                    'response'  => $request->get('g-recaptcha-response'),
+                                    'remoteip'  => $request->getClientIp()
+                                    ]));
+        // receive server response ...
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $captcha = curl_exec($ch);
+        $captcha = json_decode($captcha, true);
+        curl_close ($ch);
+        // If captcha error redirect back
+        if(!$captcha['success']){
+            return redirect('/auth/register')->withErrors([trans('auth.youre_bot')])->withInput();
+        }
+        // Captcha verify end ################################
 
-		// Captcha verify
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL,"https://www.google.com/recaptcha/api/siteverify");
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, 
-		         http_build_query(['secret' 	=> '6Ldv5wgTAAAAAKsrEHnUTD2wKdUtrfQUxFo_S3lq',
-		         					'response' 	=> $request->get('g-recaptcha-response'),
-		         					'remoteip'	=> $request->getClientIp()
-		         					]));
+        $input              = $request->all();
+        $input['phone']     = preg_replace("/[^0-9]/", "", $input['phone']);
 
-		// receive server response ...
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		$captcha = curl_exec($ch);
-		$captcha = json_decode($captcha, true);
-		curl_close ($ch);
-		// Captcha verify
+        $validator = $this->validator($input);
 
-		if(!$captcha['success']){
-			return redirect('/auth/register')->withErrors([trans('auth.youre_bot')])->withInput();
-		}
+        if($validator->fails()){
+            $this->throwValidationException(
+                $request, $validator
+            );
+        }
 
-		$input 				= $request->all();
-		$input['phone'] 	= preg_replace("/[^0-9]/", "", $input['phone']);
+        // Create the user
+        $user = $this->create($input);
 
-		$validator = $this->registrar->validator($input);
+        // Send confirmation email
+        Queue::push(new SendUserConfirmationEmail($user));
 
-		if ($validator->fails()){
-			$this->throwValidationException(
-				$request, $validator
-			);
-		}
+        // Attach the registered.user role
+        $role = Role::where('slug', 'registered.user')->first();
+        $user->attachRole($role);
 
-		$user = $this->registrar->create($input);
-		Queue::push(new SendUserConfirmationEmail($user));
-		$this->auth->login($user);
+        // Login user
+        Auth::login($user);
 
-		$role = Role::where('slug', 'registered.user')->first();
-		$user->attachRole($role);
+        // Push session var to know if user is new
+        $request->session()->push('new_user', true);
 
-		$request->session()->push('new_user', true);
+        // Analytics event
+        Analytics::trackEvent('User Registered', 'button', $user->id);
 
-		// Analytics event
-		Analytics::trackEvent('User Registered', 'button', $user->id);
+        return redirect($this->redirectPath());
+    }
 
-		return redirect($this->redirectPath());
-	}
+    /**
+     * Handle a login request to the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function postLogin(Request $request){
 
-	public function postLogin(Request $request){
+        $this->validate($request, [
+            $this->loginUsername()  => 'required', 
+            'password'              => 'required',
+        ]);
 
-		$this->validate($request, [
-			'email' 	=> 'required|string|min:6', 
-			'password' 	=> 'required|min:6|string',
-		]);
+        // If the class is using the ThrottlesLogins trait, we can automatically throttle
+        // the login attempts for this application. We'll key this by the username and
+        // the IP address of the client making these requests into this application.
+        $throttles = $this->isUsingThrottlesLoginsTrait();
 
-		$credentials = $request->only('email', 'password');
+        if ($throttles && $this->hasTooManyLoginAttempts($request)) {
+            return $this->sendLockoutResponse($request);
+        }
 
-		if ($this->auth->attempt($credentials, $request->has('remember'))){
-			// Analytics event
-			Analytics::trackEvent('User Logged In', 'button', Auth::user()->id);
+        $credentials = $this->getCredentials($request);
 
-			return redirect()->intended($this->redirectPath());
-		}else if($this->auth->attempt(['email'=> $request->username, 'password' => $request->password], $request->has('remember'))) {
-			// Analytics event
-			Analytics::trackEvent('User Logged In', 'button', Auth::user()->id);
+        if (Auth::attempt($credentials, $request->has('remember'))) {
+            // Analytics event
+            Analytics::trackEvent('User logged in', 'button', Auth::user()->id);
 
-		    return redirect()->intended($this->redirectPath());
-		}
+            return $this->handleUserWasAuthenticated($request, $throttles);
+        }
 
-		// Analytics event
-		Analytics::trackEvent('Error in login', 'button', $request->has('email'));
+        // If the login attempt was unsuccessful we will increment the number of attempts
+        // to login and redirect the user back to the login form. Of course, when this
+        // user surpasses their maximum number of attempts they will get locked out.
+        if ($throttles) {
+            $this->incrementLoginAttempts($request);
+        }
 
-		return redirect($this->loginPath())
-					->withInput($request->only('email', 'remember'))
-					->withErrors([
-						'username' => $this->getFailedLoginMessage(),
-					]);
-	}
+        return redirect($this->loginPath())
+            ->withInput($request->only($this->loginUsername(), 'remember'))
+            ->withErrors([
+                $this->loginUsername() => $this->getFailedLoginMessage(),
+            ]);
+    }
 
-	private function redirectPath(){
-		if(Auth::user()->is('admin')){
-			return '/admin';
-		}else{
-			if(count(Auth::user()->listings) > 0){
-				return '/admin';
-			}
-			return '/admin/listings/create';
-		}
-	}
+    private function redirectPath(){
+        if(Auth::user()->is('admin')){
+            return '/admin';
+        }else{
+            if(count(Auth::user()->listings) > 0){
+                return '/admin';
+            }
+            return '/admin/listings/create';
+        }
+    }
 
 
-	public function redirectToProvider($provider = null){
-		if(!$provider || $provider != 'facebook'){
-			abort(404);
-		}
+    public function redirectToProvider($provider = null){
+        if(!$provider || $provider != 'facebook'){
+            abort(404);
+        }
 
-	    return Socialize::with($provider)->redirect();
-	}
+        return Socialize::with($provider)->redirect();
+    }
 
-	public function handleProviderCallback($provider = null){
-		if(!$provider || $provider != 'facebook'){
-			abort(404);
-		}
+    public function handleProviderCallback($provider = null){
+        if(!$provider || $provider != 'facebook'){
+            abort(404);
+        }
 
-	    $providerUser = Socialize::with($provider)->user();
+        $providerUser = Socialize::with($provider)->user();
 
-	    // OAuth Two Providers
-		$token = $providerUser->token;
+        // OAuth Two Providers
+        $token = $providerUser->token;
 
-		$user = User::firstOrNew(['email' => $providerUser->getEmail()]);
-		if(!$user->id){
-			if($providerUser->getNickname()){
-				$user->username = md5($providerUser->getEmail());
-			}
-			
-			$user->name 	= $providerUser->getName();
-			$user->email 	= $providerUser->getEmail();
-			$user->confirmed= true;
-			// $user->avatar 		= $providerUser->getAvatar();
-			// $user->user_id 		= $providerUser->getId();
+        $user = User::firstOrNew(['email' => $providerUser->getEmail()]);
+        if(!$user->id){
+            if($providerUser->getNickname()){
+                $user->username = md5($providerUser->getEmail());
+            }
+            
+            $user->name     = $providerUser->getName();
+            $user->email    = $providerUser->getEmail();
+            $user->confirmed= true;
+            // $user->avatar        = $providerUser->getAvatar();
+            // $user->user_id       = $providerUser->getId();
 
-			$user->save();
+            $user->save();
 
-			$role = Role::where('slug', '=', 'registered.user')->first();
-			$user->attachRole($role);
+            $role = Role::where('slug', '=', 'registered.user')->first();
+            $user->attachRole($role);
 
-			// Analytics event
-			Analytics::trackEvent('User Registered by Facebook', 'button', $user->id);
-		}
+            // Analytics event
+            Analytics::trackEvent('User Registered by Facebook', 'button', $user->id);
+        }
 
-		Auth::login($user);
+        Auth::login($user);
 
-		return redirect()->intended($this->redirectPath())->withSuccess(['Bienvenido ' . $user->name]);// TODO translate
-	}
-
+        return redirect()->intended($this->redirectPath())->withSuccess(['Bienvenido ' . $user->name]);// TODO translate
+    }
 }

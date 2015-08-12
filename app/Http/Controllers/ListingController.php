@@ -27,7 +27,7 @@ class ListingController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request){
-		$query;
+		$query = null;
 		$take = Settings::get('pagination_objects');
 
 		// Create the principal query
@@ -312,16 +312,6 @@ class ListingController extends Controller {
 		//$input['description'] 	= preg_replace("/[^a-zA-Z0-9.,;:+$%/?¿!¡ñáéíóúüÁÉÍÓÚÜÑ ]+/u", "", $input['description']);
 		$input['direction'] = preg_replace("/[^a-zA-Z0-9# -]+/", "", $input['direction']);
 
-		if($input['main_image_id'] == ""){
-			$input['main_image_id'] = null;
-		}
-
-		// If no image_path set use the first image
-		if($input['image_path'] == ""){
-			if(count($listing->images) > 0){
-				$input['image_path'] = $listing->images->first()->image_path;
-			}
-		}
 
 		if (!$listing->validate($input, null, true)){
 	        return redirect('admin/listings/'.$id.'/edit')->withErrors($listing->errors())->withInput();
@@ -368,7 +358,17 @@ class ListingController extends Controller {
 	    }
 	    $listing->features()->sync($featuresSelected);
 
-	    $listing->save();
+	    // Set image ordering
+	    $ordering = $input['image'];
+	    foreach ($listing->images as $image) {
+	    	$image->ordering = array_get($ordering, $image->id, null);
+	    	if($image->ordering == 1){
+	    		$listing->image_path = $image->image_path;
+	    	}
+	    }
+
+	    // Save the listing and its relationships
+	    $listing->push();
 
 		// If save and close button redirect to my listings	    
 	    if($request->get('save_close')){

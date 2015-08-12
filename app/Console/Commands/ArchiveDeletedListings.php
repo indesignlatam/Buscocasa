@@ -15,7 +15,7 @@ class ArchiveDeletedListings extends Command {
 	 *
 	 * @var string
 	 */
-	protected $name = 'listings:archive';
+	protected $signature = 'listings:archive';
 
 	/**
 	 * The console command description.
@@ -61,28 +61,6 @@ class ArchiveDeletedListings extends Command {
         }else{
         	$this->info('No listings to be archived found');
         }
-	}
-
-	/**
-	 * Get the console command arguments.
-	 *
-	 * @return array
-	 */
-	protected function getArguments(){
-		return [
-			// ['example', InputArgument::REQUIRED, 'An example argument.'],
-		];
-	}
-
-	/**
-	 * Get the console command options.
-	 *
-	 * @return array
-	 */
-	protected function getOptions(){
-		return [
-			// ['example', null, InputOption::VALUE_OPTIONAL, 'An example option.', null],
-		];
 	}
 
 }

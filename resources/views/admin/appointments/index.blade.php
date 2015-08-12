@@ -77,7 +77,8 @@
 		            <tbody>
 		                @foreach($appointments as $appointment)
 		                    <tr id="message-{{ $appointment->id }}">
-		                        <td style="max-width:100px"><img src="{{ asset($appointment->listing->image_path()) }}" style="width:100px"></td>
+		                        <td style="max-width:100px" class="uk-hidden-small"><img src="{{ asset($appointment->listing->image_path()) }}" style="width:100px"></td>
+		                        <td class="uk-visible-small">#{{ $appointment->listing->code }}</td>
 		                        <td style="width:20%"><b class="uk-h4">{{ $appointment->name }}</b><br>{{ $appointment->phone }}</td>
 		                        <td class="uk-hidden-small">{{ $appointment->email }}</td>
 		                        <td>{{ $appointment->comments }}</td>

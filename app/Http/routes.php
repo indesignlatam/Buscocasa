@@ -2,37 +2,14 @@
 
 /*
 |--------------------------------------------------------------------------
-| Frontend Routes
+| Application Routes
 |--------------------------------------------------------------------------
 |
-| Here are all the API routes for external consumption.
-|
-| 
+| Here is where you can register all of the routes for an application.
+| It's a breeze. Simply tell Laravel the URIs it should respond to
+| and give it the controller to call when that URI is requested.
 |
 */
-
-Route::get('/', 'WelcomeController@index');
-
-Route::resource('ventas', 'ListingFEController');
-Route::resource('arriendos', 'ListingFEController');
-Route::resource('buscar', 'ListingFEController', ['only' => ['index']]);
-
-Route::post('appointments', 'AppointmentController@store');
-
-Route::get('user/{id}/confirm/{code}', 'UserController@confirm');
-Route::get('/{username}', 'UserController@show');
-
-Route::post('pagos/confirmar', 'PaymentController@confirm');
-Route::post('pagos/disputas', 'PaymentController@dispute');
-
-Route::controllers([
-	'auth' 		=> 'Auth\AuthController',
-	'password' 	=> 'Auth\PasswordController',
-	'cookie' 	=> 'CookieController',
-]);
-Route::get('social-auth/{provider?}', 'Auth\AuthController@redirectToProvider');
-Route::get('social-auth/{provider?}/redirects', 'Auth\AuthController@handleProviderCallback');
-
 
 /*
 |--------------------------------------------------------------------------
@@ -67,8 +44,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
 
 	Route::resource('banners', 'BannerController');
 
+	Route::post('user/{id}/images', 'ImageController@user');// Secured
 	Route::get('user/send_confirmation_email', 'UserController@sendConfirmationEmail');// Secured
 	Route::get('user/not_confirmed', 'UserController@notConfirmed');// Secured
+	Route::post('user/{id}/password', 'UserController@password');// Secured
 	Route::resource('user', 'UserController', ['only' => ['edit', 'update']]);// Secured
 });
 
@@ -100,3 +79,37 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth.admin'], function(){
 	Route::resource('permissions', 'PermissionController');
 	Route::post('permissions/delete', 'PermissionController@destroyMultiple');
 });
+
+/*
+|--------------------------------------------------------------------------
+| Frontend Routes
+|--------------------------------------------------------------------------
+|
+| Here are all the API routes for external consumption.
+|
+| 
+|
+*/
+
+Route::get('/', 'WelcomeController@index');
+
+Route::resource('ventas', 'ListingFEController');
+Route::resource('arriendos', 'ListingFEController');
+Route::get('compare', 'ListingFEController@compare');
+Route::resource('buscar', 'ListingFEController', ['only' => ['index']]);
+
+Route::post('appointments', 'AppointmentController@store');
+
+Route::get('user/{id}/confirm/{code}', 'UserController@confirm');
+Route::get('/{username}', 'UserController@show');
+
+Route::post('pagos/confirmar', 'PaymentController@confirm');
+Route::post('pagos/disputas', 'PaymentController@dispute');
+
+Route::controllers([
+	'auth' 		=> 'Auth\AuthController',
+	'password' 	=> 'Auth\PasswordController',
+	'cookie' 	=> 'CookieController',
+]);
+Route::get('social-auth/{provider?}', 'Auth\AuthController@redirectToProvider');
+Route::get('social-auth/{provider?}/redirects', 'Auth\AuthController@handleProviderCallback');

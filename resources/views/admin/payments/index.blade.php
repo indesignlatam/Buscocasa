@@ -72,7 +72,7 @@
 									<td>{{ $payment->description }}</td>
 									<td>{{ money_format('$%!.1i', $payment->amount) }}</td>
 									<td class="uk-hidden-small">{{ $payment->payment_method_name }}</td>								
-									<td class="uk-hidden-small">{{ Carbon::createFromFormat('Y-m-d H:i:s', $payment->updated_at, 'America/Bogota')->diffForHumans() }}</td>
+									<td class="uk-hidden-small">{{ $payment->updated_at->diffForHumans() }}</td>
 
 									@if($payment->confirmed || $payment->canceled || $payment->state_pol)
 										<td><button class="uk-button uk-button-small uk-button-danger" id="{{ $payment->id }}" onclick="cancel(this)" disabled><i class="uk-icon-remove"></i></button></td>

@@ -17,7 +17,7 @@
 	    <hr>
 	    
 	    <div class="uk-panel">
-			<a class="uk-button uk-button-large uk-float-right uk-margin-left uk-width-small-1-1 uk-width-medium-2-10 uk-width-large-1-10" href="{{ url('/admin/listings') }}">{{ trans('admin.close') }}</a>
+			<button class="uk-button uk-button-large uk-float-right uk-margin-left uk-width-small-1-1 uk-width-medium-2-10 uk-width-large-1-10" onclick="leave()">{{ trans('admin.close') }}</button>
 	        <button form="create_form" type="submit" class="uk-button uk-button-large uk-button-success uk-float-right uk-width-small-1-1 uk-width-medium-3-10 uk-width-large-2-10" onclick="blockUI()">{{ trans('admin.save') }}</button>
 	    </div>
 
@@ -322,6 +322,12 @@
 
 		function blockUI(){
 	        var modal = UIkit.modal.blockUI('<h3 class="uk-text-center">Guardando inmueble, porfavor espere.</h3><div class="uk-text-center uk-text-primary"><i class="uk-icon-large uk-icon-spinner uk-icon-spin"</i></div>'); // modal.hide() to unblock
+	    }
+
+	    function leave() {
+	    	UIkit.modal.confirm("{{ trans('admin.sure_leave') }}", function(){
+			    window.location.replace("{{ url('/admin/listings') }}");
+			}, {labels:{Ok:'{{trans("admin.yes")}}', Cancel:'{{trans("admin.cancel")}}'}});
 	    }
 
 		function format(field){

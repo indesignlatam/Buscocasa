@@ -14,8 +14,8 @@ use Analytics;
 
 use App\Models\Appointment;
 use	App\Models\Listing;
-use App\Commands\SendNewMessageEmail;
-use	App\Commands\RespondMessageEmail;
+use App\Jobs\SendNewMessageEmail;
+use	App\Jobs\RespondMessageEmail;
 use	App\Events\ListingMessaged;
 
 class AppointmentController extends Controller {
@@ -36,7 +36,7 @@ class AppointmentController extends Controller {
 	 */
 	public function index(Request $request){
 		//
-		$query;
+		$query = null;
 		$take = Settings::get('pagination_objects');
 
 		if(Auth::user()->is('admin')){

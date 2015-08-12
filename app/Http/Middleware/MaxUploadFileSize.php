@@ -17,7 +17,11 @@ class MaxUploadFileSize {
 	    	return $next($request);
 	    }
 	    // Get the max upload size (in Mb, so convert it to bytes)
-	    $maxUploadSize 	= 1024 * 1024 * ini_get('post_max_size');
+	    $post_size = 10;
+	    if(ini_get('post_max_size') && ini_get('post_max_size') > 0){
+	    	$post_size = ini_get('post_max_size');
+	    }
+	    $maxUploadSize 	= 1024 * 1024 * $post_size;
 	    $contentSize 	= 0;
 	    if (isset($_SERVER['HTTP_CONTENT_LENGTH'])){
 	        $contentSize = $_SERVER['HTTP_CONTENT_LENGTH'];
