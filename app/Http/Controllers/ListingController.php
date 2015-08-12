@@ -152,11 +152,15 @@ class ListingController extends Controller {
 		$input['floor'] 	= preg_replace("/[^0-9]/", "", $input['floor']);
 		$input['construction_year'] = preg_replace("/[^0-9]/", "", $input['construction_year']);
 		$input['administration'] 	= preg_replace("/[^0-9]/", "", $input['administration']);
-		$input['district'] 			= preg_replace("/[^a-zA-Z0-9ñáéíóúÁÉÍÓÚÑ ]+/u", "", $input['district']);
-		//$input['description'] 			= preg_replace("/[^a-zA-Z0-9.,;:+$%/?¿!¡ñáéíóúüÁÉÍÓÚÜÑ ]+/", "", $input['description']);
+		$input['district'] 	= preg_replace("/[^a-zA-Z0-9ñáéíóúÁÉÍÓÚÑ ]+/u", "", $input['district']);
 		$input['direction'] = preg_replace("/[^a-zA-Z0-9# -]+/", "", $input['direction']);
 		$input['broker_id'] = Auth::user()->id;
 		$input['listing_status'] = 2;
+
+		// If year input is less than 500 is not a year is the age so substract current year - age
+		if((int)$input['construction_year'] < 500){
+			$input['construction_year'] = date('Y') - $input['construction_year'];
+		}
 		
 
 		if(!$input['district']){
@@ -309,8 +313,12 @@ class ListingController extends Controller {
 		$input['construction_year'] = preg_replace("/[^0-9]/", "", $input['construction_year']);
 		$input['administration'] 	= preg_replace("/[^0-9]/", "", $input['administration']);
 		$input['district'] 	= preg_replace("/[^a-zA-Z0-9ñáéíóúÁÉÍÓÚÜÑ ]+/u", "", $input['district']);
-		//$input['description'] 	= preg_replace("/[^a-zA-Z0-9.,;:+$%/?¿!¡ñáéíóúüÁÉÍÓÚÜÑ ]+/u", "", $input['description']);
 		$input['direction'] = preg_replace("/[^a-zA-Z0-9# -]+/", "", $input['direction']);
+
+		// If year input is less than 500 is not a year is the age so substract current year - age
+		if((int)$input['construction_year'] < 500){
+			$input['construction_year'] = date('Y') - $input['construction_year'];
+		}
 
 
 		if (!$listing->validate($input, null, true)){
