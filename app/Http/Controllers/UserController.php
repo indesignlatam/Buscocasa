@@ -172,7 +172,7 @@ class UserController extends Controller {
     	]);
 
     	if( Hash::check($request->get('current_password'), $user->password) ){
-	    	$user->password = $request->get('password');
+	    	$user->password = Hash::make($request->get('password'));
 	    	$user->save();
     	}else{
     		return redirect('/admin/user/'.$id.'/edit')->withErrors([trans('responses.password_dont_match')]);

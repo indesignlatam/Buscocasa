@@ -210,7 +210,7 @@
 				<div class="uk-form-row uk-margin-small-top">
 			        <label class="uk-form-label">{{ trans('admin.current_password') }}</label>
 			        <div class="uk-form-controls">
-			        	<input class="uk-form-large" type="text" name="current_password">
+			        	<input class="uk-form-large" type="password" name="current_password">
 					</div>
 				</div>
 			</div>
@@ -218,7 +218,7 @@
 				<div class="uk-form-row uk-margin-small-top">
 			        <label class="uk-form-label">{{ trans('admin.new_password') }}</label>
 			        <div class="uk-form-controls">
-			        	<input class="uk-form-large" type="text" name="password">
+			        	<input class="uk-form-large" type="password" name="password">
 					</div>
 				</div>
 			</div>
@@ -226,7 +226,7 @@
 				<div class="uk-form-row uk-margin-small-top">
 			        <label class="uk-form-label">{{ trans('admin.confirm_new_password') }}</label>
 			        <div class="uk-form-controls">
-			        	<input class="uk-form-large" type="text" name="password_confirmation">
+			        	<input class="uk-form-large" type="password" name="password_confirmation">
 					</div>
 				</div>
 			</div>
