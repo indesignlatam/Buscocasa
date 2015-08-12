@@ -93,6 +93,7 @@ return [
     'set_as_main_image'         => 'Seleccionar como imagen principal',
     'share_social'              => 'Comparte en redes',
     'images_notice'             => 'Para cargar imagenes debes guardar el inmueble primero.',
+    'order_images'              => 'Puedes ordenar las imagenes que cargues arrastrandolas a la posicion que desees. La primera imagen sera la imagen principal.',
 
     //
     'featured'                  => 'Destacado',
@@ -102,7 +103,7 @@ return [
     'drag_listing_images_or' 	=> 'Arrastra aca las imagenes del inmueble o',
     'select_an_image' 			=> 'haz click aqui para seleccionar una imagen de tu computador.',
     'edit_listing' 				=> 'Editar inmueble publicado',
-    'add_images_to_listing'		=> 'Agrega imagenes para mejorar la visibilidad de tu publicación',
+    'add_images_to_listing'		=> 'Agrega imagenes para mejorar la visibilidad de tu publicación.',
     'images_uploaded_succesfuly'=> 'Las imagenes fueron cargadas exitosamente.',
     'image_uploaded_succesfuly' => 'La imagen fue cargada exitosamente.',
     'image_deleted_succesfuly'  => 'La imagen fue eliminida exitosamente.',
