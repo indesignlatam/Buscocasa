@@ -3,11 +3,11 @@
 
     	<a href="#menuoffcanvas" class="uk-navbar-toggle uk-visible-small" data-uk-offcanvas></a>
         
-        <a class="uk-navbar-brand uk-hidden-small" href="{{ url('/admin') }}">
+        <a class="uk-navbar-brand uk-hidden-small" href="{{ url('/') }}">
             <img src="{{ asset('/images/logo_h.png') }}" alt="logo" class="uk-margin-right" style="height:30px; margin-left:-20px">
         </a>
 
-        <a class="uk-navbar-brand uk-visible-small" href="{{ url('/admin') }}">
+        <a class="uk-navbar-brand uk-visible-small" href="{{ url('/') }}">
             <img src="{{ asset('/images/logo_h.png') }}" alt="logo" style="max-height:17px">
         </a>
 
@@ -89,6 +89,10 @@
                     </li>
                 @else
                     <li>
+                        <a href="{{ url('/admin') }}">{{ trans('admin.home') }}</a>
+                    </li>
+
+                    <li>
                         <a href="{{ url('/admin/listings') }}">{{ trans('admin.my_listings_menu') }}</a>
                     </li>
 
@@ -111,15 +115,19 @@
                     <li><a href="{{ url('/auth/register') }}">{{ trans('admin.register') }}</a></li>
                 @else
                     <li class="uk-parent" data-uk-dropdown="">
-                        <a href="{{ url('/admin/user/'.Auth::user()->id.'/edit') }}">{{ Auth::user()->name }}<b class="uk-icon-caret-down uk-margin-small-left"></b></a>
+                        <a href="{{ url('/admin/listings') }}">{{ Auth::user()->name }}<b class="uk-icon-caret-down uk-margin-small-left"></b></a>
                         <div class="uk-dropdown uk-dropdown-navbar">
                             <ul class="uk-nav uk-nav-navbar">
-                                <li><a target="_blank" href="{{ url('/') }}">{{ trans('admin.live_site') }}</a></li>
-                                <li><a href="{{ url('/admin/user/'.Auth::user()->id.'/edit') }}">{{ trans('admin.profile_menu') }}</a></li>
+                                <li><a href="{{ url('/admin') }}">{{ trans('admin.dashboard') }}</a></li>
+                                <li><a href="{{ url('/admin/listings') }}">{{ trans('admin.my_listings_menu') }}</a></li>
+                                <li><a href="{{ url('/admin/messages') }}">{{ trans('admin.my_messages_menu') }}</a></li>
+                                <li><a href="{{ url('/admin/pagos') }}">{{ trans('admin.payments') }}</a></li>
+                                <li><a href="{{ url('/admin/user/'.Auth::user()->id.'/edit') }}">{{ trans('admin.user_data') }}</a></li>
                                 @role('admin')
                                     <li><a href="{{ url('/admin/config') }}">{{ trans('admin.configuration') }}</a></li>
                                 @endrole
                                 <li class="uk-nav-divider"></li>
+                                <li><a target="_blank" href="{{ url('/') }}">{{ trans('admin.live_site') }}</a></li>
                                 <li><a href="{{ url('/auth/logout') }}">{{ trans('admin.logout') }}</a></li>
                             </ul><!--/uk-nav-->
                         </div><!--/uk-dropdown-navbar-->
