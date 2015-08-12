@@ -36,7 +36,7 @@ class SendTipsEmail extends Job implements SelfHandling, ShouldQueue {
 		$listing = $this->listing;
 
 		// If mail account not confirmed dont send email
-		if($listing->broker->confirmed){
+		if($listing->broker->confirmed && $listing->broker->email_notifications){
 			Mail::send('emails.tips', [ 'listing' => $listing, 
 										'user' => $listing->broker,
 									  ], 

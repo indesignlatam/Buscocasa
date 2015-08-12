@@ -35,7 +35,7 @@ class SendExpiringListingEmail extends Job implements SelfHandling, ShouldQueue 
 		//
 		$listing = $this->listing;
 		// If mail not confirmed dont send email
-		if($listing->broker->confirmed){
+		if($listing->broker->confirmed && $listing->broker->email_notifications){
 			Mail::send('emails.listing_expiring', [ 'listing' 	=> $listing, 
 													'user' 		=> $listing->broker,
 												  ], 
