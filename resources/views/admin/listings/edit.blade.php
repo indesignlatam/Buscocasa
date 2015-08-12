@@ -318,10 +318,11 @@
 				    </div>
 				    <!-- Share listing -->
 
-					<div class="uk-margin-top uk-grid">
+					<div class="uk-margin-top uk-flex">
 				        <!-- This is a button toggling the modal -->
-				        <button form="create_form" type="submit" class="uk-button uk-button-large uk-button-success uk-text-bold uk-width-small-1-1 uk-width-medium-5-10 uk-width-large-5-10 uk-margin-bottom" onclick="blockUI()">{{ trans('admin.save') }}</button>
-				        <button form="create_form" type="submit" class="uk-button uk-button-large uk-text-bold uk-width-small-1-1 uk-width-medium-5-10 uk-width-large-5-10 uk-margin-bottom" onclick="saveClose()" >{{ trans('admin.save_close') }}</button>
+				        <button form="create_form" type="submit" class="uk-width-1-3 uk-margin-right uk-button uk-button-large uk-button-success uk-text-bold uk-margin-bottom" onclick="blockUI()">{{ trans('admin.save') }}</button>
+				        <button form="create_form" type="submit" class="uk-width-1-3 uk-margin-right uk-button uk-button-large uk-text-bold uk-margin-bottom" onclick="saveClose()" >{{ trans('admin.save_close') }}</button>
+				        <button class="uk-width-1-3 uk-button uk-button-large uk-text-bold uk-margin-bottom" onclick="viewListing()">{{ trans('admin.view_listing') }}</button>
 				    </div>
 				</div>
 
