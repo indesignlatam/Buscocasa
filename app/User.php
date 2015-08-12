@@ -32,6 +32,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                         'phone_1'                       => 'digits_between:7,15',
                         'phone_2'                       => 'digits_between:7,15',
                         'description'                   => 'string|max:1500',
+                        'email_notifications'           => 'required|boolean',
+                        'privacy_name'                  => 'required|boolean',
+                        'privacy_phone'                 => 'required|boolean',
                         ];
     /**
      * The database table used by the model.
@@ -45,7 +48,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      *
      * @var array
      */
-    protected $fillable = ['name' ,'username', 'email', 'phone_1', 'phone_2', 'description', 'password', 'confirmation_code'];
+    protected $fillable = ['name' ,'username', 'email', 'phone_1', 'phone_2', 'description', 'password', 'confirmation_code', 'email_notifications', 'privacy_name', 'privacy_phone'];
 
     /**
      * The attributes excluded from the model's JSON form.
