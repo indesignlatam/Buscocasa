@@ -38,6 +38,7 @@
     </style>
     <script type="text/javascript">
         loadCSS("{{ asset('/css/select2front.min.css') }}");
+        loadCSS("{{ asset('/css/components/slidenav.almost-flat.min.css') }}");
     </script>
 @endsection
 
@@ -147,49 +148,95 @@
         <!-- latest listings on sale-->
         @if(count($sales))
             <h1 class="uk-text-bold">{{ trans('frontend.latest_listings_sale') }}</h1>
-            <div class="uk-grid">
-                @foreach($sales as $sale)
-                    <div class="uk-width-large-2-10 uk-width-medium-1-3 uk-width-small-1-1" style="position:relative">
-                        <a href="{{ url($sale->path()) }}">
-                            <img src="{{ asset(Image::url($sale->image_path(),['mini_front'])) }}" class="uk-margin-small-bottom" style="max-width=150px" data-uk-scrollspy="{cls:'uk-animation-fade'}">
-                        </a>
 
-                        <br class="uk-visible-small">
-                        <a href="{{ url($sale->path()) }}">{{ $sale->title }}</a>
-                        <p class="uk-text-muted" style="font-size:10px;margin-top:-4px">{{ $sale->area }} mt2 - {{ money_format('$%!.0i', $sale->price) }}</p>
-                        <hr class="uk-visible-small uk-margin-bottom">
-                    </div>
-                @endforeach
-            </div>
-            <div class="uk-margin-large-bottom">
-                <a href="{{ url('ventas') }}" class="uk-button uk-float-right">{{ trans('admin.view_more_listings') }}</a>
-            </div>
+            @if(!Agent::isMobile())
+                <div class="uk-slidenav-position" data-uk-slideset="{default: 4, autoplay: true}">
+                    <ul class="uk-grid uk-slideset">
+                        @foreach($sales as $sale)
+                        <li>
+                            <a href="{{ url($sale->path()) }}">
+                                <img src="{{ asset(Image::url($sale->image_path(),['mini_front'])) }}" class="uk-margin-small-bottom" style="max-width=150px">
+                            </a>
+                            <a href="{{ url($sale->path()) }}">{{ $sale->title }}</a>
+                            <p class="uk-text-muted" style="font-size:10px;margin-top:-4px">{{ $sale->area }} mt2 - {{ money_format('$%!.0i', $sale->price) }}</p>
+                        </li>
+                        @endforeach
+                    </ul>
+                    <a href="" style="margin-top:-60px" class="uk-slidenav uk-slidenav-previous uk-slidenav-contrast" data-uk-slideset-item="previous"></a>
+                    <a href="" style="margin-top:-60px" class="uk-slidenav uk-slidenav-next uk-slidenav-contrast" data-uk-slideset-item="next"></a>
+                </div>
+                <div class="uk-panel">
+                    <a href="{{ url('ventas') }}" class="uk-button uk-float-right">{{ trans('admin.view_more_listings') }}</a>
+                </div>
+                <hr>
+            @else
+                <div class="uk-grid">
+                    @foreach($sales as $sale)
+                        <div class="uk-width-large-2-10 uk-width-medium-1-3 uk-width-small-1-1" style="position:relative">
+                            <a href="{{ url($sale->path()) }}">
+                                <img src="{{ asset(Image::url($sale->image_path(),['mini_front'])) }}" class="uk-margin-small-bottom" style="max-width=150px" data-uk-scrollspy="{cls:'uk-animation-fade'}">
+                            </a>
 
-            <hr>
+                            <br class="uk-visible-small">
+                            <a href="{{ url($sale->path()) }}">{{ $sale->title }}</a>
+                            <p class="uk-text-muted" style="font-size:10px;margin-top:-4px">{{ $sale->area }} mt2 - {{ money_format('$%!.0i', $sale->price) }}</p>
+                            <hr class="uk-visible-small uk-margin-bottom">
+                        </div>
+                    @endforeach
+                </div>
+                <div class="uk-margin-large-bottom">
+                    <a href="{{ url('ventas') }}" class="uk-button uk-float-right">{{ trans('admin.view_more_listings') }}</a>
+                </div>
+
+                <hr>
+            @endif
         @endif
         <!-- latest listings on sale-->
 
         <!-- latest listings on lease-->
         @if(count($leases))
             <h1 class="uk-text-bold">{{ trans('frontend.latest_listings_lease') }}</h1>
-            <div class="uk-grid">
-                @foreach($leases as $lease)
-                    <div class="uk-width-large-2-10 uk-width-medium-1-3 uk-width-small-1-1" style="position:relative">
-                        <a href="{{ url($lease->path()) }}">
-                            <img src="{{ asset(Image::url($lease->image_path(),['mini_front'])) }}" class="uk-margin-small-bottom" style="max-width=150px" data-uk-scrollspy="{cls:'uk-animation-fade'}">
-                        </a>
-                        
-                        <a href="{{ url($lease->path()) }}">{{ $lease->title }}</a>
-                        <p class="uk-text-muted" style="font-size:10px;margin-top:-4px">{{ $lease->area }} mt2 - {{ money_format('$%!.0i', $lease->price) }}</p>
-                        <hr class="uk-visible-small uk-margin-bottom">
-                    </div>
-                @endforeach
-            </div>
-            <div class="uk-margin-large-bottom ">
-                <a href="{{ url('arriendos') }}" class="uk-button uk-float-right">{{ trans('admin.view_more_listings') }}</a>
-            </div>
 
-            <hr>
+            @if(!Agent::isMobile())
+                <div class="uk-slidenav-position" data-uk-slideset="{default: 4, autoplay: true}">
+                    <ul class="uk-grid uk-slideset">
+                        @foreach($leases as $lease)
+                        <li>
+                            <a href="{{ url($lease->path()) }}">
+                                <img src="{{ asset(Image::url($lease->image_path(),['mini_front'])) }}" class="uk-margin-small-bottom" style="max-width=150px">
+                            </a>
+                            <a href="{{ url($lease->path()) }}">{{ $lease->title }}</a>
+                            <p class="uk-text-muted" style="font-size:10px;margin-top:-4px">{{ $lease->area }} mt2 - {{ money_format('$%!.0i', $lease->price) }}</p>
+                        </li>
+                        @endforeach
+                    </ul>
+                    <a href="" style="margin-top:-60px" class="uk-slidenav uk-slidenav-previous uk-slidenav-contrast" data-uk-slideset-item="previous"></a>
+                    <a href="" style="margin-top:-60px" class="uk-slidenav uk-slidenav-next uk-slidenav-contrast" data-uk-slideset-item="next"></a>
+                </div>
+                <div class="uk-panel">
+                    <a href="{{ url('arriendos') }}" class="uk-button uk-float-right">{{ trans('admin.view_more_listings') }}</a>
+                </div>
+                <hr>
+            @else
+                <div class="uk-grid">
+                    @foreach($leases as $lease)
+                        <div class="uk-width-large-2-10 uk-width-medium-1-3 uk-width-small-1-1" style="position:relative">
+                            <a href="{{ url($lease->path()) }}">
+                                <img src="{{ asset(Image::url($lease->image_path(),['mini_front'])) }}" class="uk-margin-small-bottom" style="max-width=150px" data-uk-scrollspy="{cls:'uk-animation-fade'}">
+                            </a>
+                            
+                            <a href="{{ url($lease->path()) }}">{{ $lease->title }}</a>
+                            <p class="uk-text-muted" style="font-size:10px;margin-top:-4px">{{ $lease->area }} mt2 - {{ money_format('$%!.0i', $lease->price) }}</p>
+                            <hr class="uk-visible-small uk-margin-bottom">
+                        </div>
+                    @endforeach
+                </div>
+                <div class="uk-margin-large-bottom ">
+                    <a href="{{ url('arriendos') }}" class="uk-button uk-float-right">{{ trans('admin.view_more_listings') }}</a>
+                </div>
+
+                <hr>
+            @endif
         @endif
         <!-- latest listings on lease-->
 
@@ -271,7 +318,9 @@
 	@parent
 
     <noscript><link href="{{ asset('/css/select2front.min.css') }}" rel="stylesheet"/></noscript>
+    <noscript><link href="{{ asset('/css/components/slidenav.almost-flat.min.css') }}" rel="stylesheet"/></noscript>
     <script src="{{ asset('/js/select2.min.js') }}"></script>
+    <script src="{{ asset('/js/components/slideset.min.js') }}"></script>
 
     <script type="text/javascript">
         $(document).ready(function() {
