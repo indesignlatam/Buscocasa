@@ -92,6 +92,8 @@ return [
     'eliminate_image'           => 'Eliminar imagen',
     'set_as_main_image'         => 'Seleccionar como imagen principal',
     'share_social'              => 'Comparte en redes',
+    'images_notice'             => 'Para cargar imagenes debes guardar el inmueble primero.',
+    'order_images'              => 'Puedes ordenar las imagenes que cargues arrastrandolas a la posicion que desees. La primera imagen sera la imagen principal.',
 
     //
     'featured'                  => 'Destacado',
@@ -101,7 +103,7 @@ return [
     'drag_listing_images_or' 	=> 'Arrastra aca las imagenes del inmueble o',
     'select_an_image' 			=> 'haz click aqui para seleccionar una imagen de tu computador.',
     'edit_listing' 				=> 'Editar inmueble publicado',
-    'add_images_to_listing'		=> 'Agrega imagenes para mejorar la visibilidad de tu publicación',
+    'add_images_to_listing'		=> 'Agrega imagenes para mejorar la visibilidad de tu publicación.',
     'images_uploaded_succesfuly'=> 'Las imagenes fueron cargadas exitosamente.',
     'image_uploaded_succesfuly' => 'La imagen fue cargada exitosamente.',
     'image_deleted_succesfuly'  => 'La imagen fue eliminida exitosamente.',
@@ -184,7 +186,7 @@ return [
     'answer'                    => 'Responder',
     'mark_as_read'              => 'Marcar como leido',
     'mark_as_unread'            => 'Marcar como no leido',
-    'messages' 				    => 'Mensajes recibidos de clientes',
+    'messages' 				    => 'Mis mensajes recibidos',
     'you_have_no_messages' 		=> '¿Aún no tienes ningún mensaje?',
     'sure'                      => '¿Esta seguro? Esta acción eliminara el objeto permanentemente.',
     'sure_leave'                => '¿Esta seguro que desea salir de esta pagina? Si ha realizado cambios estos no sera guardados.',
@@ -315,7 +317,9 @@ return [
     'view_more_listings'        => 'Ver más inmuebles',
     'welcome_new_user'          => 'Estas un paso mas cerca de publicar tu inmueble. Te hemos enviado un mensaje para que confirmes tu correo electronico y puedas acceder a todos los beneficios de BuscoCasa.co',
     'open'                      => 'Ir a',
-    'features111'               => 'publicados',
+
+    // Navbar
+    'home'                      => 'Inicio',
     'features111'               => 'publicados',
     'features111'               => 'publicados',
     'features111'               => 'publicados',

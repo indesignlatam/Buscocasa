@@ -27,6 +27,7 @@ class AppointmentController extends Controller {
      */
     public function __construct(){
         $this->middleware('throttle', ['only' => ['store', 'answer']]);
+        $this->middleware('recaptcha', ['only' => 'store']);
     }
 
 	/**
@@ -90,33 +91,6 @@ class AppointmentController extends Controller {
 	 * @return Response
 	 */
 	public function store(Request $request){
-		// Captcha verify
-		if(!Auth::check()){
-			if(!$request->has('g-recaptcha-response')){
-				return redirect()->back()->withErrors([trans('auth.recaptcha_error')])->withInput();
-			}
-
-			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL,"https://www.google.com/recaptcha/api/siteverify");
-			curl_setopt($ch, CURLOPT_POST, 1);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, 
-			         http_build_query(['secret' 	=> '6Ldv5wgTAAAAAKsrEHnUTD2wKdUtrfQUxFo_S3lq',
-			         					'response' 	=> $request->get('g-recaptcha-response'),
-			         					'remoteip'	=> $request->getClientIp()
-			         					]));
-
-			// receive server response ...
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			$captcha = curl_exec($ch);
-			$captcha = json_decode($captcha, true);
-			curl_close ($ch);
-
-			if(!$captcha['success']){
-				return redirect()->back()->withErrors([trans('auth.youre_bot')])->withInput();
-			}
-		}
-		// Captcha verify
-
 		// Get object to work with
 		$appointment = new Appointment;
 

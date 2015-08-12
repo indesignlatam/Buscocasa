@@ -58,7 +58,11 @@
 
 				<div class="uk-width-large-9-10 uk-width-medium-9-10" id="1">
 					<!-- Categoria - tipo de publicacion - ubicacion -->
-					<h2 class="uk-text-primary uk-text-bold" style="text-transform: uppercase">{{ trans('admin.listing_data_location') }}</h2>
+					<div class="uk-panel">
+						<h2 class="uk-display-inline uk-text-primary uk-text-bold uk-float-left" style="text-transform: uppercase">{{ trans('admin.listing_data_location') }}</h2>
+						<h2 class="uk-display-inline uk-float-right uk-padding-remove uk-margin-remove"><i id="points_main">50</i>/50</h2>
+					</div>
+					
 					<div class="uk-grid">
 						<div class="uk-width-large-1-2">
 							<div class="uk-form-row">
@@ -127,65 +131,68 @@
 							<?php echo $map['html']; ?>
 						</div>
 						<!-- Mapa -->
+					</div>
 
+					<div class="uk-grid uk-margin-top-remove" id="3">
 						<!-- Informacion basica del inmueble -->
-						<div class="uk-width-1-1 uk-margin-bottom">
+						<div class="uk-panel uk-width-1-1 uk-margin-bottom">
 							<hr>
-							<h2 class="uk-text-primary uk-text-bold" style="text-transform: uppercase" id="3">{{ trans('admin.listing_basic_information') }}</h2>
+							<h2 class="uk-display-inline uk-text-primary uk-text-bold uk-float-left uk-padding-remove uk-margin-remove" style="text-transform: uppercase">{{ trans('admin.listing_basic_information') }}</h2>
+							<h2 class="uk-display-inline uk-float-right uk-padding-remove uk-margin-remove"><i id="points_basics">0</i>/150</h2>
 						</div>
 
 						<div class="uk-width-large-1-3 uk-width-1-2">
 							<div class="uk-form-row">
 						        <label class="uk-form-label" for="">{{ trans('admin.price') }} <i class="uk-text-danger">*</i></label>
-								<input class="uk-width-large-10-10 uk-form-large" id="price" type="text" name="price" placeholder="{{ trans('admin.price') }}" value="{{ $listing->price }}" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.price_tooltip') }}" onkeyup="format(this);">
+								<input class="uk-width-large-10-10 uk-form-large" id="price" type="text" name="price" placeholder="{{ trans('admin.price') }}" value="{{ $listing->price }}" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.price_tooltip') }}" onkeyup="format(this);" onchange="calculatePoints('basics')">
 							</div>
 
 							<div class="uk-form-row">
 						        <label class="uk-form-label" for="">{{ trans('admin.stratum') }} <i class="uk-text-danger">*</i></label>
-								<input class="uk-width-large-10-10 uk-form-large" type="text" name="stratum" placeholder="{{ trans('admin.stratum') }}" value="{{ $listing->stratum }}" onkeyup="format(this);">
+								<input class="uk-width-large-10-10 uk-form-large" type="text" name="stratum" placeholder="{{ trans('admin.stratum') }}" value="{{ $listing->stratum }}" onkeyup="format(this);" onchange="calculatePoints('basics')">
 							</div>
 
 							<div class="uk-form-row">
 						        <label class="uk-form-label" for="">{{ trans('admin.area') }} <i class="uk-text-danger">*</i></label>
-								<input class="uk-width-large-10-10 uk-form-large" id="area" type="text" name="area" placeholder="{{ trans('admin.area') }}" value="{{ $listing->area }}" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.area_tooltip') }}" onkeyup="format(this);">
+								<input class="uk-width-large-10-10 uk-form-large" id="area" type="text" name="area" placeholder="{{ trans('admin.area') }}" value="{{ $listing->area }}" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.area_tooltip') }}" onkeyup="format(this);" onchange="calculatePoints('basics')">
 							</div>
 							<div class="uk-form-row">
 						        <label class="uk-form-label" for="">{{ trans('admin.lot_area') }}</label>
-								<input class="uk-width-large-10-10 uk-form-large" id="lot_area" type="text" name="lot_area" placeholder="{{ trans('admin.lot_area') }}" value="{{ $listing->lot_area }}" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.lot_area_tooltip') }}" onkeyup="format(this);">
+								<input class="uk-width-large-10-10 uk-form-large" id="lot_area" type="text" name="lot_area" placeholder="{{ trans('admin.lot_area') }}" value="{{ $listing->lot_area }}" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.lot_area_tooltip') }}" onchange="calculatePoints('basics')">
 							</div>
 						</div>
 
 						<div class="uk-width-large-1-3 uk-width-1-2">
 							<div class="uk-form-row">
 						        <label class="uk-form-label" for="">{{ trans('admin.rooms') }}</label>
-								<input class="uk-width-large-10-10 uk-form-large" type="text" name="rooms" placeholder="{{ trans('admin.rooms') }}" value="{{ $listing->rooms }}" onkeyup="format(this);">
+								<input class="uk-width-large-10-10 uk-form-large" type="text" name="rooms" placeholder="{{ trans('admin.rooms') }}" value="{{ $listing->rooms }}" onkeyup="format(this);" onchange="calculatePoints('basics')">
 							</div>
 
 							<div class="uk-form-row">
 						        <label class="uk-form-label" for="">{{ trans('admin.bathrooms') }}</label>
-								<input class="uk-width-large-10-10 uk-form-large" type="text" name="bathrooms" placeholder="{{ trans('admin.bathrooms') }}" value="{{ $listing->bathrooms }}" onkeyup="format(this);">
+								<input class="uk-width-large-10-10 uk-form-large" type="text" name="bathrooms" placeholder="{{ trans('admin.bathrooms') }}" value="{{ $listing->bathrooms }}" onkeyup="format(this);" onchange="calculatePoints('basics')">
 							</div>
 
 							<div class="uk-form-row">
 						        <label class="uk-form-label" for="">{{ trans('admin.garages') }}</label>
-								<input class="uk-width-large-10-10 uk-form-large" type="text" name="garages" placeholder="{{ trans('admin.garages') }}" value="{{ $listing->garages }}" onkeyup="format(this);">
+								<input class="uk-width-large-10-10 uk-form-large" type="text" name="garages" placeholder="{{ trans('admin.garages') }}" value="{{ $listing->garages }}" onkeyup="format(this);" onchange="calculatePoints('basics')">
 							</div>
 						</div>
 
 						<div class="uk-width-large-1-3 uk-width-1-2">
 							<div class="uk-form-row">
 						        <label class="uk-form-label" for="">{{ trans('admin.floor') }}</label>
-								<input class="uk-width-large-10-10 uk-form-large" type="text" name="floor" placeholder="{{ trans('admin.floor') }}" value="{{ $listing->floor }}" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.floor_tooltip') }}" onkeyup="format(this);">
+								<input class="uk-width-large-10-10 uk-form-large" type="text" name="floor" placeholder="{{ trans('admin.floor') }}" value="{{ $listing->floor }}" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.floor_tooltip') }}" onkeyup="format(this);" onchange="calculatePoints('basics')">
 							</div>
 
 							<div class="uk-form-row">
 						        <label class="uk-form-label" for="">{{ trans('admin.construction_year') }}</label>
-								<input class="uk-width-large-10-10 uk-form-large" type="text" name="construction_year" placeholder="{{ trans('admin.construction_year') }}" value="{{ $listing->construction_year }}" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.construction_year_tooltip') }}" onkeyup="format(this);">
+								<input class="uk-width-large-10-10 uk-form-large" type="text" name="construction_year" placeholder="{{ trans('admin.construction_year') }}" value="{{ $listing->construction_year }}" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.construction_year_tooltip') }}" onkeyup="format(this);" onchange="calculatePoints('basics')">
 							</div>
 
 							<div class="uk-form-row">
 						        <label class="uk-form-label" for="">{{ trans('admin.administration_fees') }}</label>
-								<input class="uk-width-large-10-10 uk-form-large" id="administration" type="text" name="administration" placeholder="{{ trans('admin.administration_fees') }}" value="{{ $listing->administration }}" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.administration_fees_tooltip') }}" onkeyup="format(this);">
+								<input class="uk-width-large-10-10 uk-form-large" id="administration" type="text" name="administration" placeholder="{{ trans('admin.administration_fees') }}" value="{{ $listing->administration }}" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.administration_fees_tooltip') }}" onkeyup="format(this);" onchange="calculatePoints('basics')">
 							</div>
 						</div>
 						<!-- Informacion basica del inmueble -->
@@ -195,7 +202,10 @@
 
 					<!-- Caracteristicas del inmueble -->
 					<div id="4">
-						<h2 class="uk-text-primary uk-text-bold" style="text-transform: uppercase">{{ trans('admin.listing_caracteristics') }}</h2>
+						<div class="uk-panel">
+							<h2 class="uk-display-inline uk-text-primary uk-text-bold uk-float-left" style="text-transform: uppercase">{{ trans('admin.listing_caracteristics') }}</h2>
+							<h2 class="uk-display-inline uk-float-right uk-padding-remove uk-margin-remove"><i id="points_caracteristics">0</i>/150</h2>
+						</div>
 
 						<h3>{{ trans('admin.interior') }}</h3>
 						<div class="uk-grid">
@@ -209,10 +219,9 @@
 											@endif
 										@endforeach
 										@if($featureChecked)
-											<label><input type="checkbox" name="{{ $feature->id }}" checked> {{ $feature->name }}</label>
-											<?php $featureChecked = false; ?>
+											<label><input type="checkbox" onchange="calculatePoints('caracteristics')" name="{{ $feature->id }}" checked> {{ $feature->name }}</label>
 										@else
-											<label><input type="checkbox" name="{{ $feature->id }}"> {{ $feature->name }}</label>
+											<label><input type="checkbox" onchange="calculatePoints('caracteristics')" name="{{ $feature->id }}"> {{ $feature->name }}</label>
 										@endif										
 									</div>
 								@endif
@@ -231,10 +240,9 @@
 											@endif
 										@endforeach
 										@if($featureChecked)
-											<label><input type="checkbox" name="{{ $feature->id }}" checked> {{ $feature->name }}</label>
-											<?php $featureChecked = false; ?>
+											<label><input type="checkbox" onchange="calculatePoints('caracteristics')" name="{{ $feature->id }}" checked> {{ $feature->name }}</label>
 										@else
-											<label><input type="checkbox" name="{{ $feature->id }}"> {{ $feature->name }}</label>
+											<label><input type="checkbox" onchange="calculatePoints('caracteristics')" name="{{ $feature->id }}"> {{ $feature->name }}</label>
 										@endif										
 									</div>
 								@endif
@@ -253,10 +261,9 @@
 											@endif
 										@endforeach
 										@if($featureChecked)
-											<label><input type="checkbox" name="{{ $feature->id }}" checked> {{ $feature->name }}</label>
-											<?php $featureChecked = false; ?>
+											<label><input type="checkbox" onchange="calculatePoints('caracteristics')" name="{{ $feature->id }}" checked> {{ $feature->name }}</label>
 										@else
-											<label><input type="checkbox" name="{{ $feature->id }}"> {{ $feature->name }}</label>
+											<label><input type="checkbox" onchange="calculatePoints('caracteristics')" name="{{ $feature->id }}"> {{ $feature->name }}</label>
 										@endif										
 									</div>
 								@endif
@@ -269,9 +276,12 @@
 
 					<!-- Informacion adicional -->
 					<div id="5">
-						<h2 class="uk-text-primary uk-text-bold" style="text-transform: uppercase">{{ trans('admin.listing_description') }}</h2>
+						<div class="uk-panel">
+							<h2 class="uk-display-inline uk-text-primary uk-text-bold uk-float-left" style="text-transform: uppercase">{{ trans('admin.listing_description') }}</h2>
+							<h2 class="uk-display-inline uk-float-right uk-padding-remove uk-margin-remove"><i id="points_aditional">0</i>/150</h2>
+						</div>
 						<p class="uk-margin-top-remove">{{ trans('admin.listing_description_help') }}</p>
-						<textarea class="uk-width-large-10-10 uk-margin-small-bottom" rows="5" name="description" maxlength="2000">{{ $listing->description }}</textarea>
+						<textarea id="description" class="uk-width-large-10-10 uk-margin-small-bottom" rows="5" name="description" maxlength="2000" onkeyup="calculatePoints('description')">{{ $listing->description }}</textarea>
 					</div>
 					<!-- Informacion adicional -->
 
@@ -279,8 +289,11 @@
 
 					<!-- Image upload -->
 					<div id="6">
-						<h2 class="uk-text-primary uk-text-bold" style="text-transform: uppercase">{{ trans('admin.images') }}</h2>
-						<p>{{ trans('admin.add_images_to_listing') }}</p>
+						<div class="uk-panel">
+							<h2 class="uk-display-inline uk-text-primary uk-text-bold uk-float-left" style="text-transform: uppercase">{{ trans('admin.images') }}</h2>
+							<h2 class="uk-display-inline uk-float-right uk-padding-remove uk-margin-remove"><i id="points_images">0</i>/150</h2>
+						</div>
+						<p class="uk-margin-remove">{{ trans('admin.add_images_to_listing') }} {{ trans('admin.order_images') }}</p>
 
 				    	<div id="upload-drop" class="uk-placeholder uk-placeholder-large uk-text-center uk-margin-top">
 						    <i class="uk-icon-large uk-icon-cloud-upload"></i> {{ trans('admin.drag_listing_images_or') }} <a class="uk-form-file">{{ trans('admin.select_an_image') }}<input id="upload-select" type="file" multiple></a>
@@ -290,7 +303,7 @@
 						    <div class="uk-progress-bar" style="width: 0%;"></div>
 						</div>
 
-						<ul class="uk-sortable uk-margin-large-top uk-grid" data-uk-sortable="{handleClass:'uk-panel'}"  id="images-div">
+						<ul class="uk-sortable uk-margin-large-top uk-grid" data-uk-sortable="{handleClass:'uk-panel'}" id="images-div">
 						@foreach($listing->images->sortBy('ordering') as $image)
 							<li data-id="{{ $image->id }}" class="uk-width-large-1-4 uk-width-medium-1-3 uk-panel uk-margin-small-bottom" id="image-{{ $image->id }}">
 								<i class="uk-close uk-close-alt uk-panel-badge" id="{{ $image->id }}" onclick="deleteImage(this)" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.eliminate_image') }}"></i>
@@ -318,10 +331,11 @@
 				    </div>
 				    <!-- Share listing -->
 
-					<div class="uk-margin-top uk-grid">
+					<div class="uk-margin-top uk-flex">
 				        <!-- This is a button toggling the modal -->
-				        <button form="create_form" type="submit" class="uk-button uk-button-large uk-button-success uk-text-bold uk-width-small-1-1 uk-width-medium-5-10 uk-width-large-5-10 uk-margin-bottom" onclick="blockUI()">{{ trans('admin.save') }}</button>
-				        <button form="create_form" type="submit" class="uk-button uk-button-large uk-text-bold uk-width-small-1-1 uk-width-medium-5-10 uk-width-large-5-10 uk-margin-bottom" onclick="saveClose()" >{{ trans('admin.save_close') }}</button>
+				        <button form="create_form" type="submit" class="uk-width-1-3 uk-margin-right uk-button uk-button-large uk-button-success uk-text-bold uk-margin-bottom" onclick="blockUI()">{{ trans('admin.save') }}</button>
+				        <button form="create_form" type="submit" class="uk-width-1-3 uk-margin-right uk-button uk-button-large uk-text-bold uk-margin-bottom" onclick="saveClose()" >{{ trans('admin.save_close') }}</button>
+				        <button class="uk-width-1-3 uk-button uk-button-large uk-text-bold uk-margin-bottom" onclick="viewListing()">{{ trans('admin.view_listing') }}</button>
 				    </div>
 				</div>
 
@@ -434,6 +448,65 @@
 	<!-- JS -->
 
 	<script type="text/javascript">
+		function calculatePoints(sender){
+			if(sender == 'basics' || !sender){
+				var $basics = $("#points_basics");
+				basicsPoints = (($('#3').find('input').length - $('#3').find('input[value="0"]').length)/$('#3').find('input').length)*150;
+				$({someValue: $basics.html()}).animate({someValue: basicsPoints}, {
+				    duration: 500,
+				    easing:'swing', // can be anything
+				    step: function() { // called on every step
+				        // Update the element's text with rounded-up value:
+				        $basics.text(Math.round(this.someValue));
+				    }
+				});
+			}
+
+			if(sender == 'caracteristics' || !sender){
+				var $caracteristics = $("#points_caracteristics");
+				caracteristicsPoints = ($('#4').find('input[type="checkbox"]:checked').length/$('#4').find('input[type="checkbox"]').length)*150;
+				$({someValue: $caracteristics.html()}).animate({someValue: caracteristicsPoints}, {
+				    duration: 500,
+				    easing:'swing', // can be anything
+				    step: function() { // called on every step
+				        // Update the element's text with rounded-up value:
+				        $caracteristics.text(Math.round(this.someValue));
+				    }
+				});
+			}
+
+			if(sender == 'description' || !sender){
+				var $el = $("#points_aditional");
+				string = $("#description").val();
+				aditionalPoints = 0;
+				if(string){
+					aditionalPoints = (string.length/1200)*150;
+				}
+				$({someValue: $el.html()}).animate({someValue: aditionalPoints}, {
+				    duration: 500,
+				    easing:'swing', // can be anything
+				    step: function() { // called on every step
+				        // Update the element's text with rounded-up value:
+				        $el.text(Math.round(this.someValue));
+				    }
+				});
+			}
+			
+			if(sender == 'images' || !sender){
+				// Image points
+				var $images = $('#points_images');
+				imagesPoints = ($('#images-div').children().size()/20)*200;
+				$({someValue: $images.html()}).animate({someValue: imagesPoints}, {
+				    duration: 500,
+				    easing:'swing', // can be anything
+				    step: function() { // called on every step
+				        // Update the element's text with rounded-up value:
+				        $images.text(Math.round(this.someValue));
+				    }
+				});
+			}	
+		}
+
 		var sortable = null;
 		$(function() {
 			sortable = $('[data-uk-sortable]');
@@ -441,7 +514,7 @@
                 setOrdering(sortable, el);
             });
             setOrdering(sortable);
-
+            calculatePoints();
 
 			$("#city").select2();
 
@@ -490,11 +563,11 @@
         function deleteImage(sender, modal) {
 	        $.post("{{ url('/admin/images') }}/" + sender.id, {_token: "{{ csrf_token() }}", _method:"DELETE"}, function(result){
 	        	if(result.success){
-	        		$("#image-"+sender.id).fadeOut(500, function() { $(this).remove(); setOrdering(sortable); });
+	        		$("#image-"+sender.id).fadeOut(500, function() { $(this).remove(); setOrdering(sortable); calculatePoints('images'); });
 	        		if(modal){
-	            		$("#image-modal-"+sender.id).fadeOut(500, function() { $(this).remove(); setOrdering(sortable); });
+	            		$("#image-modal-"+sender.id).fadeOut(500, function() { $(this).remove(); setOrdering(sortable); calculatePoints('images'); });
 	        		}
-
+	        		
 	                UIkit.notify('<i class="uk-icon-check-circle"></i> '+result.success, {pos:'top-right', status:'success', timeout: 5000});
 	        	}else if(response.error){
 		            UIkit.notify('<i class="uk-icon-remove"></i> '+response.error, {pos:'top-right', status:'danger', timeout: 5000});
@@ -539,6 +612,7 @@
 		            		// Insite uploader images
 		            		$("#images-div").append('<li data-id="'+response.image.id+'" class="uk-width-large-1-4 uk-width-medium-1-3 uk-panel" id="image-'+response.image.id+'"><i class="uk-close uk-close-alt uk-panel-badge" id="'+response.image.id+'" onclick="deleteImage(this)" data-uk-tooltip="{pos:"top"}" title="{{ trans("admin.eliminate_image") }}"></i><input type="hidden" name="image['+response.image.id+']" value><img src="{{asset("/")}}'+response.image.image_path+'"><div class="uk-badge uk-badge-notification uk-panel-badge" style="right:40%;">0</div></li>');
 		            		setOrdering(sortable);
+		            		calculatePoints('images');
 		            	}else if(response.error){
 		            		if(response.error instanceof Array){
 		            			response.error.forEach(function(entry) {
@@ -596,6 +670,7 @@
 		            		$("#images-div").append('<li data-id="'+response.image.id+'" class="uk-width-large-1-4 uk-width-medium-1-3 uk-panel" id="image-'+response.image.id+'"><i class="uk-close uk-close-alt uk-panel-badge" id="'+response.image.id+'" onclick="deleteImage(this)" data-uk-tooltip="{pos:"top"}" title="{{ trans("admin.eliminate_image") }}"></i><input type="hidden" name="image['+response.image.id+']" value><img src="{{asset("/")}}'+response.image.image_path+'"><div class="uk-badge uk-badge-notification uk-panel-badge" style="right:40%;">0</div></li>');
 		            		$("#image-"+response.image.id).show('normal');
 		            		setOrdering(sortable);
+		            		calculatePoints('images');
 		            	}else if(response.error){
 		            		if(response.error instanceof Array){
 		            			response.error.forEach(function(entry) {

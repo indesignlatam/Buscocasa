@@ -111,6 +111,9 @@ return [
         'image' => [
             'max' => 'La imagen no debe pesar mas de :max',
         ],
+        'construction_year' => [
+            'max' => 'El campo año de construcción no debe ser mayor a :max',
+        ],
 
         // Auth
         'password' => [
