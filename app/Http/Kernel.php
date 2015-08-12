@@ -27,6 +27,7 @@ class Kernel extends HttpKernel {
         'auth.basic'                => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'guest'                     => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'auth.admin'                => \App\Http\Middleware\IsAdmin::class,
+        'recaptcha'                 => \App\Http\Middleware\ReCaptcha::class,
         'listings.view.throttle'    => \App\Http\Middleware\ListingViewThrottle::class,
         'throttle'                  => \App\Http\Middleware\ThrottleMiddleware::class,
         'throttle.auth'             => \App\Http\Middleware\AuthThrottleMiddleware::class,
