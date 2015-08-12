@@ -92,6 +92,7 @@ return [
     'eliminate_image'           => 'Eliminar imagen',
     'set_as_main_image'         => 'Seleccionar como imagen principal',
     'share_social'              => 'Comparte en redes',
+    'images_notice'             => 'Para cargar imagenes debes guardar el inmueble primero.',
 
     //
     'featured'                  => 'Destacado',

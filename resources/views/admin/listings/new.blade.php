@@ -250,6 +250,15 @@
 					</div>
 					<!-- Informacion adicional -->
 
+					<hr>
+
+					<!-- Informacion adicional -->
+					<div>
+						<h2 class="uk-text-primary uk-text-bold" style="text-transform: uppercase">{{ trans('admin.images') }}</h2>
+						<h3>{{ trans('admin.images_notice') }}</h3>
+					</div>
+					<!-- Informacion adicional -->
+
 					<div class="uk-margin-top">
 				        <button form="create_form" type="submit" class="uk-button uk-width-1-1 uk-button-large uk-button-success uk-text-bold" onclick="blockUI()">{{ trans('admin.save') }}</button>
 				    </div>
@@ -313,15 +322,8 @@
 			@endif
 		});
 
-		// $(function() {
-		// 	$('#price').val(accounting.formatNumber(document.getElementById('price').value));
-		// 	$('#area').val(accounting.formatNumber(document.getElementById('area').value));
-		// 	$('#lot_area').val(accounting.formatNumber(document.getElementById('lot_area').value));
-		// 	$('#administration').val(accounting.formatNumber(document.getElementById('administration').value));
-		// });
-
 		function blockUI(){
-	        var modal = UIkit.modal.blockUI('<h3 class="uk-text-center">Guardando inmueble, porfavor espere.</h3><div class="uk-text-center uk-text-primary"><i class="uk-icon-large uk-icon-spinner uk-icon-spin"</i></div>'); // modal.hide() to unblock
+	        var modal = UIkit.modal.blockUI('<h3 class="uk-text-center">Guardando inmueble, porfavor espere.</h3><div class="uk-text-center uk-text-primary"><i class="uk-icon-large uk-icon-spinner uk-icon-spin"</i></div>');
 	    }
 
 	    function leave() {
