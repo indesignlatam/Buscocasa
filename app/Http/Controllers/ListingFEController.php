@@ -297,26 +297,9 @@ class ListingFEController extends Controller {
 							 ->take(3)
 							 ->get();
 
-
-		$config = [];
-	    $config['center'] 		= $listing->latitude.','.$listing->longitude;
-	    $config['zoom'] 		= '14';
-	    $config['scrollwheel'] 	= false;
-	    
-    	$marker = array();
-		$marker['position'] 			= $listing->latitude.','.$listing->longitude;
-		$marker['icon'] 				= url('/images/maps/marker_icon.png');
-		$marker['icon_scaledSize']		= '50,27';
-		$marker['animation'] 			= 'DROP';
-		Gmaps::add_marker($marker);
-		
-		Gmaps::initialize($config);
-	    $map = Gmaps::create_map();
-
 		return view('listings.show', [	'listing' 		=> $listing,
 										'related' 		=> $related,
 										'features' 		=> $features,
-										'map' 			=> $map
 									]);
 	}
 

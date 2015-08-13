@@ -190,6 +190,10 @@
     					<li><i class="uk-text-muted">{{ trans('admin.administration_fees') }}</i> {{ money_format('$%!.0i', $listing->administration) }}</li>
     				@endif
 
+    				@if($listing->construction_year > 0)
+    					<li><i class="uk-text-muted">{{ trans('admin.construction_year') }}</i> {{ $listing->construction_year }}</li>
+    				@endif
+
     				<li><i class="uk-text-muted">{{ trans('admin.code') }}</i> <b>#{{ $listing->code }}</b></li>
     			</ul>
 
@@ -307,7 +311,18 @@
 					@endforeach
 				</div>
 
-	    		<?php echo $map['html']; ?>
+				<hr>
+
+	    		<div id="map" class="uk-width-1-1" style="height:350px"></div>
+
+	    		<hr>
+
+	    		<div class="uk-width-1-1 uk-margin-top">
+	    			<h2>Lugares cercanos</h2>
+	    			<table class="uk-table uk-table-condensed" style="margin-top:-10px" id="results">
+	    				
+	    			</table>
+	    		</div>
 	    	</div>
 	    	
 	    </div>
@@ -326,12 +341,117 @@
 
 	<!-- JS -->
 	@if(!Auth::check())
-	<script async src='https://www.google.com/recaptcha/api.js'></script>
+	<script async defer src='https://www.google.com/recaptcha/api.js'></script>
 	@endif
     <script src="{{ asset('/js/components/slideshow.min.js') }}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initMap" async defer></script>
+    <script src="{{ asset('js/case.js') }}" async defer></script>
 	<!-- JS -->
 	
 	<script type="text/javascript">
+		function phoneFormat(phone) {
+			phone = phone.replace(/\D/g,'');
+			if(phone.length == 10){
+				phone = phone.replace(/[^0-9]/g, '');
+				phone = phone.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3");
+			}else if(phone.length == 9){
+				phone = phone.replace(/[^0-9]/g, '');
+				phone = phone.replace(/(\d{2})(\d{3})(\d{4})/, "($1) $2-$3");
+			}else if(phone.length == 8){
+				phone = phone.replace(/[^0-9]/g, '');
+				phone = phone.replace(/(\d{1})(\d{3})(\d{4})/, "(+$1) $2-$3");
+			}else if(phone.length == 7){
+				phone = phone.replace(/[^0-9]/g, '');
+				phone = phone.replace(/(\d{3})(\d{4})/, "$1-$2");
+			}
+			
+			return phone;
+		}
+
+		function showCaptcha(){
+			$('#captcha').removeClass('uk-hidden', 1000);
+		}
+
+		function select(sender){
+			$.post("{{ url('/cookie/select') }}", {_token: "{{ csrf_token() }}", key: "selected_listings", value: sender.id}, function(result){
+				UIkit.modal.confirm("{{ trans('frontend.listing_selected') }}", function(){
+				    window.location.href = "{{ url('/compare') }}";
+				}, {labels:{Ok:'{{trans("frontend.compare_now")}}', Cancel:'{{trans("frontend.keep_looking")}}'}});
+            });
+		}
+
+		$(function (){
+			$('#phone_1').html(phoneFormat($('#phone_1').html()));
+			$('#phone_2').html(phoneFormat($('#phone_2').html()));
+		});
+	</script>
+
+	<script>
+		var map;
+		var infowindow;
+		var pyrmont = {lat: {{ $listing->latitude }}, lng: {{ $listing->longitude }}};
+		function initMap() {
+		  
+		  	map = new google.maps.Map(document.getElementById('map'), {
+		    	center: pyrmont,
+		    	zoom: 15,
+		    	scrollwheel: false,
+	    		navigationControl: false,
+			    mapTypeControl: false,
+			    scaleControl: false,
+			    draggable: false,
+		  	});
+
+		  	var service = new google.maps.places.PlacesService(map);
+		  	service.nearbySearch({
+		    	location: pyrmont,
+		    	radius: 1000,
+		    	types: ['airport', 'embassy', 'grocery_or_supermarket', 'gym', 'hospital', 'department_store', 'park', 'police', 'school', 'shopping_mall', 'subway_station', 'university']
+		  	}, callback);
+		}
+
+		function callback(results, status) {
+		  	if (status === google.maps.places.PlacesServiceStatus.OK) {
+		    	for (var i = 0; i < results.length ; i++) {
+		    		if(i <= 10){
+		    			$('#results').append('<tr><td>'+Case.title(results[i].name)+'</td><td>'+Case.title(results[i].types[0])+'</td><td>'+parseInt(getDistance(results[i].geometry.location, pyrmont))+' mts</tb><tr>');
+		    		}
+		      		createMarker(results[i]);
+		    	}
+		  	}
+		}
+
+		function createMarker(place) {
+		  	var placeLoc = place.geometry.location;
+		  	var icon = { url: "{{ asset('/images/maps/marker_icon.png') }}", scaledSize: new google.maps.Size(50, 30) };
+		  	var marker = new google.maps.Marker({
+		    	map: map,
+		    	icon: icon,
+		    	position: place.geometry.location
+		  	});
+
+		  	google.maps.event.addListener(marker, 'click', function() {
+		    	infowindow.setContent(place.name);
+		    	infowindow.open(map, this);
+		  	});
+		}
+
+		function rad(x) {
+		  	return x * Math.PI / 180;
+		};
+
+		function getDistance(p1, p2) {
+		  	var R = 6378137; // Earth’s mean radius in meter
+		  	var dLat = rad(p2.lat - p1.lat());
+		  	var dLong = rad(p2.lng - p1.lng());
+		  	var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+		    	Math.cos(rad(p1.lat())) * Math.cos(rad(p2.lat)) *
+		    	Math.sin(dLong / 2) * Math.sin(dLong / 2);
+		  	var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+		  	var d = R * c;
+		  	return d; // returns the distance in meter
+		};
+
 		window.fbAsyncInit = function() {
         	FB.init({
          		appId      : {{ Settings::get('facebook_app_id') }},
@@ -374,45 +494,5 @@
 			  	console.log(response);
 			});
        	}
-
-		function phoneFormat(phone) {
-			phone = phone.replace(/\D/g,'');
-			if(phone.length == 10){
-				phone = phone.replace(/[^0-9]/g, '');
-				phone = phone.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3");
-			}else if(phone.length == 9){
-				phone = phone.replace(/[^0-9]/g, '');
-				phone = phone.replace(/(\d{2})(\d{3})(\d{4})/, "($1) $2-$3");
-			}else if(phone.length == 8){
-				phone = phone.replace(/[^0-9]/g, '');
-				phone = phone.replace(/(\d{1})(\d{3})(\d{4})/, "(+$1) $2-$3");
-			}else if(phone.length == 7){
-				phone = phone.replace(/[^0-9]/g, '');
-				phone = phone.replace(/(\d{3})(\d{4})/, "$1-$2");
-			}
-			
-			return phone;
-		}
-
-		function showCaptcha(){
-			$('#captcha').removeClass('uk-hidden', 1000);
-		}
-
-		function select(sender){
-			$.post("{{ url('/cookie/select') }}", {_token: "{{ csrf_token() }}", key: "selected_listings", value: sender.id}, function(result){
-				UIkit.modal.confirm("{{ trans('frontend.listing_selected') }}", function(){
-				    window.location.href = "{{ url('/compare') }}";
-				}, {labels:{Ok:'{{trans("frontend.compare_now")}}', Cancel:'{{trans("frontend.keep_looking")}}'}});
-            });
-		}
-
-		$(function (){
-			$('#phone_1').html(phoneFormat($('#phone_1').html()));
-			$('#phone_2').html(phoneFormat($('#phone_2').html()));
-		});
-	</script>
-
-	<!-- Google maps js -->
-	<?php echo $map['js']; ?>
-	<!-- Google maps js -->
+    </script>
 @endsection
