@@ -47,7 +47,8 @@ return [
     'try_other_parameters' 		=> 'Intenta en otra categoria o con otros parametros de busqueda.',
 
     // Listings show -------------------------------------------------------------------
-    'oops' 						=> 'Whoops!.',
+    'oops'                      => 'Whoops!.',
+    'listing'                   => 'Inmueble',
     'input_error' 				=> 'Hubo un problema',
     'contact_vendor' 			=> 'Contacta al vendedor',
     'contact_comments' 			=> 'Comentarios',
@@ -59,6 +60,9 @@ return [
     'already_contacted_vendor' 	=> 'Ya has contactado al vendedor hoy',
     'other_user_listings'       => 'Otros inmuebles del usuario',
     'listing_selected'          => 'El inmueble fue seleccionado para comparar. ¿Deseas ir a comparar los inmuebles seleccionados?',
+    'compare'                   => 'Comparar',
+    'near_listings'             => 'Valor metro cuadrado zona',
+    'compare'                   => 'Comparar',
     'compare'                   => 'Comparar',
 
     // Map marker info window

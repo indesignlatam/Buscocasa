@@ -313,13 +313,14 @@ class ListingFEController extends Controller {
 							 ->orderBy('distance')
 							 ->orderBy('stratum')
 							 ->orderBy('construction_year')
+							 ->with('listingType')
 							 ->take(10)
 							 ->get();
 
-		return view('listings.show', [	'listing' 		=> $listing,
-										'related' 		=> $related,
-										'features' 		=> $features,
-										'compare'		=> $compare,
+		return view('listings.show', [ 'listing' 	=> $listing,
+									   'related' 	=> $related,
+									   'features' 	=> $features,
+									   'compare'	=> $compare,
 									]);
 	}
 

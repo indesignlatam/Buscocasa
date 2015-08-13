@@ -314,20 +314,20 @@
 
 				@if(count($compare) > 0)
 	    		<div class="uk-width-1-1" id="compare">
-	    			<h2>Inmuebles cercanos</h2>
-	    			<table class="uk-table uk-table-condensed uk-table-striped" style="margin-top:-20px">
+	    			<h2>{{ trans('frontend.near_listings') }}</h2>
+	    			<table class="uk-table uk-table-condensed uk-table-striped" style="margin-top:-10px">
 	    				<thead>
 					        <tr>
-					            <th>Inmueble</th>
-					            <th>Estrato</th>
-					            <th style="width:50px">Area</th>
-					            <th style="width:70px">Area lote</th>
-					            <th style="width:110px">Valor mt2</th>
+					            <th>{{ trans('frontend.listing') }}</th>
+					            <th>{{ trans('admin.stratum') }}</th>
+					            <th style="width:50px">{{ trans('admin.area') }}</th>
+					            <th style="width:70px">{{ trans('admin.lot_area') }}</th>
+					            <th style="width:110px">{{ trans('frontend.price_mt') }}</th>
 					        </tr>
 					    </thead>
     				@foreach($compare as $cListing)
     					<tr>
-    						<td>{{ $cListing->title }}</td>
+    						<td><a href="{{ url($cListing->path()) }}">{{ $cListing->title }}</a></td>
     						<td>{{ $cListing->stratum }}</td>
     						<td class="uk-text-right">{{ number_format($cListing->area, 0, '.', ',') }}</td>
     						<td class="uk-text-right">{{ number_format($cListing->lot_area, 0, '.', ',') }}</td>
@@ -353,7 +353,7 @@
 	    		<hr>
 	    		
 	    		<div class="uk-width-1-1" id="places">
-	    			<h2>Lugares cercanos</h2>
+	    			<h2>{{ trans('frontend.near_places') }}</h2>
 	    			<table class="uk-table uk-table-condensed" style="margin-top:-10px" id="results">
 	    			</table>
 	    		</div>
