@@ -335,7 +335,7 @@
 				        <!-- This is a button toggling the modal -->
 				        <button form="create_form" type="submit" class="uk-width-1-3 uk-margin-right uk-button uk-button-large uk-button-success uk-text-bold uk-margin-bottom" onclick="blockUI()">{{ trans('admin.save') }}</button>
 				        <button form="create_form" type="submit" class="uk-width-1-3 uk-margin-right uk-button uk-button-large uk-text-bold uk-margin-bottom" onclick="saveClose()" >{{ trans('admin.save_close') }}</button>
-				        <button class="uk-width-1-3 uk-button uk-button-large uk-text-bold uk-margin-bottom" onclick="viewListing()">{{ trans('admin.view_listing') }}</button>
+				        <a class="uk-width-1-3 uk-button uk-button-large uk-text-bold uk-margin-bottom" target="_blank" href="{{ url($listing->path())}}">{{ trans('admin.view_listing') }}</a>
 				    </div>
 				</div>
 

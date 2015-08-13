@@ -294,29 +294,32 @@ class ListingFEController extends Controller {
 							 ->where('listing_type', $listing->listing_type)
 							 ->with('listingType')
 							 ->orderBy('distance')
-							 ->take(3)
+							 ->take(5)
 							 ->get();
 
-
-		$config = [];
-	    $config['center'] 		= $listing->latitude.','.$listing->longitude;
-	    $config['zoom'] 		= '14';
-	    $config['scrollwheel'] 	= false;
-	    
-    	$marker = array();
-		$marker['position'] 			= $listing->latitude.','.$listing->longitude;
-		$marker['icon'] 				= url('/images/maps/marker_icon.png');
-		$marker['icon_scaledSize']		= '50,27';
-		$marker['animation'] 			= 'DROP';
-		Gmaps::add_marker($marker);
-		
-		Gmaps::initialize($config);
-	    $map = Gmaps::create_map();
+		$compare 	= Listing::remember(Settings::get('query_cache_time_short'))
+							 ->selectRaw("*,
+                              ( 6371 * acos( cos( radians(?) ) *
+                                cos( radians( latitude ) )
+                                * cos( radians( longitude ) - radians(?)
+                                ) + sin( radians(?) ) *
+                                sin( radians( latitude ) ) )
+                              ) AS distance")
+							 ->setBindings([$listing->latitude, $listing->longitude, $listing->latitude])
+							 ->where('id', '<>', $listing->id)
+							 ->where('city_id', $listing->city_id)
+							 ->where('category_id', $listing->category_id)
+							 ->where('listing_type', $listing->listing_type)
+							 ->orderBy('distance')
+							 ->orderBy('stratum')
+							 ->orderBy('construction_year')
+							 ->take(10)
+							 ->get();
 
 		return view('listings.show', [	'listing' 		=> $listing,
 										'related' 		=> $related,
 										'features' 		=> $features,
-										'map' 			=> $map
+										'compare'		=> $compare,
 									]);
 	}
 

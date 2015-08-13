@@ -27,7 +27,7 @@
 
 <div class="uk-container uk-container-center uk-margin-top">
 	<div class="uk-panel uk-margin-bottom">
-		<h2 id="description">{{ $user->description }}</h2>
+		<h3 id="description">{{ $user->description }}</h3>
 
 		<!-- user listings -->
         @if(count($user->listings) > 0)
