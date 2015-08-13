@@ -294,12 +294,32 @@ class ListingFEController extends Controller {
 							 ->where('listing_type', $listing->listing_type)
 							 ->with('listingType')
 							 ->orderBy('distance')
-							 ->take(3)
+							 ->take(5)
+							 ->get();
+
+		$compare 	= Listing::remember(Settings::get('query_cache_time_short'))
+							 ->selectRaw("*,
+                              ( 6371 * acos( cos( radians(?) ) *
+                                cos( radians( latitude ) )
+                                * cos( radians( longitude ) - radians(?)
+                                ) + sin( radians(?) ) *
+                                sin( radians( latitude ) ) )
+                              ) AS distance")
+							 ->setBindings([$listing->latitude, $listing->longitude, $listing->latitude])
+							 ->where('id', '<>', $listing->id)
+							 ->where('city_id', $listing->city_id)
+							 ->where('category_id', $listing->category_id)
+							 ->where('listing_type', $listing->listing_type)
+							 ->orderBy('distance')
+							 ->orderBy('stratum')
+							 ->orderBy('construction_year')
+							 ->take(10)
 							 ->get();
 
 		return view('listings.show', [	'listing' 		=> $listing,
 										'related' 		=> $related,
 										'features' 		=> $features,
+										'compare'		=> $compare,
 									]);
 	}
 

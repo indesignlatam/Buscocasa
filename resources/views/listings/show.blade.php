@@ -314,9 +314,44 @@
 				<hr>
 
 	    		<div id="map" class="uk-width-1-1" style="height:350px"></div>
+
+	    		<hr>
+
+	    		<div class="uk-width-1-1" id="compare">
+	    			<h2>Inmuebles cercanos</h2>
+	    			<table class="uk-table uk-table-condensed uk-table-striped">
+	    				<thead>
+					        <tr>
+					            <th>Inmueble</th>
+					            <th>Estrato</th>
+					            <th style="width:50px">Area</th>
+					            <th style="width:70px">Area lote</th>
+					            <th style="width:110px">Valor mt2</th>
+					        </tr>
+					    </thead>
+    				@foreach($compare as $cListing)
+    					<tr>
+    						<td>{{ $cListing->title }}</td>
+    						<td>{{ $cListing->stratum }}</td>
+    						<td class="uk-text-right">{{ number_format($cListing->area, 0, '.', ',') }}</td>
+    						<td class="uk-text-right">{{ number_format($cListing->lot_area, 0, '.', ',') }}</td>
+    						@if($cListing->area > 0)
+    							<td>{{ money_format('$%!.0i', $cListing->price/$cListing->area) }}
+    							@if(($cListing->price/$cListing->area) > ($listing->price/$listing->area))
+    								<i class="uk-icon-caret-up uk-text-danger uk-float-right"></i>
+    							@else
+    								<i class="uk-icon-caret-down uk-text-success uk-float-right"></i>
+    							@endif
+    							</td>
+		    				@elseif($cListing->lot_area > 0)
+		    					<td>{{ money_format('$%!.0i', $cListing->price/$cListing->lot_area) }}</td>
+		    				@endif
+    					</tr>
+    				@endforeach
+	    			</table>
+	    		</div>
 	    		
 	    		<div class="uk-width-1-1" id="places">
-	    			<hr>
 	    			<h2>Lugares cercanos</h2>
 	    			<table class="uk-table uk-table-condensed" style="margin-top:-10px" id="results">
 	    			</table>
