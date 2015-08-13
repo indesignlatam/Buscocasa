@@ -314,13 +314,11 @@
 				<hr>
 
 	    		<div id="map" class="uk-width-1-1" style="height:350px"></div>
-
-	    		<hr>
-
-	    		<div class="uk-width-1-1 uk-margin-top">
+	    		
+	    		<div class="uk-width-1-1" id="places">
+	    			<hr>
 	    			<h2>Lugares cercanos</h2>
 	    			<table class="uk-table uk-table-condensed" style="margin-top:-10px" id="results">
-	    				
 	    			</table>
 	    		</div>
 	    	</div>
@@ -384,9 +382,7 @@
 			$('#phone_1').html(phoneFormat($('#phone_1').html()));
 			$('#phone_2').html(phoneFormat($('#phone_2').html()));
 		});
-	</script>
 
-	<script>
 		var map;
 		var infowindow;
 		var pyrmont = {lat: {{ $listing->latitude }}, lng: {{ $listing->longitude }}};
@@ -402,6 +398,13 @@
 			    draggable: false,
 		  	});
 
+		  	var icon = { url: "{{ asset('/images/maps/marker_icon.png') }}", scaledSize: new google.maps.Size(50, 30) };
+		  	var marker = new google.maps.Marker({
+		    	map: map,
+		    	icon: icon,
+		    	position: pyrmont
+		  	});
+
 		  	var service = new google.maps.places.PlacesService(map);
 		  	service.nearbySearch({
 		    	location: pyrmont,
@@ -411,29 +414,16 @@
 		}
 
 		function callback(results, status) {
+			if(results.length == 0){
+	  			$('#places').addClass('uk-hidden');
+	  		}
 		  	if (status === google.maps.places.PlacesServiceStatus.OK) {
 		    	for (var i = 0; i < results.length ; i++) {
 		    		if(i <= 10){
 		    			$('#results').append('<tr><td>'+Case.title(results[i].name)+'</td><td>'+Case.title(results[i].types[0])+'</td><td>'+parseInt(getDistance(results[i].geometry.location, pyrmont))+' mts</tb><tr>');
 		    		}
-		      		createMarker(results[i]);
 		    	}
 		  	}
-		}
-
-		function createMarker(place) {
-		  	var placeLoc = place.geometry.location;
-		  	var icon = { url: "{{ asset('/images/maps/marker_icon.png') }}", scaledSize: new google.maps.Size(50, 30) };
-		  	var marker = new google.maps.Marker({
-		    	map: map,
-		    	icon: icon,
-		    	position: place.geometry.location
-		  	});
-
-		  	google.maps.event.addListener(marker, 'click', function() {
-		    	infowindow.setContent(place.name);
-		    	infowindow.open(map, this);
-		  	});
 		}
 
 		function rad(x) {
