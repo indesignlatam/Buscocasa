@@ -34,7 +34,6 @@
 				<i class="uk-h2 uk-text-primary uk-text-right"> ${{ money_format('%!.0i', $listing->price) }}</i>
 			</div>
 		</div>
-		
 
 		<div class="uk-grid uk-margin-small-top">
 			<div class="uk-width-large-7-10 uk-width-medium-7-10 uk-width-small-1-1">	
@@ -313,13 +312,10 @@
 
 				<hr>
 
-	    		<div id="map" class="uk-width-1-1" style="height:350px"></div>
-
-	    		<hr>
-
+				@if(count($compare) > 0)
 	    		<div class="uk-width-1-1" id="compare">
 	    			<h2>Inmuebles cercanos</h2>
-	    			<table class="uk-table uk-table-condensed uk-table-striped">
+	    			<table class="uk-table uk-table-condensed uk-table-striped" style="margin-top:-20px">
 	    				<thead>
 					        <tr>
 					            <th>Inmueble</th>
@@ -350,6 +346,11 @@
     				@endforeach
 	    			</table>
 	    		</div>
+	    		@endif
+
+	    		<div id="map" class="uk-width-1-1" style="height:350px"></div>
+
+	    		<hr>
 	    		
 	    		<div class="uk-width-1-1" id="places">
 	    			<h2>Lugares cercanos</h2>
@@ -373,12 +374,12 @@
 	<!-- CSS -->
 
 	<!-- JS -->
-	@if(!Auth::check())
-	<script async defer src='https://www.google.com/recaptcha/api.js'></script>
-	@endif
     <script src="{{ asset('/js/components/slideshow.min.js') }}"></script>
     <script src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initMap" async defer></script>
     <script src="{{ asset('js/case.js') }}" async defer></script>
+    @if(!Auth::check())
+	<script async defer src='https://www.google.com/recaptcha/api.js'></script>
+	@endif
 	<!-- JS -->
 	
 	<script type="text/javascript">
