@@ -600,7 +600,7 @@
 	        	bounds = new google.maps.LatLngBounds();
 	        }
 
-	        var listing_type_id = $('#listing_type_id').val();
+			var listing_type_id = $('#listing_type_id').val();
 	        var category_id = $('#category_id').val();
 	        var price_min = $('#price_min').val();
 	        var price_max = $('#price_max').val();
