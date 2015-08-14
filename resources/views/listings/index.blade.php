@@ -351,10 +351,6 @@
             });
         }
 
-        function alertMiaw(){
-        	initMap();
-        }
-
 		$(function() {
 			$("#city").select2();
 
@@ -565,6 +561,8 @@
 	            zoom: 11,
 	            scrollwheel:false
 	        });
+
+	        $('#map').append('<button class="uk-button" onclick="setCurrentLocation()" style="position:absolute; right:0; z-index:99999"><i class="uk-icon-bullseye"></i> Mi ubicación</button>');
 	        
 	        mc = new MarkerClusterer(map, [], mcOptions);
 
@@ -678,6 +676,33 @@
 	        }
 	    }
 
+	    function setCurrentLocation(){
+	    	// Try HTML5 geolocation.
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(function(position) {
+				  	var pos = {
+					    lat: position.coords.latitude,
+					    lng: position.coords.longitude
+				  	};
+
+					
+					map.setCenter(pos);
+				}, function() {
+				  	handleLocationError(true, infoWindow, map.getCenter());
+				});
+			}else{
+				// Browser doesn't support Geolocation
+				handleLocationError(false, infoWindow, map.getCenter());
+			}
+		}
+
+	    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+		  	infoWindow.setPosition(pos);
+		  	infoWindow.setContent(browserHasGeolocation ?
+		                        'Error: The Geolocation service failed.' :
+		                        'Error: Your browser doesn\'t support geolocation.');
+		}
+
 	    // Removes the markers from the map, but keeps them in the array.
 	    function clearMarkers() {
 	        setMapOnAll(null);
@@ -696,6 +721,6 @@
 	</script>
 
 	<script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?signed_in=true&libraries=places&callback=initMap" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initMap" async defer></script>
 
 @endsection
