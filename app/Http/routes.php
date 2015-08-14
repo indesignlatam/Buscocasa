@@ -93,6 +93,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth.admin'], function(){
 
 Route::get('/', 'WelcomeController@index');
 
+Route::post('listings/bounds', 'ListingFEController@indexBounds');
 Route::resource('ventas', 'ListingFEController');
 Route::resource('arriendos', 'ListingFEController');
 Route::get('compare', 'ListingFEController@compare');

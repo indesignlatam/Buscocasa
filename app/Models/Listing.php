@@ -4,6 +4,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 use DB;
 use App\Models\IndesignModel;
+use Image;
 
 class Listing extends IndesignModel {
 
@@ -15,6 +16,13 @@ class Listing extends IndesignModel {
      * @var string
      */
 	protected $dates = ['created_at', 'update_at', 'deleted_at', 'featured_expires_at', 'expires_at'];
+
+	/**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['main_image_url', 'url'];
 
 	/**
 	 * The name of the table.
@@ -123,6 +131,25 @@ class Listing extends IndesignModel {
 							'code',
 							];
 
+
+
+	/**
+     * Get the administrator flag for the user.
+     *
+     * @return bool
+     */
+    public function getMainImageUrlAttribute(){
+        return url(Image::url($this->image_path(),['map_mini']));
+    }
+
+    /**
+     * Get the administrator flag for the user.
+     *
+     * @return bool
+     */
+    public function getUrlAttribute(){
+        return url($this->path());
+    }
 
 	/**
 	 * Resolve the image path to show
