@@ -36,7 +36,7 @@ class SendNewMessageEmail extends Job implements SelfHandling, ShouldQueue {
 		$object = $this->appointment;
 		
 		// If mail not confirmed dont send email
-		if($object->listing->broker->confirmed && $listing->broker->email_notifications){
+		if($object->listing->broker->confirmed && $object->listing->broker->email_notifications){
 			Mail::send('emails.message', ['userMessage' => $object, 
 										  'user' 		=> $object->listing->broker,
 										 ], 
