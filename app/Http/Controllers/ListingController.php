@@ -10,6 +10,7 @@ use Gmaps;
 use Geocoder;
 use Carbon;
 use Settings;
+use Queue;
 
 use App\Models\Listing;
 use App\Models\Category;
@@ -18,6 +19,8 @@ use	App\Models\ListingStatus;
 use	App\Models\Feature;
 use	App\Models\City;
 use	App\Models\FeaturedType;
+
+use App\Jobs\ListingShare;
 
 class ListingController extends Controller {
 
@@ -393,6 +396,26 @@ class ListingController extends Controller {
 			return redirect('admin/listings')->withSuccess([trans('responses.listing_saved')]);
 	    }
 		return redirect('admin/listings/'.$id.'/edit')->withSuccess([trans('responses.listing_saved')]);
+	}
+
+	/**
+	 * Share by mail the specified resource from storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function share($id, Request $request){
+		//
+		$listing = Listing::find($id);
+
+		if(!$listing){
+			abort(404);
+		}
+
+		Queue::push(new ListingShare($listing, $request->email, $request->message));
+
+		return response()->json(['success' =>  trans('responses.message_sent'),
+								]);
 	}
 
 	/**

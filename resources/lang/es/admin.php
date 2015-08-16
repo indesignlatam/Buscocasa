@@ -143,6 +143,7 @@ return [
     'reply'                     => 'Responder mensaje',
     'mark_as_answered'          => 'Marcar como respondido',
     'delete_message'            => 'Eliminar mensaje',
+    'emails'                    => 'Correos electronicos',
 
     // Confirmation
     'user_not_confirmed'        => 'No has confirmado tu cuenta de correo',
@@ -196,6 +197,8 @@ return [
     'send' 				        => 'Enviar',
     'show_deleted_messages'     => 'Buscar en los mensajes eliminados',
     'no_messages_text'          => 'Sigue estos pasos para mejorar la visibilidad de tu publicación',
+    'no_emails'                 => 'No has seleccionado ningun correo valido',
+    'no_message'                => 'No has ingresado ningun texto para el correo',
 
     // Payments
     'payments'                  => 'Pagos',

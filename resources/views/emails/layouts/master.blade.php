@@ -10,10 +10,10 @@
 
         <div class="uk-container uk-container-center" style="margin-top:30px">
             <div class="uk-panel uk-panel-box uk-panel-box-secondary uk-margin-large">
+            	<div style="text-align:center;">
+	                <a href="{{ url('/') }}"><img src="{{ $message->embed(public_path().'/images/logo_h.png') }}" style="width:300px; max-width:300px"></a>
+	            </div>
 		        @section('header')
-		            <div style="text-align:center;">
-		                <a href="{{ url('/') }}"><img src="{{ $message->embed(public_path().'/images/logo_h.png') }}" style="width:300px; max-width:300px"></a>
-		            </div>
 		            @if(isset($user))
 		                <h3>{{ trans('emails.apreciated') }} {{ $user->name }},</h3>
 		            @else

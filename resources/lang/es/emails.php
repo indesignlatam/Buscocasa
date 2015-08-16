@@ -63,6 +63,10 @@ return [
     'tips_title'                            => 'Hemos analizado las estadisticas de tus inmuebles y encontramos que no has tenido la cantidad de mensajes o visitas de clientes que nosotros esperariamos. Por eso te invitamos a que sigas las siguientes recomendaciones para lograr que tu inmueble tenga mas visitas y por lo tanto seas contactado mas veces por los clientes interesados.',
     'tips_conclution'                       => 'Si deseas ayuda para realizar alguna de las operaciones que sugerimos no dudes en responder este mensaje y seras contactado por uno de nuestros asesores.',
 
+    // Listing share
+    'listing_share_subject'                 => 'te ha enviado la información de su inmueble #',
+    'listing_share_title'                   => 'Te hemos enviado este correo a solicitud del vendedor del inmueble.',
+    'answer_to_contact_vendor'              => 'Responde este correo para contactar al vendedor de este inmueble.',
 
 
 
