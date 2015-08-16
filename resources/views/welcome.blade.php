@@ -150,7 +150,7 @@
             <h1 class="uk-text-bold">{{ trans('frontend.latest_listings_sale') }}</h1>
 
             @if(!Agent::isMobile())
-                <div class="uk-slidenav-position" data-uk-slideset="{default: 4, autoplay: true}">
+                <div class="uk-slidenav-position" data-uk-slideset="{small: 1, medium: 4, large: 4, autoplay: true}">
                     <ul class="uk-grid uk-slideset">
                         @foreach($sales as $sale)
                         <li>
