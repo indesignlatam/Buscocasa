@@ -329,8 +329,8 @@
     					<tr>
     						<td><a href="{{ url($cListing->path()) }}">{{ $cListing->title }}</a></td>
     						<td>{{ $cListing->stratum }}</td>
-    						<td class="uk-text-right" class="uk-hidden-small">{{ number_format($cListing->area, 0, '.', ',') }}</td>
-    						<td class="uk-text-right" class="uk-hidden-small">{{ number_format($cListing->lot_area, 0, '.', ',') }}</td>
+    						<td class="uk-text-right uk-hidden-small">{{ number_format($cListing->area, 0, '.', ',') }}</td>
+    						<td class="uk-text-right uk-hidden-small">{{ number_format($cListing->lot_area, 0, '.', ',') }}</td>
     						@if($cListing->area > 0)
     							<td>{{ money_format('$%!.0i', $cListing->price/$cListing->area) }}
     							@if(($cListing->price/$cListing->area) > ($listing->price/$listing->area))

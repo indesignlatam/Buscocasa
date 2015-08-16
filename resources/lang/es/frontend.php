@@ -63,7 +63,7 @@ return [
     'compare'                   => 'Comparar',
     'near_listings'             => 'Valor metro cuadrado zona',
     'compare'                   => 'Comparar',
-    'compare'                   => 'Comparar',
+    'near_places'               => 'Lugares cercanos',
 
     // Map marker info window
     'goto_listing' 				=> 'Ver inmueble',
