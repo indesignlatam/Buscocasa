@@ -320,8 +320,8 @@
 					        <tr>
 					            <th>{{ trans('frontend.listing') }}</th>
 					            <th>{{ trans('admin.stratum') }}</th>
-					            <th style="width:50px">{{ trans('admin.area') }}</th>
-					            <th style="width:70px">{{ trans('admin.lot_area') }}</th>
+					            <th style="width:50px" class="uk-hidden-small">{{ trans('admin.area') }}</th>
+					            <th style="width:70px" class="uk-hidden-small">{{ trans('admin.lot_area') }}</th>
 					            <th style="width:110px">{{ trans('frontend.price_mt') }}</th>
 					        </tr>
 					    </thead>
@@ -329,8 +329,8 @@
     					<tr>
     						<td><a href="{{ url($cListing->path()) }}">{{ $cListing->title }}</a></td>
     						<td>{{ $cListing->stratum }}</td>
-    						<td class="uk-text-right">{{ number_format($cListing->area, 0, '.', ',') }}</td>
-    						<td class="uk-text-right">{{ number_format($cListing->lot_area, 0, '.', ',') }}</td>
+    						<td class="uk-text-right" class="uk-hidden-small">{{ number_format($cListing->area, 0, '.', ',') }}</td>
+    						<td class="uk-text-right" class="uk-hidden-small">{{ number_format($cListing->lot_area, 0, '.', ',') }}</td>
     						@if($cListing->area > 0)
     							<td>{{ money_format('$%!.0i', $cListing->price/$cListing->area) }}
     							@if(($cListing->price/$cListing->area) > ($listing->price/$listing->area))
