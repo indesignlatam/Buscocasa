@@ -321,9 +321,11 @@
 @section('js')
 	@parent
 
+	<!-- CSS -->
+	<noscript><link href="{{ asset('/css/jquery/jquery-ui.theme.min.css') }}" rel="stylesheet"></noscript>
+	<noscript><link href="{{ asset('/css/select2.min.css') }}" rel="stylesheet"/></noscript>
 	<noscript><link href="{{ asset('/css/components/slidenav.almost-flat.min.css') }}" rel="stylesheet"/></noscript>
-    <script src="{{ asset('/js/select2.min.js') }}"></script>
-    <script src="{{ asset('/js/components/slideset.min.js') }}"></script>
+	<!-- CSS -->
 
 	<script type="text/javascript">
         function setListingView(view) {
@@ -505,16 +507,9 @@
 	</script>
 
 	<!-- JS -->
-	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	<script src="{{ asset('/js/jquery/jquery-ui.min.js') }}"></script>
+	<script src="{{ asset('/js/components/slideset.min.js') }}"></script>
 	<script src="{{ asset('/js/accounting.min.js') }}"></script>
 	<script src="{{ asset('/js/select2.min.js') }}"></script>
 	<!-- JS -->
-
-	<!-- CSS -->
-	<noscript><link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"></noscript>
-	<noscript><link href="{{ asset('/css/select2.min.css') }}" rel="stylesheet"/></noscript>
-	<!-- CSS -->
-
-	
-
 @endsection
