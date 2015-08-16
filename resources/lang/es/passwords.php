@@ -15,7 +15,7 @@ return [
 
     "password" => "Las contraseñas deben contener al menos 6 caracteres.",
     "user"     => "No podemos encontrar a un usuario con ese correo electrónico.",
-    "token"    => "Este codigo de recuperación de contraseña es inválido.",
+    "token"    => "Este código de recuperación de contraseña es inválido.",
     "sent"     => "¡Recordatorio de contraseña enviado!",
     "reset"    => "¡Tu contraseña ha sido restablecida!",
 
