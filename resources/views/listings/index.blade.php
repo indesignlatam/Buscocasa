@@ -19,6 +19,7 @@
 	@parent
 	<script type="text/javascript">
 		loadCSS("//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css");
+        loadCSS("{{ asset('/css/components/slidenav.almost-flat.min.css') }}");
 		loadCSS("{{ asset('/css/select2.min.css') }}");
 	</script>
 @endsection
@@ -202,15 +203,15 @@
 						@if(!Cookie::get('listings_view') || Cookie::get('listings_view') == 0)
 							<li class="uk-tab-active uk-active" onclick="setListingView(0)"><a href=""><i class="uk-icon-bars"></i> {{ trans('frontend.tab_list') }}</a></li>
 					    	<li class="uk-hidden-small" onclick="setListingView(1)"><a href=""><i class="uk-icon-th-large"></i> {{ trans('frontend.tab_mosaic') }}</a></li>
-					    	<li class="uk-hidden-small" onclick="setListingView(2)"><a href=""><i class="uk-icon-map-marker"></i> {{ trans('frontend.tab_map') }}</a></li>
+					    	<li class="uk-hidden" onclick="setListingView(2)"><a href=""><i class="uk-icon-map-marker"></i> {{ trans('frontend.tab_map') }}</a></li>
 						@elseif(Cookie::get('listings_view') == 1)
 							<li class="" onclick="setListingView(0)"><a href=""><i class="uk-icon-bars"></i> {{ trans('frontend.tab_list') }}</a></li>
 					    	<li class="uk-hidden-small uk-tab-active uk-active" onclick="setListingView(1)"><a href=""><i class="uk-icon-th-large"></i> {{ trans('frontend.tab_mosaic') }}</a></li>
-					    	<li class="uk-hidden-small" onclick="setListingView(2)"><a href=""><i class="uk-icon-map-marker"></i> {{ trans('frontend.tab_map') }}</a></li>
+					    	<li class="uk-hidden" onclick="setListingView(2)"><a href=""><i class="uk-icon-map-marker"></i> {{ trans('frontend.tab_map') }}</a></li>
 					    @elseif(Cookie::get('listings_view') == 2)
 					    	<li class="" onclick="setListingView(0)"><a href=""><i class="uk-icon-bars"></i> {{ trans('frontend.tab_list') }}</a></li>
 					    	<li class="uk-hidden-small" onclick="setListingView(1)"><a href=""><i class="uk-icon-th-large"></i> {{ trans('frontend.tab_mosaic') }}</a></li>
-					    	<li class="uk-hidden-small uk-tab-active uk-active" onclick="setListingView(2)"><a href=""><i class="uk-icon-map-marker"></i> {{ trans('frontend.tab_map') }}</a></li>
+					    	<li class="uk-hidden uk-tab-active uk-active" onclick="setListingView(2)"><a href=""><i class="uk-icon-map-marker"></i> {{ trans('frontend.tab_map') }}</a></li>
 						@endif
 					</ul>
 					<!-- This is the container of the content items -->
@@ -219,56 +220,42 @@
 					    <li>
 					    	<div class="uk-panel uk-margin">
 								<!-- Featured listings top -->
-								<div class="uk-grid">
-									@foreach($listings1 = array_slice($featuredListings->all(), 0, 4) as $listing)
-										<div class="uk-width-large-1-4 uk-width-medium-1-2 uk-width-small-1-1" style="position:relative;">
-											<!-- Tags start -->
-											<a href="{{ url($listing->path()) }}">
-								    		@if($listing->featuredType && $listing->featuredType->id > 1 && $listing->featured_expires_at > Carbon::now())
-								    			<img src="{{asset($listing->featuredType->image_path)}}" style="position:absolute; top:0; left:30; max-width:100px">
-								    		@else
-									    		@if($listing->created_at->diffInDays(Carbon::now()) < 5)
-									    			<img src="{{asset('/images/defaults/new.png')}}" style="position:absolute; top:0; left:30; max-width:100px">
-									    		@endif
-								    		@endif
-									    	<!-- Tags end -->
+								<div class="uk-slidenav-position" data-uk-slideset="{small: 1, medium: 4, large: 4, autoplay: true}">
+					                <ul class="uk-grid uk-slideset">
+					                    @foreach($featuredListings as $listing)
+					                    <li>
+					                        <a href="{{ url($listing->path()) }}">
 					                            <img src="{{ asset(Image::url($listing->image_path(),['mini_front'])) }}" class="uk-margin-small-bottom" style="max-width=150px">
 					                        </a>
-					                        <br class="uk-visible-small">
 					                        <a href="{{ url($listing->path()) }}">{{ $listing->title }}</a>
 					                        <p class="uk-text-muted" style="font-size:10px;margin-top:-4px">{{ $listing->area }} mt2 - {{ money_format('$%!.0i', $listing->price) }}</p>
-					                        <hr class="uk-visible-small uk-margin-bottom">									
-										</div>
-									@endforeach
-								</div>
+					                    </li>
+					                    @endforeach
+					                </ul>
+					                <a href="" style="margin-top:-60px" class="uk-slidenav uk-slidenav-previous uk-slidenav-contrast" data-uk-slideset-item="previous"></a>
+					                <a href="" style="margin-top:-60px" class="uk-slidenav uk-slidenav-next uk-slidenav-contrast" data-uk-slideset-item="next"></a>
+					            </div>
 								<!-- Featured listings top -->
 							</div>
 					    	<?php $i = 0; ?>
 					    	@foreach($listings as $listing)
 					    		@if(count($listings) >= 10 && $i == ceil(count($listings)/2))
 					    			<div class="uk-panel uk-margin">
-										<div class="uk-grid">
-											@foreach($listings1 = array_slice($featuredListings->all(), -4, 4) as $listing)
-												<div class="uk-width-large-1-4 uk-width-medium-1-2 uk-width-small-1-1" style="position:relative;">
-													<!-- Tags start -->
-													<a href="{{ url($listing->path()) }}">
-										    		@if($listing->featuredType && $listing->featuredType->id > 1 && $listing->featured_expires_at > Carbon::now())
-										    			<img src="{{asset($listing->featuredType->image_path)}}" style="position:absolute; top:0; left:30; max-width:100px">
-										    		@else
-											    		@if($listing->created_at->diffInDays(Carbon::now()) < 5)
-											    			<img src="{{asset('/images/defaults/new.png')}}" style="position:absolute; top:0; left:30; max-width:100px">
-											    		@endif
-										    		@endif
-											    	<!-- Tags end -->
+										<div class="uk-slidenav-position" data-uk-slideset="{small: 1, medium: 4, large: 4, autoplay: true}">
+							                <ul class="uk-grid uk-slideset">
+							                    @foreach($featuredListings as $listing)
+							                    <li>
+							                        <a href="{{ url($listing->path()) }}">
 							                            <img src="{{ asset(Image::url($listing->image_path(),['mini_front'])) }}" class="uk-margin-small-bottom" style="max-width=150px">
 							                        </a>
-							                        <br class="uk-visible-small">
 							                        <a href="{{ url($listing->path()) }}">{{ $listing->title }}</a>
 							                        <p class="uk-text-muted" style="font-size:10px;margin-top:-4px">{{ $listing->area }} mt2 - {{ money_format('$%!.0i', $listing->price) }}</p>
-							                        <hr class="uk-visible-small uk-margin-bottom">									
-												</div>
-											@endforeach
-										</div>
+							                    </li>
+							                    @endforeach
+							                </ul>
+							                <a href="" style="margin-top:-60px" class="uk-slidenav uk-slidenav-previous uk-slidenav-contrast" data-uk-slideset-item="previous"></a>
+							                <a href="" style="margin-top:-60px" class="uk-slidenav uk-slidenav-next uk-slidenav-contrast" data-uk-slideset-item="next"></a>
+							            </div>
 									</div>
 									<hr>
 					    		@endif
@@ -285,28 +272,21 @@
 					    <!-- Image Mosaic -->
 					    <li>
 					    	<!-- Featured listings top -->
-							<div class="uk-grid">
-								@foreach($listings1 = array_slice($featuredListings->all(), 0, 4) as $listing)
-									<div class="uk-width-large-1-4 uk-width-medium-1-2 uk-width-small-1-1" style="position:relative;">
-										<!-- Tags start -->
-										<a href="{{ url($listing->path()) }}">
-							    		@if($listing->featuredType && $listing->featuredType->id > 1 && $listing->featured_expires_at > Carbon::now())
-							    			<img src="{{asset($listing->featuredType->image_path)}}" style="position:absolute; top:0; left:30; max-width:100px">
-							    		@else
-								    		@if($listing->created_at->diffInDays(Carbon::now()) < 5)
-								    			<img src="{{asset('/images/defaults/new.png')}}" style="position:absolute; top:0; left:30; max-width:100px">
-								    		@endif
-							    		@endif
-								    	<!-- Tags end -->
+							<div class="uk-slidenav-position" data-uk-slideset="{small: 1, medium: 4, large: 4, autoplay: true}">
+				                <ul class="uk-grid uk-slideset">
+				                    @foreach($featuredListings as $listing)
+				                    <li>
+				                        <a href="{{ url($listing->path()) }}">
 				                            <img src="{{ asset(Image::url($listing->image_path(),['mini_front'])) }}" class="uk-margin-small-bottom" style="max-width=150px">
 				                        </a>
-				                        <br class="uk-visible-small">
 				                        <a href="{{ url($listing->path()) }}">{{ $listing->title }}</a>
 				                        <p class="uk-text-muted" style="font-size:10px;margin-top:-4px">{{ $listing->area }} mt2 - {{ money_format('$%!.0i', $listing->price) }}</p>
-				                        <hr class="uk-visible-small uk-margin-bottom">									
-									</div>
-								@endforeach
-							</div>
+				                    </li>
+				                    @endforeach
+				                </ul>
+				                <a href="" style="margin-top:-60px" class="uk-slidenav uk-slidenav-previous uk-slidenav-contrast" data-uk-slideset-item="previous"></a>
+				                <a href="" style="margin-top:-60px" class="uk-slidenav uk-slidenav-next uk-slidenav-contrast" data-uk-slideset-item="next"></a>
+				            </div>
 							<!-- Featured listings top -->
 					    	<div class="uk-grid uk-margin-top-remove">
 					    	@foreach($listings as $listing)
@@ -340,6 +320,10 @@
 
 @section('js')
 	@parent
+
+	<noscript><link href="{{ asset('/css/components/slidenav.almost-flat.min.css') }}" rel="stylesheet"/></noscript>
+    <script src="{{ asset('/js/select2.min.js') }}"></script>
+    <script src="{{ asset('/js/components/slideset.min.js') }}"></script>
 
 	<script type="text/javascript">
         function setListingView(view) {
@@ -720,7 +704,9 @@
 	    }
 	</script>
 
+	<!-- 
 	<script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initMap" async defer></script>
+    -->
 
 @endsection
