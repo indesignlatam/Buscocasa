@@ -141,17 +141,20 @@ class ListingFEController extends Controller {
 				// Order the query by params
 				if($request->has('order_by')){
 					if($request->get('order_by') == 'price_min'){
-						$request->session()->put('listings_order_by', 'price_min');
+						session(['listings_order_by' => 'price_min']);
 						$query = $query->orderBy('price', 'ASC');
 					}else if($request->get('order_by') == 'price_max'){
-						$request->session()->put('listings_order_by', 'price_max');
+						session(['listings_order_by' => 'price_max']);
 						$query = $query->orderBy('price', 'DESC');
 					}else if($request->get('order_by') == 'id_desc'){
-						$request->session()->put('listings_order_by', 'id_desc');
+						session(['listings_order_by' => 'id_desc']);
 						$query = $query->orderBy('id', 'DESC');
 					}else if($request->get('order_by') == 'id_asc'){
-						$request->session()->put('listings_order_by', 'id_asc');
+						session(['listings_order_by' => 'id_asc']);
 						$query = $query->orderBy('id', 'ASC');
+					}else if($request->get('order_by') == '0'){
+						session()->forget('listings_order_by');
+						$query = $query->orderBy('featured_type', 'DESC');
 					}
 				}
 
@@ -167,13 +170,13 @@ class ListingFEController extends Controller {
 
 		// Order the query by cookie
 		if(!$request->has('order_by') && $request->session()->has('listings_order_by')){
-			if($request->session()->get('listings_order_by') == 'price_min'){
+			if(session('listings_order_by') == 'price_min'){
 					$query = $query->orderBy('price', 'ASC');
-				}else if($request->session()->get('listings_order_by') == 'price_max'){
+				}else if(session('listings_order_by') == 'price_max'){
 					$query = $query->orderBy('price', 'DESC');
-				}else if($request->session()->get('listings_order_by') == 'id_desc'){
+				}else if(session('listings_order_by') == 'id_desc'){
 					$query = $query->orderBy('id', 'DESC');
-				}else if($request->session()->get('listings_order_by') == 'id_asc'){
+				}else if(session('listings_order_by') == 'id_asc'){
 					$query = $query->orderBy('id', 'ASC');
 				}
 		}else{
