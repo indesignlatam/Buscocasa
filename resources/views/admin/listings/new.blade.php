@@ -72,11 +72,10 @@
 						        <label class="uk-form-label" for="">{{ trans('admin.city') }} <i class="uk-text-danger">*</i></label>
 						        <div class="uk-form-controls">
 						        	<select class="uk-width-large-10-10 uk-form-large" id="city" type="text" name="city_id">	
-						        		<option value="525" selected>Bogotá D.C. (Cundinamarca)</option>	     
 						                @foreach($cities as $city)
 						                	@if(old('city_id') == $city->id)
 												<option value="{{ $city->id }}" selected>{{ $city->name }} ({{ $city->department->name }})</option>
-						                	@elseif($city->id != 525)
+						                	@else
 						                		<option value="{{ $city->id }}">{{ $city->name }} ({{ $city->department->name }})</option>
 						                	@endif	
 						                @endforeach

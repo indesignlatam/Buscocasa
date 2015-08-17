@@ -87,7 +87,7 @@ class ListingController extends Controller {
 		$categories 	= Category::remember(Settings::get('query_cache_time'))->get();
 		$listingTypes 	= ListingType::remember(Settings::get('query_cache_time'))->get();
 		$features 		= Feature::remember(Settings::get('query_cache_time'))->with('category')->get();
-		$cities 		= City::remember(Settings::get('query_cache_time'))->with('department')->get();
+		$cities 		= City::remember(Settings::get('query_cache_time'))->orderBy('ordering', 'ASC')->with('department')->get();
 
 		$config = array();
 		$config['scrollwheel'] 	= false;
@@ -252,7 +252,7 @@ class ListingController extends Controller {
 		$categories 	= Category::remember(Settings::get('query_cache_time'))->get();
 		$listingTypes 	= ListingType::remember(Settings::get('query_cache_time'))->get();
 		$features 		= Feature::remember(Settings::get('query_cache_time'))->with('category')->get();
-		$cities 		= City::remember(Settings::get('query_cache_time'))->with('department')->get();
+		$cities 		= City::remember(Settings::get('query_cache_time'))->orderBy('ordering', 'ASC')->with('department')->get();
 
 		$config = array();
 		$config['scrollwheel'] 	= false;
