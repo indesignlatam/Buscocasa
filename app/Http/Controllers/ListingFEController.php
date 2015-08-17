@@ -417,6 +417,7 @@ class ListingFEController extends Controller {
 							 ->where('city_id', $listing->city_id)
 							 ->where('category_id', $listing->category_id)
 							 ->where('listing_type', $listing->listing_type)
+							 ->having('distance', '<', 1)
 							 ->orderBy('distance')
 							 ->orderBy('stratum')
 							 ->orderBy('construction_year')

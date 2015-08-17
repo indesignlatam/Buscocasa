@@ -65,6 +65,7 @@ return [
     'compare'                   => 'Comparar',
     'price_higher'              => 'El precio por mt2 de este inmueble es mas alto.',
     'price_lower'               => 'El precio por mt2 de este inmueble es mas bajo.',
+    'distance'                  => 'Distancia',
     'near_places'               => 'Lugares cercanos',
 
     // Map marker info window
