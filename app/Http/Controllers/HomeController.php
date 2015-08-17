@@ -65,7 +65,7 @@ class HomeController extends Controller {
 				$data[] = [ 'value' 	=> $listing->views,
 							'color' 	=> $colors[rand(0, 16)],
 							'highlight' => "#FF5A5E",
-							'label' 	=> $listing->title,
+							'label' 	=> $listing->title.' #'.$listing->code,
 						  ];
 			}
 
