@@ -100,7 +100,7 @@ return [
             'required' => 'Debes elegir una ubicación en el mapa.',
         ],
         'direction' => [
-            'required' => 'El campo direccion es obligatorio.',
+            'required' => 'El campo dirección es obligatorio.',
         ],
         'stratum' => [
             'required' => 'El campo estrato es obligatorio.',
@@ -109,7 +109,7 @@ return [
             'required' => 'El campo valor es obligatorio.',
         ],
         'image' => [
-            'max' => 'La imagen no debe pesar mas de :max',
+            'max' => 'La imagen no debe pesar más de :max',
         ],
         'construction_year' => [
             'max' => 'El campo año de construcción no debe ser mayor a :max',
@@ -121,23 +121,23 @@ return [
             'min'       => 'La contraseña debe contener al menos 6 caracteres.',
         ],
         'email' => [
-            'required'  => 'El campo correo electronico es obligatorio.',
-            'min'       => 'El correo electronico debe contener al menos 6 caracteres.',
-            'unique'    => 'El correo electronico ya fue registrado.',
+            'required'  => 'El campo correo electrónico es obligatorio.',
+            'min'       => 'El correo electrónico debe contener al menos 6 caracteres.',
+            'unique'    => 'El correo electrónico ya fue registrado.',
         ],
         'name' => [
             'required'  => 'El campo nombre es obligatorio.',
         ],
         'phone' => [
-            'required'          => 'El campo telefono es obligatorio.',
-            'digits_between'    => 'El telefono debe contener entre :min y :max caracteres.',
-            'unique'            => 'El telefono ya fue registrado.',
+            'required'          => 'El campo teléfono es obligatorio.',
+            'digits_between'    => 'El teléfono debe contener entre :min y :max caracteres.',
+            'unique'            => 'El teléfono ya fue registrado.',
         ],
 
         // Appointment
         'comments' => [
             'required'  => 'El campo comentarios es obligatorio.',
-            'max'       => 'El campo comentarios no debe tener mas de 500 caracteres.',
+            'max'       => 'El campo comentarios no debe tener más de 500 caracteres.',
         ],
     ],
 

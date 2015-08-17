@@ -17,8 +17,14 @@
 
 @section('css')
 	@parent
+	<style type="text/css">
+	.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default{
+		border-radius: 10px;
+	}
+	</style>
 	<script type="text/javascript">
 		loadCSS("//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css");
+        loadCSS("{{ asset('/css/components/slidenav.almost-flat.min.css') }}");
 		loadCSS("{{ asset('/css/select2.min.css') }}");
 	</script>
 @endsection
@@ -27,37 +33,10 @@
 
 <div class="uk-container uk-container-center uk-margin-top uk-margin-bottom">
 	<div class="uk-panel">
-		<div class="uk-grid">
-			<div class="uk-width-7-10">
-				@if($listingType == 'Buscar')
-					<h5 class="uk-panel-title">{{ trans('frontend.search_listings') }}</h5>
-				@else
-					<h5 class="uk-panel-title">{{ trans('frontend.listings_on') }} {{ $listingType }}</h5>
-				@endif
-			</div>
-			<div class="uk-width-3-10 uk-hidden-small">
-			@if($map)
-				@if(Cookie::get('hide_map'))
-					<a id="map_button_hide" class="uk-align-right uk-hidden" data-uk-toggle="{target:'#map_div, #map_button_show, #map_button_hide', animation:'uk-animation-fade'}" onclick="setHideMap(1)">{{ trans('frontend.hide_map') }}</a>
-					<a id="map_button_show" class="uk-align-right" data-uk-toggle="{target:'#map_div, #map_button_show, #map_button_hide', animation:'uk-animation-fade'}" onclick="setHideMap(0)">{{ trans('frontend.show_map') }}</a>
-				@else
-					<a id="map_button_hide" class="uk-align-right" data-uk-toggle="{target:'#map_div, #map_button_show, #map_button_hide', animation:'uk-animation-fade'}" onclick="setHideMap(1)">{{ trans('frontend.hide_map') }}</a>
-					<a id="map_button_show" class="uk-align-right uk-hidden" data-uk-toggle="{target:'#map_div, #map_button_show, #map_button_hide', animation:'uk-animation-fade'}" onclick="setHideMap(0)">{{ trans('frontend.show_map') }}</a>
-				@endif
-			@endif
-			</div>
-		</div>
-
-		@if($map)
-			@if(Cookie::get('hide_map'))
-				<div id="map_div" class="uk-hidden uk-hidden-small">
-					<?php echo $map['html']; ?>
-				</div>
-			@else
-				<div id="map_div" class="uk-hidden-small">
-					<?php echo $map['html']; ?>
-				</div>
-			@endif
+		@if($listingType == 'Buscar')
+			<h1>{{ trans('frontend.search_listings') }}</h1>
+		@else
+			<h1>{{ trans('frontend.listings_on') }} {{ $listingType }}</h1>
 		@endif
 	    
 	    <hr>
@@ -67,11 +46,11 @@
 	    	<div class="uk-width-large-1-4 uk-panel uk-panel-box uk-panel-box-secondary uk-visible-large uk-margin-right">
 				<form id="search_form" class="uk-form uk-form-stacked" method="GET" action="{{ url(Request::path()) }}">
 
-					<input class="uk-width-large-10-10 uk-margin-large-bottom uk-form-large" type="text" name="listing_code" placeholder="{{ trans('frontend.search_field') }}" value>
+					<input class="uk-width-large-10-10 uk-margin-bottom uk-form-large" type="text" name="listing_code" placeholder="{{ trans('frontend.search_field') }}" value>
 
 					<div class="uk-form-row">
 						<label class="uk-form-label">{{ trans('frontend.search_category') }}</label>
-						<select class="uk-width-large-10-10 uk-margin-small-bottom uk-form-large" id="category" name="category_id">
+						<select class="uk-width-large-10-10 uk-margin-small-bottom uk-form-large" id="category" name="category_id" onchange="getMarkers(true)">
 			                <option value>{{ trans('frontend.search_select_option') }}</option>
 			                @foreach($categories as $category)
 			                	@if($category->id == Request::get('category_id'))
@@ -85,7 +64,7 @@
 
 			        <div class="uk-form-row">
 						<label class="uk-form-label">{{ trans('frontend.search_city') }}</label>
-			            <select class="uk-width-large-10-10 uk-margin-small-bottom uk-form-large" id="city" name="city_id">
+			            <select class="uk-width-large-10-10 uk-margin-small-bottom uk-form-large" id="city" name="city_id" onchange="getMarkers(true)">
 			                <option value>{{ trans('frontend.search_select_option') }}</option>
 			                @foreach($cities as $city)
 			                	@if($city->id == Request::get('city_id'))
@@ -100,7 +79,7 @@
 			        @if(isset($listingTypes) && $listingTypes)
 			        <div class="uk-form-row">
 						<label class="uk-form-label">{{ trans('frontend.search_listing_types') }}</label>
-			            <select class="uk-width-large-10-10 uk-margin-small-bottom uk-form-large" id="type" name="listing_type_id">
+			            <select class="uk-width-large-10-10 uk-margin-small-bottom uk-form-large" id="type" name="listing_type_id" onchange="getMarkers(true)">
 			                <option value>{{ trans('frontend.search_select_option') }}</option>
 			                @foreach($listingTypes as $listingType)
 			                	@if($listingType->id == Request::get('listing_type_id'))
@@ -226,72 +205,62 @@
 					
 		    		<!-- This is the container of the toggling elements -->
 					<ul class="uk-tab" data-uk-switcher="{connect:'#my-id'}">
-						@if(!Cookie::get('show_mosaic'))
-							<li class="uk-tab-active uk-active"><a href=""><i class="uk-icon-bars"></i> {{ trans('frontend.tab_list') }}</a></li>
+						@if(!Cookie::get('listings_view') || Cookie::get('listings_view') == 0)
+							<li class="uk-tab-active uk-active" onclick="setListingView(0)"><a href=""><i class="uk-icon-bars"></i> {{ trans('frontend.tab_list') }}</a></li>
 					    	<li class="uk-hidden-small" onclick="setListingView(1)"><a href=""><i class="uk-icon-th-large"></i> {{ trans('frontend.tab_mosaic') }}</a></li>
-					    	{{-- <li class="uk-visible-small"><a href=""><i class="uk-icon-map-marker"></i> {{ trans('frontend.tab_map') }}</a></li> --}}
-						@else
+					    	<li class="uk-hidden" onclick="setListingView(2)"><a href=""><i class="uk-icon-map-marker"></i> {{ trans('frontend.tab_map') }}</a></li>
+						@elseif(Cookie::get('listings_view') == 1)
 							<li class="" onclick="setListingView(0)"><a href=""><i class="uk-icon-bars"></i> {{ trans('frontend.tab_list') }}</a></li>
-					    	<li class="uk-tab-active uk-active uk-hidden-small"><a href=""><i class="uk-icon-th-large"></i> {{ trans('frontend.tab_mosaic') }}</a></li>
-					    	{{-- <li class="uk-visible-small"><a href=""><i class="uk-icon-map-marker"></i> {{ trans('frontend.tab_map') }}</a></li> --}}
+					    	<li class="uk-hidden-small uk-tab-active uk-active" onclick="setListingView(1)"><a href=""><i class="uk-icon-th-large"></i> {{ trans('frontend.tab_mosaic') }}</a></li>
+					    	<li class="uk-hidden" onclick="setListingView(2)"><a href=""><i class="uk-icon-map-marker"></i> {{ trans('frontend.tab_map') }}</a></li>
+					    @elseif(Cookie::get('listings_view') == 2)
+					    	<li class="" onclick="setListingView(0)"><a href=""><i class="uk-icon-bars"></i> {{ trans('frontend.tab_list') }}</a></li>
+					    	<li class="uk-hidden-small" onclick="setListingView(1)"><a href=""><i class="uk-icon-th-large"></i> {{ trans('frontend.tab_mosaic') }}</a></li>
+					    	<li class="uk-hidden uk-tab-active uk-active" onclick="setListingView(2)"><a href=""><i class="uk-icon-map-marker"></i> {{ trans('frontend.tab_map') }}</a></li>
 						@endif
 					</ul>
-					<div class="uk-panel uk-margin">
-						<!-- Featured listings top -->
-						<div class="uk-grid">
-							@foreach($listings1 = array_slice($featuredListings->all(), 0, 4) as $listing)
-								<div class="uk-width-large-1-4 uk-width-medium-1-2 uk-width-small-1-1" style="position:relative;">
-									<!-- Tags start -->
-									<a href="{{ url($listing->path()) }}">
-						    		@if($listing->featuredType && $listing->featuredType->id > 1 && $listing->featured_expires_at > Carbon::now())
-						    			<img src="{{asset($listing->featuredType->image_path)}}" style="position:absolute; top:0; left:30; max-width:100px">
-						    		@else
-							    		@if($listing->created_at->diffInDays(Carbon::now()) < 5)
-							    			<img src="{{asset('/images/defaults/new.png')}}" style="position:absolute; top:0; left:30; max-width:100px">
-							    		@endif
-						    		@endif
-							    	<!-- Tags end -->
-			                            <img src="{{ asset(Image::url($listing->image_path(),['mini_front'])) }}" class="uk-margin-small-bottom" style="max-width=150px">
-			                        </a>
-			                        <br class="uk-visible-small">
-			                        <a href="{{ url($listing->path()) }}">{{ $listing->title }}</a>
-			                        <p class="uk-text-muted" style="font-size:10px;margin-top:-4px">{{ $listing->area }} mt2 - {{ money_format('$%!.0i', $listing->price) }}</p>
-			                        <hr class="uk-visible-small uk-margin-bottom">									
-								</div>
-							@endforeach
-						</div>
-						<!-- Featured listings top -->
-					</div>
 					<!-- This is the container of the content items -->
 					<ul id="my-id" class="uk-switcher uk-margin-top">
 						<!-- Full list -->
 					    <li>
+					    	<div class="uk-panel uk-margin">
+								<!-- Featured listings top -->
+								<div class="uk-slidenav-position" data-uk-slideset="{small: 1, medium: 4, large: 4, autoplay: true}">
+					                <ul class="uk-grid uk-slideset">
+					                    @foreach($featuredListings as $listing)
+					                    <li>
+					                        <a href="{{ url($listing->path()) }}">
+					                            <img src="{{ asset(Image::url($listing->image_path(),['mini_front'])) }}" class="uk-margin-small-bottom" style="max-width=150px">
+					                        </a>
+					                        <a href="{{ url($listing->path()) }}">{{ $listing->title }}</a>
+					                        <p class="uk-text-muted" style="font-size:10px;margin-top:-4px">{{ $listing->area }} mt2 - {{ money_format('$%!.0i', $listing->price) }}</p>
+					                    </li>
+					                    @endforeach
+					                </ul>
+					                <a href="" style="margin-top:-60px" class="uk-slidenav uk-slidenav-previous uk-slidenav-contrast" data-uk-slideset-item="previous"></a>
+					                <a href="" style="margin-top:-60px" class="uk-slidenav uk-slidenav-next uk-slidenav-contrast" data-uk-slideset-item="next"></a>
+					            </div>
+								<!-- Featured listings top -->
+							</div>
 					    	<?php $i = 0; ?>
 					    	@foreach($listings as $listing)
 					    		@if(count($listings) >= 10 && $i == ceil(count($listings)/2))
 					    			<div class="uk-panel uk-margin">
-										<div class="uk-grid">
-											@foreach($listings1 = array_slice($featuredListings->all(), -4, 4) as $listing)
-												<div class="uk-width-large-1-4 uk-width-medium-1-2 uk-width-small-1-1" style="position:relative;">
-													<!-- Tags start -->
-													<a href="{{ url($listing->path()) }}">
-										    		@if($listing->featuredType && $listing->featuredType->id > 1 && $listing->featured_expires_at > Carbon::now())
-										    			<img src="{{asset($listing->featuredType->image_path)}}" style="position:absolute; top:0; left:30; max-width:100px">
-										    		@else
-											    		@if($listing->created_at->diffInDays(Carbon::now()) < 5)
-											    			<img src="{{asset('/images/defaults/new.png')}}" style="position:absolute; top:0; left:30; max-width:100px">
-											    		@endif
-										    		@endif
-											    	<!-- Tags end -->
+										<div class="uk-slidenav-position" data-uk-slideset="{small: 1, medium: 4, large: 4, autoplay: true}">
+							                <ul class="uk-grid uk-slideset">
+							                    @foreach($featuredListings as $listing)
+							                    <li>
+							                        <a href="{{ url($listing->path()) }}">
 							                            <img src="{{ asset(Image::url($listing->image_path(),['mini_front'])) }}" class="uk-margin-small-bottom" style="max-width=150px">
 							                        </a>
-							                        <br class="uk-visible-small">
 							                        <a href="{{ url($listing->path()) }}">{{ $listing->title }}</a>
 							                        <p class="uk-text-muted" style="font-size:10px;margin-top:-4px">{{ $listing->area }} mt2 - {{ money_format('$%!.0i', $listing->price) }}</p>
-							                        <hr class="uk-visible-small uk-margin-bottom">									
-												</div>
-											@endforeach
-										</div>
+							                    </li>
+							                    @endforeach
+							                </ul>
+							                <a href="" style="margin-top:-60px" class="uk-slidenav uk-slidenav-previous uk-slidenav-contrast" data-uk-slideset-item="previous"></a>
+							                <a href="" style="margin-top:-60px" class="uk-slidenav uk-slidenav-next uk-slidenav-contrast" data-uk-slideset-item="next"></a>
+							            </div>
 									</div>
 									<hr>
 					    		@endif
@@ -307,7 +276,24 @@
 
 					    <!-- Image Mosaic -->
 					    <li>
-					    	<div class="uk-grid">
+					    	<!-- Featured listings top -->
+							<div class="uk-slidenav-position" data-uk-slideset="{small: 1, medium: 4, large: 4, autoplay: true}">
+				                <ul class="uk-grid uk-slideset">
+				                    @foreach($featuredListings as $listing)
+				                    <li>
+				                        <a href="{{ url($listing->path()) }}">
+				                            <img src="{{ asset(Image::url($listing->image_path(),['mini_front'])) }}" class="uk-margin-small-bottom" style="max-width=150px">
+				                        </a>
+				                        <a href="{{ url($listing->path()) }}">{{ $listing->title }}</a>
+				                        <p class="uk-text-muted" style="font-size:10px;margin-top:-4px">{{ $listing->area }} mt2 - {{ money_format('$%!.0i', $listing->price) }}</p>
+				                    </li>
+				                    @endforeach
+				                </ul>
+				                <a href="" style="margin-top:-60px" class="uk-slidenav uk-slidenav-previous uk-slidenav-contrast" data-uk-slideset-item="previous"></a>
+				                <a href="" style="margin-top:-60px" class="uk-slidenav uk-slidenav-next uk-slidenav-contrast" data-uk-slideset-item="next"></a>
+				            </div>
+							<!-- Featured listings top -->
+					    	<div class="uk-grid uk-margin-top-remove">
 					    	@foreach($listings as $listing)
 					    		<!-- Listing list view -->
 					    		@include('listings.mosaic')
@@ -321,7 +307,7 @@
 
 					    <!-- Map -->
 					    <li>
-					    	
+					    	<div id="map" style="height:550px" class="uk-width-1-1"></div>
 					    </li>
 					</ul>
 		    		
@@ -341,28 +327,17 @@
 	@parent
 
 	<!-- CSS -->
-	<noscript><link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"></noscript>
+	<noscript><link href="{{ asset('/css/jquery/jquery-ui.theme.min.css') }}" rel="stylesheet"></noscript>
 	<noscript><link href="{{ asset('/css/select2.min.css') }}" rel="stylesheet"/></noscript>
+	<noscript><link href="{{ asset('/css/components/slidenav.almost-flat.min.css') }}" rel="stylesheet"/></noscript>
 	<!-- CSS -->
 
-	<!-- JS -->
-	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-	<script src="{{ asset('/js/accounting.min.js') }}"></script>
-	<script src="{{ asset('/js/select2.min.js') }}"></script>
-	<!-- JS -->
-
 	<script type="text/javascript">
-		function setHideMap(hideMap) {
-            $.post("{{ url('/cookie/set') }}", {_token: "{{ csrf_token() }}", key:'hide_map', value:hideMap}, function(response){
-            	if(hideMap == false){
-            		initialize_map();
-            	}
-                console.log(response);
-            });
-        }
-
-        function setListingView(showMosaic) {
-            $.post("{{ url('/cookie/set') }}", {_token: "{{ csrf_token() }}", key:'show_mosaic', value:showMosaic}, function(response){
+        function setListingView(view) {
+        	if(view == 2){
+        		setTimeout(initMap, 50);
+        	}
+            $.post("{{ url('/cookie/set') }}", {_token: "{{ csrf_token() }}", key:'listings_view', value:view}, function(response){
                 console.log(response);
             });
         }
@@ -389,6 +364,9 @@
 		        	$( "#price_range" ).val( "$" + accounting.formatNumber(ui.values[ 0 ]) + " - $" + accounting.formatNumber(ui.values[ 1 ]) + tag );
 		        	$( "#price_min" ).val(ui.values[ 0 ]);
 		        	$( "#price_max" ).val(ui.values[ 1 ]);
+		      	},
+		      	change: function(){
+		      		getMarkers(true);
 		      	}
 		    });
 		    $( "#price_range" ).val( "$" + accounting.formatNumber($( "#slider-range-price" ).slider( "values", 0 )) +
@@ -412,6 +390,9 @@
 		        	$( "#room_range" ).val( accounting.formatNumber(ui.values[ 0 ]) + " - " + accounting.formatNumber(ui.values[ 1 ]) + tag);
 		        	$( "#rooms_min" ).val(ui.values[ 0 ]);
 		        	$( "#rooms_max" ).val(ui.values[ 1 ]);
+		      	},
+		      	change: function(){
+		      		getMarkers(true);
 		      	}
 		    });
 		    $( "#room_range" ).val( accounting.formatNumber($( "#slider-range-rooms" ).slider( "values", 0 )) +
@@ -438,6 +419,9 @@
 		        	$( "#area_range" ).val( accounting.formatNumber(ui.values[ 0 ]) + " mt2" + " - " + accounting.formatNumber(ui.values[ 1 ]) + tag );
 		        	$( "#area_min" ).val(ui.values[ 0 ]);
 		        	$( "#area_max" ).val(ui.values[ 1 ]);
+		      	},
+		      	change: function(){
+		      		getMarkers(true);
 		      	}
 		    });
 		    $( "#area_range" ).val( accounting.formatNumber($( "#slider-range-area" ).slider( "values", 0 )) + " mt2" +
@@ -464,6 +448,9 @@
 		        	$( "#lot_area_range" ).val( accounting.formatNumber(ui.values[ 0 ]) + " mt2" + " - " + accounting.formatNumber(ui.values[ 1 ]) + tag );
 		        	$( "#lot_area_min" ).val(ui.values[ 0 ]);
 		        	$( "#lot_area_max" ).val(ui.values[ 1 ]);
+		      	},
+		      	change: function(){
+		      		getMarkers(true);
 		      	}
 		    });
 		    $( "#lot_area_range" ).val( accounting.formatNumber($( "#slider-range-lot-area" ).slider( "values", 0 )) + " mt2" +
@@ -485,6 +472,9 @@
 		        	$( "#stratum_range" ).val( accounting.formatNumber(ui.values[ 0 ]) + " - " + accounting.formatNumber(ui.values[ 1 ]) );
 		        	$( "#stratum_min" ).val(ui.values[ 0 ]);
 		        	$( "#stratum_max" ).val(ui.values[ 1 ]);
+		      	},
+		      	change: function(){
+		      		getMarkers(true);
 		      	}
 		    });
 		    $( "#stratum_range" ).val( accounting.formatNumber($( "#slider-range-stratum" ).slider( "values", 0 )) +
@@ -511,6 +501,9 @@
 		        	$( "#garages_range" ).val( accounting.formatNumber(ui.values[ 0 ]) + " - " + accounting.formatNumber(ui.values[ 1 ]) + tag );
 		        	$( "#garages_min" ).val(ui.values[ 0 ]);
 		        	$( "#garages_max" ).val(ui.values[ 1 ]);
+		      	},
+		      	change: function(){
+		      		getMarkers(true);
 		      	}
 		    });
 		    $( "#garages_range" ).val( accounting.formatNumber($( "#slider-range-garages" ).slider( "values", 0 )) +
@@ -518,10 +511,10 @@
 	  	});
 	</script>
 
-	@if($map)
-	<!-- Google map js -->
-	<script type="text/javascript">var centreGot = false;</script>
-	{!! $map['js'] !!}
-	<!-- Google map js -->
-	@endif
+	<!-- JS -->
+	<script src="{{ asset('/js/jquery/jquery-ui.min.js') }}"></script>
+	<script src="{{ asset('/js/components/slideset.min.js') }}"></script>
+	<script src="{{ asset('/js/accounting.min.js') }}"></script>
+	<script src="{{ asset('/js/select2.min.js') }}"></script>
+	<!-- JS -->
 @endsection

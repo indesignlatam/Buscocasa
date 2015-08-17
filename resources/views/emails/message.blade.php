@@ -1,16 +1,11 @@
 @extends('emails.layouts.master')
 @section('header')
+	<a href="{{ url('/') }}"><img src="{{ $message->embed(public_path('/images/emails/welcome.jpg')) }}"></a>
 	@parent
 @endsection
 
 @section('content')
 	<p>{{ trans('emails.new_message_title') }}</p>
-
-	<div class="uk-text-center">
-		<a href="{{ url($userMessage->listing->path()) }}">
-			<img src="{{ $message->embed(public_path().'/'.$userMessage->listing->image_path()) }}" style="max-width:300px">
-		</a>
-	</div>
 
 	<div class="">
 		<div class="uk-margin-top">

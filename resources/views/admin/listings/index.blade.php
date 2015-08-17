@@ -251,7 +251,7 @@
 				                    				</li>
 				                    				<li class="uk-margin-small-top" style="margin-left:-20px;">
 				                    					<a href="https://plus.google.com/share?url={{ url($listing->path()) }}" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;" class="uk-icon-button uk-icon-google-plus"></a>
-				                    					<a href="" class="uk-icon-button uk-icon-envelope"></a>
+				                    					<a href="#send_mail" class="uk-icon-button uk-icon-envelope" onclick="setListing({{ $listing->id }})" data-uk-modal="{center:true}"></a>
 				                    				</li>
 				                    			</ul>
 			                    			</div>
@@ -386,14 +386,59 @@
 		
 	</div>
 </div>
+
+<!-- This is the modal -->
+<div id="send_mail" class="uk-modal">
+    <div class="uk-modal-dialog">
+        <a href="" class="uk-modal-close uk-close uk-close-alt"></a>
+        <div class="uk-modal-header uk-text-bold">
+        	Enviar publicación por email
+        </div>
+
+        <form class="uk-form uk-form-stacked">
+        	<input type="hidden" name="listingId" id="listingId">
+
+        	<div class="uk-form-row">
+		        <label class="uk-form-label" for="">{{ trans('admin.emails') }} <i class="uk-text-danger">*</i></label>
+        		<input type="text" name="emails" id="emails" placeholder="{{ trans('admin.emails') }}" class="uk-width-1-1 uk-form-large">
+		    </div>
+
+		    <div class="uk-form-row">
+		        <label class="uk-form-label" for="">{{ trans('admin.message') }} <i class="uk-text-danger">*</i></label>
+        		<textarea class="uk-width-1-1" id="message" rows="4" placeholder="{{ trans('admin.message') }}"></textarea>
+		    </div>
+        </form>
+
+        En el correo se adjuntaran las imagenes y la información del inmueble.
+
+        <div class="uk-modal-footer">
+        	<button class="uk-button uk-button-success" onclick="sendMail()" id="sendMail">Enviar</button>
+        	<button class="uk-button">Cancelar</button>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('js')
 	@parent
+	<link href="{{ asset('/css/select2.min.css') }}" rel="stylesheet"/>
+
 	<link href="{{ asset('/css/components/tooltip.almost-flat.min.css') }}" rel="stylesheet">
 	<script src="{{ asset('/js/components/tooltip.min.js') }}"></script>
+	<script src="{{ asset('/js/select2.min.js') }}"></script>
+
 
 	<script type="text/javascript">
+		$(function() {
+			
+		});
+		
+		function setListing(id){
+			$('#listingId').val(id);
+			$("#emails").val('');
+			$("#message").val('');
+		}
+
 		window.fbAsyncInit = function() {
         	FB.init({
          		appId      : {{ Settings::get('facebook_app_id') }},
@@ -431,14 +476,53 @@
 			    // will be executed on confirm.
 			    $.post("{{ url('/admin/listings') }}/" + sender.id, {_token: "{{ csrf_token() }}", _method:"DELETE"}, function(result){
 			    	if(result.success){
-			    		UIkit.notify('<i class="uk-icon-check-circle"></i> '+result.success, {pos:'top-right', status:'success', timeout: 15000});
+			    		UIkit.notify('<i class="uk-icon-check-circle"></i> '+result.success, {pos:'top-right', status:'success', timeout: 5000});
 			    		$('#listing-'+sender.id).fadeOut(500, function() { $(this).remove(); });
 			    	}else if(result.error){
-			    		UIkit.notify('<i class="uk-icon-remove"></i> '+result.error, {pos:'top-right', status:'danger', timeout: 15000});
+			    		UIkit.notify('<i class="uk-icon-remove"></i> '+result.error, {pos:'top-right', status:'danger', timeout: 5000});
 			    	}
 		        });
 			}, {labels:{Ok:'{{trans("admin.yes")}}', Cancel:'{{trans("admin.cancel")}}'}});
 	    }
+
+	    function sendMail(sender) {
+	    	$('#sendMail').prop('disabled', true);
+	    	var message = $('#message').val();
+	    	var emails = $('#emails').val().replace(/ /g,'').split(',');
+	    	var validemails = [];
+	    	$.each(emails, function( index, value ) {
+			  	if(validateEmail(value)){
+			  		validemails.push(value);
+			  	}
+			});
+
+			if(validemails.length < 1){
+				UIkit.notify('<i class="uk-icon-remove"></i> {{ trans('admin.no_emails') }}', {pos:'top-right', status:'danger', timeout: 5000});
+				$('#sendMail').prop('disabled', false);
+				return;
+			}
+
+			if(message.length < 1){
+				UIkit.notify('<i class="uk-icon-remove"></i> {{ trans('admin.no_message') }}', {pos:'top-right', status:'danger', timeout: 5000});
+				$('#sendMail').prop('disabled', false);
+				return;
+			}
+
+	    	$.post("{{ url('/admin/listings') }}/"+ $('#listingId').val() +"/share", {_token: "{{ csrf_token() }}", email: validemails, message: message}, function(result){
+		    	$('#sendMail').prop('disabled', false);
+		    	if(result.success){
+		    		UIkit.modal("#send_mail").hide();
+		    		UIkit.notify('<i class="uk-icon-check-circle"></i> '+result.success, {pos:'top-right', status:'success', timeout: 5000});
+		    	}else if(result.error || !result){
+		    		UIkit.notify('<i class="uk-icon-remove"></i> '+result.error, {pos:'top-right', status:'danger', timeout: 5000});
+		    	}
+	        });
+	    }
+
+	    function validateEmail(email) {
+		    var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+		    return re.test(email);
+		}
 
 	    // function toggle(source){
 	    //     checkboxes = document.getElementsByName('checkedLine');

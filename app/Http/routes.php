@@ -28,6 +28,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
 	Route::get('listings/{id}/renovate', 'ListingController@renovateShow');// Secured
 	Route::post('listings/{id}/renovate', 'ListingController@renovate');// Secured
 	Route::get('listings/{id}/recover', 'ListingController@recover');// Secured
+	Route::post('listings/{id}/share', 'ListingController@share');// Secured
 	Route::resource('listings', 'ListingController', ['only' => ['index', 'create', 'store', 'edit', 'update', 'destroy']]);// Secured
 
 	Route::resource('images', 'ImageController', ['only' => ['store', 'destroy']]);// Secured
@@ -93,6 +94,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth.admin'], function(){
 
 Route::get('/', 'WelcomeController@index');
 
+Route::post('listings/bounds', 'ListingFEController@indexBounds');
 Route::resource('ventas', 'ListingFEController');
 Route::resource('arriendos', 'ListingFEController');
 Route::get('compare', 'ListingFEController@compare');

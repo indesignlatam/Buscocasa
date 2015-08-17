@@ -1,5 +1,6 @@
 @extends('emails.layouts.master')
 @section('header')
+	<a href="{{ url('/') }}"><img src="{{ $message->embed(public_path('/images/emails/welcome.jpg')) }}"></a>
 	@parent
 @endsection
 
@@ -43,7 +44,6 @@
 @endsection
 
 @section('footer')
-	@parent
 @endsection
 
 @section('share_unregister')

@@ -19,6 +19,7 @@
 	<script type="text/javascript">
 		loadCSS("{{ asset('/css/components/slideshow.almost-flat.min.css') }}");
 		loadCSS("{{ asset('/css/components/slidenav.almost-flat.min.css') }}");
+		loadCSS("{{ asset('/css/components/tooltip.almost-flat.min.css') }}");
 	</script>
 @endsection
 
@@ -314,30 +315,31 @@
 
 				@if(count($compare) > 0)
 	    		<div class="uk-width-1-1" id="compare">
-	    			<h2>Inmuebles cercanos</h2>
-	    			<table class="uk-table uk-table-condensed uk-table-striped" style="margin-top:-20px">
+	    			<h2>{{ trans('frontend.near_listings') }}</h2>
+	    			<table class="uk-table uk-table-condensed uk-table-striped" style="margin-top:-10px">
 	    				<thead>
 					        <tr>
-					            <th>Inmueble</th>
-					            <th>Estrato</th>
-					            <th style="width:50px">Area</th>
-					            <th style="width:70px">Area lote</th>
-					            <th style="width:110px">Valor mt2</th>
+					            <th>{{ trans('frontend.listing') }}</th>
+					            <th>{{ trans('admin.stratum') }}</th>
+					            <th style="width:50px" class="uk-hidden-small">{{ trans('admin.area') }}</th>
+					            <th style="width:70px" class="uk-hidden-small">{{ trans('admin.lot_area') }}</th>
+					            <th style="width:110px">{{ trans('frontend.price_mt') }}</th>
 					        </tr>
 					    </thead>
     				@foreach($compare as $cListing)
     					<tr>
-    						<td>{{ $cListing->title }}</td>
+    						<td><a href="{{ url($cListing->path()) }}">{{ $cListing->title }}</a></td>
     						<td>{{ $cListing->stratum }}</td>
-    						<td class="uk-text-right">{{ number_format($cListing->area, 0, '.', ',') }}</td>
-    						<td class="uk-text-right">{{ number_format($cListing->lot_area, 0, '.', ',') }}</td>
+    						<td class="uk-text-right uk-hidden-small">{{ number_format($cListing->area, 0, '.', ',') }}</td>
+    						<td class="uk-text-right uk-hidden-small">{{ number_format($cListing->lot_area, 0, '.', ',') }}</td>
     						@if($cListing->area > 0)
-    							<td>{{ money_format('$%!.0i', $cListing->price/$cListing->area) }}
+    							<td>
     							@if(($cListing->price/$cListing->area) > ($listing->price/$listing->area))
-    								<i class="uk-icon-caret-up uk-text-danger uk-float-right"></i>
+    								<i class="uk-icon-caret-up uk-text-danger uk-icon-align-justify" data-uk-tooltip title="{{ trans('frontend.price_higher') }}"> </i>
     							@else
-    								<i class="uk-icon-caret-down uk-text-success uk-float-right"></i>
+    								<i class="uk-icon-caret-down uk-text-success uk-icon-align-justify" data-uk-tooltip title="{{ trans('frontend.price_lower') }}"> </i>
     							@endif
+    								{{ money_format('$%!.0i', $cListing->price/$cListing->area) }}
     							</td>
 		    				@elseif($cListing->lot_area > 0)
 		    					<td>{{ money_format('$%!.0i', $cListing->price/$cListing->lot_area) }}</td>
@@ -353,7 +355,7 @@
 	    		<hr>
 	    		
 	    		<div class="uk-width-1-1" id="places">
-	    			<h2>Lugares cercanos</h2>
+	    			<h2>{{ trans('frontend.near_places') }}</h2>
 	    			<table class="uk-table uk-table-condensed" style="margin-top:-10px" id="results">
 	    			</table>
 	    		</div>
@@ -371,12 +373,14 @@
 	<!-- CSS -->
 	<noscript><link href="{{ asset('/css/components/slideshow.almost-flat.min.css') }}" rel="stylesheet"></noscript>
 	<noscript><link href="{{ asset('/css/components/slidenav.almost-flat.min.css') }}" rel="stylesheet"></noscript>
+	<noscript><link href="{{ asset('/css/components/tooltip.almost-flat.min.css') }}" rel="stylesheet"></noscript>
 	<!-- CSS -->
 
 	<!-- JS -->
     <script src="{{ asset('/js/components/slideshow.min.js') }}"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initMap" async defer></script>
-    <script src="{{ asset('js/case.js') }}" async defer></script>
+    <script src="{{ asset('/js/components/tooltip.min.js') }}"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initMap"></script>
+    <script async defer src="{{ asset('js/case.js') }}"></script>
     @if(!Auth::check())
 	<script async defer src='https://www.google.com/recaptcha/api.js'></script>
 	@endif

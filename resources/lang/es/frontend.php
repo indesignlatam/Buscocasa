@@ -14,13 +14,13 @@ return [
 
     // Welcome -------------------------------------------------------------------
     // Mobile greeting
-    'mobile_greeting'           => 'Encuentra la casa de tus sueños!',
+    'mobile_greeting'           => '¡Encuentra la casa de tus sueños!',
     //Search bar
     'search_properties' 		=> 'Buscar Inmuebles',
     'search_city' 				=> 'Ciudad',
     'search_category' 			=> 'Tipo de inmueble',
     'search_listing_types' 		=> 'Venta o arriendo',
-    'search_field' 				=> 'Buscar codigo',
+    'search_field' 				=> 'Buscar código',
     'search_button' 			=> 'Buscar',
     'search_select_option' 		=> 'Seleccione una opción',
 
@@ -40,14 +40,15 @@ return [
     'hide_map' 					=> 'Ocultar mapa',
     'show_map' 					=> 'Mostrar mapa',
     'tab_list' 					=> 'Lista',
-    'tab_mosaic'                => 'Imagenes',
+    'tab_mosaic'                => 'Imágenes',
     'tab_map'                   => 'Mapa',
     'sorry' 					=> 'Lo sentimos.',
     'no_listings_found' 		=> 'No encontramos ninguna propiedad para ti en este momento.',
-    'try_other_parameters' 		=> 'Intenta en otra categoria o con otros parametros de busqueda.',
+    'try_other_parameters' 		=> 'Intenta en otra categoría o con otros parámetros de búsqueda.',
 
     // Listings show -------------------------------------------------------------------
-    'oops' 						=> 'Whoops!.',
+    'oops'                      => 'Whoops!.',
+    'listing'                   => 'Inmueble',
     'input_error' 				=> 'Hubo un problema',
     'contact_vendor' 			=> 'Contacta al vendedor',
     'contact_comments' 			=> 'Comentarios',
@@ -60,6 +61,11 @@ return [
     'other_user_listings'       => 'Otros inmuebles del usuario',
     'listing_selected'          => 'El inmueble fue seleccionado para comparar. ¿Deseas ir a comparar los inmuebles seleccionados?',
     'compare'                   => 'Comparar',
+    'near_listings'             => 'Valor metro cuadrado zona',
+    'compare'                   => 'Comparar',
+    'price_higher'              => 'El precio por mt2 de este inmueble es mas alto.',
+    'price_lower'               => 'El precio por mt2 de este inmueble es mas bajo.',
+    'near_places'               => 'Lugares cercanos',
 
     // Map marker info window
     'goto_listing' 				=> 'Ver inmueble',
