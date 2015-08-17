@@ -3,12 +3,12 @@
 	@if($listing->featuredType && $listing->featuredType->id > 1 && $listing->featured_expires_at > Carbon::now())
     	<div class="uk-panel uk-panel-box uk-panel-box-primary uk-margin-remove">
     		<div class="uk-overlay uk-overlay-hover">
-    			<img src="{{ asset($listing->featuredType->image_path) }}" style="position:absolute; top:0; left:0; max-width:150px">
+				<img src="{{asset($listing->featuredType->image_path)}}" style="position:absolute; top:30; left:30; max-width:150px">
     @else
     	<div class="uk-panel uk-panel-hover uk-margin-remove">
     		<div class="uk-overlay uk-overlay-hover">
     		@if($listing->created_at->diffInDays(Carbon::now()) < 5)
-				<img src="{{asset('/images/defaults/new.png')}}" style="position:absolute; top:0; left:0; max-width:150px">
+				<img src="{{asset('/images/defaults/new.png')}}" style="position:absolute; top:30; left:30; max-width:90px">
 			@endif
     @endif
 				<img src="{{ asset(Image::url($listing->image_path(),['mini_image_2x'])) }}" style="width:380px; float:left" class="uk-margin-right">
