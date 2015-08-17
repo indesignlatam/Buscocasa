@@ -19,6 +19,7 @@
 	<script type="text/javascript">
 		loadCSS("{{ asset('/css/components/slideshow.almost-flat.min.css') }}");
 		loadCSS("{{ asset('/css/components/slidenav.almost-flat.min.css') }}");
+		loadCSS("{{ asset('/css/components/tooltip.almost-flat.min.css') }}");
 	</script>
 @endsection
 
@@ -332,12 +333,13 @@
     						<td class="uk-text-right uk-hidden-small">{{ number_format($cListing->area, 0, '.', ',') }}</td>
     						<td class="uk-text-right uk-hidden-small">{{ number_format($cListing->lot_area, 0, '.', ',') }}</td>
     						@if($cListing->area > 0)
-    							<td>{{ money_format('$%!.0i', $cListing->price/$cListing->area) }}
+    							<td>
     							@if(($cListing->price/$cListing->area) > ($listing->price/$listing->area))
-    								<i class="uk-icon-caret-up uk-text-danger uk-float-right"></i>
+    								<i class="uk-icon-caret-up uk-text-danger uk-icon-align-justify" data-uk-tooltip title="{{ trans('frontend.price_higher') }}"> </i>
     							@else
-    								<i class="uk-icon-caret-down uk-text-success uk-float-right"></i>
+    								<i class="uk-icon-caret-down uk-text-success uk-icon-align-justify" data-uk-tooltip title="{{ trans('frontend.price_lower') }}"> </i>
     							@endif
+    								{{ money_format('$%!.0i', $cListing->price/$cListing->area) }}
     							</td>
 		    				@elseif($cListing->lot_area > 0)
 		    					<td>{{ money_format('$%!.0i', $cListing->price/$cListing->lot_area) }}</td>
@@ -371,12 +373,14 @@
 	<!-- CSS -->
 	<noscript><link href="{{ asset('/css/components/slideshow.almost-flat.min.css') }}" rel="stylesheet"></noscript>
 	<noscript><link href="{{ asset('/css/components/slidenav.almost-flat.min.css') }}" rel="stylesheet"></noscript>
+	<noscript><link href="{{ asset('/css/components/tooltip.almost-flat.min.css') }}" rel="stylesheet"></noscript>
 	<!-- CSS -->
 
 	<!-- JS -->
     <script src="{{ asset('/js/components/slideshow.min.js') }}"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initMap" async defer></script>
-    <script src="{{ asset('js/case.js') }}" async defer></script>
+    <script src="{{ asset('/js/components/tooltip.min.js') }}"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initMap"></script>
+    <script async defer src="{{ asset('js/case.js') }}"></script>
     @if(!Auth::check())
 	<script async defer src='https://www.google.com/recaptcha/api.js'></script>
 	@endif

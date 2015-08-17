@@ -63,6 +63,8 @@ return [
     'compare'                   => 'Comparar',
     'near_listings'             => 'Valor metro cuadrado zona',
     'compare'                   => 'Comparar',
+    'price_higher'              => 'El precio por mt2 de este inmueble es mas alto.',
+    'price_lower'               => 'El precio por mt2 de este inmueble es mas bajo.',
     'near_places'               => 'Lugares cercanos',
 
     // Map marker info window
