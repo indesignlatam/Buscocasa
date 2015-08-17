@@ -1,5 +1,6 @@
 @extends('emails.layouts.master')
 @section('header')
+	<a href="{{ url('/') }}"><img src="{{ $message->embed(public_path('/images/emails/welcome.jpg')) }}"></a>
 	@parent
 @endsection
 
@@ -8,12 +9,6 @@
 
 	<div style="text-align:center; margin-top:20px">
 		<h3><a href="{{ url('/admin/listings/'.$listing->id.'/renovate') }}" class="uk-button uk-button-large uk-button-primary">{{ trans('emails.renovate_listing_now') }}</a></h3>
-	</div>
-
-	<div style="text-align:center;">
-		<a href="{{ url($listing->path()) }}">
-			<img src="{{ $message->embed(public_path().'/'.$listing->image_path()) }}" style="width:300px; max-width:300px">
-		</a>
 	</div>
 
 	<h3>{{ $listing->title }}</h3>
@@ -26,7 +21,13 @@
     	{{ trans('emails.bathrooms') }} <b>{{ $listing->bathrooms }}</b><br>
     </p>
 
-	<div style="text-align:center;">
+    <div style="text-align:center;">
+		<a href="{{ url($listing->path()) }}">
+			<img src="{{ $message->embed(public_path($listing->image_path())) }}" style="width:300px; max-width:300px">
+		</a>
+	</div>
+
+	<div style="text-align:center; margin-top:20px">
 		<h3><a href="{{ url('/admin/listings/'.$listing->id.'/renovate') }}" class="uk-button uk-button-large uk-button-primary">{{ trans('emails.renovate_listing_now') }}</a></h3>
 	</div>
 @endsection

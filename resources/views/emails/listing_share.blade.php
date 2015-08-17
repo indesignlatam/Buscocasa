@@ -1,6 +1,7 @@
 @extends('emails.layouts.master')
 @section('header')
-	<h3>Buen dia,</h3>
+	<a href="{{ url('/') }}"><img src="{{ $message->embed(public_path('/images/emails/welcome.jpg')) }}"></a>
+	<h3>Buen día,</h3>
 @endsection
 
 @section('content')
@@ -60,8 +61,6 @@
 	    </div>
 	</div>
 
-	<hr>
-
 	<div class="uk-text-center">
 		@foreach($listing->images->sortBy('ordering') as $image)
 			<a href="{{ url($listing->path()) }}"><img src="{{ $message->embed(public_path($image->image_path)) }}" style="max-width:300px; margin-right:10px; margin-bottom:10px"></a>
@@ -70,6 +69,7 @@
 @endsection
 
 @section('greetings')
+	<p class="uk-text-bold">{{ trans('emails.answer_to_contact_vendor') }}</p>
 	<p class="uk-margin-large-top">
 		Cordialmente,
 		<br>

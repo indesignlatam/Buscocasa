@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel {
         \App\Console\Commands\CleanTempFolder::class,
         \App\Console\Commands\DeleteExpiredListings::class,
         \App\Console\Commands\ArchiveDeletedListings::class,
-        \App\Console\Commands\TestPaymentEmail::class,
+        \App\Console\Commands\TestEmail::class,
         \App\Console\Commands\FlushCache::class,
     ];
 

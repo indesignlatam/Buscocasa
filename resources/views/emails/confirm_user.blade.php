@@ -1,12 +1,13 @@
 @extends('emails.layouts.master')
 @section('header')
+	<a href="{{ url('/') }}"><img src="{{ $message->embed(public_path('/images/emails/welcome.jpg')) }}"></a>
 	@parent
 @endsection
 
 @section('content')
 	<p>{{ trans('emails.user_confirmation_title') }}</p>
 	
-	<img src="{{ $message->embed(public_path().'/images/support/user/welcome.png') }}" style="max-width:600px" class="uk-align-center">
+	<img src="{{ $message->embed(public_path().'/images/support/user/welcome.png') }}" style="max-width:400px" class="uk-align-center">
 
 	<div class="uk-text-center">
 		<h3>{{ trans('emails.click_here_to_confirm') }}</h3>
