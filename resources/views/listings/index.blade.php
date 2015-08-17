@@ -17,6 +17,11 @@
 
 @section('css')
 	@parent
+	<style type="text/css">
+	.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default{
+		border-radius: 10px;
+	}
+	</style>
 	<script type="text/javascript">
 		loadCSS("//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css");
         loadCSS("{{ asset('/css/components/slidenav.almost-flat.min.css') }}");
