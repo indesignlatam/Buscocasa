@@ -144,6 +144,7 @@ return [
     'mark_as_answered'          => 'Marcar como respondido',
     'delete_message'            => 'Eliminar mensaje',
     'emails'                    => 'Correos electrónicos',
+    'listing_shared'            => 'La publicación fue compartida',
 
     // Confirmation
     'user_not_confirmed'        => 'No has confirmado tu cuenta de correo',

@@ -58,7 +58,7 @@ return [
     'price_mt' 					=> 'Valor mt2',
     'similar_listings' 			=> 'Inmuebles similares',
     'already_contacted_vendor' 	=> 'Ya has contactado al vendedor hoy',
-    'other_user_listings'       => 'Otros inmuebles del usuario',
+    'other_user_listings'       => 'Otros inmuebles del vendedor',
     'listing_selected'          => 'El inmueble fue seleccionado para comparar. ¿Deseas ir a comparar los inmuebles seleccionados?',
     'compare'                   => 'Comparar',
     'near_listings'             => 'Valor metro cuadrado zona',
