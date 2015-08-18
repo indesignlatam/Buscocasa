@@ -60,7 +60,7 @@
 					<!-- Categoria - tipo de publicacion - ubicacion -->
 					<div class="uk-panel">
 						<h2 class="uk-display-inline uk-text-primary uk-text-bold uk-float-left" style="text-transform: uppercase">{{ trans('admin.listing_data_location') }}</h2>
-						<h2 class="uk-display-inline uk-float-right uk-padding-remove uk-margin-remove"><i id="points_main">50</i>/50</h2>
+						<h2 class="uk-display-inline uk-float-right uk-padding-remove uk-margin-remove"><i id="points_main">0</i>/50</h2>
 					</div>
 					
 					<div class="uk-grid">
@@ -68,7 +68,7 @@
 							<div class="uk-form-row">
 						        <label class="uk-form-label" for="">{{ trans('admin.category') }} <i class="uk-text-danger">*</i></label>
 						        <div class="uk-form-controls">
-						        	<select class="uk-width-large-10-10 uk-form-large" id="category" name="category_id" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.category_tooltip') }}">
+						        	<select class="uk-width-large-10-10 uk-form-large" id="category" name="category_id" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.category_tooltip') }}" onchange="calculatePoints('main')">
 						                @foreach($categories as $category)
 						                	@if($listing->category->id == $category->id)
 												<option value="{{ $category->id }}" selected>{{ str_singular($category->name) }}</option>
@@ -83,7 +83,7 @@
 							<div class="uk-form-row">
 						        <label class="uk-form-label" for="">{{ trans('admin.city') }} <i class="uk-text-danger">*</i></label>
 						        <div class="uk-form-controls">
-						        	<select class="uk-width-large-10-10 uk-form-large" id="city" type="text" name="city_id">
+						        	<select class="uk-width-large-10-10 uk-form-large" id="city" type="text" name="city_id" onchange="calculatePoints('main')">
 						                @foreach($cities as $city)
 						                	@if($listing->city->id == $city->id)
 												<option value="{{ $city->id }}" selected="true">{{ $city->name }} ({{ $city->department->name }})</option>
@@ -97,7 +97,7 @@
 
 						    <div class="uk-form-row">
 						        <label class="uk-form-label" for="">{{ trans('admin.district') }} <i class="uk-text-danger">*</i></label>
-								<input class="uk-width-large-10-10 uk-form-large" type="text" name="district" value="{{ $listing->district }}" placeholder="{{ trans('admin.district') }}" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.district_tooltip') }}">
+								<input class="uk-width-large-10-10 uk-form-large" type="text" name="district" value="{{ $listing->district }}" placeholder="{{ trans('admin.district') }}" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.district_tooltip') }}" onchange="calculatePoints('main')">
 						    </div>
 						</div>
 
@@ -105,7 +105,7 @@
 							<div class="uk-form-row">
 						        <label class="uk-form-label" for="">{{ trans('admin.listing_type') }} <i class="uk-text-danger">*</i></label>
 						        <div class="uk-form-controls">
-						        	<select class="uk-width-large-10-10 uk-form-large" id="listing_type" name="listing_type" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.listing_type_tooltip') }}">
+						        	<select class="uk-width-large-10-10 uk-form-large" id="listing_type" name="listing_type" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.listing_type_tooltip') }}" onchange="calculatePoints('main')">
 						                @foreach($listingTypes as $listingType)
 						                	@if($listing->listingType->id == $listingType->id)
 												<option value="{{ $listingType->id }}" selected>{{ $listingType->name }}</option>
@@ -119,7 +119,7 @@
 
 							<div class="uk-form-row">
 						        <label class="uk-form-label" for="">{{ trans('admin.address') }} <i class="uk-text-danger">*</i></label>
-								<input class="uk-width-large-10-10 uk-form-large" id="direction" type="text" name="direction" value="{{ $listing->direction }}" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.direction_tooltip') }}">
+								<input class="uk-width-large-10-10 uk-form-large" id="direction" type="text" name="direction" value="{{ $listing->direction }}" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.direction_tooltip') }}" onchange="calculatePoints('main')">
 							</div>
 						</div>
 						<!-- Categoria - tipo de publicacion - ubicacion -->
@@ -449,9 +449,73 @@
 
 	<script type="text/javascript">
 		function calculatePoints(sender){
+			if(sender == 'main' || !sender){
+				var $main = $("#points_main");
+				var mainPoints = 0;
+				var number = 5;
+
+				if($('select[name="category_id"]').val() && $('select[name="category_id"]').val() != ''){
+					mainPoints += 50/number;
+				}
+				if($('select[name="listing_type"]').val() && $('select[name="listing_type"]').val() != ''){
+					mainPoints += 50/number;
+				}
+				if($('select[name="city_id"]').val() && $('select[name="city_id"]').val() != ''){
+					mainPoints += 50/number;
+				}
+				if($('input[name="direction"]').val() && $('input[name="direction"]').val() != ''){
+					mainPoints += 50/number;
+				}
+				if($('input[name="district"]').val() && $('input[name="district"]').val() != ''){
+					mainPoints += 50/number;
+				}
+
+				$({someValue: $main.html()}).animate({someValue: mainPoints}, {
+				    duration: 500,
+				    easing:'swing', // can be anything
+				    step: function() { // called on every step
+				        // Update the element's text with rounded-up value:
+				        $main.text(Math.round(this.someValue));
+				    }
+				});
+			}
+
 			if(sender == 'basics' || !sender){
 				var $basics = $("#points_basics");
-				basicsPoints = (($('#3').find('input').length - $('#3').find('input[value="0"]').length)/$('#3').find('input').length)*150;
+				var basicsPoints = 0;
+				var number = $('#3').find('input').length;
+
+				if($('input[name="price"]').val() && $('input[name="price"]').val() != ''){
+					basicsPoints += 150/number;
+				}
+				if($('input[name="stratum"]').val() && $('input[name="stratum"]').val() != ''){
+					basicsPoints += 150/number;
+				}
+				if($('input[name="area"]').val() && $('input[name="area"]').val() != ''){
+					basicsPoints += 150/number;
+				}
+				if($('input[name="lot_area"]').val() && $('input[name="lot_area"]').val() != ''){
+					basicsPoints += 150/number;
+				}
+				if($('input[name="rooms"]').val() && $('input[name="rooms"]').val() != ''){
+					basicsPoints += 150/number;
+				}
+				if($('input[name="bathrooms"]').val() && $('input[name="bathrooms"]').val() != ''){
+					basicsPoints += 150/number;
+				}
+				if($('input[name="garages"]').val() && $('input[name="garages"]').val() != ''){
+					basicsPoints += 150/number;
+				}
+				if($('input[name="floor"]').val() && $('input[name="floor"]').val() != ''){
+					basicsPoints += 150/number;
+				}
+				if($('input[name="construction_year"]').val() && $('input[name="construction_year"]').val() != ''){
+					basicsPoints += 150/number;
+				}
+				if($('input[name="administration"]').val() && $('input[name="administration"]').val() != ''){
+					basicsPoints += 150/number;
+				}
+
 				$({someValue: $basics.html()}).animate({someValue: basicsPoints}, {
 				    duration: 500,
 				    easing:'swing', // can be anything
@@ -464,7 +528,10 @@
 
 			if(sender == 'caracteristics' || !sender){
 				var $caracteristics = $("#points_caracteristics");
-				caracteristicsPoints = ($('#4').find('input[type="checkbox"]:checked').length/$('#4').find('input[type="checkbox"]').length)*150;
+				caracteristicsPoints = ($('#4').find('input[type="checkbox"]:checked').length/($('#4').find('input[type="checkbox"]').length*0.5))*150;
+				if(caracteristicsPoints > 150){
+					caracteristicsPoints = 150;
+				}
 				$({someValue: $caracteristics.html()}).animate({someValue: caracteristicsPoints}, {
 				    duration: 500,
 				    easing:'swing', // can be anything
@@ -480,7 +547,10 @@
 				string = $("#description").val();
 				aditionalPoints = 0;
 				if(string){
-					aditionalPoints = (string.length/1200)*150;
+					aditionalPoints = (string.length/1000)*150;
+				}
+				if(aditionalPoints > 150){
+					aditionalPoints = 150;
 				}
 				$({someValue: $el.html()}).animate({someValue: aditionalPoints}, {
 				    duration: 500,
@@ -495,7 +565,10 @@
 			if(sender == 'images' || !sender){
 				// Image points
 				var $images = $('#points_images');
-				imagesPoints = ($('#images-div').children().size()/20)*200;
+				imagesPoints = ($('#images-div').children().size()/10)*200;
+				if(imagesPoints > 200){
+					imagesPoints = 200;
+				}
 				$({someValue: $images.html()}).animate({someValue: imagesPoints}, {
 				    duration: 500,
 				    easing:'swing', // can be anything
@@ -557,7 +630,9 @@
 	    }
 
 		function format(field){
-	        field.value = accounting.formatNumber(field.value);
+			if(field.value){
+				field.value = accounting.formatNumber(field.value);
+			}
 	    }
 
         function deleteImage(sender, modal) {
