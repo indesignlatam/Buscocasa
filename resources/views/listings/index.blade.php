@@ -149,56 +149,64 @@
 	    		@if(count($listings) > 0)
 	    			<div class="uk-form uk-align-right uk-hidden-small">
 		    			<select form="search_form" name="take" onchange="this.form.submit()">
-					    	<option value="">Cantidad de publicaciones</option>
+					    	<option value="">{{ trans('admin.elements_amount') }}</option>
 					    	@if(Request::get('take') == 50)
-					    		<option value="50" selected>Ver 50</option>
-					    	@elseif(Cookie::get('listings_take') == 50)
-					    		<option value="50" selected>Ver 50</option>
+					    		<option value="50" selected>{{ trans('admin.elements_50') }}</option>
+					    	@elseif(session('listings_take') == 50)
+					    		<option value="50" selected>{{ trans('admin.elements_50') }}</option>
 					    	@else
-					    		<option value="50">Ver 50</option>
+					    		<option value="50">{{ trans('admin.elements_50') }}</option>
 					    	@endif
 
 					    	@if(Request::get('take') == 30)
-					    		<option value="30" selected>Ver 30</option>
-					    	@elseif(Cookie::get('listings_take') == 30)
-					    		<option value="30" selected>Ver 30</option>
+					    		<option value="30" selected>{{ trans('admin.elements_30') }}</option>
+					    	@elseif(session('listings_take') == 30)
+					    		<option value="30" selected>{{ trans('admin.elements_30') }}</option>
 					    	@else
-					    		<option value="30">Ver 30</option>
+					    		<option value="30">{{ trans('admin.elements_30') }}</option>
 					    	@endif
 
 					    	@if(Request::get('take') == 10)
-					    		<option value="10" selected>Ver 10</option>
-					    	@elseif(Cookie::get('listings_take') == 10)
-					    		<option value="10" selected>Ver 10</option>
+					    		<option value="10" selected>{{ trans('admin.elements_30') }}</option>
+					    	@elseif(session('listings_take') == 10)
+					    		<option value="10" selected>{{ trans('admin.elements_30') }}</option>
 					    	@else
-					    		<option value="10">Ver 10</option>
+					    		<option value="10">{{ trans('admin.elements_30') }}</option>
 					    	@endif
 					    </select>
 
 					    <select form="search_form" name="order_by" onchange="this.form.submit()">
-					    	<option value="">Ordenar por</option>
+					    	<option value="0">{{ trans('admin.order_by') }}</option>
 					    	@if(Request::get('order_by') && Request::get('order_by') == 'id_desc')
-					    		<option value="id_desc" selected>Fecha creación</option>
-					    	@elseif(Cookie::get('listings_order_by') == 'id_desc')
-					    		<option value="id_desc" selected>Fecha creación</option>
+					    		<option value="id_desc" selected>{{ trans('admin.order_newer_first')}}</option>
+					    	@elseif(session('listings_order_by') == 'id_desc')
+					    		<option value="id_desc" selected>{{ trans('admin.order_newer_first')}}</option>
 					    	@else
-					    		<option value="id_desc">Fecha creación</option>
+					    		<option value="id_desc">{{ trans('admin.order_newer_first')}}</option>
+					    	@endif
+
+					    	@if(Request::get('order_by') && Request::get('order_by') == 'id_asc')
+					    		<option value="id_asc" selected>{{ trans('admin.order_older_first')}}</option>
+					    	@elseif(session('listings_order_by') == 'id_asc')
+					    		<option value="id_asc" selected>{{ trans('admin.order_older_first')}}</option>
+					    	@else
+					    		<option value="id_asc">{{ trans('admin.order_older_first')}}</option>
 					    	@endif
 
 					    	@if(Request::get('order_by') && Request::get('order_by') == 'price_max')
-					    		<option value="price_max" selected>Mayor a menor valor</option>
-					    	@elseif(Cookie::get('listings_order_by') == 'price_max')
-					    		<option value="price_max" selected>Mayor a menor valor</option>
+					    		<option value="price_max" selected>{{ trans('admin.order_expensive_first') }}</option>
+					    	@elseif(session('listings_order_by') == 'price_max')
+					    		<option value="price_max" selected>{{ trans('admin.order_expensive_first') }}</option>
 					    	@else
-					    		<option value="price_max">Mayor a menor valor</option>
+					    		<option value="price_max">{{ trans('admin.order_expensive_first') }}</option>
 					    	@endif
 
 					    	@if(Request::get('order_by') && Request::get('order_by') == 'price_min')
-					    		<option value="price_min" selected>Menor a mayor valor</option>
-					    	@elseif(Cookie::get('listings_order_by') == 'price_min')
-					    		<option value="price_min" selected>Menor a mayor valor</option>
+					    		<option value="price_min" selected>{{ trans('admin.order_cheaper_first') }}</option>
+					    	@elseif(session('listings_order_by') == 'price_min')
+					    		<option value="price_min" selected>{{ trans('admin.order_cheaper_first') }}</option>
 					    	@else
-					    		<option value="price_min">Menor a mayor valor</option>
+					    		<option value="price_min">{{ trans('admin.order_cheaper_first') }}</option>
 					    	@endif
 					    </select>
 					</div>

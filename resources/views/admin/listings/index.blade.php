@@ -66,7 +66,7 @@
 			@if(count($listings) > 0)
 			    <div class="">
 			        <!-- This is a button toggling the modal -->
-			        <a class="uk-button uk-button-large uk-button-primary uk-text-bold" href="{{ url('/admin/listings/create') }}">{{ trans('admin.publish_property') }}</a>
+			        <a class="uk-button uk-button-large uk-button-primary" href="{{ url('/admin/listings/create') }}">{{ trans('admin.publish_property') }}</a>
 			        <a class="uk-button uk-button-large" href="{{ url('/admin/listings/?deleted=true') }}" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.eliminated_listings') }}"><i class="uk-icon-trash"></i></a>
 
 			        <form action="{{url(Request::path())}}" method="GET" class="uk-form uk-align-right uk-hidden-small">
@@ -172,7 +172,7 @@
 			                			<a href="{{ url('/admin/listings/'.$listing->id.'/edit') }}">
 				                			<!-- Featured tag -->
 						                	@if($listing->featured_expires_at && $listing->featuredType->id > 1 && $listing->featured_expires_at > Carbon::now())
-						                		<img src="{{asset($listing->featuredType->image_path)}}" style="position:absolute; top:0; left:0; max-width:150px">
+						                		<img src="{{asset($listing->featuredType->image_path)}}" style="position:absolute; top:30; left:30; max-width:100px">
 						                	@endif
 						                	<!-- Featured tag -->
 			                				<img src="{{ asset(Image::url($listing->image_path(),['map_mini'])) }}">

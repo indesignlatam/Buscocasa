@@ -9,6 +9,14 @@
 
 	<div class="">
 		<div class="uk-margin-top">
+			<div class="uk-margin-top">
+			    <p class="uk-text-bold">{{ trans('emails.message_answer') }}</p>
+
+			    <p><i>{{ $comments }}</i></p>
+			</div>
+
+		    <hr>
+		    
 			<div class="uk-text-center">
 				<a href="{{ url($messageToAnswer->listing->path()) }}">
 					<img src="{{ $message->embed(public_path($messageToAnswer->listing->image_path())) }}" style="max-width:300px">
@@ -25,14 +33,6 @@
 		    	<li>{{ trans('emails.bathrooms') }} <b>{{ $messageToAnswer->listing->bathrooms }}</li>
 		    </ul>
 	    </div>
-
-	    <hr>
-
-	    <div class="uk-margin-top">
-		    <p class="uk-text-bold">{{ trans('emails.message_answer') }}</p>
-
-		    <p><i>{{ $comments }}</i></p>
-		</div>
 	</div>
 
 	<div class="uk-text-center uk-margin-large-top">

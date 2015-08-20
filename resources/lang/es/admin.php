@@ -144,6 +144,7 @@ return [
     'mark_as_answered'          => 'Marcar como respondido',
     'delete_message'            => 'Eliminar mensaje',
     'emails'                    => 'Correos electrónicos',
+    'listing_shared'            => 'La publicación fue compartida',
 
     // Confirmation
     'user_not_confirmed'        => 'No has confirmado tu cuenta de correo',
@@ -323,15 +324,17 @@ return [
 
     // Navbar
     'home'                      => 'Inicio',
-    'features111'               => 'publicados',
-    'features111'               => 'publicados',
-    'features111'               => 'publicados',
-    'features111'               => 'publicados',
-    'features111'               => 'publicados',
-    'features111'               => 'publicados',
-    'features111'               => 'publicados',
-    'features111'               => 'publicados',
-    'features111'               => 'publicados',
+
+    // Ordering
+    'elements_amount'            => 'Cantidad de elementos',
+    'elements_50'               => 'Ver 50',
+    'elements_30'               => 'Ver 30',
+    'elements_10'               => 'Ver 10',
+    'order_by'                  => 'Ordenar por',
+    'order_newer_first'         => 'Recientes primero',
+    'order_older_first'         => 'Antiguos primero',
+    'order_expensive_first'     => 'Mayor a menor valor',
+    'order_cheaper_first'       => 'Menor a mayor valor',
     'features111'               => 'publicados',
     'features111'               => 'publicados',
     'features111'               => 'publicados',
