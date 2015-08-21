@@ -52,16 +52,35 @@
         </a>
 
         <ul class="uk-navbar-nav uk-vertical-align uk-hidden-small">
-            <li class="uk-parent" data-uk-dropdown="">
+        @if(Request::is('/'))
+            <li class="uk-active">
+        @else
+            <li>
+        @endif
                 <a href="{{ url('/') }}">{{ trans('frontend.menu_home') }}</a>
             </li>
-            <li class="uk-parent" data-uk-dropdown="">
+
+        @if(Request::is('ventas') || Request::is('ventas/*'))
+            <li class="uk-active">
+        @else
+            <li>
+        @endif
                 <a href="{{ url('/ventas') }}">{{ trans('frontend.menu_sales') }}</a>
             </li>
-            <li class="uk-parent" data-uk-dropdown="">
+
+        @if(Request::is('arriendos') || Request::is('arriendos/*'))
+            <li class="uk-active">
+        @else
+            <li>
+        @endif
                 <a href="{{ url('/arriendos') }}">{{ trans('frontend.menu_leases') }}</a>
             </li>
-            <li class="uk-parent" data-uk-dropdown="">
+
+        @if(Request::is('#') || Request::is('#/*'))
+            <li class="uk-active">
+        @else
+            <li>
+        @endif
                 <a href="{{ url('#') }}">{{ trans('frontend.menu_new_proyects') }}</a>
             </li>
         </ul>

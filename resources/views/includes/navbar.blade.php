@@ -88,17 +88,29 @@
                         </div>
                     </li>
                 @else
-                    <li>
-                        <a href="{{ url('/admin') }}">{{ trans('admin.home') }}</a>
-                    </li>
+                    @if(Request::is('admin'))
+                        <li class="uk-active">
+                    @else
+                        <li>
+                    @endif
+                            <a href="{{ url('/admin') }}">{{ trans('admin.home') }}</a>
+                        </li>
 
-                    <li>
-                        <a href="{{ url('/admin/listings') }}">{{ trans('admin.my_listings_menu') }}</a>
-                    </li>
+                    @if(Request::is('admin/listings'))
+                        <li class="uk-active">
+                    @else
+                        <li>
+                    @endif
+                            <a href="{{ url('/admin/listings') }}">{{ trans('admin.my_listings_menu') }}</a>
+                        </li>
 
-                    <li>
-                        <a href="{{ url('/admin/messages') }}">{{ trans('admin.my_messages_menu') }}</a>
-                    </li>
+                    @if(Request::is('admin/messages') || Request::is('admin/messages/*'))
+                        <li class="uk-active">
+                    @else
+                        <li>
+                    @endif
+                            <a href="{{ url('/admin/messages') }}">{{ trans('admin.my_messages_menu') }}</a>
+                        </li>
                 @endrole
 
             @endif
