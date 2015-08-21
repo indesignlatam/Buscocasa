@@ -99,10 +99,6 @@
                     <li>
                         <a href="{{ url('/admin/messages') }}">{{ trans('admin.my_messages_menu') }}</a>
                     </li>
-
-                    <li>
-                        <a href="{{ url('/admin/pagos') }}">{{ trans('admin.payments') }}</a>
-                    </li>
                 @endrole
 
             @endif
@@ -121,7 +117,7 @@
                                 <li><a href="{{ url('/admin') }}">{{ trans('admin.dashboard') }}</a></li>
                                 <li><a href="{{ url('/admin/listings') }}">{{ trans('admin.my_listings_menu') }}</a></li>
                                 <li><a href="{{ url('/admin/messages') }}">{{ trans('admin.my_messages_menu') }}</a></li>
-                                <li><a href="{{ url('/admin/pagos') }}">{{ trans('admin.payments') }}</a></li>
+                                <li><a href="{{ url('/admin/pagos') }}">{{ trans('admin.my_payments') }}</a></li>
                                 <li><a href="{{ url('/admin/user/'.Auth::user()->id.'/edit') }}">{{ trans('admin.user_data') }}</a></li>
                                 @role('admin')
                                     <li><a href="{{ url('/admin/config') }}">{{ trans('admin.configuration') }}</a></li>

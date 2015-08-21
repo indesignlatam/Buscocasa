@@ -120,7 +120,7 @@ return [
 
     //
     'my_listings_menu' 			=> 'Mis publicaciones',
-    'my_messages_menu' 			=> 'Mensajes',
+    'my_messages_menu' 			=> 'Mis mensajes',
     'profile_menu' 				=> 'Mis datos',
     'login' 					=> 'Iniciar sesión',
     'logout' 					=> 'Cerrar sesión',
@@ -202,7 +202,7 @@ return [
     'no_message'                => 'No has ingresado ningún texto para el correo',
 
     // Payments
-    'payments'                  => 'Pagos',
+    'payments'                  => 'Mis pagos',
     'my_payments'               => 'Mis pagos',
     'you_have_no_payments'      => 'No tienes ningún pago confirmado.',
     'cancel_payment_sure'       => '¿Estás seguro que quieres cancelar este pago?',
