@@ -48,7 +48,7 @@ class AppServiceProvider extends ServiceProvider {
         ]);
 
         Image::filter('featured_front', [
-            'width'     => 1200,
+            'width'     => 1250,
             'height'    => 450,
             'crop'      => true,
         ]);
