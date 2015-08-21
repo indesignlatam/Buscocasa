@@ -1,14 +1,14 @@
 <a href="{{ url($listing->path()) }}" style="text-decoration:none">
 	<!-- Tags start -->
 	@if($listing->featuredType && $listing->featured_expires_at > Carbon::now())
-		<div class="uk-panel  uk-panel-box uk-panel-box-secondary uk-margin-bottom" style="border-bottom-width:4px; border-bottom-color:red; border-bottom-style: solid;">
+		<div class="uk-panel uk-panel-box uk-panel-box-secondary uk-margin-bottom" style="border-bottom-width:4px; border-bottom-color:red; border-bottom-style: solid;">
 		@if($listing->featuredType->id > 1)
-			<img src="{{asset($listing->featuredType->image_path)}}" style="position:absolute; top:30; left:30; max-width:150px">
+			<img src="{{asset($listing->featuredType->image_path)}}" style="position:absolute; top:15px; left:15px; max-width:150px">
 		@endif
 	@else
 		<div class="uk-panel uk-panel-hover uk-margin-remove">
 			@if($listing->created_at->diffInDays(Carbon::now()) < 5)
-				<img src="{{asset('/images/defaults/new.png')}}" style="position:absolute; top:30; left:30; max-width:90px">
+				<img src="{{asset('/images/defaults/new.png')}}" style="position:absolute; top:15px; left:15px; max-width:90px">
 			@endif
 	@endif
 	<!-- Tags end -->

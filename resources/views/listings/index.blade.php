@@ -301,7 +301,7 @@
 				                <a href="" style="margin-top:-60px" class="uk-slidenav uk-slidenav-next uk-slidenav-contrast" data-uk-slideset-item="next"></a>
 				            </div>
 							<!-- Featured listings top -->
-					    	<div class="uk-grid uk-margin-top-remove">
+					    	<div class="uk-grid uk-margin-top-remove" data-uk-grid-match="{target:'.uk-panel'}">
 					    	@foreach($listings as $listing)
 					    		<!-- Listing list view -->
 					    		@include('listings.mosaic')
