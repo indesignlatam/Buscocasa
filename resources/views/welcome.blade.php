@@ -49,7 +49,7 @@
 	@include('includes.navbarHome')
 
 	<div class="uk-cover-background uk-position-relative">
-        <img class="" src="{{ asset(Image::url('/images/defaults/welcome.jpg',['featured_front'])) }}" width="100%" alt="">
+        <img class="" src="{{ asset('/images/fp/search_bg.jpg') }}" width="100%" alt="">
         <div class="uk-position-cover uk-flex uk-flex-center uk-flex-middle uk-visible-small">
             <h1 class="uk-text-contrast uk-text-bold">{{ trans('frontend.mobile_greeting') }}</h1>
         </div>
@@ -193,23 +193,44 @@
             <div class="uk-panel">
                 <a href="{{ url('arriendos') }}" class="uk-button uk-float-right">{{ trans('admin.view_more_listings') }}</a>
             </div>
-            <hr>
         @endif
         <!-- latest listings on lease-->
+    </div>
 
-        <!-- Register and publish -->
-        <div class="uk-text-center">
-            <h1 class="uk-text-bold">{{ trans('frontend.register_publish_title') }}</h1>
-            @if(!Auth::check())
-                <a href="{{ url('/auth/register') }}" class="uk-button uk-button-primary uk-button-xlarge">{{ trans('admin.register_publish_free') }}</a>
-            @else
-                <a href="{{ url('/admin/listings/create') }}" class="uk-button uk-button-primary uk-button-xlarge">{{ trans('admin.publish_property') }}</a>
-            @endif
+    <div class="uk-block uk-block-secondary" style="background-color:#00a99d; background-image: url('{{ asset('images/fp/icons_bg.png') }}');">
+        <div class="uk-container uk-container-center">
+            <h1 class="uk-text-bold uk-text-contrast uk-text-center" style="margin-top:-10px; margin-bottom:30px;">{{ trans('frontend.register_publish_title') }}</h1>
+
+            <div class="uk-grid">
+                <div class="uk-width-1-3 uk-text-center">
+                    <img src="{{ asset('images/fp/icon_1.png') }}" class="uk-border-circle" style="max-width:160px">
+                    <h2 class="uk-text-bold uk-text-contrast uk-margin-top-remove uk-h1">Gratis</h2>
+                    <p style="max-width:200px" class="uk-align-center uk-contrast">Publica Gratis todos tus inmuebles, no tienes que pagar ni un peso.</p>
+                </div>
+                <div class="uk-width-1-3 uk-text-center">
+                    <img src="{{ asset('images/fp/icon_2.png') }}" class="uk-border-circle" style="max-width:160px">
+                    <h2 class="uk-text-bold uk-text-contrast uk-margin-top-remove uk-h1">Facil</h2>
+                    <p style="max-width:200px" class="uk-align-center uk-contrast">Publica tus inmuebles de forma rapida y facil en BuscoCasa.co</p>
+                </div>
+                <div class="uk-width-1-3 uk-text-center">
+                    <img src="{{ asset('images/fp/icon_3.png') }}" class="uk-border-circle" style="max-width:160px">
+                    <h2 class="uk-text-bold uk-text-contrast uk-margin-top-remove uk-h1">Efectivo</h2>
+                    <p style="max-width:200px" class="uk-align-center uk-contrast">Publica tus inmuebles de forma rapida y facil en BuscoCasa.co</p>
+                </div>
+            </div>
+            <!-- Register and publish -->
+            <div class="uk-text-center uk-margin-top">
+                @if(!Auth::check())
+                    <a href="{{ url('/auth/register') }}" class="uk-button uk-button-primary uk-button-large" style="background-color:#444">{{ trans('admin.register_publish_free') }}</a>
+                @else
+                    <a href="{{ url('/admin/listings/create') }}" class="uk-button uk-button-large">{{ trans('admin.publish_property') }}</a>
+                @endif
+            </div>
         </div>
+    </div>
         <!-- Register and publish -->
 
-        <hr>
-
+    <div class="uk-container uk-container-center uk-margin-top">
         <!-- Featured listings -->
         @if(count($featured) > 0)
             <h1 class="uk-margin-bottom uk-margin-top uk-text-bold">{{ trans('frontend.featured_listing') }}</h1>

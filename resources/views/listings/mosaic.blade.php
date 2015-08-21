@@ -1,14 +1,16 @@
 <div class="uk-width-medium-1-2 uk-width-large-1-2 uk-margin-small-bottom">
 	<a href="{{ url($listing->path()) }}" style="text-decoration:none">
-	@if($listing->featuredType && $listing->featuredType->id > 1 && $listing->featured_expires_at > Carbon::now())
-    	<div class="uk-panel uk-panel-box uk-panel-box-primary uk-margin-remove">
+	@if($listing->featuredType && $listing->featured_expires_at > Carbon::now())
+    	<div class="uk-panel uk-panel-box uk-panel-box-secondary" style="border-bottom-width:4px; border-bottom-color:red; border-bottom-style: solid;">
     		<div class="uk-overlay uk-overlay-hover">
-				<img src="{{asset($listing->featuredType->image_path)}}" style="position:absolute; top:30; left:30; max-width:150px">
+    			@if($listing->featuredType->id > 1)
+					<img src="{{asset($listing->featuredType->image_path)}}" style="position:absolute; top:0px; left:0px; max-width:150px">
+				@endif
     @else
     	<div class="uk-panel uk-panel-hover uk-margin-remove">
     		<div class="uk-overlay uk-overlay-hover">
     		@if($listing->created_at->diffInDays(Carbon::now()) < 5)
-				<img src="{{asset('/images/defaults/new.png')}}" style="position:absolute; top:30; left:30; max-width:90px">
+				<img src="{{asset('/images/defaults/new.png')}}" style="position:absolute; top:15px; left:15px; max-width:90px">
 			@endif
     @endif
 				<img src="{{ asset(Image::url($listing->image_path(),['mini_image_2x'])) }}" style="width:380px; float:left" class="uk-margin-right">
