@@ -1,7 +1,7 @@
 <a href="{{ url($listing->path()) }}" style="text-decoration:none">
 	<!-- Tags start -->
 	@if($listing->featuredType && $listing->featured_expires_at > Carbon::now())
-		<div class="uk-panel uk-panel-box uk-panel-box-primary uk-margin-remove">
+		<div class="uk-panel  uk-panel-box uk-panel-box-secondary uk-margin-bottom" style="border-bottom-width:4px; border-bottom-color:red; border-bottom-style: solid;">
 		@if($listing->featuredType->id > 1)
 			<img src="{{asset($listing->featuredType->image_path)}}" style="position:absolute; top:30; left:30; max-width:150px">
 		@endif
@@ -51,4 +51,3 @@
 	</div>
 @endif
 </a>
-<hr>
