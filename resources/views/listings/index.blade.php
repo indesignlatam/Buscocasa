@@ -167,11 +167,11 @@
 					    	@endif
 
 					    	@if(Request::get('take') == 10)
-					    		<option value="10" selected>{{ trans('admin.elements_30') }}</option>
+					    		<option value="10" selected>{{ trans('admin.elements_10') }}</option>
 					    	@elseif(session('listings_take') == 10)
-					    		<option value="10" selected>{{ trans('admin.elements_30') }}</option>
+					    		<option value="10" selected>{{ trans('admin.elements_10') }}</option>
 					    	@else
-					    		<option value="10">{{ trans('admin.elements_30') }}</option>
+					    		<option value="10">{{ trans('admin.elements_10') }}</option>
 					    	@endif
 					    </select>
 
