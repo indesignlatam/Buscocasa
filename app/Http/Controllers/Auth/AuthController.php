@@ -224,4 +224,8 @@ class AuthController extends Controller {
 
         return redirect()->intended($this->redirectPath())->withSuccess(['Bienvenido ' . $user->name]);// TODO translate
     }
+
+    protected function getFailedLoginMessage(){
+        return trans('auth.login_failed');
+    }
 }
