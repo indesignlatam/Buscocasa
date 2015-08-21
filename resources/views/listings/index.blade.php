@@ -50,7 +50,7 @@
 
 					<div class="uk-form-row">
 						<label class="uk-form-label">{{ trans('frontend.search_category') }}</label>
-						<select class="uk-width-large-10-10 uk-margin-small-bottom uk-form-large" id="category" name="category_id" onchange="getMarkers(true)">
+						<select class="uk-width-large-10-10 uk-margin-small-bottom uk-form-large" id="category" name="category_id" onchange="//getMarkers(true)">
 			                <option value>{{ trans('frontend.search_select_option') }}</option>
 			                @foreach($categories as $category)
 			                	@if($category->id == Request::get('category_id'))
@@ -64,7 +64,7 @@
 
 			        <div class="uk-form-row">
 						<label class="uk-form-label">{{ trans('frontend.search_city') }}</label>
-			            <select class="uk-width-large-10-10 uk-margin-small-bottom uk-form-large" id="city" name="city_id" onchange="getMarkers(true)">
+			            <select class="uk-width-large-10-10 uk-margin-small-bottom uk-form-large" id="city" name="city_id" onchange="//getMarkers(true)">
 			                <option value>{{ trans('frontend.search_select_option') }}</option>
 			                @foreach($cities as $city)
 			                	@if($city->id == Request::get('city_id'))
@@ -79,7 +79,7 @@
 			        @if(isset($listingTypes) && $listingTypes)
 			        <div class="uk-form-row">
 						<label class="uk-form-label">{{ trans('frontend.search_listing_types') }}</label>
-			            <select class="uk-width-large-10-10 uk-margin-small-bottom uk-form-large" id="type" name="listing_type_id" onchange="getMarkers(true)">
+			            <select class="uk-width-large-10-10 uk-margin-small-bottom uk-form-large" id="type" name="listing_type_id" onchange="//getMarkers(true)">
 			                <option value>{{ trans('frontend.search_select_option') }}</option>
 			                @foreach($listingTypes as $listingType)
 			                	@if($listingType->id == Request::get('listing_type_id'))
@@ -374,7 +374,7 @@
 		        	$( "#price_max" ).val(ui.values[ 1 ]);
 		      	},
 		      	change: function(){
-		      		getMarkers(true);
+		      		//getMarkers(true);
 		      	}
 		    });
 		    $( "#price_range" ).val( "$" + accounting.formatNumber($( "#slider-range-price" ).slider( "values", 0 )) +
@@ -400,7 +400,7 @@
 		        	$( "#rooms_max" ).val(ui.values[ 1 ]);
 		      	},
 		      	change: function(){
-		      		getMarkers(true);
+		      		//getMarkers(true);
 		      	}
 		    });
 		    $( "#room_range" ).val( accounting.formatNumber($( "#slider-range-rooms" ).slider( "values", 0 )) +
@@ -429,7 +429,7 @@
 		        	$( "#area_max" ).val(ui.values[ 1 ]);
 		      	},
 		      	change: function(){
-		      		getMarkers(true);
+		      		//getMarkers(true);
 		      	}
 		    });
 		    $( "#area_range" ).val( accounting.formatNumber($( "#slider-range-area" ).slider( "values", 0 )) + " mt2" +
@@ -458,7 +458,7 @@
 		        	$( "#lot_area_max" ).val(ui.values[ 1 ]);
 		      	},
 		      	change: function(){
-		      		getMarkers(true);
+		      		//getMarkers(true);
 		      	}
 		    });
 		    $( "#lot_area_range" ).val( accounting.formatNumber($( "#slider-range-lot-area" ).slider( "values", 0 )) + " mt2" +
@@ -482,7 +482,7 @@
 		        	$( "#stratum_max" ).val(ui.values[ 1 ]);
 		      	},
 		      	change: function(){
-		      		getMarkers(true);
+		      		//getMarkers(true);
 		      	}
 		    });
 		    $( "#stratum_range" ).val( accounting.formatNumber($( "#slider-range-stratum" ).slider( "values", 0 )) +
@@ -511,7 +511,7 @@
 		        	$( "#garages_max" ).val(ui.values[ 1 ]);
 		      	},
 		      	change: function(){
-		      		getMarkers(true);
+		      		//getMarkers(true);
 		      	}
 		    });
 		    $( "#garages_range" ).val( accounting.formatNumber($( "#slider-range-garages" ).slider( "values", 0 )) +
