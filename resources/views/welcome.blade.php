@@ -154,7 +154,7 @@
                     @foreach($sales as $sale)
                     <li>
                         <a href="{{ url($sale->path()) }}">
-                            <img data-layzr="{{ asset(Image::url($sale->image_path(),['mini_front'])) }}" data-layzr-retina="{{ asset(Image::url($sale->image_path(),['mini_front_2x'])) }}">
+                            <img src="{{ asset(Image::url($sale->image_path(),['mini_front'])) }}" class="uk-margin-small-bottom" style="max-width=150px">
                         </a>
                         <a href="{{ url($sale->path()) }}">{{ $sale->title }}</a>
                         <p class="uk-text-muted" style="font-size:10px;margin-top:-4px">{{ $sale->area }} mt2 - {{ money_format('$%!.0i', $sale->price) }}</p>
@@ -180,7 +180,7 @@
                     @foreach($leases as $lease)
                     <li>
                         <a href="{{ url($lease->path()) }}">
-                            <img data-layzr="{{ asset(Image::url($lease->image_path(),['mini_front'])) }}" data-layzr-retina="{{ asset(Image::url($lease->image_path(),['mini_front_2x'])) }}">
+                            <img src="{{ asset(Image::url($lease->image_path(),['mini_front'])) }}" class="uk-margin-small-bottom" style="max-width=150px">
                         </a>
                         <a href="{{ url($lease->path()) }}">{{ $lease->title }}</a>
                         <p class="uk-text-muted" style="font-size:10px;margin-top:-4px">{{ $lease->area }} mt2 - {{ money_format('$%!.0i', $lease->price) }}</p>
@@ -203,17 +203,17 @@
 
             <div class="uk-grid">
                 <div class="uk-width-1-3 uk-text-center">
-                    <img data-layzr="{{ asset('images/fp/icon_1.png') }}" class="uk-border-circle" style="max-width:160px">
+                    <img src="{{ asset('images/fp/icon_1.png') }}" class="uk-border-circle" style="max-width:160px">
                     <h2 class="uk-text-bold uk-text-contrast uk-margin-top-remove uk-h1">Gratis</h2>
                     <p style="max-width:200px" class="uk-align-center uk-contrast">Publica Gratis todos tus inmuebles, no tienes que pagar ni un peso.</p>
                 </div>
                 <div class="uk-width-1-3 uk-text-center">
-                    <img data-layzr="{{ asset('images/fp/icon_2.png') }}" class="uk-border-circle" style="max-width:160px">
+                    <img src="{{ asset('images/fp/icon_2.png') }}" class="uk-border-circle" style="max-width:160px">
                     <h2 class="uk-text-bold uk-text-contrast uk-margin-top-remove uk-h1">Facil</h2>
                     <p style="max-width:200px" class="uk-align-center uk-contrast">Publica tus inmuebles de forma rapida y facil en BuscoCasa.co</p>
                 </div>
                 <div class="uk-width-1-3 uk-text-center">
-                    <img data-layzr="{{ asset('images/fp/icon_3.png') }}" class="uk-border-circle" style="max-width:160px">
+                    <img src="{{ asset('images/fp/icon_3.png') }}" class="uk-border-circle" style="max-width:160px">
                     <h2 class="uk-text-bold uk-text-contrast uk-margin-top-remove uk-h1">Efectivo</h2>
                     <p style="max-width:200px" class="uk-align-center uk-contrast">Publica tus inmuebles de forma rapida y facil en BuscoCasa.co</p>
                 </div>
@@ -234,15 +234,14 @@
         <!-- Featured listings -->
         @if(count($featured) > 0)
             <h1 class="uk-margin-bottom uk-margin-top uk-text-bold">{{ trans('frontend.featured_listing') }}</h1>
-
-    		<div class="uk-grid uk-margin-bottom">
+    		<div class="uk-grid uk-margin-large-bottom">
                 <div class="uk-width-large-3-5 uk-width-small-1-1">
                     <a href="{{ url($featured[0]->path()) }}">
-                        <img data-layzr="{{ asset(Image::url($featured[0]->image_path(),['featured_bottom_front'])) }}" data-uk-scrollspy="{cls:'uk-animation-fade'}">
+                        <img src="{{ asset(Image::url($featured[0]->image_path(),['featured_bottom_front'])) }}" class="uk-margin-remove" data-uk-scrollspy="{cls:'uk-animation-fade'}">
                     </a>
                 </div>
                 <div class="uk-width-large-2-5 uk-width-small-1-1">
-                    <a href="{{ url($featured[0]->path()) }}" style="text-decoration:none">
+                    <a href="{{ url($featured[0]->path()) }}">
                         <h3 class="uk-text-bold">{{ $featured[0]->title }}</h3>
                     </a>
                     <h4 class="uk-margin-top-remove">{{ trans('admin.price') }} <i class="uk-text-primary">{{ money_format('$%!.0i', $featured[0]->price) }}</i></h4>
@@ -252,7 +251,7 @@
                         <li><i class="uk-icon-check"></i> {{ $featured[0]->garages }} {{ trans('admin.garages') }}</li>
                         <li><i class="uk-icon-check"></i> {{ trans('admin.stratum') }} {{ $featured[0]->stratum }}</li>
                         <li><i class="uk-icon-check"></i> {{ $featured[0]->area }} mt2</li>
-                        <li><i class="uk-icon-check"></i> {{ $featured[0]->lot_area }} {{ trans('frontend.lot_area') }}</li>
+                        <li id="lot_area"><i class="uk-icon-check"></i> {{ $featured[0]->lot_area }} {{ trans('frontend.lot_area') }}</li>
                         <li><i class="uk-icon-check"></i> {{ money_format('$%!.0i', $featured[0]->administration) }} {{ trans('admin.administration_fees') }}</li>
                     </ul> 
                     <div class="uk-text-muted">
@@ -265,7 +264,7 @@
         @if(count($featured) > 1)
             <div class="uk-grid uk-margin-large-bottom">
                 <div class="uk-width-large-2-5 uk-width-small-1-1">
-                    <a href="{{ url($featured[1]->path()) }}" style="text-decoration:none">
+                    <a href="{{ url($featured[1]->path()) }}">
                         <h3 class="uk-text-bold">{{ $featured[1]->title }}</h3>
                     </a>
                     <h4 class="uk-margin-top-remove">{{ trans('admin.price') }} <i class="uk-text-primary">{{ money_format('$%!.0i', $featured[1]->price) }}</i></h4>
@@ -275,7 +274,7 @@
                         <li><i class="uk-icon-check"></i> {{ $featured[1]->garages }} {{ trans('admin.garages') }}</li>
                         <li><i class="uk-icon-check"></i> {{ trans('admin.stratum') }} {{ $featured[1]->stratum }}</li>
                         <li><i class="uk-icon-check"></i> {{ $featured[1]->area }} mt2</li>
-                        <li><i class="uk-icon-check"></i> {{ $featured[1]->lot_area }} {{ trans('frontend.lot_area') }}</li>
+                        <li id="lot_area"><i class="uk-icon-check"></i> {{ $featured[1]->lot_area }} {{ trans('frontend.lot_area') }}</li>
                         <li><i class="uk-icon-check"></i> {{ money_format('$%!.0i', $featured[1]->administration) }} {{ trans('admin.administration_fees') }}</li>
                     </ul> 
                     <div class="uk-text-muted">
@@ -284,7 +283,7 @@
                 </div>
                 <div class="uk-width-large-3-5 uk-width-small-1-1">
                     <a href="{{ url($featured[1]->path()) }}">
-                        <img data-layzr="{{ asset(Image::url($featured[1]->image_path(),['featured_bottom_front'])) }}" data-uk-scrollspy="{cls:'uk-animation-fade'}">
+                        <img src="{{ asset(Image::url($featured[1]->image_path(),['featured_bottom_front'])) }}" class="uk-margin-remove" data-uk-scrollspy="{cls:'uk-animation-fade'}">
                     </a>
                 </div>
             </div>
@@ -300,12 +299,10 @@
     <noscript><link href="{{ asset('/css/components/slidenav.almost-flat.min.css') }}" rel="stylesheet"/></noscript>
     <script src="{{ asset('/js/select2.min.js') }}"></script>
     <script src="{{ asset('/js/components/slideset.min.js') }}"></script>
-    <script src="{{ asset('/js/layzr.min.js') }}"></script>
 
     <script type="text/javascript">
         $(document).ready(function() {
             $("#city").select2();
-            var layzr = new Layzr();
         });
     </script>
 @endsection
