@@ -36,7 +36,6 @@
             -webkit-border-radius: 0 0 0 0;
         }
     </style>
-    <script data-cfasync="false" src="{{ asset('/js/layzr.min.js') }}"></script>
     <script type="text/javascript">
         loadCSS("{{ asset('/css/select2front.min.css') }}");
         loadCSS("{{ asset('/css/components/slidenav.almost-flat.min.css') }}");
@@ -301,6 +300,7 @@
     <noscript><link href="{{ asset('/css/components/slidenav.almost-flat.min.css') }}" rel="stylesheet"/></noscript>
     <script src="{{ asset('/js/select2.min.js') }}"></script>
     <script src="{{ asset('/js/components/slideset.min.js') }}"></script>
+    <script src="{{ asset('/js/layzr.min.js') }}"></script>
 
     <script type="text/javascript">
         $(document).ready(function() {
