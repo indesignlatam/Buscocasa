@@ -1,13 +1,13 @@
 <div class="uk-container uk-container-center uk-margin-top" style="background-color: #fff; max-height:103px; width:100%">
     <div>
         <a class="uk-hidden-small" href="{{ url('/') }}" style="height:45px">
-            <img src="{{ asset('/images/logo_h.png') }}" alt="logo" style="height:45px">
+            <img src="{{ asset('/images/logo_h_mini.png') }}" alt="logo" style="height:45px">
         </a>
 
         @if(!Auth::check())
             <a href="{{ url('/auth/register') }}" class="uk-button uk-button-primary uk-button-large uk-align-right uk-margin-small-top uk-hidden-small">{{ trans('admin.register_publish_free') }}</a>
         @else
-        <a href="{{ url('/admin/listings/create') }}" class="uk-button uk-button-primary uk-button-large uk-align-right uk-margin-small-top uk-hidden-small">{{ trans('admin.publish_property') }}</a>
+            <a href="{{ url('/admin/listings/create') }}" class="uk-button uk-button-primary uk-button-large uk-align-right uk-margin-small-top uk-hidden-small">{{ trans('admin.publish_property') }}</a>
         @endif
     </div>
 
@@ -48,7 +48,7 @@
         <a href="#menuoffcanvas" class="uk-navbar-toggle uk-visible-small" data-uk-offcanvas></a>
         
         <a class="uk-visible-small" href="{{ url('/') }}">
-            <img src="{{ asset('/images/logo_h.png') }}" alt="logo" style="width:80%">
+            <img src="{{ asset('/images/logo_h_mini.png') }}" alt="logo" style="width:80%">
         </a>
 
         <ul class="uk-navbar-nav uk-vertical-align uk-hidden-small">

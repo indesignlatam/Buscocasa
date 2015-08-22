@@ -77,7 +77,7 @@
                     <div class="uk-grid">
                         <div class="uk-width-small-1-1 uk-width-medium-2-10 uk-width-large-2-10 uk-margin-large-top">
                             <div class="uk-text-center-small">
-                                <img src="{{ asset('/images/logo_h_contrast.png') }}">
+                                <img src="{{ asset('/images/logo_h_contrast_mini.png') }}" style="max-width:300px">
                                 <br>
                                 <p class="uk-text-contrast">
                                     Mail: comercial@buscocasa.co<br>

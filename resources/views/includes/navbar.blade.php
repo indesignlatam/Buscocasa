@@ -4,11 +4,11 @@
     	<a href="#menuoffcanvas" class="uk-navbar-toggle uk-visible-small" data-uk-offcanvas></a>
         
         <a class="uk-navbar-brand uk-hidden-small" href="{{ url('/') }}">
-            <img src="{{ asset('/images/logo_h.png') }}" alt="logo" class="uk-margin-right" style="height:30px; margin-left:-20px">
+            <img src="{{ asset('/images/logo_h_mini.png') }}" alt="logo" class="uk-margin-right" style="height:30px; margin-left:-20px">
         </a>
 
         <a class="uk-navbar-brand uk-visible-small" href="{{ url('/') }}">
-            <img src="{{ asset('/images/logo_h.png') }}" alt="logo" style="max-height:17px">
+            <img src="{{ asset('/images/logo_h_mini.png') }}" alt="logo" style="max-height:17px">
         </a>
 
         <!-- This is the off-canvas sidebar -->
