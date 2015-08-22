@@ -25,15 +25,18 @@
         #city{
             -webkit-appearance: none;
             -webkit-border-radius: 10px 0 0 10px;
+            border-radius:10px 0 0 10px;
         }
         #category{
             -webkit-appearance: none;
             -webkit-border-radius: 0 0 0 0;
+            border-radius:0px;
             margin: -5px;
         }
         #type{
             -webkit-appearance: none;
             -webkit-border-radius: 0 0 0 0;
+            border-radius:0px;
         }
     </style>
     <script type="text/javascript">
