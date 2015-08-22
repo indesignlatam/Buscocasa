@@ -367,9 +367,39 @@
 	    		
 	    		<div class="uk-width-1-1" id="places">
 	    			<h2>{{ trans('frontend.near_places') }}</h2>
-	    			<table class="uk-table uk-table-condensed" style="margin-top:-10px" id="results">
-	    			</table>
+	    			<div class="uk-grid" data-uk-grid-match="{target:'.uk-panel'}">
+	    				<div class="uk-width-1-2">
+	    					<div class="uk-panel uk-panel-box uk-panel-box-secondary">
+	    						<h3 class="uk-panel-title"><i class="uk-icon-university uk-icon-align-justify"></i> Colegios y Universidades</h3>
+	    						<table class="uk-table uk-table-condensed uk-table-hover" style="margin-top:-10px" id="schools">
+	    						</table>
+	    					</div>
+	    				</div>
+	    				<div class="uk-width-1-2">
+	    					<div class="uk-panel uk-panel-box uk-panel-box-secondary">
+	    						<h3 class="uk-panel-title"><i class="uk-icon-bus uk-icon-align-justify"></i> Estaciones</h3>
+	    						<table class="uk-table uk-table-condensed uk-table-hover" style="margin-top:-10px" id="bus_stops">
+	    						</table>
+	    					</div>
+	    				</div>
+
+	    				<div class="uk-width-1-2 uk-margin-top">
+	    					<div class="uk-panel uk-panel-box uk-panel-box-secondary">
+	    						<h3 class="uk-panel-title"><i class="uk-icon-shopping-cart uk-icon-align-justify"></i> Supermercados y C.C.</h3>
+	    						<table class="uk-table uk-table-condensed uk-table-hover" style="margin-top:-10px" id="malls">
+	    						</table>
+	    					</div>
+	    				</div>
+	    				<div class="uk-width-1-2 uk-margin-top">
+	    					<div class="uk-panel uk-panel-box uk-panel-box-secondary">
+	    						<h3 class="uk-panel-title"><i class="uk-icon-map-marker uk-icon-align-justify"></i> Otros</h3>
+	    						<table class="uk-table uk-table-condensed uk-table-hover" style="margin-top:-10px" id="others">
+	    						</table>
+	    					</div>
+	    				</div>
+	    			</div>
 	    		</div>
+
 	    	</div>
 	    	
 	    </div>
@@ -459,8 +489,13 @@
 		  	var service = new google.maps.places.PlacesService(map);
 		  	service.nearbySearch({
 		    	location: pyrmont,
-		    	radius: 1000,
-		    	types: ['airport', 'embassy', 'grocery_or_supermarket', 'gym', 'hospital', 'department_store', 'park', 'police', 'school', 'shopping_mall', 'subway_station', 'university']
+		    	radius: 500,
+		    	types: ['university', 'grocery_or_supermarket', 'department_store', 'school', 'shopping_mall']
+		  	}, callback);
+		  	service.nearbySearch({
+		    	location: pyrmont,
+		    	radius: 500,
+		    	types: ['subway_station', 'train_station', 'bus_station', 'gym', 'park', 'police',]
 		  	}, callback);
 		}
 
@@ -468,10 +503,64 @@
 			if(results.length == 0){
 	  			$('#places').addClass('uk-hidden');
 	  		}
+
+	  		results.sort(
+	  			function(a, b){
+	  				return parseInt(getDistance(a.geometry.location, pyrmont))-parseInt(getDistance(b.geometry.location, pyrmont))
+	  			}
+	  		);
+
 		  	if (status === google.maps.places.PlacesServiceStatus.OK) {
-		    	for (var i = 0; i < results.length ; i++) {
-		    		if(i <= 10){
-		    			$('#results').append('<tr><td>'+Case.title(results[i].name)+'</td><td>'+Case.title(results[i].types[0])+'</td><td>'+parseInt(getDistance(results[i].geometry.location, pyrmont))+' mts</tb><tr>');
+			  	schools = 	results.filter(function (el) {
+								return 	el.types[0] == 'school' ||
+										el.types[0] == 'university';
+							});
+
+			  	stores 	= 	results.filter(function (el) {
+								return 	el.types[0] == 'department_store' || 
+										el.types[0] == 'shopping_mall' || 
+										el.types[0] == 'grocery_or_supermarket' ||
+										el.types[1] == 'department_store' || 
+										el.types[1] == 'shopping_mall' || 
+										el.types[1] == 'grocery_or_supermarket';
+							});
+
+			  	bus 	= 	results.filter(function (el) {
+								return 	el.types[0] == 'bus_station' ||
+										el.types[1] == 'train_station' || 
+										el.types[1] == 'subway_station';
+							});
+
+			  	others 	= 	results.filter(function (el) {
+								return 	el.types[0] == 'gym' ||
+										el.types[0] == 'airport' ||
+										el.types[0] == 'hospital' ||
+										el.types[0] == 'park' ||
+										el.types[0] == 'police';
+							});
+	  			console.log(results);
+
+		    	for (var i = 0; i < bus.length ; i++) {
+		    		if(i <= 4){
+		    			$('#bus_stops').append('<tr><td>'+Case.title(bus[i].name.substring(0, 40))+'</td><td>'+parseInt(getDistance(bus[i].geometry.location, pyrmont))+' mts</tb><tr>');
+		    		}
+		    	}
+
+		    	for (var i = 0; i < others.length ; i++) {
+		    		if(i <= 4){
+		    			$('#others').append('<tr><td>'+Case.title(others[i].name.substring(0, 40))+'</td><td>'+parseInt(getDistance(others[i].geometry.location, pyrmont))+' mts</tb><tr>');
+		    		}
+		    	}
+
+		    	for (var i = 0; i < stores.length ; i++) {
+		    		if(i <= 4){
+		    			$('#malls').append('<tr><td>'+Case.title(stores[i].name.substring(0, 40))+'</td><td>'+parseInt(getDistance(stores[i].geometry.location, pyrmont))+' mts</tb><tr>');
+		    		}
+		    	}
+
+		    	for (var i = 0; i < schools.length ; i++) {
+		    		if(i <= 4){
+		    			$('#schools').append('<tr><td>'+Case.title(schools[i].name.substring(0, 40))+'</td><td>'+parseInt(getDistance(schools[i].geometry.location, pyrmont))+' mts</tb><tr>');
 		    		}
 		    	}
 		  	}
