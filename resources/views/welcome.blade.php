@@ -298,8 +298,8 @@
 
     <noscript><link href="{{ asset('/css/select2front.min.css') }}" rel="stylesheet"/></noscript>
     <noscript><link href="{{ asset('/css/components/slidenav.almost-flat.min.css') }}" rel="stylesheet"/></noscript>
-    <script src="{{ asset('/js/select2.min.js') }}"></script>
-    <script src="{{ asset('/js/components/slideset.min.js') }}"></script>
+    <script data-cfasync="true" src="{{ asset('/js/select2.min.js') }}"></script>
+    <script data-cfasync="true" src="{{ asset('/js/components/slideset.min.js') }}"></script>
     <script src="{{ asset('/js/layzr.min.js') }}"></script>
 
     <script type="text/javascript">

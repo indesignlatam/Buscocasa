@@ -39,18 +39,17 @@
         <!-- Scripts -->
         @section('js')
             <!-- Necessary Scripts -->
-            <script src="{{ asset('/js/jquery.min.js') }}"></script>
-            <script src="{{ asset('/js/uikit.min.js') }}"></script>
+            <script data-cfasync="true" src="{{ asset('/js/jquery.min.js') }}"></script>
+            <script data-cfasync="true" src="{{ asset('/js/uikit.min.js') }}"></script>
 
             <!-- Other Scripts -->
             <link href="{{ asset('/css/components/notify.almost-flat.css') }}" rel="stylesheet">
-            <script src="{{ asset('/js/components/notify.min.js') }}"></script>
-            {!! Analytics::render() !!}
+            <script data-cfasync="true" src="{{ asset('/js/components/notify.min.js') }}"></script>
         @show
 
         @section('alerts')
             @include('includes.alerts')
         @show
-
+        {!! Analytics::render() !!}
     </body>
 </html>
