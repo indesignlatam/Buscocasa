@@ -36,7 +36,7 @@
             -webkit-border-radius: 0 0 0 0;
         }
     </style>
-    <script async src="{{ asset('/js/layzr.min.js') }}"></script>
+    <script async data-cfasync="false" src="{{ asset('/js/layzr.min.js') }}"></script>
     <script type="text/javascript">
         loadCSS("{{ asset('/css/select2front.min.css') }}");
         loadCSS("{{ asset('/css/components/slidenav.almost-flat.min.css') }}");
