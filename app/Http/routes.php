@@ -94,6 +94,13 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth.admin'], function(){
 
 Route::get('/', 'WelcomeController@index');
 
+Route::get('/terms', function () {
+    return view('articles.terms');
+});
+Route::get('/privacy', function () {
+    return view('articles.privacy');
+});
+
 Route::post('listings/bounds', 'ListingFEController@indexBounds');
 Route::resource('ventas', 'ListingFEController');
 Route::resource('arriendos', 'ListingFEController');

@@ -141,6 +141,7 @@
                             </a>
                             <br>
                             Designed and developed by <a href="http://www.indesigncolombia.com">Indesign Colombia</a>
+                            <p class="uk-margin-remove">Usar este sitio web implica que usted acepta nuestras <a href="{{ url('terms') }}">Políticas y Términos</a> | <a href="{{ url('privacy') }}">Aviso de Privacidad</a></p>
                         </div>
                     </div><!--/footer-->
 
