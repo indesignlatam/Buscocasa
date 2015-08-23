@@ -180,7 +180,7 @@ class ListingFEController extends Controller {
 					$query = $query->orderBy('id', 'ASC');
 				}
 		}else{
-			$query = $query->orderBy('featured_type', 'DESC');
+			$query = $query->orderBy('featured_expires_at', 'DESC')->orderBy('featured_type', 'DESC');
 		}
 
 		// Take n objects by cookie
