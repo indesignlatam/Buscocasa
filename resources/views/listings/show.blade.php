@@ -198,7 +198,6 @@
     			</ul>
 
 				<button class="uk-button uk-button-large uk-button-success uk-width-1-1" onclick="select(this)" id="{{ $listing->id }}">{{ trans('frontend.compare') }}</button>
-    			<a href="#new_appointment_modal" class="uk-button uk-button-large uk-width-1-1 uk-margin-small-top" data-uk-modal>{{ trans('frontend.contact_vendor') }}</a>
     			<a href="{{ url($listing->broker->path()) }}" class="uk-button uk-button-large uk-width-1-1 uk-margin-small-top">{{ trans('frontend.other_user_listings') }}</a>
 
     			<hr>
@@ -404,7 +403,6 @@
 	    	
 	    </div>
 	</div>
-	@include('appointments.new')
 </div>
 @endsection
 
@@ -538,7 +536,6 @@
 										el.types[0] == 'park' ||
 										el.types[0] == 'police';
 							});
-	  			console.log(results);
 
 		    	for (var i = 0; i < bus.length ; i++) {
 		    		if(i <= 4){
