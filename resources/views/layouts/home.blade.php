@@ -159,37 +159,36 @@
             <!-- Necessary Scripts -->
             <script src="{{ asset('/js/jquery.min.js') }}"></script>
             <script src="{{ asset('/js/uikit.min.js') }}"></script>
-
-            <script type="text/javascript">
-                window.fbAsyncInit = function() {
-                    FB.init({
-                        appId      : {{ Settings::get('facebook_app_id') }},
-                        xfbml      : true,
-                        version    : 'v2.3'
-                    });
-                };
-                (function(d, s, id){
-                    var js, fjs = d.getElementsByTagName(s)[0];
-                    if (d.getElementById(id)) {return;}
-                    js = d.createElement(s); js.id = id;
-                    js.src = "//connect.facebook.net/en_US/sdk.js";
-                    fjs.parentNode.insertBefore(js, fjs);
-                }(document, 'script', 'facebook-jssdk'));
-
-                function share(path){
-                    FB.ui({
-                        method: 'share_open_graph',
-                        action_type: 'og.shares',
-                        action_properties: JSON.stringify({
-                        object: path,
-                    })
-                    }, function(response){
-                    });
-                }
-            </script>
-
-            <!-- Other Scripts -->
-            {!! Analytics::render() !!}
         @show
+        <script type="text/javascript">
+            window.fbAsyncInit = function() {
+                FB.init({
+                    appId      : {{ Settings::get('facebook_app_id') }},
+                    xfbml      : true,
+                    version    : 'v2.3'
+                });
+            };
+            (function(d, s, id){
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) {return;}
+                js = d.createElement(s); js.id = id;
+                js.src = "//connect.facebook.net/en_US/sdk.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+
+            function share(path){
+                FB.ui({
+                    method: 'share_open_graph',
+                    action_type: 'og.shares',
+                    action_properties: JSON.stringify({
+                    object: path,
+                })
+                }, function(response){
+                });
+            }
+        </script>
+
+        <!-- Other Scripts -->
+        {!! Analytics::render() !!}
     </body>
 </html>
