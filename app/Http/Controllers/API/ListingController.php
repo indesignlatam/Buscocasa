@@ -12,7 +12,7 @@ use App\Models\Listing;
 
 use	App\Events\ListingViewed;
 
-class ListingController extends Controller {
+class APIListingController extends Controller {
 
 	/**
 	 * Create a new event instance.
