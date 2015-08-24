@@ -11,5 +11,6 @@ class VerifyCsrfToken extends BaseVerifier {
     protected $except = [
         //
     	'pagos/*',
+    	'api/*',
     ];
 }
