@@ -1,4 +1,4 @@
-<?php namespace App\Http\Controllers;
+<?php namespace App\Http\API\Controllers;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -12,7 +12,7 @@ use App\Models\Listing;
 
 use	App\Events\ListingViewed;
 
-class ListingFEController extends Controller {
+class ListingController extends Controller {
 
 	/**
 	 * Create a new event instance.
