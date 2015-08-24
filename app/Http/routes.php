@@ -22,7 +22,7 @@
 |
 */
 Route::group(['prefix' => 'api', 'namespace' => 'API'], function(){
-	Route::resource('listings', 'ListingController');
+	Route::resource('listings', 'APIListingController');
 });
 
 /*
