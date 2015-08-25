@@ -103,7 +103,7 @@
 	    </div>
 	</div>
 
-	<div class="uk-container uk-container-center uk-margin-top" id="secondContent">
+	<div class="uk-container uk-container-center uk-margin" id="secondContent">
         <div class="uk-visible-small">
             <h3 class="uk-text-primary">{{trans('frontend.search_properties')}}</h3>
             <form id="mobile_search_form" class="uk-form" method="GET" action="{{ url('/buscar') }}">
