@@ -235,62 +235,32 @@
 
     <div class="uk-container uk-container-center uk-margin-top">
         <!-- Featured listings -->
-        @if(count($featured) > 0)
-            <h1 class="uk-margin-bottom uk-margin-top uk-text-bold">{{ trans('frontend.featured_listing') }}</h1>
-    		<div class="uk-grid uk-margin-large-bottom">
-                <div class="uk-width-large-3-5 uk-width-small-1-1">
-                    <a href="{{ url($featured[0]->path()) }}">
-                        <img src="{{ asset(Image::url($featured[0]->image_path(),['featured_bottom_front'])) }}" class="uk-margin-remove" data-uk-scrollspy="{cls:'uk-animation-fade'}">
-                    </a>
-                </div>
-                <div class="uk-width-large-2-5 uk-width-small-1-1">
-                    <a href="{{ url($featured[0]->path()) }}">
-                        <h3 class="uk-text-bold">{{ $featured[0]->title }}</h3>
-                    </a>
-                    <h4 class="uk-margin-top-remove">{{ trans('admin.price') }} <i class="uk-text-primary">{{ money_format('$%!.0i', $featured[0]->price) }}</i></h4>
-                    <ul style="list-style-type: none; margin-left:-30px" class="uk-text-muted">
-                        <li><i class="uk-icon-check"></i> {{ $featured[0]->rooms }} {{ trans('admin.rooms') }}</li>
-                        <li><i class="uk-icon-check"></i> {{ $featured[0]->bathrooms }} {{ trans('admin.bathrooms') }}</li>
-                        <li><i class="uk-icon-check"></i> {{ $featured[0]->garages }} {{ trans('admin.garages') }}</li>
-                        <li><i class="uk-icon-check"></i> {{ trans('admin.stratum') }} {{ $featured[0]->stratum }}</li>
-                        <li><i class="uk-icon-check"></i> {{ $featured[0]->area }} mt2</li>
-                        <li id="lot_area"><i class="uk-icon-check"></i> {{ $featured[0]->lot_area }} {{ trans('frontend.lot_area') }}</li>
-                        <li><i class="uk-icon-check"></i> {{ money_format('$%!.0i', $featured[0]->administration) }} {{ trans('admin.administration_fees') }}</li>
-                    </ul> 
-                    <div class="uk-text-muted">
-                        {{ str_limit($featured[0]->description, $limit = 250, $end = '...') }}
-                    </div>
-                </div>
-            </div>
-        @endif
+        <h1 class="uk-margin-bottom uk-margin-top uk-text-bold">{{ trans('frontend.featured_listing') }}</h1>
 
-        @if(count($featured) > 1)
-            <div class="uk-grid uk-margin-large-bottom">
-                <div class="uk-width-large-2-5 uk-width-small-1-1">
-                    <a href="{{ url($featured[1]->path()) }}">
-                        <h3 class="uk-text-bold">{{ $featured[1]->title }}</h3>
-                    </a>
-                    <h4 class="uk-margin-top-remove">{{ trans('admin.price') }} <i class="uk-text-primary">{{ money_format('$%!.0i', $featured[1]->price) }}</i></h4>
-                    <ul style="list-style-type: none; margin-left:-30px" class="uk-text-muted">
-                        <li><i class="uk-icon-check"></i> {{ $featured[1]->rooms }} {{ trans('admin.rooms') }}</li>
-                        <li><i class="uk-icon-check"></i> {{ $featured[1]->bathrooms }} {{ trans('admin.bathrooms') }}</li>
-                        <li><i class="uk-icon-check"></i> {{ $featured[1]->garages }} {{ trans('admin.garages') }}</li>
-                        <li><i class="uk-icon-check"></i> {{ trans('admin.stratum') }} {{ $featured[1]->stratum }}</li>
-                        <li><i class="uk-icon-check"></i> {{ $featured[1]->area }} mt2</li>
-                        <li id="lot_area"><i class="uk-icon-check"></i> {{ $featured[1]->lot_area }} {{ trans('frontend.lot_area') }}</li>
-                        <li><i class="uk-icon-check"></i> {{ money_format('$%!.0i', $featured[1]->administration) }} {{ trans('admin.administration_fees') }}</li>
-                    </ul> 
-                    <div class="uk-text-muted">
-                        {{ str_limit($featured[1]->description, $limit = 250, $end = '...') }}
+        <div class="uk-grid uk-grid-small uk-margin" data-uk-grid-margin data-uk-grid-match="featured">
+        <?php $i = 0; ?>
+        @foreach ($featured as $featuredListing)
+            @if($i == 4)
+            <div class="uk-width-2-3 featured">
+                <div class="uk-overlay uk-overlay-hover uk-margin-small">
+                    <img src="{{ asset(Image::url( $featuredListing->image_path(), ['featured_mosaic_large']) ) }}" alt="{{$featuredListing->title}}" data-uk-scrollspy="{cls:'uk-animation-slide-left'}">
+            @else
+            <div class="uk-width-1-3 featured">
+                <div class="uk-overlay uk-overlay-hover uk-margin-small">
+                    <img src="{{ asset(Image::url( $featuredListing->image_path(), ['featured_mosaic']) ) }}" alt="{{$featuredListing->title}}" data-uk-scrollspy="{cls:'uk-animation-slide-left'}">
+            @endif
+                    <div class="uk-overlay-panel uk-overlay-background uk-overlay-fade uk-vertical-align">
+                        <div class="uk-vertical-align-middle">
+                            <h3 class="uk-text-bold uk-h2">{{ $featuredListing->title }}</h3>
+                            <h3 class="uk-text-bold uk-h2 uk-margin-remove">{{ money_format('$%!.0i', $featuredListing->price) }}</h3>
+                        </div>
                     </div>
-                </div>
-                <div class="uk-width-large-3-5 uk-width-small-1-1">
-                    <a href="{{ url($featured[1]->path()) }}">
-                        <img src="{{ asset(Image::url($featured[1]->image_path(),['featured_bottom_front'])) }}" class="uk-margin-remove" data-uk-scrollspy="{cls:'uk-animation-fade'}">
-                    </a>
+                    <a class="uk-position-cover" href="{{ url($featuredListing->path()) }}"></a>
                 </div>
             </div>
-        @endif
+            <?php $i++; ?>
+        @endforeach        
+        </div>
         <!-- Featured listings -->
     </div>
 @endsection

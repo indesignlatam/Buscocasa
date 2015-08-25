@@ -33,9 +33,24 @@ class AppServiceProvider extends ServiceProvider {
             'height'    => 340,
             'crop'      => true,
         ]);
-        Image::filter('featured_bottom_front', [
-            'width'     => 665,
-            'height'    => 380,
+        Image::filter('featured_mosaic', [
+            'width'     => 370,
+            'height'    => 230,
+            'crop'      => true,
+        ]);
+        Image::filter('featured_mosaic_2x', [
+            'width'     => 740,
+            'height'    => 460,
+            'crop'      => true,
+        ]);
+        Image::filter('featured_mosaic_large', [
+            'width'     => 750,
+            'height'    => 230,
+            'crop'      => true,
+        ]);
+        Image::filter('featured_mosaic_large_2x', [
+            'width'     => 1500,
+            'height'    => 460,
             'crop'      => true,
         ]);
 

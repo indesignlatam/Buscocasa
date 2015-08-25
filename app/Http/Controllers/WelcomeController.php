@@ -53,7 +53,7 @@ class WelcomeController extends Controller {
 							 ->where('image_path', '<>', '')
 							 ->with('listingType')
 							 ->orderByRaw('RAND()')
-							 ->take(2)
+							 ->take(8)
 							 ->get();
 
 		$cities 		= City::remember(Settings::get('query_cache_time'))->orderBy('ordering')->get();
