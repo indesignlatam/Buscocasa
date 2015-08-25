@@ -1,7 +1,7 @@
 <div class="uk-width-medium-1-2 uk-width-large-1-2 uk-margin-small-bottom">
 	<a href="{{ url($listing->path()) }}" style="text-decoration:none">
 	@if($listing->featuredType && $listing->featured_expires_at > Carbon::now())
-    	<div class="uk-panel uk-panel-box uk-panel-box-secondary" style="border-bottom-width:4px; border-bottom-color:red; border-bottom-style: solid;">
+    	<div class="uk-panel uk-panel-box" style="border-bottom-width:4px; border-bottom-color:red; border-bottom-style: solid;">
     		<div class="uk-overlay uk-overlay-hover">
     			@if($listing->featuredType->id > 1)
 					<img src="{{asset($listing->featuredType->image_path)}}" style="position:absolute; top:0px; left:0px; max-width:150px">
@@ -45,7 +45,7 @@
 	    				@endif
 	    			</ul>
 			    </div>
-		@if($listing->featuredType && $listing->featuredType->id > 1 && $listing->featured_expires_at > Carbon::now())
+		@if($listing->featuredType && $listing->featured_expires_at > Carbon::now())
 			</div>
 		@else
 			</div>
@@ -53,7 +53,7 @@
     		<div class="">
     			<p class="uk-text-muted"><strong class="uk-text-primary">{{ $listing->title }}</strong> {{ $listing->area }} mts - {{ money_format('$%!.0i', $listing->price) }}</p>
     		</div>
-	@if($listing->featuredType && $listing->featuredType->id > 1 && $listing->featured_expires_at > Carbon::now())
+	@if($listing->featuredType && $listing->featured_expires_at > Carbon::now())
 		</div>
 	@else
 		</div>

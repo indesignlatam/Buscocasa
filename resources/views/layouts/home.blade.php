@@ -53,7 +53,7 @@
                     return ss;
                 }
             </script>
-            <link href="{{ asset('/css/uikit.buscocasa.min.css') }}" rel="stylesheet">
+            <link href="{{ asset('/css/uikit.flat.min.css') }}" rel="stylesheet">
         @show
     </head>
 
@@ -140,8 +140,8 @@
                                 <img src="{{ asset('/images/indesign/logo_h_contrast.png') }}" alt="logo" width="100px">
                             </a>
                             <br>
-                            Designed and developed by <a href="http://www.indesigncolombia.com">Indesign Colombia</a>
-                            <p class="uk-margin-remove">Usar este sitio web implica que usted acepta nuestras <a href="{{ url('terms') }}">Políticas y Términos</a> | <a href="{{ url('privacy') }}">Aviso de Privacidad</a></p>
+                            Designed and developed by <a href="http://www.indesigncolombia.com" class="uk-text-primary">Indesign Colombia</a>
+                            <p class="uk-margin-remove">Usar este sitio web implica que usted acepta nuestras <a href="{{ url('terms') }}" class="uk-text-primary">Políticas y Términos</a> | <a href="{{ url('privacy') }}" class="uk-text-primary">Aviso de Privacidad</a></p>
                         </div>
                     </div><!--/footer-->
 

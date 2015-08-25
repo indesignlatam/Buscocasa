@@ -20,12 +20,12 @@
         }
         #send_button {
           padding: 0;
-          border-radius: 0 10px 10px 0;
+          border-radius: 0 1px 1px 0;
         }
         #city{
             -webkit-appearance: none;
-            -webkit-border-radius: 10px 0 0 10px;
-            border-radius:10px 0 0 10px;
+            -webkit-border-radius: 1px 0 0 1px;
+            border-radius:1px 0 0 1px;
         }
         #category{
             -webkit-appearance: none;

@@ -18,7 +18,7 @@
 <div class="uk-container uk-container-center">
 	<a href="{{url('/')}}"><img src="{{ asset('/images/logo_h_contrast.png') }}" class="uk-align-center uk-margin-top uk-width-large-4-10"></a>
 	<div class="uk-panel uk-panel-box uk-panel-box-secondary uk-width-large-4-10 uk-align-center">
-		<div class="uk-h1 uk-text-center uk-text-primary uk-margin-top">
+		<div class="uk-h1 uk-text-center uk-text-success uk-margin-top">
 			{{ trans('auth.login') }}
 		</div>
 		@if (count($errors) > 0)
@@ -33,7 +33,7 @@
 			</div>
 		@endif
 
-		<form class="uk-form uk-form-horizontal uk-margin-large-top uk-text-center" role="form" method="POST" action="{{ url('/auth/login') }}">
+		<form class="uk-form uk-form-horizontal uk-margin-top uk-text-center" role="form" method="POST" action="{{ url('/auth/login') }}">
 			<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
 			<div class="uk-form-row">
@@ -83,7 +83,7 @@
 @endsection
 
 @section('js')
-	<link href="{{ asset('/css/uikit.buscocasa.min.css') }}" rel="stylesheet">
+	<link href="{{ asset('/css/uikit.flat.min.css') }}" rel="stylesheet">
 
 	<script async src='https://www.google.com/recaptcha/api.js'></script>
 	<script src="{{ asset('/js/jquery.min.js') }}"></script>

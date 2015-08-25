@@ -17,13 +17,9 @@
 
 @section('css')
 	@parent
-	<style type="text/css">
-	.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default{
-		border-radius: 10px;
-	}
-	</style>
+
 	<script type="text/javascript">
-		loadCSS("//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css");
+		loadCSS("{{ asset('/css/jquery/jquery-slider.min.css') }}");
         loadCSS("{{ asset('/css/components/slidenav.almost-flat.min.css') }}");
 		loadCSS("{{ asset('/css/select2.min.css') }}");
 	</script>
@@ -43,7 +39,7 @@
 
 	    <div class="uk-flex uk-margin-top" id="secondContent">
 	    	<!-- Search bar for pc -->
-	    	<div class="uk-width-large-1-4 uk-panel uk-panel-box uk-panel-box-secondary uk-visible-large uk-margin-right">
+	    	<div class="uk-width-large-1-4 uk-visible-large" style="margin-right:15px; padding-right:20px; border-right-style:solid; border-right: 1px solid #dddddd;">
 				<form id="search_form" class="uk-form uk-form-stacked" method="GET" action="{{ url(Request::path()) }}">
 
 					<input class="uk-width-large-10-10 uk-margin-bottom uk-form-large" type="text" name="listing_code" placeholder="{{ trans('frontend.search_field') }}" value>
@@ -100,47 +96,54 @@
 					<input type="hidden" id="price_min" name="price_min" value="{{Request::get('price_min')}}">
 					<input type="hidden" id="price_max" name="price_max" value="{{Request::get('price_max')}}">
 
-					<p>
-					  	<label for="room_range" class="uk-form-label">{{ trans('admin.rooms') }}</label>
-					  	<input type="text" id="room_range" class="uk-width-large-10-10 uk-text-primary" readonly style="border:0; font-weight:bold; background-color:#fff; font-size:12px; margin-bottom:-10px">
-					</p>
-					<div id="slider-range-rooms"></div>
-					<input type="hidden" id="rooms_min" name="rooms_min" value="{{Request::get('rooms_min')}}">
-					<input type="hidden" id="rooms_max" name="rooms_max" value="{{Request::get('rooms_max')}}">
+					<button type="button" class="uk-button uk-button-large uk-margin" id="filters_show" data-uk-toggle="{target:'#filters, #filters_show, #filters_hide', animation:'uk-animation-slide-top'}">Más filtros</button>
+					<button type="button" class="uk-button uk-margin uk-hidden" id="filters_hide" data-uk-toggle="{target:'#filters, #filters_show, #filters_hide', animation:'uk-animation-slide-top'}">Ocultar filtros</button>
 
-					<p>
-					  	<label for="area_range" class="uk-form-label">{{ trans('admin.area') }}</label>
-					  	<input type="text" id="area_range" class="uk-width-large-10-10 uk-text-primary" readonly style="border:0; font-weight:bold; background-color:#fff; font-size:12px; margin-bottom:-10px">
-					</p>
-		            <div id="slider-range-area"></div>
-		            <input type="hidden" id="area_min" name="area_min" value="{{Request::get('area_min')}}">
-					<input type="hidden" id="area_max" name="area_max" value="{{Request::get('area_max')}}">
+					<div class="uk-panel">
+						<div id="filters" class="uk-hidden uk-margin-bottom">
+							<p>
+							  	<label for="room_range" class="uk-form-label">{{ trans('admin.rooms') }}</label>
+							  	<input type="text" id="room_range" class="uk-width-large-10-10 uk-text-primary" readonly style="border:0; font-weight:bold; background-color:#fff; font-size:12px; margin-bottom:-10px">
+							</p>
+							<div id="slider-range-rooms"></div>
+							<input type="hidden" id="rooms_min" name="rooms_min" value="{{Request::get('rooms_min')}}">
+							<input type="hidden" id="rooms_max" name="rooms_max" value="{{Request::get('rooms_max')}}">
 
-					<p>
-					  	<label for="lot_area_range" class="uk-form-label">{{ trans('admin.lot_area') }}</label>
-					  	<input type="text" id="lot_area_range" class="uk-width-large-10-10 uk-text-primary" readonly style="border:0; font-weight:bold; background-color:#fff; font-size:12px; margin-bottom:-10px">
-					</p>
-		            <div id="slider-range-lot-area"></div>
-		            <input type="hidden" id="lot_area_min" name="lot_area_min" value="{{Request::get('lot_area_min')}}">
-					<input type="hidden" id="lot_area_max" name="lot_area_max" value="{{Request::get('lot_area_max')}}">
+							<p>
+							  	<label for="area_range" class="uk-form-label">{{ trans('admin.area') }}</label>
+							  	<input type="text" id="area_range" class="uk-width-large-10-10 uk-text-primary" readonly style="border:0; font-weight:bold; background-color:#fff; font-size:12px; margin-bottom:-10px">
+							</p>
+				            <div id="slider-range-area"></div>
+				            <input type="hidden" id="area_min" name="area_min" value="{{Request::get('area_min')}}">
+							<input type="hidden" id="area_max" name="area_max" value="{{Request::get('area_max')}}">
 
-					<p>
-					  	<label for="stratum_range" class="uk-form-label">{{ trans('admin.stratum') }}</label>
-					  	<input type="text" id="stratum_range" class="uk-width-large-10-10 uk-text-primary" readonly style="border:0; font-weight:bold; background-color:#fff; font-size:12px; margin-bottom:-10px">
-					</p>
-		            <div id="slider-range-stratum"></div>
-		            <input type="hidden" id="stratum_min" name="stratum_min" value="{{Request::get('stratum_min')}}">
-					<input type="hidden" id="stratum_max" name="stratum_max" value="{{Request::get('stratum_max')}}">
+							<p>
+							  	<label for="lot_area_range" class="uk-form-label">{{ trans('admin.lot_area') }}</label>
+							  	<input type="text" id="lot_area_range" class="uk-width-large-10-10 uk-text-primary" readonly style="border:0; font-weight:bold; background-color:#fff; font-size:12px; margin-bottom:-10px">
+							</p>
+				            <div id="slider-range-lot-area"></div>
+				            <input type="hidden" id="lot_area_min" name="lot_area_min" value="{{Request::get('lot_area_min')}}">
+							<input type="hidden" id="lot_area_max" name="lot_area_max" value="{{Request::get('lot_area_max')}}">
 
-					<p>
-					  	<label for="garages_range" class="uk-form-label">{{ trans('admin.garages') }}</label>
-					  	<input type="text" id="garages_range" class="uk-width-large-10-10 uk-text-primary" readonly style="border:0; font-weight:bold; background-color:#fff; font-size:12px; margin-bottom:-10px">
-					</p>
-		            <div id="slider-range-garages"></div>
-		            <input type="hidden" id="garages_min" name="garages_min" value="{{Request::get('garages_min')}}">
-					<input type="hidden" id="garages_max" name="garages_max" value="{{Request::get('garages_max')}}">
+							<p>
+							  	<label for="stratum_range" class="uk-form-label">{{ trans('admin.stratum') }}</label>
+							  	<input type="text" id="stratum_range" class="uk-width-large-10-10 uk-text-primary" readonly style="border:0; font-weight:bold; background-color:#fff; font-size:12px; margin-bottom:-10px">
+							</p>
+				            <div id="slider-range-stratum"></div>
+				            <input type="hidden" id="stratum_min" name="stratum_min" value="{{Request::get('stratum_min')}}">
+							<input type="hidden" id="stratum_max" name="stratum_max" value="{{Request::get('stratum_max')}}">
 
-                	<button type="submit" class="uk-button uk-button-primary uk-button-large uk-width-1-1 uk-margin-large-top">{{ trans('frontend.search_button') }}</button>
+							<p>
+							  	<label for="garages_range" class="uk-form-label">{{ trans('admin.garages') }}</label>
+							  	<input type="text" id="garages_range" class="uk-width-large-10-10 uk-text-primary" readonly style="border:0; font-weight:bold; background-color:#fff; font-size:12px; margin-bottom:-10px">
+							</p>
+				            <div id="slider-range-garages"></div>
+				            <input type="hidden" id="garages_min" name="garages_min" value="{{Request::get('garages_min')}}">
+							<input type="hidden" id="garages_max" name="garages_max" value="{{Request::get('garages_max')}}">
+						</div>
+					</div>
+
+                	<button type="submit" class="uk-button uk-button-primary uk-button-large uk-width-1-1">{{ trans('frontend.search_button') }}</button>
 				</form>
 	    	</div>
 	    	<!-- End search bar -->
@@ -335,7 +338,7 @@
 	@parent
 
 	<!-- CSS -->
-	<noscript><link href="{{ asset('/css/jquery/jquery-ui.theme.min.css') }}" rel="stylesheet"></noscript>
+	<noscript><link href="{{ asset('/css/jquery/jquery-slider.min.css') }}" rel="stylesheet"></noscript>
 	<noscript><link href="{{ asset('/css/select2.min.css') }}" rel="stylesheet"/></noscript>
 	<noscript><link href="{{ asset('/css/components/slidenav.almost-flat.min.css') }}" rel="stylesheet"/></noscript>
 	<!-- CSS -->
@@ -520,7 +523,7 @@
 	</script>
 
 	<!-- JS -->
-	<script src="{{ asset('/js/jquery/jquery-ui.min.js') }}"></script>
+	<script src="{{ asset('/js/jquery/jquery-slider.min.js') }}"></script>
 	<script src="{{ asset('/js/components/slideset.min.js') }}"></script>
 	<script src="{{ asset('/js/accounting.min.js') }}"></script>
 	<script src="{{ asset('/js/select2.min.js') }}"></script>

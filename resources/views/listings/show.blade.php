@@ -368,30 +368,34 @@
 	    			<h2>{{ trans('frontend.near_places') }}</h2>
 	    			<div class="uk-grid" data-uk-grid-match="{target:'.uk-panel'}">
 	    				<div class="uk-width-1-2">
-	    					<div class="uk-panel uk-panel-box uk-panel-box-secondary">
-	    						<h3 class="uk-panel-title"><i class="uk-icon-university uk-icon-align-justify"></i> Colegios y Universidades</h3>
+	    					<div class="uk-panel uk-panel-box">
+	    						<h3 class="uk-panel-title uk-margin-remove"><i class="uk-icon-university uk-icon-align-justify"></i> Colegios y Universidades</h3>
+	    						<hr class="uk-margin-top-remove">
 	    						<table class="uk-table uk-table-condensed uk-table-hover" style="margin-top:-10px" id="schools">
 	    						</table>
 	    					</div>
 	    				</div>
 	    				<div class="uk-width-1-2">
-	    					<div class="uk-panel uk-panel-box uk-panel-box-secondary">
-	    						<h3 class="uk-panel-title"><i class="uk-icon-bus uk-icon-align-justify"></i> Estaciones</h3>
+	    					<div class="uk-panel uk-panel-box">
+	    						<h3 class="uk-panel-title uk-margin-remove"><i class="uk-icon-bus uk-icon-align-justify"></i> Estaciones</h3>
+	    						<hr class="uk-margin-top-remove">
 	    						<table class="uk-table uk-table-condensed uk-table-hover" style="margin-top:-10px" id="bus_stops">
 	    						</table>
 	    					</div>
 	    				</div>
 
 	    				<div class="uk-width-1-2 uk-margin-top">
-	    					<div class="uk-panel uk-panel-box uk-panel-box-secondary">
-	    						<h3 class="uk-panel-title"><i class="uk-icon-shopping-cart uk-icon-align-justify"></i> Supermercados y C.C.</h3>
+	    					<div class="uk-panel uk-panel-box">
+	    						<h3 class="uk-panel-title uk-margin-remove"><i class="uk-icon-shopping-cart uk-icon-align-justify"></i> Supermercados y C.C.</h3>
+	    						<hr class="uk-margin-top-remove">
 	    						<table class="uk-table uk-table-condensed uk-table-hover" style="margin-top:-10px" id="malls">
 	    						</table>
 	    					</div>
 	    				</div>
 	    				<div class="uk-width-1-2 uk-margin-top">
-	    					<div class="uk-panel uk-panel-box uk-panel-box-secondary">
-	    						<h3 class="uk-panel-title"><i class="uk-icon-map-marker uk-icon-align-justify"></i> Otros</h3>
+	    					<div class="uk-panel uk-panel-box">
+	    						<h3 class="uk-panel-title uk-margin-remove"><i class="uk-icon-map-marker uk-icon-align-justify"></i> Otros</h3>
+	    						<hr class="uk-margin-top-remove">
 	    						<table class="uk-table uk-table-condensed uk-table-hover" style="margin-top:-10px" id="others">
 	    						</table>
 	    					</div>
@@ -453,7 +457,7 @@
 			$.post("{{ url('/cookie/select') }}", {_token: "{{ csrf_token() }}", key: "selected_listings", value: sender.id}, function(result){
 				UIkit.modal.confirm("{{ trans('frontend.listing_selected') }}", function(){
 				    window.location.href = "{{ url('/compare') }}";
-				}, {labels:{Ok:'{{trans("frontend.compare_now")}}', Cancel:'{{trans("frontend.keep_looking")}}'}});
+				}, {labels:{Ok:'{{trans("frontend.compare_now")}}', Cancel:'{{trans("frontend.keep_looking")}}'}, center:true});
             });
 		}
 
