@@ -78,8 +78,12 @@
             <!-- First row -->
             <div class="uk-width-small-1-1 uk-width-medium-1-4 uk-width-large-1-4 uk-margin-top">
                 <div class="uk-panel uk-panel-box uk-panel-box-secondary">
-                    <a href="{{ url('/admin/listings') }}" style="text-decoration:none"><h3 class="uk-panel-title">{{ trans('admin.listings') }}</h3></a>
-                    <h1 class="uk-text-center">{{ $listingCount }}</h1>
+                    <a href="{{ url('/admin/listings') }}" style="text-decoration:none">
+                        <h3 class="uk-panel-title">{{ trans('admin.listings') }}</h3>
+                    </a>
+                    <a href="{{ url('/admin/listings') }}" style="text-decoration:none">
+                        <h1 class="uk-text-center">{{ $listingCount }} <i class="uk-icon-home"></i></h1>
+                    </a>
                 </div>
             </div>
             <div class="uk-width-small-1-1 uk-width-medium-1-4 uk-width-large-1-4 uk-margin-top">
@@ -87,9 +91,13 @@
                     <a href="{{ url('/admin/messages') }}" style="text-decoration:none"><h3 class="uk-panel-title">{{ trans('admin.unanswered_messages') }}</h3></a>
 
                     @if($notAnsweredMessages == 0)
-                        <h1 class="uk-text-center uk-text-success">{{ $notAnsweredMessages }}</h1>
+                        <a href="{{ url('/admin/messages') }}" style="text-decoration:none">
+                            <h1 class="uk-text-center uk-text-success">{{ $notAnsweredMessages }} <i class="uk-icon-check"></i></h1>
+                        </a>
                     @else
-                        <h1 class="uk-text-center uk-text-warning">{{ $notAnsweredMessages }}</h1>
+                        <a href="{{ url('/admin/messages') }}" style="text-decoration:none">
+                            <h1 class="uk-text-center uk-text-warning">{{ $notAnsweredMessages }} <i class="uk-icon-envelope-o"></i></h1>
+                        </a>
                     @endif
                 </div>
             </div>
@@ -97,26 +105,14 @@
                 <div class="uk-panel uk-panel-box uk-panel-box-secondary">
                     <h3 class="uk-panel-title">{{ trans('admin.views_over_spent') }}</h3>
 
-                    @if(Auth::user()->viewsCount == 0)
-                        <h1 class="uk-text-center">${{ number_format(Auth::user()->amountSpent) }}</h1>
-                    @elseif((Auth::user()->amountSpent/Auth::user()->viewsCount) < Settings::get('views_spent_ratio_success', 50))
-                        <h1 class="uk-text-center uk-text-success">${{ number_format(Auth::user()->amountSpent/Auth::user()->viewsCount) }}</h1>
-                    @else
-                        <h1 class="uk-text-center">${{ number_format(Auth::user()->amountSpent/Auth::user()->viewsCount) }}</h1>
-                    @endif
+                   
                 </div>
             </div>
             <div class="uk-width-1-4 uk-hidden-small uk-margin-top">
                 <div class="uk-panel uk-panel-box uk-panel-box-secondary">
                     <h3 class="uk-panel-title">{{ trans('admin.messages_over_spent') }}</h3>
 
-                    @if(Auth::user()->messagesCount == 0)
-                        <h1 class="uk-text-center">${{ number_format(Auth::user()->amountSpent) }}</h1>
-                    @elseif((Auth::user()->amountSpent/Auth::user()->messagesCount) < Settings::get('messages_spent_ratio_success', 500))
-                        <h1 class="uk-text-center uk-text-success">${{ number_format(Auth::user()->amountSpent/Auth::user()->messagesCount) }}</h1>
-                    @else
-                        <h1 class="uk-text-center">${{ number_format(Auth::user()->amountSpent/Auth::user()->messagesCount) }}</h1>
-                    @endif
+                    
                 </div>
             </div>
             <!-- First row -->
