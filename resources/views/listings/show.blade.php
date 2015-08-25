@@ -43,7 +43,7 @@
 					    <ul class="uk-slideshow">
 					    	@foreach($listing->images->sortBy('ordering') as $image)
 					    		<li>
-					    			<img src="{{ asset($image->image_path) }}" alt="{{ $listing->title }}" style="max-width:800px; max-height:540px">
+					    			<img src="{{ asset($image->image_path) }}" alt="{{ $listing->title }}" style="max-width:960px; max-height:540px">
 					    		</li>
 					    	@endforeach		    	
 					    </ul>
@@ -207,7 +207,7 @@
 	    				<h2 class="uk-text-bold">{{ trans('frontend.similar_listings') }}</h2>
 	    				@foreach($related as $rlisting)
 		    				<div class="uk-overlay uk-overlay-hover uk-margin-small">
-		    					<img class="uk-border-rounded" src="{{ asset(Image::url( $rlisting->image_path(), ['map_mini']) ) }}" alt="{{$rlisting->title}}" data-uk-scrollspy="{cls:'uk-animation-slide-left'}">
+		    					<img src="{{ asset(Image::url( $rlisting->image_path(), ['map_mini']) ) }}" alt="{{$rlisting->title}}" data-uk-scrollspy="{cls:'uk-animation-fade'}">
 							    <div class="uk-overlay-panel uk-overlay-background uk-overlay-fade">
 							    	<h4 class="uk-margin-remove">{{ $rlisting->title }}</h4>
 							    	<h4 class="uk-margin-top-remove uk-margin-small-bottom uk-text-bold">{{ money_format('$%!.0i', $rlisting->price) }}</h4>

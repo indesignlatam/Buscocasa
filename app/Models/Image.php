@@ -66,8 +66,14 @@ class Image extends IndesignModel {
 			$paths[] 	= str_replace('.'.$ext,'-image(facebook_share).'.$ext,$path);
 			$paths[] 	= str_replace('.'.$ext,'-image(mini_image_2x).'.$ext,$path);
 			$paths[] 	= str_replace('.'.$ext,'-image(featured_front).'.$ext,$path);
+			$paths[] 	= str_replace('.'.$ext,'-image(featured_mosaic).'.$ext,$path);
+			$paths[] 	= str_replace('.'.$ext,'-image(featured_mosaic_2x).'.$ext,$path);
+			$paths[] 	= str_replace('.'.$ext,'-image(featured_mosaic_large).'.$ext,$path);
+			$paths[] 	= str_replace('.'.$ext,'-image(featured_mosaic_large_2x).'.$ext,$path);
 			$paths[] 	= str_replace('.'.$ext,'-image(mini_front).'.$ext,$path);
+			$paths[] 	= str_replace('.'.$ext,'-image(mini_front_2x).'.$ext,$path);
 			$paths[] 	= str_replace('.'.$ext,'-image(map_mini).'.$ext,$path);
+			$paths[] 	= str_replace('.'.$ext,'-image(mini_image_2x).'.$ext,$path);
 
 			foreach ($paths as $path) {
 				if(File::exists($path)){
