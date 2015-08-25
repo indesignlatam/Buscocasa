@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 use Gmaps;
 use Image;
-
+use Settings;
 use App\Models\Listing;
 
 use	App\Events\ListingViewed;
@@ -128,6 +128,11 @@ class APIListingController extends Controller {
 				}else{
 					$query = $query->orderBy('featured_expires_at', 'DESC')->orderBy('featured_type', 'DESC');
 				}
+
+				// Order the query by params
+				if($request->has('take')){
+					$take = $request->take;
+				}
 			}// If user didnt input listing code
 		}// Has params end
 
@@ -136,9 +141,8 @@ class APIListingController extends Controller {
 			$listings = $query->orderBy('id', 'DESC')->with('listingType', 'featuredType')->paginate($take);
 		}
 
-		return response()->json(['response' => ['listings' => $listings,
-												],
-								 ]);
+
+		return response()->json($listings);
 	}
 
 	/**
@@ -246,9 +250,8 @@ class APIListingController extends Controller {
 							->get();
 		}
 
-		return response()->json(['response' => ['listings' => $query,
-												],
-								 ]);
+		return response()->json(['listings' => $query,
+								]);
 	}
 	/**
 	 * Display the specified resource.
@@ -305,10 +308,9 @@ class APIListingController extends Controller {
 							 ->take(10)
 							 ->get();
 
-		return response()->json(['response' => ['listing' 	=> $listing,
-											    'related' 	=> $related,
-											    'compare'	=> $compare,
-												],
-								 ]);
+		return response()->json(['listing' 	=> $listing,
+							     'related' 	=> $related,
+							     'compare'	=> $compare,
+								]);
 	}
 }
