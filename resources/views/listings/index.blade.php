@@ -243,8 +243,10 @@
 					                        <a href="{{ url($listing->path()) }}">
 					                            <img src="{{ asset(Image::url($listing->image_path(),['mini_front'])) }}" class="uk-margin-small-bottom" style="max-width=150px">
 					                        </a>
-					                        <a href="{{ url($listing->path()) }}">{{ $listing->title }}</a>
-					                        <p class="uk-text-muted" style="font-size:10px;margin-top:-4px">{{ $listing->area }} mt2 - {{ money_format('$%!.0i', $listing->price) }}</p>
+					                        <div>
+					                        	<a href="{{ url($listing->path()) }}">{{ $listing->title }}</a>
+					                        	<p class="uk-text-muted" style="font-size:10px;margin-top:-4px">{{ $listing->area }} mt2 - {{ money_format('$%!.0i', $listing->price) }}</p>
+					                        </div>
 					                    </li>
 					                    @endforeach
 					                </ul>
@@ -264,8 +266,10 @@
 							                        <a href="{{ url($listing->path()) }}">
 							                            <img src="{{ asset(Image::url($listing->image_path(),['mini_front'])) }}" class="uk-margin-small-bottom" style="max-width=150px">
 							                        </a>
-							                        <a href="{{ url($listing->path()) }}">{{ $listing->title }}</a>
-							                        <p class="uk-text-muted" style="font-size:10px;margin-top:-4px">{{ $listing->area }} mt2 - {{ money_format('$%!.0i', $listing->price) }}</p>
+							                        <div>
+							                        	<a href="{{ url($listing->path()) }}">{{ $listing->title }}</a>
+							                        	<p class="uk-text-muted" style="font-size:10px;margin-top:-4px">{{ $listing->area }} mt2 - {{ money_format('$%!.0i', $listing->price) }}</p>
+							                        </div>
 							                    </li>
 							                    @endforeach
 							                </ul>

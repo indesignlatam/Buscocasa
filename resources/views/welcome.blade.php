@@ -159,8 +159,10 @@
                         <a href="{{ url($sale->path()) }}">
                             <img src="{{ asset(Image::url($sale->image_path(),['mini_front'])) }}" class="uk-margin-small-bottom" style="max-width=150px">
                         </a>
-                        <a href="{{ url($sale->path()) }}">{{ $sale->title }}</a>
-                        <p class="uk-text-muted" style="font-size:10px;margin-top:-4px">{{ $sale->area }} mt2 - {{ money_format('$%!.0i', $sale->price) }}</p>
+                        <div>
+                            <a href="{{ url($sale->path()) }}">{{ $sale->title }}</a>
+                            <p class="uk-text-muted" style="font-size:10px;margin-top:-4px">{{ $sale->area }} mt2 - {{ money_format('$%!.0i', $sale->price) }}</p>
+                        </div>
                     </li>
                     @endforeach
                 </ul>
@@ -185,8 +187,10 @@
                         <a href="{{ url($lease->path()) }}">
                             <img src="{{ asset(Image::url($lease->image_path(),['mini_front'])) }}" class="uk-margin-small-bottom" style="max-width=150px">
                         </a>
-                        <a href="{{ url($lease->path()) }}">{{ $lease->title }}</a>
-                        <p class="uk-text-muted" style="font-size:10px;margin-top:-4px">{{ $lease->area }} mt2 - {{ money_format('$%!.0i', $lease->price) }}</p>
+                        <div>
+                            <a href="{{ url($lease->path()) }}">{{ $lease->title }}</a>
+                            <p class="uk-text-muted" style="font-size:10px;margin-top:-4px">{{ $lease->area }} mt2 - {{ money_format('$%!.0i', $lease->price) }}</p>
+                        </div>
                     </li>
                     @endforeach
                 </ul>
@@ -206,17 +210,17 @@
             <h1 class="uk-text-bold uk-text-contrast uk-text-center" style="margin-top:-10px; margin-bottom:30px;">{{ trans('frontend.register_publish_title') }}</h1>
 
             <div class="uk-grid">
-                <div class="uk-width-1-3 uk-text-center">
+                <div class="uk-width-large-1-3 uk-width-medium-1-3 uk-text-center">
                     <img src="{{ asset('images/fp/icon_1.png') }}" class="uk-border-circle" style="max-width:160px">
                     <h2 class="uk-text-bold uk-text-contrast uk-margin-top-remove uk-h1">Gratis</h2>
                     <p style="max-width:200px" class="uk-align-center uk-contrast">Publica Gratis todos tus inmuebles, no tienes que pagar ni un peso.</p>
                 </div>
-                <div class="uk-width-1-3 uk-text-center">
+                <div class="uk-width-large-1-3 uk-width-medium-1-3 uk-text-center">
                     <img src="{{ asset('images/fp/icon_2.png') }}" class="uk-border-circle" style="max-width:160px">
                     <h2 class="uk-text-bold uk-text-contrast uk-margin-top-remove uk-h1">Fácil</h2>
                     <p style="max-width:200px" class="uk-align-center uk-contrast">Publica tus inmuebles de forma rapida y fácil en BuscoCasa.co</p>
                 </div>
-                <div class="uk-width-1-3 uk-text-center">
+                <div class="uk-width-large-1-3 uk-width-medium-1-3 uk-text-center">
                     <img src="{{ asset('images/fp/icon_3.png') }}" class="uk-border-circle" style="max-width:160px">
                     <h2 class="uk-text-bold uk-text-contrast uk-margin-top-remove uk-h1">Efectivo</h2>
                     <p style="max-width:200px" class="uk-align-center uk-contrast">Vende o arrienda tu inmueble en poco tiempo en BuscoCasa.co</p>
@@ -242,11 +246,11 @@
         <?php $i = 0; ?>
         @foreach ($featured as $featuredListing)
             @if($i == 4)
-            <div class="uk-width-2-3 featured">
+            <div class="uk-width-medium-2-3 uk-width-large-2-3 featured">
                 <div class="uk-overlay uk-overlay-hover uk-margin-small">
                     <img src="{{ asset(Image::url( $featuredListing->image_path(), ['featured_mosaic_large']) ) }}" alt="{{$featuredListing->title}}" data-uk-scrollspy="{cls:'uk-animation-slide-left'}">
             @else
-            <div class="uk-width-1-3 featured">
+            <div class="uk-width-medium-1-3 uk-width-large-1-3 featured">
                 <div class="uk-overlay uk-overlay-hover uk-margin-small">
                     <img src="{{ asset(Image::url( $featuredListing->image_path(), ['featured_mosaic']) ) }}" alt="{{$featuredListing->title}}" data-uk-scrollspy="{cls:'uk-animation-slide-left'}">
             @endif

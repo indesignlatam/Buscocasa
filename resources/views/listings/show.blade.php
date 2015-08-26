@@ -367,7 +367,7 @@
 	    		<div class="uk-width-1-1" id="places">
 	    			<h2>{{ trans('frontend.near_places') }}</h2>
 	    			<div class="uk-grid" data-uk-grid-match="{target:'.uk-panel'}">
-	    				<div class="uk-width-1-2">
+	    				<div class="uk-width-medium-1-2 uk-width-large-1-2 uk-margin-small">
 	    					<div class="uk-panel uk-panel-box">
 	    						<h3 class="uk-panel-title uk-margin-remove"><i class="uk-icon-university uk-icon-align-justify"></i> Colegios y Universidades</h3>
 	    						<hr class="uk-margin-top-remove">
@@ -375,7 +375,7 @@
 	    						</table>
 	    					</div>
 	    				</div>
-	    				<div class="uk-width-1-2">
+	    				<div class="uk-width-medium-1-2 uk-width-large-1-2 uk-margin-small">
 	    					<div class="uk-panel uk-panel-box">
 	    						<h3 class="uk-panel-title uk-margin-remove"><i class="uk-icon-bus uk-icon-align-justify"></i> Estaciones</h3>
 	    						<hr class="uk-margin-top-remove">
@@ -384,7 +384,7 @@
 	    					</div>
 	    				</div>
 
-	    				<div class="uk-width-1-2 uk-margin-top">
+	    				<div class="uk-width-medium-1-2 uk-width-large-1-2 uk-margin-small">
 	    					<div class="uk-panel uk-panel-box">
 	    						<h3 class="uk-panel-title uk-margin-remove"><i class="uk-icon-shopping-cart uk-icon-align-justify"></i> Supermercados y C.C.</h3>
 	    						<hr class="uk-margin-top-remove">
@@ -392,7 +392,7 @@
 	    						</table>
 	    					</div>
 	    				</div>
-	    				<div class="uk-width-1-2 uk-margin-top">
+	    				<div class="uk-width-medium-1-2 uk-width-large-1-2 uk-margin-small">
 	    					<div class="uk-panel uk-panel-box">
 	    						<h3 class="uk-panel-title uk-margin-remove"><i class="uk-icon-map-marker uk-icon-align-justify"></i> Otros</h3>
 	    						<hr class="uk-margin-top-remove">
