@@ -296,7 +296,7 @@
 						<p class="uk-margin-remove">{{ trans('admin.add_images_to_listing') }} {{ trans('admin.order_images') }}</p>
 
 				    	<div id="upload-drop" class="uk-placeholder uk-placeholder-large uk-text-center uk-margin-top">
-						    <i class="uk-icon-large uk-icon-cloud-upload"></i> {{ trans('admin.drag_listing_images_or') }} <a class="uk-form-file">{{ trans('admin.select_an_image') }}<input id="upload-select" type="file" multiple></a>
+						    <i class="uk-icon-large uk-icon-cloud-upload"></i> {{ trans('admin.drag_listing_images_or') }} <a class="uk-form-file uk-text-primary">{{ trans('admin.select_an_image') }}<input id="upload-select" type="file" multiple></a>
 						</div>
 
 						<div id="progressbar" class="uk-progress uk-hidden">
@@ -403,7 +403,7 @@
 	        <div class="uk-grid uk-grid-collapse">
 	        	<div class="uk-width-1-1">
 	        		<div id="upload_drop_modal" class="uk-placeholder uk-placeholder-large uk-text-center uk-margin-top">
-					    <i class="uk-icon-large uk-icon-cloud-upload"></i> {{ trans('admin.drag_listing_images_or') }} <a class="uk-form-file">{{ trans('admin.select_an_image') }}<input id="upload_select_modal" type="file" multiple></a>
+					    <i class="uk-icon-large uk-icon-cloud-upload"></i> {{ trans('admin.drag_listing_images_or') }} <a class="uk-form-file uk-text-primary">{{ trans('admin.select_an_image') }}<input id="upload_select_modal" type="file" multiple></a>
 					</div>
 
 					<div id="progressbar_modal" class="uk-progress uk-hidden">
@@ -626,7 +626,7 @@
   		
 
 		function blockUI(){
-	        var modal = UIkit.modal.blockUI('<h3 class="uk-text-center">Guardando inmueble, porfavor espere.</h3><div class="uk-text-center uk-text-primary"><i class="uk-icon-large uk-icon-spinner uk-icon-spin"</i></div>');
+	        var modal = UIkit.modal.blockUI('<h3 class="uk-text-center">Guardando inmueble, porfavor espere.</h3><div class="uk-text-center uk-text-primary"><i class="uk-icon-large uk-icon-spinner uk-icon-spin"</i></div>', {center: true});
 	    }
 
 		function format(field){
@@ -809,7 +809,7 @@
        	function leave() {
 	    	UIkit.modal.confirm("{{ trans('admin.sure_leave') }}", function(){
 			    window.location.replace("{{ url('/admin/listings') }}");
-			}, {labels:{Ok:'{{trans("admin.yes")}}', Cancel:'{{trans("admin.cancel")}}'}});
+			}, {labels:{Ok:'{{trans("admin.yes")}}', Cancel:'{{trans("admin.cancel")}}'}, center: true});
 	    }
 	</script>
 

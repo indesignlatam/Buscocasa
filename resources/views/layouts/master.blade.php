@@ -12,15 +12,9 @@
         @show
 
         @section('css')
-            <link href="{{ asset('/css/uikit.buscocasa.min.css') }}" rel="stylesheet">
+            <link href="{{ asset('/css/uikit.flat.min.css') }}" rel="stylesheet">
         @show
     </head>
-
-    <style>
-    	nav{
-    		z-index:2;
-    	}
-    </style>
 
     <body>
         @section('navbar')

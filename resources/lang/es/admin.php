@@ -182,7 +182,7 @@ return [
     'change_profile_image'      => 'Seleccionar imagen principal',
     'current_password'          => 'Contraseña actual',
     'new_password'              => 'Nueva contraseña',
-    'confirm_new_password'      => 'Confirmar nueva contraseña',
+    'confirm_new_password'      => 'Confirmar contraseña',
 
     // Appointments
     'answer'                    => 'Responder',

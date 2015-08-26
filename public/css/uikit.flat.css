@@ -910,14 +910,15 @@ iframe {
   margin: 0 -15px;
 }
 .uk-panel-box-primary {
-  background-color: #eeeeee;
+  background-color: #ffffff;
+  border: 1px #dddddd solid;
   color: #444444;
 }
 .uk-panel-box-primary-hover:hover {
   color: #444444;
 }
 .uk-panel-box-primary .uk-panel-title {
-  color: #ff4d53;
+  color: #444444;
 }
 .uk-panel-box-secondary {
   background-color: #ffffff;

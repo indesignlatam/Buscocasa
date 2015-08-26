@@ -1,4 +1,4 @@
-<nav class="uk-navbar uk-navbar-attached" style="border-style: solid; border-bottom: 1px solid #e1e1e1;">
+<nav class="uk-navbar uk-navbar-attached" style="border-bottom-style: solid; border-bottom: 1px solid #e1e1e1;">
     <div class="uk-container uk-container-center">
 
     	<a href="#menuoffcanvas" class="uk-navbar-toggle uk-visible-small" data-uk-offcanvas></a>

@@ -77,7 +77,7 @@
         @if(Auth::user()->confirmed)
             <!-- First row -->
             <div class="uk-width-small-1-1 uk-width-medium-1-4 uk-width-large-1-4 uk-margin-top">
-                <div class="uk-panel uk-panel-box uk-panel-box-secondary">
+                <div class="uk-panel uk-panel-box uk-panel-box-primary">
                     <a href="{{ url('/admin/listings') }}" style="text-decoration:none">
                         <h3 class="uk-panel-title">{{ trans('admin.listings') }}</h3>
                     </a>
@@ -87,7 +87,7 @@
                 </div>
             </div>
             <div class="uk-width-small-1-1 uk-width-medium-1-4 uk-width-large-1-4 uk-margin-top">
-                <div class="uk-panel uk-panel-box uk-panel-box-secondary">
+                <div class="uk-panel uk-panel-box uk-panel-box-primary">
                     <a href="{{ url('/admin/messages') }}" style="text-decoration:none"><h3 class="uk-panel-title">{{ trans('admin.unanswered_messages') }}</h3></a>
 
                     @if($notAnsweredMessages == 0)
@@ -102,15 +102,15 @@
                 </div>
             </div>
             <div class="uk-width-1-4 uk-hidden-small uk-margin-top">
-                <div class="uk-panel uk-panel-box uk-panel-box-secondary">
-                    <h3 class="uk-panel-title">{{ trans('admin.views_over_spent') }}</h3>
+                <div class="uk-panel uk-panel-box uk-panel-box-primary">
+                    <h3 class="uk-panel-title"></h3>
 
                    
                 </div>
             </div>
             <div class="uk-width-1-4 uk-hidden-small uk-margin-top">
-                <div class="uk-panel uk-panel-box uk-panel-box-secondary">
-                    <h3 class="uk-panel-title">{{ trans('admin.messages_over_spent') }}</h3>
+                <div class="uk-panel uk-panel-box uk-panel-box-primary">
+                    <h3 class="uk-panel-title"></h3>
 
                     
                 </div>
@@ -119,7 +119,7 @@
         @endif
 
         <div class="uk-width-small-1-1 uk-width-medium-1-2 uk-width-large-1-3 uk-margin-top">
-            <div class="uk-panel uk-panel-box uk-panel-box-secondary">
+            <div class="uk-panel uk-panel-box uk-panel-box-primary">
                 <h3>{{ trans('admin.visit_stats') }}</h3>
                 <div class="uk-text-center">
                     <canvas id="listingMessages" width="250" height="250"></canvas>
@@ -128,7 +128,7 @@
             </div>
         </div>
         <div class="uk-width-small-1-1 uk-width-medium-1-2 uk-width-large-1-3 uk-margin-top">
-            <div class="uk-panel uk-panel-box uk-panel-box-secondary">
+            <div class="uk-panel uk-panel-box uk-panel-box-primary">
                 <h3>{{ trans('admin.notifications_dash') }}</h3>
                 @if(count($listings->all()) > 0)
                     <ul class="uk-list uk-list-striped">
@@ -148,7 +148,7 @@
             </div>
         </div>
         <div class="uk-width-small-1-1 uk-width-medium-1-2 uk-width-large-1-3 uk-margin-top">
-            <div class="uk-panel uk-panel-box uk-panel-box-secondary">
+            <div class="uk-panel uk-panel-box uk-panel-box-primary">
                 <h3>{{ trans('admin.unanswered_messages') }}</h3>
                 @if(count($messages->all()) > 0)
                     <ul class="uk-list uk-list-striped">
@@ -165,7 +165,7 @@
         </div>
 
         <div class="uk-width-small-1-1 uk-width-medium-1-2 uk-width-large-1-3 uk-margin-top">
-            <div class="uk-panel uk-panel-box uk-panel-box-secondary">
+            <div class="uk-panel uk-panel-box uk-panel-box-primary">
                 <h3>{{ trans('admin.social_share') }}</h3>
                 <img src="{{ asset('/images/support/share.png') }}" style="width:150px; height:150px;" align="left">
                 <p>{{ trans('admin.social_share_dash_text') }}</p>
@@ -173,7 +173,7 @@
         </div>
 
         <div class="uk-width-small-1-1 uk-width-medium-1-1 uk-width-large-2-3 uk-margin-top">
-            <div class="uk-panel uk-panel-box uk-panel-box-secondary">
+            <div class="uk-panel uk-panel-box uk-panel-box-primary">
                 <h3>{{ trans('admin.get_more_views') }}</h3>
                 
                 <div class="uk-grid uk-grid-collapse uk-text-center">

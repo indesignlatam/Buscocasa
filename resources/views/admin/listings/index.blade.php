@@ -166,7 +166,7 @@
 				<div class="uk-panel uk-margin-top">					
 					<ul class="uk-list">
 						@foreach($listings as $listing)
-			                <li class="uk-panel uk-panel-box uk-panel-box-secondary uk-margin-bottom" id="listing-{{ $listing->id }}">
+			                <li class="uk-panel uk-panel-box uk-panel-box-primary uk-margin-bottom" id="listing-{{ $listing->id }}">
 			                	<div class="uk-grid">
 			                		<div class="uk-width-large-2-10 uk-width-medium-2-10 uk-width-small-1-1">
 			                			<a href="{{ url('/admin/listings/'.$listing->id.'/edit') }}">

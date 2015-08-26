@@ -167,7 +167,7 @@
 		});
 
 		function blockUI(){
-	        var modal = UIkit.modal.blockUI('<h3 class="uk-text-center">{{ trans("admin.wait_while_redirect_payment") }}</h3><div class="uk-text-center uk-text-primary"><i class="uk-icon-large uk-icon-spinner uk-icon-spin"</i></div>'); // modal.hide() to unblock
+	        var modal = UIkit.modal.blockUI('<h3 class="uk-text-center">{{ trans("admin.wait_while_redirect_payment") }}</h3><div class="uk-text-center uk-text-primary"><i class="uk-icon-large uk-icon-spinner uk-icon-spin"</i></div>', {center: true}); // modal.hide() to unblock
 	    }
 
 	    function cancelPayment() {
@@ -176,7 +176,7 @@
 			    $.post("{{ url('/admin/pagos/'.$payment->id) }}", {_token: "{{ csrf_token() }}", _method:"DELETE"}, function(response){
 	                window.location.replace("{{url('/admin/pagos')}}");
 	            });
-			}, {labels:{Ok:'{{trans("admin.yes")}}', Cancel:'{{trans("admin.cancel")}}'}});
+			}, {labels:{Ok:'{{trans("admin.yes")}}', Cancel:'{{trans("admin.cancel")}}'}, center: true});
             
         }
 	</script>
