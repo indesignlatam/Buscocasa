@@ -387,50 +387,78 @@
 	</div>
 </div>
 
-<!-- This is the modal -->
-<div id="send_mail" class="uk-modal">
-    <div class="uk-modal-dialog">
-        <a href="" class="uk-modal-close uk-close uk-close-alt"></a>
-        <div class="uk-modal-header uk-text-bold">
-        	Enviar publicación por email
-        </div>
-
-        <form class="uk-form uk-form-stacked">
-        	<input type="hidden" name="listingId" id="listingId">
-
-        	<div class="uk-form-row">
-		        <label class="uk-form-label" for="">{{ trans('admin.emails') }} <i class="uk-text-danger">*</i></label>
-        		<input type="text" name="emails" id="emails" placeholder="{{ trans('admin.emails') }}" class="uk-width-1-1 uk-form-large">
-		    </div>
-
-		    <div class="uk-form-row">
-		        <label class="uk-form-label" for="">{{ trans('admin.message') }} <i class="uk-text-danger">*</i></label>
-        		<textarea class="uk-width-1-1" id="message" rows="4" placeholder="{{ trans('admin.message') }}"></textarea>
-		    </div>
-        </form>
-
-        En el correo se adjuntaran las imagenes y la información del inmueble.
-
-        <div class="uk-modal-footer">
-        	<button class="uk-button uk-button-success" onclick="sendMail()" id="sendMail">Enviar</button>
-        	<button class="uk-button">Cancelar</button>
-        </div>
-    </div>
-</div>
+@include('modals.email_listing')
 @endsection
 
 @section('js')
 	@parent
 	<link href="{{ asset('/css/select2.min.css') }}" rel="stylesheet"/>
+	<link href="{{ asset('/css/selectize.min.css') }}" rel="stylesheet"/>
 
 	<link href="{{ asset('/css/components/tooltip.almost-flat.min.css') }}" rel="stylesheet">
 	<script src="{{ asset('/js/components/tooltip.min.js') }}"></script>
 	<script src="{{ asset('/js/select2.min.js') }}"></script>
+	<script src="{{ asset('/js/selectize.min.js') }}"></script>
 
 
 	<script type="text/javascript">
 		$(function() {
-			
+			var REGEX_EMAIL = '([a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@' +
+                  '(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)';
+
+			$('#emails').selectize({
+			    persist: false,
+			    maxItems: 5,
+			    valueField: 'email',
+			    labelField: 'name',
+			    searchField: ['name', 'email'],
+			    options: [],
+			    render: {
+			        item: function(item, escape) {
+			            return '<div>' +
+			                (item.name ? '<span class="name">' + escape(item.name) + '</span>' : '') +
+			                (item.email ? '<span class="email">' + escape(item.email) + '</span>' : '') +
+			            '</div>';
+			        },
+			        option: function(item, escape) {
+			            var label = item.name || item.email;
+			            var caption = item.name ? item.email : null;
+			            return '<div>' +
+			                '<span class="label">' + escape(label) + '</span>' +
+			                (caption ? '<span class="caption">' + escape(caption) + '</span>' : '') +
+			            '</div>';
+			        }
+			    },
+			    createFilter: function(input) {
+			        var match, regex;
+
+			        // email@address.com
+			        regex = new RegExp('^' + REGEX_EMAIL + '$', 'i');
+			        match = input.match(regex);
+			        if (match) return !this.options.hasOwnProperty(match[0]);
+
+			        // name <email@address.com>
+			        regex = new RegExp('^([^<]*)\<' + REGEX_EMAIL + '\>$', 'i');
+			        match = input.match(regex);
+			        if (match) return !this.options.hasOwnProperty(match[2]);
+
+			        return false;
+			    },
+			    create: function(input) {
+			        if ((new RegExp('^' + REGEX_EMAIL + '$', 'i')).test(input)) {
+			            return {email: input};
+			        }
+			        var match = input.match(new RegExp('^([^<]*)\<' + REGEX_EMAIL + '\>$', 'i'));
+			        if (match) {
+			            return {
+			                email : match[2],
+			                name  : $.trim(match[1])
+			            };
+			        }
+			        alert('Correo electrónico invalido.');
+			        return false;
+			    }
+			});
 		});
 		
 		function setListing(id){
