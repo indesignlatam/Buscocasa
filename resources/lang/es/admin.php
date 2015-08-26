@@ -143,7 +143,7 @@ return [
     'reply'                     => 'Responder mensaje',
     'mark_as_answered'          => 'Marcar como respondido',
     'delete_message'            => 'Eliminar mensaje',
-    'emails'                    => 'Correos electrónicos',
+    'emails'                    => 'Correos electrónicos (Separados por coma)',
     'listing_shared'            => 'La publicación fue compartida',
 
     // Confirmation

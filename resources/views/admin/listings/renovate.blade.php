@@ -20,7 +20,7 @@
 
 		<div class="uk-grid uk-grid-small" data-uk-grid-margin>
 			<div class="uk-width-small-1-1 uk-width-medium-1-4 uk-width-large-1-4">
-				<div class="uk-panel uk-panel-box uk-panel-box-secondary">
+				<div class="uk-panel uk-panel-box uk-panel-box-primary">
 					<h2>{{ trans('admin.free') }}</h2>
 					<div class="uk-text-center"><img src="{{ asset('/images/support/highlight/free.png') }}" width="80%"></div>
 					<p>{{ trans('admin.free_text') }}</p>
@@ -40,7 +40,7 @@
 
 			@foreach($featuredTypes as $type)
 			<div class="uk-width-small-1-1 uk-width-medium-1-4 uk-width-large-1-4">
-				<div class="uk-panel uk-panel-box uk-panel-box-secondary">
+				<div class="uk-panel uk-panel-box uk-panel-box-primary">
 					<h2>{{ $type->name }}</h2>
 					<div class="uk-text-center"><img src="{{ asset($type->icon) }}" width="80%"></div>
 					<p>{{ $type->description }}</p>
