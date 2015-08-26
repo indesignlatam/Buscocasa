@@ -25,7 +25,7 @@
                     <a href="{{ url('/arriendos') }}">{{ trans('frontend.menu_leases') }}</a>
                 </li>
                 <li class="uk-parent" data-uk-dropdown="">
-                    <a href="{{ url('#') }}">{{ trans('frontend.menu_new_proyects') }}</a>
+                    <a href="{{ url('#') }}">{{ trans('frontend.menu_vacationals') }}</a>
                 </li>
 
                 <li class="uk-nav-divider"></li>
@@ -81,7 +81,7 @@
         @else
             <li>
         @endif
-                <a href="{{ url('#') }}">{{ trans('frontend.menu_new_proyects') }}</a>
+                <a href="{{ url('#') }}">{{ trans('frontend.menu_vacationals') }}</a>
             </li>
         </ul>
 

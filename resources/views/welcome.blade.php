@@ -200,6 +200,7 @@
         <!-- latest listings on lease-->
     </div>
 
+    <!-- Register and publish -->
     <div class="uk-block uk-block-secondary" style="background-color:#00a99d; background-image: url('{{ asset('images/fp/icons_bg.png') }}');">
         <div class="uk-container uk-container-center">
             <h1 class="uk-text-bold uk-text-contrast uk-text-center" style="margin-top:-10px; margin-bottom:30px;">{{ trans('frontend.register_publish_title') }}</h1>
@@ -212,26 +213,26 @@
                 </div>
                 <div class="uk-width-1-3 uk-text-center">
                     <img src="{{ asset('images/fp/icon_2.png') }}" class="uk-border-circle" style="max-width:160px">
-                    <h2 class="uk-text-bold uk-text-contrast uk-margin-top-remove uk-h1">Facil</h2>
-                    <p style="max-width:200px" class="uk-align-center uk-contrast">Publica tus inmuebles de forma rapida y facil en BuscoCasa.co</p>
+                    <h2 class="uk-text-bold uk-text-contrast uk-margin-top-remove uk-h1">Fácil</h2>
+                    <p style="max-width:200px" class="uk-align-center uk-contrast">Publica tus inmuebles de forma rapida y fácil en BuscoCasa.co</p>
                 </div>
                 <div class="uk-width-1-3 uk-text-center">
                     <img src="{{ asset('images/fp/icon_3.png') }}" class="uk-border-circle" style="max-width:160px">
                     <h2 class="uk-text-bold uk-text-contrast uk-margin-top-remove uk-h1">Efectivo</h2>
-                    <p style="max-width:200px" class="uk-align-center uk-contrast">Publica tus inmuebles de forma rapida y facil en BuscoCasa.co</p>
+                    <p style="max-width:200px" class="uk-align-center uk-contrast">Vende o arrienda tu inmueble en poco tiempo en BuscoCasa.co</p>
                 </div>
             </div>
-            <!-- Register and publish -->
+            
             <div class="uk-text-center uk-margin-top">
                 @if(!Auth::check())
                     <a href="{{ url('/auth/register') }}" class="uk-button uk-button-primary uk-button-large" style="background-color:#444">{{ trans('admin.register_publish_free') }}</a>
                 @else
-                    <a href="{{ url('/admin/listings/create') }}" class="uk-button uk-button-large">{{ trans('admin.publish_property') }}</a>
+                    <a href="{{ url('/admin/listings/create') }}" class="uk-button uk-button-primary uk-button-large" style="background-color:#444">{{ trans('admin.publish_property') }}</a>
                 @endif
             </div>
         </div>
     </div>
-        <!-- Register and publish -->
+    <!-- Register and publish -->
 
     <div class="uk-container uk-container-center uk-margin-top">
         <!-- Featured listings -->

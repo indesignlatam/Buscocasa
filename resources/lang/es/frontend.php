@@ -5,7 +5,7 @@ return [
     'menu_home' 				=> 'Inicio',
     'menu_sales' 				=> 'Ventas',
     'menu_leases' 				=> 'Arriendos',
-    'menu_new_proyects' 		=> 'Proyectos nuevos',
+    'menu_vacationals'          => 'Vacacionales',
     'menu_login' 				=> 'Iniciar sesión',
     'menu_register' 			=> 'Crea una cuenta',
     'menu_my_properties' 		=> 'Mis publicaciones',
