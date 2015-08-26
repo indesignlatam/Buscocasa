@@ -78,10 +78,12 @@ class ListingController extends Controller {
 	 */
 	public function create(Request $request){
 		// Max free listings limit
-		if(!Auth::user()->confirmed && Auth::user()->freeListingCount > 0){
-			return redirect('admin/user/not_confirmed');
-		}else if(Auth::user()->confirmed && Auth::user()->freeListingCount >= Settings::get('free_listings_limit', 10)){
-			return redirect('admin/listings/limit');
+		if(!Auth::user()->is('admin')){
+			if(!Auth::user()->confirmed && Auth::user()->freeListingCount > 0){
+				return redirect('admin/user/not_confirmed');
+			}else if(Auth::user()->confirmed && Auth::user()->freeListingCount >= Settings::get('free_listings_limit', 10)){
+				return redirect('admin/listings/limit');
+			}
 		}
 
 		$categories 	= Category::remember(Settings::get('query_cache_time'))->get();
@@ -136,11 +138,14 @@ class ListingController extends Controller {
 	 */
 	public function store(Request $request){
 		// Max free listings limit
-		if(!Auth::user()->confirmed && Auth::user()->freeListingCount > 0){
-			return redirect('admin/not_confirmed');
-		}else if(Auth::user()->confirmed && Auth::user()->freeListingCount >= Settings::get('free_listings_limit', 10)){
-			return redirect('admin/listings/limit');
+		if(!Auth::user()->is('admin')){
+			if(!Auth::user()->confirmed && Auth::user()->freeListingCount > 0){
+				return redirect('admin/not_confirmed');
+			}else if(Auth::user()->confirmed && Auth::user()->freeListingCount >= Settings::get('free_listings_limit', 10)){
+				return redirect('admin/listings/limit');
+			}
 		}
+		
 
 		$listing = new Listing;
 
@@ -172,10 +177,10 @@ class ListingController extends Controller {
 			$input['longitude'] = $geocode->getLongitude();
 		}
 		
-
 		if(!$input['district']){
 			$input['district'] = Geocoder::reverse($input['latitude'], $input['longitude'])->getCityDistrict();
 		}
+
 
 		if (!$listing->validate($input)){
 	        return redirect('admin/listings/create')->withErrors($listing->errors())->withInput();
