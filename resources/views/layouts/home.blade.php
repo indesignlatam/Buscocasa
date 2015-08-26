@@ -184,6 +184,9 @@
                     object: path,
                 })
                 }, function(response){
+                    $.post("{{ url('/cookie/set') }}", {_token: "{{ csrf_token() }}", key: "shared_listing_"+id, value: true, time:11520}, function(result){
+                    
+                    });
                 });
             }
         </script>

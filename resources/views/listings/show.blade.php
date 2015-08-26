@@ -17,9 +17,9 @@
 @section('css')
 	@parent
 	<script type="text/javascript">
-		loadCSS("{{ asset('/css/components/slideshow.almost-flat.min.css') }}");
+		loadCSS("{{ asset('/css/components/slideshow.min.css') }}");
 		loadCSS("{{ asset('/css/components/slidenav.almost-flat.min.css') }}");
-		loadCSS("{{ asset('/css/components/tooltip.almost-flat.min.css') }}");
+		loadCSS("{{ asset('/css/components/tooltip.min.css') }}");
 		loadCSS("{{ asset('/css/selectize.min.css') }}");
 	</script>
 @endsection
@@ -369,7 +369,7 @@
 	    			<h2>{{ trans('frontend.near_places') }}</h2>
 	    			<div class="uk-grid" data-uk-grid-match="{target:'.uk-panel'}">
 	    				<div class="uk-width-medium-1-2 uk-width-large-1-2 uk-margin-small">
-	    					<div class="uk-panel uk-panel-box">
+	    					<div class="uk-panel uk-panel-box uk-panel-box-primary">
 	    						<h3 class="uk-panel-title uk-margin-remove"><i class="uk-icon-university uk-icon-align-justify"></i> Colegios y Universidades</h3>
 	    						<hr class="uk-margin-top-remove">
 	    						<table class="uk-table uk-table-condensed uk-table-hover" style="margin-top:-10px" id="schools">
@@ -377,7 +377,7 @@
 	    					</div>
 	    				</div>
 	    				<div class="uk-width-medium-1-2 uk-width-large-1-2 uk-margin-small">
-	    					<div class="uk-panel uk-panel-box">
+	    					<div class="uk-panel uk-panel-box uk-panel-box-primary">
 	    						<h3 class="uk-panel-title uk-margin-remove"><i class="uk-icon-bus uk-icon-align-justify"></i> Estaciones</h3>
 	    						<hr class="uk-margin-top-remove">
 	    						<table class="uk-table uk-table-condensed uk-table-hover" style="margin-top:-10px" id="bus_stops">
@@ -386,7 +386,7 @@
 	    				</div>
 
 	    				<div class="uk-width-medium-1-2 uk-width-large-1-2 uk-margin-small">
-	    					<div class="uk-panel uk-panel-box">
+	    					<div class="uk-panel uk-panel-box uk-panel-box-primary">
 	    						<h3 class="uk-panel-title uk-margin-remove"><i class="uk-icon-shopping-cart uk-icon-align-justify"></i> Supermercados y C.C.</h3>
 	    						<hr class="uk-margin-top-remove">
 	    						<table class="uk-table uk-table-condensed uk-table-hover" style="margin-top:-10px" id="malls">
@@ -394,7 +394,7 @@
 	    					</div>
 	    				</div>
 	    				<div class="uk-width-medium-1-2 uk-width-large-1-2 uk-margin-small">
-	    					<div class="uk-panel uk-panel-box">
+	    					<div class="uk-panel uk-panel-box uk-panel-box-primary">
 	    						<h3 class="uk-panel-title uk-margin-remove"><i class="uk-icon-map-marker uk-icon-align-justify"></i> Otros</h3>
 	    						<hr class="uk-margin-top-remove">
 	    						<table class="uk-table uk-table-condensed uk-table-hover" style="margin-top:-10px" id="others">
@@ -530,12 +530,10 @@
 			});
 		});
 
-		var map;
-		var infowindow;
 		var pyrmont = {lat: {{ $listing->latitude }}, lng: {{ $listing->longitude }}};
 		function initMap() {
 		  
-		  	map = new google.maps.Map(document.getElementById('map'), {
+		  	var map = new google.maps.Map(document.getElementById('map'), {
 		    	center: pyrmont,
 		    	zoom: 15,
 		    	scrollwheel: false,
@@ -607,25 +605,25 @@
 
 		    	for (var i = 0; i < bus.length ; i++) {
 		    		if(i <= 4){
-		    			$('#bus_stops').append('<tr><td>'+Case.title(bus[i].name.substring(0, 40))+'</td><td>'+parseInt(getDistance(bus[i].geometry.location, pyrmont))+' mts</tb><tr>');
+		    			$('#bus_stops').append('<tr><td  style="width:75%">'+Case.title(bus[i].name.substring(0, 40))+'</td><td>'+parseInt(getDistance(bus[i].geometry.location, pyrmont))+' mts</tb><tr>');
 		    		}
 		    	}
 
 		    	for (var i = 0; i < others.length ; i++) {
 		    		if(i <= 4){
-		    			$('#others').append('<tr><td>'+Case.title(others[i].name.substring(0, 40))+'</td><td>'+parseInt(getDistance(others[i].geometry.location, pyrmont))+' mts</tb><tr>');
+		    			$('#others').append('<tr><td  style="width:75%">'+Case.title(others[i].name.substring(0, 40))+'</td><td>'+parseInt(getDistance(others[i].geometry.location, pyrmont))+' mts</tb><tr>');
 		    		}
 		    	}
 
 		    	for (var i = 0; i < stores.length ; i++) {
 		    		if(i <= 4){
-		    			$('#malls').append('<tr><td>'+Case.title(stores[i].name.substring(0, 40))+'</td><td>'+parseInt(getDistance(stores[i].geometry.location, pyrmont))+' mts</tb><tr>');
+		    			$('#malls').append('<tr><td style="width:75%">'+Case.title(stores[i].name.substring(0, 40))+'</td><td>'+parseInt(getDistance(stores[i].geometry.location, pyrmont))+' mts</tb><tr>');
 		    		}
 		    	}
 
 		    	for (var i = 0; i < schools.length ; i++) {
 		    		if(i <= 4){
-		    			$('#schools').append('<tr><td>'+Case.title(schools[i].name.substring(0, 40))+'</td><td>'+parseInt(getDistance(schools[i].geometry.location, pyrmont))+' mts</tb><tr>');
+		    			$('#schools').append('<tr><td  style="width:75%">'+Case.title(schools[i].name.substring(0, 40))+'</td><td>'+parseInt(getDistance(schools[i].geometry.location, pyrmont))+' mts</tb><tr>');
 		    		}
 		    	}
 		  	}
@@ -647,37 +645,6 @@
 		  	return d; // returns the distance in meter
 		};
 
-		window.fbAsyncInit = function() {
-        	FB.init({
-         		appId      : {{ Settings::get('facebook_app_id') }},
-          		xfbml      : true,
-          		version    : 'v2.3'
-        	});
-      	};
-      	(function(d, s, id){
-         	var js, fjs = d.getElementsByTagName(s)[0];
-         	if (d.getElementById(id)) {return;}
-         	js = d.createElement(s); js.id = id;
-         	js.src = "//connect.facebook.net/en_US/sdk.js";
-         	fjs.parentNode.insertBefore(js, fjs);
-       	}(document, 'script', 'facebook-jssdk'));
-
-       	function share(path, id){
-       		FB.ui({
-			  	method: 'share_open_graph',
-			  	action_type: 'og.shares',
-			  	action_properties: JSON.stringify({
-			    object: path,
-			})
-			}, function(response, id){
-				$.post("{{ url('/cookie/set') }}", {_token: "{{ csrf_token() }}", key: "shared_listing_"+id, value: true, time:11520}, function(result){
-	                
-	            });
-			  	// Debug response (optional)
-			  	console.log(response);
-			});
-       	}
-
        	function like(path, id){
        		FB.ui({
 			  	method: 'share_open_graph',
@@ -685,7 +652,7 @@
 			  	action_properties: JSON.stringify({
 			    object: path,
 			})
-			}, function(response, id){
+			}, function(response){
 			  	console.log(response);
 			});
        	}
