@@ -53,6 +53,8 @@ return [
     'shared_check_tooltip'      => 'No has compartido tu inmueble',
     'aditional_check_tooltip'   => 'No has escrito una descripción adicional completa',
     'features_check_tooltip'    => 'Tu inmueble no tiene suficientes características',
+    'user'                      => 'Usario',
+    'views'                     => 'Visitas',
 
 
     // Create Listing
