@@ -102,7 +102,7 @@
 				</div>
 
 				<div class="uk-width-1-4">
-					<div class="uk-panel uk-panel-box uk-panel-box-secondary">
+					<div class="uk-panel uk-panel-box uk-panel-box-primary">
 						<h3 class="uk-panel-title">{{ trans('admin.configuration') }}</h3>
 
 						<div class="uk-width-1-1">
@@ -152,7 +152,7 @@
 						</div>
 					</div>
 					<div class="uk-margin-top">
-						<a href="#password_modal" data-uk-modal="{center:true}">{{ trans('admin.change_password') }}</a>
+						<a href="#password_modal" class="uk-button uk-width-1-1" data-uk-modal="{center:true}">{{ trans('admin.change_password') }}</a>
 					</div>
 				</div>
 			</div>
@@ -198,12 +198,12 @@
 
 <!-- This is the modal -->
 <div id="password_modal" class="uk-modal">
-    <div class="uk-modal-dialog">
+    <div class="uk-modal-dialog" style="max-width:400px">
         <a href="" class="uk-modal-close uk-close uk-close-alt"></a>
         <div class="uk-modal-header uk-text-bold">
         	{{ trans('admin.change_password') }}
         </div>
-
+        <hr>
         <form id="password" class="uk-form uk-form-stacked" action="{{ url('admin/user/'.Auth::user()->id.'/password') }}" method="POST">
 			<input type="hidden" name="_token" value="{{ csrf_token() }}">
         	<div class="uk-width-large-1-2 uk-align-center uk-text-center">

@@ -53,7 +53,7 @@
                     return ss;
                 }
             </script>
-            <link href="{{ asset('/css/uikit.buscocasa.min.css') }}" rel="stylesheet">
+            <link href="{{ asset('/css/uikit.flat.min.css') }}" rel="stylesheet">
         @show
     </head>
 
@@ -77,7 +77,7 @@
                     <div class="uk-grid">
                         <div class="uk-width-small-1-1 uk-width-medium-2-10 uk-width-large-2-10 uk-margin-large-top">
                             <div class="uk-text-center-small">
-                                <img src="{{ asset('/images/logo_h_contrast.png') }}">
+                                <img src="{{ asset('/images/logo_h_contrast_mini.png') }}" style="max-width:300px">
                                 <br>
                                 <p class="uk-text-contrast">
                                     Mail: comercial@buscocasa.co<br>
@@ -140,7 +140,8 @@
                                 <img src="{{ asset('/images/indesign/logo_h_contrast.png') }}" alt="logo" width="100px">
                             </a>
                             <br>
-                            Designed and developed by <a href="http://www.indesigncolombia.com">Indesign Colombia</a>
+                            Designed and developed by <a href="http://www.indesigncolombia.com" class="uk-text-primary">Indesign Colombia</a>
+                            <p class="uk-margin-remove">Usar este sitio web implica que usted acepta nuestras <a href="{{ url('terms') }}" class="uk-text-primary">Políticas y Términos</a> | <a href="{{ url('privacy') }}" class="uk-text-primary">Aviso de Privacidad</a></p>
                         </div>
                     </div><!--/footer-->
 
@@ -158,37 +159,39 @@
             <!-- Necessary Scripts -->
             <script src="{{ asset('/js/jquery.min.js') }}"></script>
             <script src="{{ asset('/js/uikit.min.js') }}"></script>
-
-            <script type="text/javascript">
-                window.fbAsyncInit = function() {
-                    FB.init({
-                        appId      : {{ Settings::get('facebook_app_id') }},
-                        xfbml      : true,
-                        version    : 'v2.3'
-                    });
-                };
-                (function(d, s, id){
-                    var js, fjs = d.getElementsByTagName(s)[0];
-                    if (d.getElementById(id)) {return;}
-                    js = d.createElement(s); js.id = id;
-                    js.src = "//connect.facebook.net/en_US/sdk.js";
-                    fjs.parentNode.insertBefore(js, fjs);
-                }(document, 'script', 'facebook-jssdk'));
-
-                function share(path){
-                    FB.ui({
-                        method: 'share_open_graph',
-                        action_type: 'og.shares',
-                        action_properties: JSON.stringify({
-                        object: path,
-                    })
-                    }, function(response){
-                    });
-                }
-            </script>
-
-            <!-- Other Scripts -->
-            {!! Analytics::render() !!}
         @show
+        <script type="text/javascript">
+            window.fbAsyncInit = function() {
+                FB.init({
+                    appId      : {{ Settings::get('facebook_app_id') }},
+                    xfbml      : true,
+                    version    : 'v2.3'
+                });
+            };
+            (function(d, s, id){
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) {return;}
+                js = d.createElement(s); js.id = id;
+                js.src = "//connect.facebook.net/en_US/sdk.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+
+            function share(path){
+                FB.ui({
+                    method: 'share_open_graph',
+                    action_type: 'og.shares',
+                    action_properties: JSON.stringify({
+                    object: path,
+                })
+                }, function(response){
+                    $.post("{{ url('/cookie/set') }}", {_token: "{{ csrf_token() }}", key: "shared_listing_"+id, value: true, time:11520}, function(result){
+                    
+                    });
+                });
+            }
+        </script>
+
+        <!-- Other Scripts -->
+        {!! Analytics::render() !!}
     </body>
 </html>

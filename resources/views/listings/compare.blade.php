@@ -388,7 +388,7 @@
        			$.post("{{ url('/cookie/forget') }}", {_token: "{{ csrf_token() }}", key: "selected_listings"}, function(result){
 				 	window.location.replace("{{ url('/compare') }}");
             	});
-			}, {labels:{Ok:'{{trans("admin.yes")}}', Cancel:'{{trans("admin.cancel")}}'}});
+			}, {labels:{Ok:'{{trans("admin.yes")}}', Cancel:'{{trans("admin.cancel")}}'}, center:true});
 			
 		}
 	</script>

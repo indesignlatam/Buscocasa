@@ -283,7 +283,14 @@ class Listing extends IndesignModel {
 				}
 				$listing->features()->detach($ids);
 
-				ArchivedListing::create($listing->toArray());
+				$archived = $listing->toArray();
+				$archived['listing_type'] = $listing->listing_type;
+				array_forget($archived, 'images');
+				array_forget($archived, 'features');
+				array_forget($archived, 'featured_type');
+				array_forget($archived, 'category');
+				array_forget($archived, 'city');
+				ArchivedListing::create($archived);
 		    }
         });
     }

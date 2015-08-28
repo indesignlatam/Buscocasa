@@ -120,7 +120,7 @@ return [
 
     //
     'my_listings_menu' 			=> 'Mis publicaciones',
-    'my_messages_menu' 			=> 'Mensajes',
+    'my_messages_menu' 			=> 'Mis mensajes',
     'profile_menu' 				=> 'Mis datos',
     'login' 					=> 'Iniciar sesión',
     'logout' 					=> 'Cerrar sesión',
@@ -143,7 +143,7 @@ return [
     'reply'                     => 'Responder mensaje',
     'mark_as_answered'          => 'Marcar como respondido',
     'delete_message'            => 'Eliminar mensaje',
-    'emails'                    => 'Correos electrónicos',
+    'emails'                    => 'Correos electrónicos (Separados por coma)',
     'listing_shared'            => 'La publicación fue compartida',
 
     // Confirmation
@@ -182,7 +182,7 @@ return [
     'change_profile_image'      => 'Seleccionar imagen principal',
     'current_password'          => 'Contraseña actual',
     'new_password'              => 'Nueva contraseña',
-    'confirm_new_password'      => 'Confirmar nueva contraseña',
+    'confirm_new_password'      => 'Confirmar contraseña',
 
     // Appointments
     'answer'                    => 'Responder',
@@ -202,7 +202,7 @@ return [
     'no_message'                => 'No has ingresado ningún texto para el correo',
 
     // Payments
-    'payments'                  => 'Pagos',
+    'payments'                  => 'Mis pagos',
     'my_payments'               => 'Mis pagos',
     'you_have_no_payments'      => 'No tienes ningún pago confirmado.',
     'cancel_payment_sure'       => '¿Estás seguro que quieres cancelar este pago?',

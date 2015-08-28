@@ -17,9 +17,10 @@
 @section('css')
 	@parent
 	<script type="text/javascript">
-		loadCSS("{{ asset('/css/components/slideshow.almost-flat.min.css') }}");
+		loadCSS("{{ asset('/css/components/slideshow.min.css') }}");
 		loadCSS("{{ asset('/css/components/slidenav.almost-flat.min.css') }}");
-		loadCSS("{{ asset('/css/components/tooltip.almost-flat.min.css') }}");
+		loadCSS("{{ asset('/css/components/tooltip.min.css') }}");
+		loadCSS("{{ asset('/css/selectize.min.css') }}");
 	</script>
 @endsection
 
@@ -43,7 +44,7 @@
 					    <ul class="uk-slideshow">
 					    	@foreach($listing->images->sortBy('ordering') as $image)
 					    		<li>
-					    			<img src="{{ asset($image->image_path) }}" alt="{{ $listing->title }}" style="max-width:800px; max-height:540px">
+					    			<img src="{{ asset($image->image_path) }}" alt="{{ $listing->title }}" style="max-width:960px; max-height:540px">
 					    		</li>
 					    	@endforeach		    	
 					    </ul>
@@ -149,7 +150,7 @@
     				<a onclick="share('{{ url($listing->path()) }}', {{ $listing->id }})" class="uk-icon-button uk-icon-facebook"></a> 
     				<a class="uk-icon-button uk-icon-twitter twitter-share-button" href="https://twitter.com/intent/tweet?text={{ $listing->title }}%20{{ url($listing->path()) }}" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=440,width=600');return false;"></a>
 					<a href="https://plus.google.com/share?url={{ url($listing->path()) }}" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;" class="uk-icon-button uk-icon-google-plus"></a>
-					<a href="#" class="uk-icon-button uk-icon-envelope"></a>
+				    <a href="#send_mail" class="uk-icon-button uk-icon-envelope" onclick="setListing({{ $listing->id }})" data-uk-modal="{center:true}"></a>
 	    		</div>
 				<!-- Social share links -->
 
@@ -198,7 +199,6 @@
     			</ul>
 
 				<button class="uk-button uk-button-large uk-button-success uk-width-1-1" onclick="select(this)" id="{{ $listing->id }}">{{ trans('frontend.compare') }}</button>
-    			<a href="#new_appointment_modal" class="uk-button uk-button-large uk-width-1-1 uk-margin-small-top" data-uk-modal>{{ trans('frontend.contact_vendor') }}</a>
     			<a href="{{ url($listing->broker->path()) }}" class="uk-button uk-button-large uk-width-1-1 uk-margin-small-top">{{ trans('frontend.other_user_listings') }}</a>
 
     			<hr>
@@ -208,7 +208,7 @@
 	    				<h2 class="uk-text-bold">{{ trans('frontend.similar_listings') }}</h2>
 	    				@foreach($related as $rlisting)
 		    				<div class="uk-overlay uk-overlay-hover uk-margin-small">
-		    					<img class="uk-border-rounded" src="{{ asset(Image::url( $rlisting->image_path(), ['map_mini']) ) }}" alt="{{$rlisting->title}}" data-uk-scrollspy="{cls:'uk-animation-slide-left'}">
+		    					<img src="{{ asset(Image::url( $rlisting->image_path(), ['map_mini']) ) }}" alt="{{$rlisting->title}}" data-uk-scrollspy="{cls:'uk-animation-fade'}">
 							    <div class="uk-overlay-panel uk-overlay-background uk-overlay-fade">
 							    	<h4 class="uk-margin-remove">{{ $rlisting->title }}</h4>
 							    	<h4 class="uk-margin-top-remove uk-margin-small-bottom uk-text-bold">{{ money_format('$%!.0i', $rlisting->price) }}</h4>
@@ -367,15 +367,51 @@
 	    		
 	    		<div class="uk-width-1-1" id="places">
 	    			<h2>{{ trans('frontend.near_places') }}</h2>
-	    			<table class="uk-table uk-table-condensed" style="margin-top:-10px" id="results">
-	    			</table>
+	    			<div class="uk-grid" data-uk-grid-match="{target:'.uk-panel'}">
+	    				<div class="uk-width-medium-1-2 uk-width-large-1-2 uk-margin-small">
+	    					<div class="uk-panel uk-panel-box uk-panel-box-primary">
+	    						<h3 class="uk-panel-title uk-margin-remove"><i class="uk-icon-university uk-icon-align-justify"></i> Colegios y Universidades</h3>
+	    						<hr class="uk-margin-top-remove">
+	    						<table class="uk-table uk-table-condensed uk-table-hover" style="margin-top:-10px" id="schools">
+	    						</table>
+	    					</div>
+	    				</div>
+	    				<div class="uk-width-medium-1-2 uk-width-large-1-2 uk-margin-small">
+	    					<div class="uk-panel uk-panel-box uk-panel-box-primary">
+	    						<h3 class="uk-panel-title uk-margin-remove"><i class="uk-icon-bus uk-icon-align-justify"></i> Estaciones</h3>
+	    						<hr class="uk-margin-top-remove">
+	    						<table class="uk-table uk-table-condensed uk-table-hover" style="margin-top:-10px" id="bus_stops">
+	    						</table>
+	    					</div>
+	    				</div>
+
+	    				<div class="uk-width-medium-1-2 uk-width-large-1-2 uk-margin-small">
+	    					<div class="uk-panel uk-panel-box uk-panel-box-primary">
+	    						<h3 class="uk-panel-title uk-margin-remove"><i class="uk-icon-shopping-cart uk-icon-align-justify"></i> Supermercados y C.C.</h3>
+	    						<hr class="uk-margin-top-remove">
+	    						<table class="uk-table uk-table-condensed uk-table-hover" style="margin-top:-10px" id="malls">
+	    						</table>
+	    					</div>
+	    				</div>
+	    				<div class="uk-width-medium-1-2 uk-width-large-1-2 uk-margin-small">
+	    					<div class="uk-panel uk-panel-box uk-panel-box-primary">
+	    						<h3 class="uk-panel-title uk-margin-remove"><i class="uk-icon-map-marker uk-icon-align-justify"></i> Otros</h3>
+	    						<hr class="uk-margin-top-remove">
+	    						<table class="uk-table uk-table-condensed uk-table-hover" style="margin-top:-10px" id="others">
+	    						</table>
+	    					</div>
+	    				</div>
+	    			</div>
 	    		</div>
+
 	    	</div>
 	    	
 	    </div>
 	</div>
-	@include('appointments.new')
 </div>
+
+@include('modals.email_listing')
+
 @endsection
 
 @section('js')
@@ -385,6 +421,7 @@
 	<noscript><link href="{{ asset('/css/components/slideshow.almost-flat.min.css') }}" rel="stylesheet"></noscript>
 	<noscript><link href="{{ asset('/css/components/slidenav.almost-flat.min.css') }}" rel="stylesheet"></noscript>
 	<noscript><link href="{{ asset('/css/components/tooltip.almost-flat.min.css') }}" rel="stylesheet"></noscript>
+	<noscript><link href="{{ asset('/css/selectize.min.css') }}" rel="stylesheet"/></noscript>
 	<!-- CSS -->
 
 	<!-- JS -->
@@ -392,6 +429,8 @@
     <script src="{{ asset('/js/components/tooltip.min.js') }}"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initMap"></script>
     <script async defer src="{{ asset('js/case.js') }}"></script>
+	<script src="{{ asset('/js/selectize.min.js') }}"></script>
+
     @if(!Auth::check())
 	<script async defer src='https://www.google.com/recaptcha/api.js'></script>
 	@endif
@@ -425,21 +464,76 @@
 			$.post("{{ url('/cookie/select') }}", {_token: "{{ csrf_token() }}", key: "selected_listings", value: sender.id}, function(result){
 				UIkit.modal.confirm("{{ trans('frontend.listing_selected') }}", function(){
 				    window.location.href = "{{ url('/compare') }}";
-				}, {labels:{Ok:'{{trans("frontend.compare_now")}}', Cancel:'{{trans("frontend.keep_looking")}}'}});
+				}, {labels:{Ok:'{{trans("frontend.compare_now")}}', Cancel:'{{trans("frontend.keep_looking")}}'}, center:true});
             });
 		}
 
 		$(function (){
 			$('#phone_1').html(phoneFormat($('#phone_1').html()));
 			$('#phone_2').html(phoneFormat($('#phone_2').html()));
+
+			var REGEX_EMAIL = '([a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@' +
+                  '(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)';
+
+			$('#emails').selectize({
+			    persist: false,
+			    maxItems: 5,
+			    valueField: 'email',
+			    labelField: 'name',
+			    searchField: ['name', 'email'],
+			    options: [],
+			    render: {
+			        item: function(item, escape) {
+			            return '<div>' +
+			                (item.name ? '<span class="name">' + escape(item.name) + '</span>' : '') +
+			                (item.email ? '<span class="email">' + escape(item.email) + '</span>' : '') +
+			            '</div>';
+			        },
+			        option: function(item, escape) {
+			            var label = item.name || item.email;
+			            var caption = item.name ? item.email : null;
+			            return '<div>' +
+			                '<span class="label">' + escape(label) + '</span>' +
+			                (caption ? '<span class="caption">' + escape(caption) + '</span>' : '') +
+			            '</div>';
+			        }
+			    },
+			    createFilter: function(input) {
+			        var match, regex;
+
+			        // email@address.com
+			        regex = new RegExp('^' + REGEX_EMAIL + '$', 'i');
+			        match = input.match(regex);
+			        if (match) return !this.options.hasOwnProperty(match[0]);
+
+			        // name <email@address.com>
+			        regex = new RegExp('^([^<]*)\<' + REGEX_EMAIL + '\>$', 'i');
+			        match = input.match(regex);
+			        if (match) return !this.options.hasOwnProperty(match[2]);
+
+			        return false;
+			    },
+			    create: function(input) {
+			        if ((new RegExp('^' + REGEX_EMAIL + '$', 'i')).test(input)) {
+			            return {email: input};
+			        }
+			        var match = input.match(new RegExp('^([^<]*)\<' + REGEX_EMAIL + '\>$', 'i'));
+			        if (match) {
+			            return {
+			                email : match[2],
+			                name  : $.trim(match[1])
+			            };
+			        }
+			        alert('Correo electrónico invalido.');
+			        return false;
+			    }
+			});
 		});
 
-		var map;
-		var infowindow;
 		var pyrmont = {lat: {{ $listing->latitude }}, lng: {{ $listing->longitude }}};
 		function initMap() {
 		  
-		  	map = new google.maps.Map(document.getElementById('map'), {
+		  	var map = new google.maps.Map(document.getElementById('map'), {
 		    	center: pyrmont,
 		    	zoom: 15,
 		    	scrollwheel: false,
@@ -459,8 +553,13 @@
 		  	var service = new google.maps.places.PlacesService(map);
 		  	service.nearbySearch({
 		    	location: pyrmont,
-		    	radius: 1000,
-		    	types: ['airport', 'embassy', 'grocery_or_supermarket', 'gym', 'hospital', 'department_store', 'park', 'police', 'school', 'shopping_mall', 'subway_station', 'university']
+		    	radius: 500,
+		    	types: ['university', 'grocery_or_supermarket', 'department_store', 'school', 'shopping_mall']
+		  	}, callback);
+		  	service.nearbySearch({
+		    	location: pyrmont,
+		    	radius: 500,
+		    	types: ['subway_station', 'train_station', 'bus_station', 'gym', 'park', 'police',]
 		  	}, callback);
 		}
 
@@ -468,10 +567,63 @@
 			if(results.length == 0){
 	  			$('#places').addClass('uk-hidden');
 	  		}
+
+	  		results.sort(
+	  			function(a, b){
+	  				return parseInt(getDistance(a.geometry.location, pyrmont))-parseInt(getDistance(b.geometry.location, pyrmont))
+	  			}
+	  		);
+
 		  	if (status === google.maps.places.PlacesServiceStatus.OK) {
-		    	for (var i = 0; i < results.length ; i++) {
-		    		if(i <= 10){
-		    			$('#results').append('<tr><td>'+Case.title(results[i].name)+'</td><td>'+Case.title(results[i].types[0])+'</td><td>'+parseInt(getDistance(results[i].geometry.location, pyrmont))+' mts</tb><tr>');
+			  	schools = 	results.filter(function (el) {
+								return 	el.types[0] == 'school' ||
+										el.types[0] == 'university';
+							});
+
+			  	stores 	= 	results.filter(function (el) {
+								return 	el.types[0] == 'department_store' || 
+										el.types[0] == 'shopping_mall' || 
+										el.types[0] == 'grocery_or_supermarket' ||
+										el.types[1] == 'department_store' || 
+										el.types[1] == 'shopping_mall' || 
+										el.types[1] == 'grocery_or_supermarket';
+							});
+
+			  	bus 	= 	results.filter(function (el) {
+								return 	el.types[0] == 'bus_station' ||
+										el.types[1] == 'train_station' || 
+										el.types[1] == 'subway_station';
+							});
+
+			  	others 	= 	results.filter(function (el) {
+								return 	el.types[0] == 'gym' ||
+										el.types[0] == 'airport' ||
+										el.types[0] == 'hospital' ||
+										el.types[0] == 'park' ||
+										el.types[0] == 'police';
+							});
+
+		    	for (var i = 0; i < bus.length ; i++) {
+		    		if(i <= 4){
+		    			$('#bus_stops').append('<tr><td  style="width:75%">'+Case.title(bus[i].name.substring(0, 40))+'</td><td>'+parseInt(getDistance(bus[i].geometry.location, pyrmont))+' mts</tb><tr>');
+		    		}
+		    	}
+
+		    	for (var i = 0; i < others.length ; i++) {
+		    		if(i <= 4){
+		    			$('#others').append('<tr><td  style="width:75%">'+Case.title(others[i].name.substring(0, 40))+'</td><td>'+parseInt(getDistance(others[i].geometry.location, pyrmont))+' mts</tb><tr>');
+		    		}
+		    	}
+
+		    	for (var i = 0; i < stores.length ; i++) {
+		    		if(i <= 4){
+		    			$('#malls').append('<tr><td style="width:75%">'+Case.title(stores[i].name.substring(0, 40))+'</td><td>'+parseInt(getDistance(stores[i].geometry.location, pyrmont))+' mts</tb><tr>');
+		    		}
+		    	}
+
+		    	for (var i = 0; i < schools.length ; i++) {
+		    		if(i <= 4){
+		    			$('#schools').append('<tr><td  style="width:75%">'+Case.title(schools[i].name.substring(0, 40))+'</td><td>'+parseInt(getDistance(schools[i].geometry.location, pyrmont))+' mts</tb><tr>');
 		    		}
 		    	}
 		  	}
@@ -493,37 +645,6 @@
 		  	return d; // returns the distance in meter
 		};
 
-		window.fbAsyncInit = function() {
-        	FB.init({
-         		appId      : {{ Settings::get('facebook_app_id') }},
-          		xfbml      : true,
-          		version    : 'v2.3'
-        	});
-      	};
-      	(function(d, s, id){
-         	var js, fjs = d.getElementsByTagName(s)[0];
-         	if (d.getElementById(id)) {return;}
-         	js = d.createElement(s); js.id = id;
-         	js.src = "//connect.facebook.net/en_US/sdk.js";
-         	fjs.parentNode.insertBefore(js, fjs);
-       	}(document, 'script', 'facebook-jssdk'));
-
-       	function share(path, id){
-       		FB.ui({
-			  	method: 'share_open_graph',
-			  	action_type: 'og.shares',
-			  	action_properties: JSON.stringify({
-			    object: path,
-			})
-			}, function(response, id){
-				$.post("{{ url('/cookie/set') }}", {_token: "{{ csrf_token() }}", key: "shared_listing_"+id, value: true, time:11520}, function(result){
-	                
-	            });
-			  	// Debug response (optional)
-			  	console.log(response);
-			});
-       	}
-
        	function like(path, id){
        		FB.ui({
 			  	method: 'share_open_graph',
@@ -531,9 +652,54 @@
 			  	action_properties: JSON.stringify({
 			    object: path,
 			})
-			}, function(response, id){
+			}, function(response){
 			  	console.log(response);
 			});
        	}
+
+       	function setListing(id){
+			$('#listingId').val(id);
+			$("#emails").val('');
+			$("#message").val('');
+		}
+
+		function sendMail(sender) {
+	    	$('#sendMail').prop('disabled', true);
+	    	var message = $('#message').val();
+	    	var emails = $('#emails').val().replace(/ /g,'').split(',');
+	    	var validemails = [];
+	    	$.each(emails, function( index, value ) {
+			  	if(validateEmail(value)){
+			  		validemails.push(value);
+			  	}
+			});
+
+			if(validemails.length < 1){
+				UIkit.notify('<i class="uk-icon-remove"></i> {{ trans('admin.no_emails') }}', {pos:'top-right', status:'danger', timeout: 5000});
+				$('#sendMail').prop('disabled', false);
+				return;
+			}
+
+			if(message.length < 1){
+				UIkit.notify('<i class="uk-icon-remove"></i> {{ trans('admin.no_message') }}', {pos:'top-right', status:'danger', timeout: 5000});
+				$('#sendMail').prop('disabled', false);
+				return;
+			}
+
+	    	$.post("{{ url('/admin/listings') }}/"+ $('#listingId').val() +"/share", {_token: "{{ csrf_token() }}", email: validemails, message: message}, function(result){
+		    	$('#sendMail').prop('disabled', false);
+		    	if(result.success){
+		    		UIkit.modal("#send_mail").hide();
+		    		UIkit.notify('<i class="uk-icon-check-circle"></i> '+result.success, {pos:'top-right', status:'success', timeout: 5000});
+		    	}else if(result.error || !result){
+		    		UIkit.notify('<i class="uk-icon-remove"></i> '+result.error, {pos:'top-right', status:'danger', timeout: 5000});
+		    	}
+	        });
+	    }
+
+	    function validateEmail(email) {
+		    var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+		    return re.test(email);
+		}
     </script>
 @endsection

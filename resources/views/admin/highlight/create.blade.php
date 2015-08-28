@@ -93,7 +93,7 @@
 	    				<hr>
 	    				<h3>{{ trans('admin.listing_preview') }}</h3>
 			    		<a style="text-decoration:none" >
-							<div class="uk-panel uk-panel-box uk-panel-box-primary uk-margin-remove" id="listing">
+							<div class="uk-panel uk-panel-box uk-panel-box uk-margin-bottom" style="border-left-width:4px; border-left-color:#ff4d53; border-left-style: solid;" id="listing">
 								<img src="{{ asset(Image::url($listing->image_path(),['mini_image_2x'])) }}" style="width:350px; height:200px; float:left" class="uk-margin-right">
 								<h4 class="uk-margin-remove">{{ $listing->title }}</h4>
 								{{-- <p style="margin-top:-2px" class="uk-text-muted">{{ $listing->city->name .", ". $listing->direction }}</p> --}}
@@ -136,9 +136,9 @@
 	    	<div class="uk-hidden-large uk-margin-top"></div>
 
 	    	<div class="uk-width-small-1-1 uk-width-medium-1-1 uk-width-large-3-10">
-	    		<div class="uk-panel uk-panel-box" data-uk-sticky="{boundary: true}">
+	    		<div class="uk-panel uk-panel-box uk-panel-box-primary" data-uk-sticky="{boundary: true}">
 	    		<h3 class="uk-panel-title">{{ trans('admin.shop_basket') }}</h3>
-		    		<table class="uk-table">
+		    		<table class="uk-table uk-table-striped">
 		    			<thead>
 		    				<tr>
 					            <th style="width:65%">{{ trans('admin.item') }}</th>
@@ -226,11 +226,11 @@
 			}else if(input == 2){
 				console.log(2);
 				$("#featured_id").val(2);
-				tag = "<img src=\"{{asset('/images/defaults/oportunidad.png')}}\" style=\"position:absolute; top:0; left:0; max-width:150px\" id=\"tag\">";
+				tag = "<img src=\"{{asset('/images/defaults/oportunidad.png')}}\" style=\"position:absolute; top:15px; left:15px; max-width:150px\" id=\"tag\">";
 			}else if(input == 3){
 				console.log(3);
 				$("#featured_id").val(3);
-				tag = "<img src=\"{{asset('/images/defaults/featured_full.png')}}\" style=\"position:absolute; top:0; left:0; max-width:150px\" id=\"tag\">";
+				tag = "<img src=\"{{asset('/images/defaults/featured_full.png')}}\" style=\"position:absolute; top:15px; left:15px; max-width:150px\" id=\"tag\">";
 			}
 			$("#tag").remove();
 	        $("#listing").prepend(tag);

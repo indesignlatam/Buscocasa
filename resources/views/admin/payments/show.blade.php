@@ -24,9 +24,9 @@
 				</div>
 
     			<a href="#" style="text-decoration:none">
-			    	<div class="uk-panel uk-panel-box uk-panel-box-primary uk-margin-remove" id="listing">
+					<div class="uk-panel uk-panel-box uk-panel-box uk-margin-bottom" style="border-left-width:4px; border-left-color:#ff4d53; border-left-style: solid;" id="listing">
 			    		@if($payment->featuredType->id > 1)
-							<img src="{{asset($payment->featuredType->image_path)}}" style="position:absolute; top:0; left:0; max-width:150px">
+							<img src="{{asset($payment->featuredType->image_path)}}" style="position:absolute; top:15px; left:15px; max-width:150px">
 						@endif
 
 			    		<img src="{{ asset(Image::url($payment->listing->image_path(),['mini_image_2x'])) }}" style="width:350px; height:200px; float:left" class="uk-margin-right">
@@ -70,9 +70,9 @@
 	    	<div class="uk-hidden-large uk-margin-top"></div>
 
 	    	<div class="uk-width-small-1-1 uk-width-medium-1-1 uk-width-large-3-10">
-	    		<div class="uk-panel uk-panel-box">
+	    		<div class="uk-panel uk-panel-box uk-panel-box-primary">
 	    		<h3 class="uk-panel-title">{{ trans('admin.shop_basket') }}</h3>
-		    		<table class="uk-table">
+		    		<table class="uk-table uk-table-striped">
 		    			<thead>
 		    				<tr>
 					            <th style="width:65%">{{ trans('admin.item') }}</th>
@@ -167,7 +167,7 @@
 		});
 
 		function blockUI(){
-	        var modal = UIkit.modal.blockUI('<h3 class="uk-text-center">{{ trans("admin.wait_while_redirect_payment") }}</h3><div class="uk-text-center uk-text-primary"><i class="uk-icon-large uk-icon-spinner uk-icon-spin"</i></div>'); // modal.hide() to unblock
+	        var modal = UIkit.modal.blockUI('<h3 class="uk-text-center">{{ trans("admin.wait_while_redirect_payment") }}</h3><div class="uk-text-center uk-text-primary"><i class="uk-icon-large uk-icon-spinner uk-icon-spin"</i></div>', {center: true}); // modal.hide() to unblock
 	    }
 
 	    function cancelPayment() {
@@ -176,7 +176,7 @@
 			    $.post("{{ url('/admin/pagos/'.$payment->id) }}", {_token: "{{ csrf_token() }}", _method:"DELETE"}, function(response){
 	                window.location.replace("{{url('/admin/pagos')}}");
 	            });
-			}, {labels:{Ok:'{{trans("admin.yes")}}', Cancel:'{{trans("admin.cancel")}}'}});
+			}, {labels:{Ok:'{{trans("admin.yes")}}', Cancel:'{{trans("admin.cancel")}}'}, center: true});
             
         }
 	</script>

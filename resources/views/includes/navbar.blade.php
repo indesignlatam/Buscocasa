@@ -1,14 +1,14 @@
-<nav class="uk-navbar uk-navbar-attached" style="border-style: solid; border-bottom: 1px solid #e1e1e1;">
+<nav class="uk-navbar uk-navbar-attached" style="border-bottom-style: solid; border-bottom: 1px solid #e1e1e1;">
     <div class="uk-container uk-container-center">
 
     	<a href="#menuoffcanvas" class="uk-navbar-toggle uk-visible-small" data-uk-offcanvas></a>
         
         <a class="uk-navbar-brand uk-hidden-small" href="{{ url('/') }}">
-            <img src="{{ asset('/images/logo_h.png') }}" alt="logo" class="uk-margin-right" style="height:30px; margin-left:-20px">
+            <img src="{{ asset('/images/logo_h_mini.png') }}" alt="logo" class="uk-margin-right" style="height:30px; margin-left:-20px">
         </a>
 
         <a class="uk-navbar-brand uk-visible-small" href="{{ url('/') }}">
-            <img src="{{ asset('/images/logo_h.png') }}" alt="logo" style="max-height:17px">
+            <img src="{{ asset('/images/logo_h_mini.png') }}" alt="logo" style="max-height:17px">
         </a>
 
         <!-- This is the off-canvas sidebar -->
@@ -88,21 +88,29 @@
                         </div>
                     </li>
                 @else
-                    <li>
-                        <a href="{{ url('/admin') }}">{{ trans('admin.home') }}</a>
-                    </li>
+                    @if(Request::is('admin'))
+                        <li class="uk-active">
+                    @else
+                        <li>
+                    @endif
+                            <a href="{{ url('/admin') }}">{{ trans('admin.home') }}</a>
+                        </li>
 
-                    <li>
-                        <a href="{{ url('/admin/listings') }}">{{ trans('admin.my_listings_menu') }}</a>
-                    </li>
+                    @if(Request::is('admin/listings'))
+                        <li class="uk-active">
+                    @else
+                        <li>
+                    @endif
+                            <a href="{{ url('/admin/listings') }}">{{ trans('admin.my_listings_menu') }}</a>
+                        </li>
 
-                    <li>
-                        <a href="{{ url('/admin/messages') }}">{{ trans('admin.my_messages_menu') }}</a>
-                    </li>
-
-                    <li>
-                        <a href="{{ url('/admin/pagos') }}">{{ trans('admin.payments') }}</a>
-                    </li>
+                    @if(Request::is('admin/messages') || Request::is('admin/messages/*'))
+                        <li class="uk-active">
+                    @else
+                        <li>
+                    @endif
+                            <a href="{{ url('/admin/messages') }}">{{ trans('admin.my_messages_menu') }}</a>
+                        </li>
                 @endrole
 
             @endif
@@ -121,7 +129,7 @@
                                 <li><a href="{{ url('/admin') }}">{{ trans('admin.dashboard') }}</a></li>
                                 <li><a href="{{ url('/admin/listings') }}">{{ trans('admin.my_listings_menu') }}</a></li>
                                 <li><a href="{{ url('/admin/messages') }}">{{ trans('admin.my_messages_menu') }}</a></li>
-                                <li><a href="{{ url('/admin/pagos') }}">{{ trans('admin.payments') }}</a></li>
+                                <li><a href="{{ url('/admin/pagos') }}">{{ trans('admin.my_payments') }}</a></li>
                                 <li><a href="{{ url('/admin/user/'.Auth::user()->id.'/edit') }}">{{ trans('admin.user_data') }}</a></li>
                                 @role('admin')
                                     <li><a href="{{ url('/admin/config') }}">{{ trans('admin.configuration') }}</a></li>

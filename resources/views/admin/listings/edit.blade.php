@@ -296,7 +296,7 @@
 						<p class="uk-margin-remove">{{ trans('admin.add_images_to_listing') }} {{ trans('admin.order_images') }}</p>
 
 				    	<div id="upload-drop" class="uk-placeholder uk-placeholder-large uk-text-center uk-margin-top">
-						    <i class="uk-icon-large uk-icon-cloud-upload"></i> {{ trans('admin.drag_listing_images_or') }} <a class="uk-form-file">{{ trans('admin.select_an_image') }}<input id="upload-select" type="file" multiple></a>
+						    <i class="uk-icon-large uk-icon-cloud-upload"></i> {{ trans('admin.drag_listing_images_or') }} <a class="uk-form-file uk-text-primary">{{ trans('admin.select_an_image') }}<input id="upload-select" type="file" multiple></a>
 						</div>
 
 						<div id="progressbar" class="uk-progress uk-hidden">
@@ -326,7 +326,7 @@
 							<a onclick="share('{{ url($listing->path()) }}')" class="uk-icon-button uk-icon-facebook uk-margin-right"></a>
 	        				<a class="uk-icon-button uk-icon-twitter twitter-share-button uk-margin-right" href="https://twitter.com/intent/tweet?text=Hello%20world%20{{ url($listing->path()) }}" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=440,width=600');return false;"></a>
 	    					<a href="https://plus.google.com/share?url={{ url($listing->path()) }}" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;" class="uk-icon-button uk-icon-google-plus uk-margin-right"></a>
-	    					<a href="" class="uk-icon-button uk-icon-envelope uk-margin-right"></a>
+				            <a href="#send_mail" class="uk-icon-button uk-icon-envelope" onclick="setListing({{ $listing->id }})" data-uk-modal="{center:true}"></a>
 						</div>
 				    </div>
 				    <!-- Share listing -->
@@ -403,7 +403,7 @@
 	        <div class="uk-grid uk-grid-collapse">
 	        	<div class="uk-width-1-1">
 	        		<div id="upload_drop_modal" class="uk-placeholder uk-placeholder-large uk-text-center uk-margin-top">
-					    <i class="uk-icon-large uk-icon-cloud-upload"></i> {{ trans('admin.drag_listing_images_or') }} <a class="uk-form-file">{{ trans('admin.select_an_image') }}<input id="upload_select_modal" type="file" multiple></a>
+					    <i class="uk-icon-large uk-icon-cloud-upload"></i> {{ trans('admin.drag_listing_images_or') }} <a class="uk-form-file uk-text-primary">{{ trans('admin.select_an_image') }}<input id="upload_select_modal" type="file" multiple></a>
 					</div>
 
 					<div id="progressbar_modal" class="uk-progress uk-hidden">
@@ -422,6 +422,7 @@
 	    </div>
 	</div>
 @endif
+@include('modals.email_listing')
 @endsection
 
 @section('js')
@@ -436,6 +437,7 @@
 	<link href="{{ asset('/css/components/tooltip.almost-flat.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/components/sticky.almost-flat.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/select2.min.css') }}" rel="stylesheet" />
+	<link href="{{ asset('/css/selectize.min.css') }}" rel="stylesheet"/>
 	<!-- Styles -->
 
 	<!-- JS -->
@@ -445,6 +447,7 @@
 	<script src="{{ asset('/js/components/sticky.min.js') }}"></script>
 	<script src="{{ asset('/js/accounting.min.js') }}"></script>
 	<script src="{{ asset('/js/select2.min.js') }}"></script>
+	<script src="{{ asset('/js/selectize.min.js') }}"></script>
 	<!-- JS -->
 
 	<script type="text/javascript">
@@ -607,6 +610,62 @@
 			modal.show()
 		@endif
 
+			var REGEX_EMAIL = '([a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@' +
+                  '(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)';
+
+			$('#emails').selectize({
+			    persist: false,
+			    maxItems: 5,
+			    valueField: 'email',
+			    labelField: 'name',
+			    searchField: ['name', 'email'],
+			    options: [],
+			    render: {
+			        item: function(item, escape) {
+			            return '<div>' +
+			                (item.name ? '<span class="name">' + escape(item.name) + '</span>' : '') +
+			                (item.email ? '<span class="email">' + escape(item.email) + '</span>' : '') +
+			            '</div>';
+			        },
+			        option: function(item, escape) {
+			            var label = item.name || item.email;
+			            var caption = item.name ? item.email : null;
+			            return '<div>' +
+			                '<span class="label">' + escape(label) + '</span>' +
+			                (caption ? '<span class="caption">' + escape(caption) + '</span>' : '') +
+			            '</div>';
+			        }
+			    },
+			    createFilter: function(input) {
+			        var match, regex;
+
+			        // email@address.com
+			        regex = new RegExp('^' + REGEX_EMAIL + '$', 'i');
+			        match = input.match(regex);
+			        if (match) return !this.options.hasOwnProperty(match[0]);
+
+			        // name <email@address.com>
+			        regex = new RegExp('^([^<]*)\<' + REGEX_EMAIL + '\>$', 'i');
+			        match = input.match(regex);
+			        if (match) return !this.options.hasOwnProperty(match[2]);
+
+			        return false;
+			    },
+			    create: function(input) {
+			        if ((new RegExp('^' + REGEX_EMAIL + '$', 'i')).test(input)) {
+			            return {email: input};
+			        }
+			        var match = input.match(new RegExp('^([^<]*)\<' + REGEX_EMAIL + '\>$', 'i'));
+			        if (match) {
+			            return {
+			                email : match[2],
+			                name  : $.trim(match[1])
+			            };
+			        }
+			        alert('Correo electrónico invalido.');
+			        return false;
+			    }
+			});
 
 		});
 
@@ -626,7 +685,7 @@
   		
 
 		function blockUI(){
-	        var modal = UIkit.modal.blockUI('<h3 class="uk-text-center">Guardando inmueble, porfavor espere.</h3><div class="uk-text-center uk-text-primary"><i class="uk-icon-large uk-icon-spinner uk-icon-spin"</i></div>');
+	        var modal = UIkit.modal.blockUI('<h3 class="uk-text-center">Guardando inmueble, porfavor espere.</h3><div class="uk-text-center uk-text-primary"><i class="uk-icon-large uk-icon-spinner uk-icon-spin"</i></div>', {center: true});
 	    }
 
 		function format(field){
@@ -801,6 +860,51 @@
 			});
        	}
 
+       	function setListing(id){
+			$('#listingId').val(id);
+			$("#emails").val('');
+			$("#message").val('');
+		}
+
+		function sendMail(sender) {
+	    	$('#sendMail').prop('disabled', true);
+	    	var message = $('#message').val();
+	    	var emails = $('#emails').val().replace(/ /g,'').split(',');
+	    	var validemails = [];
+	    	$.each(emails, function( index, value ) {
+			  	if(validateEmail(value)){
+			  		validemails.push(value);
+			  	}
+			});
+
+			if(validemails.length < 1){
+				UIkit.notify('<i class="uk-icon-remove"></i> {{ trans('admin.no_emails') }}', {pos:'top-right', status:'danger', timeout: 5000});
+				$('#sendMail').prop('disabled', false);
+				return;
+			}
+
+			if(message.length < 1){
+				UIkit.notify('<i class="uk-icon-remove"></i> {{ trans('admin.no_message') }}', {pos:'top-right', status:'danger', timeout: 5000});
+				$('#sendMail').prop('disabled', false);
+				return;
+			}
+
+	    	$.post("{{ url('/admin/listings') }}/"+ $('#listingId').val() +"/share", {_token: "{{ csrf_token() }}", email: validemails, message: message}, function(result){
+		    	$('#sendMail').prop('disabled', false);
+		    	if(result.success){
+		    		UIkit.modal("#send_mail").hide();
+		    		UIkit.notify('<i class="uk-icon-check-circle"></i> '+result.success, {pos:'top-right', status:'success', timeout: 5000});
+		    	}else if(result.error || !result){
+		    		UIkit.notify('<i class="uk-icon-remove"></i> '+result.error, {pos:'top-right', status:'danger', timeout: 5000});
+		    	}
+	        });
+	    }
+
+	    function validateEmail(email) {
+		    var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+		    return re.test(email);
+		}
+
        	function saveClose(){
        		$("#save_close").val('1');
        		blockUI();
@@ -809,7 +913,7 @@
        	function leave() {
 	    	UIkit.modal.confirm("{{ trans('admin.sure_leave') }}", function(){
 			    window.location.replace("{{ url('/admin/listings') }}");
-			}, {labels:{Ok:'{{trans("admin.yes")}}', Cancel:'{{trans("admin.cancel")}}'}});
+			}, {labels:{Ok:'{{trans("admin.yes")}}', Cancel:'{{trans("admin.cancel")}}'}, center: true});
 	    }
 	</script>
 

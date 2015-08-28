@@ -5,7 +5,7 @@
 @endsection
 
 @section('css')
-	<link href="{{ asset('/css/uikit.buscocasa.min.css') }}" rel="stylesheet">
+	<link href="{{ asset('/css/uikit.flat.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/strength.min.css') }}" rel="stylesheet">
 	<style type="text/css">
 		html{
@@ -19,7 +19,7 @@
 <div class="uk-container uk-container-center">
 	<a href="{{url('/')}}"><img src="{{ asset('/images/logo_h_contrast.png') }}" class="uk-align-center uk-margin-top uk-width-large-4-10"></a>
 	<div class="uk-panel uk-panel-box uk-panel-box-secondary uk-panel-header uk-width-large-4-10 uk-align-center">
-		<div class="uk-h1 uk-text-center uk-text-primary uk-margin-top">
+		<div class="uk-h1 uk-text-center uk-text-success uk-margin-top">
 			{{ trans('auth.register') }}
 		</div>
 		@if (count($errors) > 0)
@@ -34,7 +34,7 @@
 			</div>
 		@endif
 
-		<form class="uk-form uk-form-horizontal uk-margin-large-top uk-margin-bottom uk-text-center" id="myform" method="POST" action="{{ url('/auth/register') }}">
+		<form class="uk-form uk-form-horizontal uk-margin-top uk-margin-bottom uk-text-center" id="myform" method="POST" action="{{ url('/auth/register') }}">
 			<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
 			<div class="uk-form-row">

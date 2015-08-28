@@ -1,13 +1,13 @@
 <div class="uk-container uk-container-center uk-margin-top" style="background-color: #fff; max-height:103px; width:100%">
     <div>
         <a class="uk-hidden-small" href="{{ url('/') }}" style="height:45px">
-            <img src="{{ asset('/images/logo_h.png') }}" alt="logo" style="height:45px">
+            <img src="{{ asset('/images/logo_h_mini.png') }}" alt="logo" style="height:45px">
         </a>
 
         @if(!Auth::check())
             <a href="{{ url('/auth/register') }}" class="uk-button uk-button-primary uk-button-large uk-align-right uk-margin-small-top uk-hidden-small">{{ trans('admin.register_publish_free') }}</a>
         @else
-        <a href="{{ url('/admin/listings/create') }}" class="uk-button uk-button-primary uk-button-large uk-align-right uk-margin-small-top uk-hidden-small">{{ trans('admin.publish_property') }}</a>
+            <a href="{{ url('/admin/listings/create') }}" class="uk-button uk-button-primary uk-button-large uk-align-right uk-margin-small-top uk-hidden-small">{{ trans('admin.publish_property') }}</a>
         @endif
     </div>
 
@@ -25,7 +25,7 @@
                     <a href="{{ url('/arriendos') }}">{{ trans('frontend.menu_leases') }}</a>
                 </li>
                 <li class="uk-parent" data-uk-dropdown="">
-                    <a href="{{ url('#') }}">{{ trans('frontend.menu_new_proyects') }}</a>
+                    <a href="{{ url('#') }}">{{ trans('frontend.menu_vacationals') }}</a>
                 </li>
 
                 <li class="uk-nav-divider"></li>
@@ -48,21 +48,40 @@
         <a href="#menuoffcanvas" class="uk-navbar-toggle uk-visible-small" data-uk-offcanvas></a>
         
         <a class="uk-visible-small" href="{{ url('/') }}">
-            <img src="{{ asset('/images/logo_h.png') }}" alt="logo" style="width:80%">
+            <img src="{{ asset('/images/logo_h_mini.png') }}" alt="logo" style="width:80%">
         </a>
 
         <ul class="uk-navbar-nav uk-vertical-align uk-hidden-small">
-            <li class="uk-parent" data-uk-dropdown="">
+        @if(Request::is('/'))
+            <li class="uk-active">
+        @else
+            <li>
+        @endif
                 <a href="{{ url('/') }}">{{ trans('frontend.menu_home') }}</a>
             </li>
-            <li class="uk-parent" data-uk-dropdown="">
+
+        @if(Request::is('ventas') || Request::is('ventas/*'))
+            <li class="uk-active">
+        @else
+            <li>
+        @endif
                 <a href="{{ url('/ventas') }}">{{ trans('frontend.menu_sales') }}</a>
             </li>
-            <li class="uk-parent" data-uk-dropdown="">
+
+        @if(Request::is('arriendos') || Request::is('arriendos/*'))
+            <li class="uk-active">
+        @else
+            <li>
+        @endif
                 <a href="{{ url('/arriendos') }}">{{ trans('frontend.menu_leases') }}</a>
             </li>
-            <li class="uk-parent" data-uk-dropdown="">
-                <a href="{{ url('#') }}">{{ trans('frontend.menu_new_proyects') }}</a>
+
+        @if(Request::is('#') || Request::is('#/*'))
+            <li class="uk-active">
+        @else
+            <li>
+        @endif
+                <a href="{{ url('#') }}">{{ trans('frontend.menu_vacationals') }}</a>
             </li>
         </ul>
 

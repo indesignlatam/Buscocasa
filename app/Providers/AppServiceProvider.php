@@ -22,7 +22,39 @@ class AppServiceProvider extends ServiceProvider {
         setlocale(LC_MONETARY, 'en_US');
         date_default_timezone_set('America/Bogota');
 
+        // Frontpage or welcome images
+        Image::filter('mini_front', [
+            'width'     => 256,
+            'height'    => 170,
+            'crop'      => true,
+        ]);
+        Image::filter('mini_front_2x', [
+            'width'     => 512,
+            'height'    => 340,
+            'crop'      => true,
+        ]);
+        Image::filter('featured_mosaic', [
+            'width'     => 370,
+            'height'    => 230,
+            'crop'      => true,
+        ]);
+        Image::filter('featured_mosaic_2x', [
+            'width'     => 740,
+            'height'    => 460,
+            'crop'      => true,
+        ]);
+        Image::filter('featured_mosaic_large', [
+            'width'     => 750,
+            'height'    => 230,
+            'crop'      => true,
+        ]);
+        Image::filter('featured_mosaic_large_2x', [
+            'width'     => 1500,
+            'height'    => 460,
+            'crop'      => true,
+        ]);
 
+        //
         Image::filter('full_page', [
             'width'     => 1200,
             'height'    => 350,
@@ -50,12 +82,6 @@ class AppServiceProvider extends ServiceProvider {
         Image::filter('featured_front', [
             'width'     => 1250,
             'height'    => 450,
-            'crop'      => true,
-        ]);
-
-        Image::filter('mini_front', [
-            'width'     => 454,
-            'height'    => 300,
             'crop'      => true,
         ]);
 
