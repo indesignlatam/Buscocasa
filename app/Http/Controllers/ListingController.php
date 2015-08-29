@@ -66,7 +66,11 @@ class ListingController extends Controller {
 		}
 
 		// Execute the query
-		$objects = $query->with('listingType', 'featuredType', 'images', 'features')->paginate($take);
+		if(Auth::user()->isAdmin()){
+			$objects = $query->with('broker')->paginate($take);
+		}else{
+			$objects = $query->with('listingType', 'featuredType', 'images', 'features')->paginate($take);
+		}
 
 		return view('admin.listings.index', ['listings' => $objects]);
 	}

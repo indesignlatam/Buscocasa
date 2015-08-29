@@ -12,14 +12,19 @@
 
 <div class="uk-container uk-container-center uk-margin-top">
 
-	<div class="uk-panel">
+	<div class="uk-panel">		
 		@if(Auth::user()->isAdmin())
-			<h1>{{ trans('admin.listings') }}</h1>
+			<h1 class="uk-display-inline">{{ trans('admin.listings') }}</h1>
 
-		    <div class="">
-		        <!-- This is a button toggling the modal -->
-		        <a class="uk-button" href="{{ url('/admin/listings/create') }}">{{ trans('admin.new') }}</a>
-				<button class="uk-button uk-button-danger" onclick="deleteObjects()"><i class="uk-icon-trash"></i></button>	
+		    <div class="uk-align-right">
+		        <a class="uk-button uk-button-large" href="{{ url('/admin/listings/create') }}">{{ trans('admin.new') }}</a>
+				<button class="uk-button uk-button-large uk-button-danger" onclick="deleteObjects()"><i class="uk-icon-trash"></i></button>    
+			</div>
+
+			<hr>
+
+			@if(count($listings) > 0)
+			<div class="uk-panel">
 				<form action="{{url(Request::path())}}" method="GET" class="uk-form uk-align-right">
 					<select name="take" onchange="this.form.submit()">
 				    	<option value="">Cantidad de publicaciones</option>
@@ -57,74 +62,22 @@
 				    		<option value="exp_desc">Fecha expiración</option>
 				    	@endif
 				    </select>
-				</form>	    
+				</form>
 			</div>
-		@else
-			<h1>{{ trans('admin.my_listings') }}</h1>
-
-			<hr>
-			@if(count($listings) > 0)
-			    <div class="">
-			        <!-- This is a button toggling the modal -->
-			        <a class="uk-button uk-button-large uk-button-primary" href="{{ url('/admin/listings/create') }}">{{ trans('admin.publish_property') }}</a>
-			        <a class="uk-button uk-button-large" href="{{ url('/admin/listings/?deleted=true') }}" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.eliminated_listings') }}"><i class="uk-icon-trash"></i></a>
-
-			        <form action="{{url(Request::path())}}" method="GET" class="uk-form uk-align-right uk-hidden-small">
-			        	<select name="take" onchange="this.form.submit()">
-					    	<option value="">Cantidad de publicaciones</option>
-					    	@if(Request::get('take') == 50)
-					    		<option value="50" selected>Ver 50</option>
-					    	@else
-					    		<option value="50">Ver 50</option>
-					    	@endif
-
-					    	@if(Request::get('take') == 30)
-					    		<option value="30" selected>Ver 30</option>
-					    	@else
-					    		<option value="30">Ver 30</option>
-					    	@endif
-
-					    	@if(Request::get('take') == 10)
-					    		<option value="10" selected>Ver 10</option>
-					    	@else
-					    		<option value="10">Ver 10</option>
-					    	@endif
-					    </select>
-				    
-					    <select name="order_by" onchange="this.form.submit()">
-					    	<option value="">Ordenar por</option>
-					    	
-					    	@if(Request::get('order_by') == 'id_desc')
-					    		<option value="id_desc" selected>Fecha creación</option>
-					    	@else
-					    		<option value="id_desc">Fecha creación</option>
-					    	@endif
-
-					    	@if(Request::get('order_by') == 'exp_desc')
-					    		<option value="exp_desc" selected>Fecha expiración</option>
-					    	@else
-					    		<option value="exp_desc">Fecha expiración</option>
-					    	@endif
-					    </select>
-					</form>
-			    </div>
 			@endif
-		@endif
-		
-		@if(Auth::user()->isAdmin())
-			<div class="uk-panel uk-panel-box uk-margin-top">
+
+			<div class="uk-panel uk-margin-top">
 				<table class="uk-table uk-table-hover uk-table-striped">
 					<thead>
 		                <tr>
 		                  	<th style="width:15px"><input type="checkbox" id="checkedLineHeader" onclick="toggle(this)"/></th>
-		                    <th style="width:15px">{{ trans('admin.id') }}</th>
-		                    <th style="width:20px">{{ trans('admin.published') }}</th>
+		                    <th style="width:15px"></th>
+		                    <th style="width:20px"></th>
 		                    <th style="width:20px">{{ trans('admin.image') }}</th>
 		                    <th>{{ trans('admin.title') }}</th>
-		                    <th style="width:20px">{{ trans('admin.category') }}</th>
-		                    <th style="width:20px">{{ trans('admin.type') }}</th>
-		                    <th style="width:80px">{{ trans('admin.status') }}</th>
-		                    <th style="width:20px">{{ trans('admin.city') }}</th>
+		                    <th style="width:20px">{{ trans('admin.user') }}</th>
+		                    <th style="width:20px">{{ trans('admin.views') }}</th>
+		                    <th style="width:80px">{{ trans('admin.expires') }}</th>
 		                    <th style="width:120px">{{ trans('admin.actions_button') }}</th>
 		                </tr>
 		            </thead>
@@ -136,10 +89,9 @@
 		                        <td class="uk-text-center">@if($listing->published)<i class="uk-icon-check"></i>@else<i class="uk-icon-remove"></i>@endif</td>
 		                        <td><img src="{{ asset(Image::url($listing->image_path(),['map_mini'])) }}"></td>
 		                        <td><a href="{{ url('/admin/listings/'.$listing->id.'/edit') }}">{{ $listing->title }}</a></td>
-		                        <td>{{ $listing->category->name }}</td>
-		                        <td>{{ $listing->listingType->name }}</td>
-		                        <td>{{ $listing->listingStatus->name }}</td>
-		                        <td>{{ $listing->city->name }}</td>
+		                        <td>{{ $listing->broker->id }} <i class="uk-icon-user" data-uk-tooltip="{pos:'top'}" title="{{ $listing->broker->name }}"></i></td>
+		                        <td>{{ $listing->views }}</td>
+		                        <td>{{ $listing->expires_at->diffForHumans() }}</td>
 		                        <td>
 		                            <!-- This is the container enabling the JavaScript -->
 		                            <div class="uk-button-dropdown" data-uk-dropdown>
@@ -162,6 +114,55 @@
 				<?php echo $listings->render(); ?>
 			</div>
 		@else
+			<h1>{{ trans('admin.my_listings') }}</h1>
+
+			<hr>
+			@if(count($listings) > 0)
+			    <div class="">
+			        <a class="uk-button uk-button-large uk-button-primary" href="{{ url('/admin/listings/create') }}">{{ trans('admin.publish_property') }}</a>
+			        <a class="uk-button uk-button-large" href="{{ url('/admin/listings/?deleted=true') }}" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.eliminated_listings') }}"><i class="uk-icon-trash"></i></a>
+
+			        <form action="{{url(Request::path())}}" method="GET" class="uk-form uk-align-right">
+						<select name="take" onchange="this.form.submit()">
+					    	<option value="">Cantidad de publicaciones</option>
+					    	@if(Request::get('take') == 50)
+					    		<option value="50" selected>Ver 50</option>
+					    	@else
+					    		<option value="50">Ver 50</option>
+					    	@endif
+
+					    	@if(Request::get('take') == 30)
+					    		<option value="30" selected>Ver 30</option>
+					    	@else
+					    		<option value="30">Ver 30</option>
+					    	@endif
+
+					    	@if(Request::get('take') == 10)
+					    		<option value="10" selected>Ver 10</option>
+					    	@else
+					    		<option value="10">Ver 10</option>
+					    	@endif
+					    </select>
+
+					    <select name="order_by" onchange="this.form.submit()">
+					    	<option value="">Ordenar por</option>
+					    	
+					    	@if(Request::get('order_by') == 'id_desc')
+					    		<option value="id_desc" selected>Fecha creación</option>
+					    	@else
+					    		<option value="id_desc">Fecha creación</option>
+					    	@endif
+
+					    	@if(Request::get('order_by') == 'exp_desc')
+					    		<option value="exp_desc" selected>Fecha expiración</option>
+					    	@else
+					    		<option value="exp_desc">Fecha expiración</option>
+					    	@endif
+					    </select>
+					</form>
+			    </div>
+			@endif
+			
 			@if(!Request::get('deleted') && count($listings) > 0)
 				<div class="uk-panel uk-margin-top">					
 					<ul class="uk-list">

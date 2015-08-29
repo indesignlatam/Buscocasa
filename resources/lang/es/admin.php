@@ -53,6 +53,8 @@ return [
     'shared_check_tooltip'      => 'No has compartido tu inmueble',
     'aditional_check_tooltip'   => 'No has escrito una descripción adicional completa',
     'features_check_tooltip'    => 'Tu inmueble no tiene suficientes características',
+    'user'                      => 'Usario',
+    'views'                     => 'Visitas',
 
 
     // Create Listing
@@ -119,8 +121,10 @@ return [
     'steps_7'                    => 'Destacado',
 
     //
-    'my_listings_menu' 			=> 'Mis publicaciones',
-    'my_messages_menu' 			=> 'Mis mensajes',
+    'my_listings_menu'          => 'Mis publicaciones',
+    'listings_menu'             => 'Publicaciones',
+    'my_messages_menu'          => 'Mis mensajes',
+    'messages_menu'             => 'Mensajes',
     'profile_menu' 				=> 'Mis datos',
     'login' 					=> 'Iniciar sesión',
     'logout' 					=> 'Cerrar sesión',
@@ -188,7 +192,7 @@ return [
     'answer'                    => 'Responder',
     'mark_as_read'              => 'Marcar como leído',
     'mark_as_unread'            => 'Marcar como no leído',
-    'messages' 				    => 'Mis mensajes recibidos',
+    'my_messages' 				=> 'Mis mensajes recibidos',
     'you_have_no_messages' 		=> '¿Aún no tienes ningún mensaje?',
     'sure'                      => '¿Estás seguro? Esta acción eliminará el objeto permanentemente.',
     'sure_leave'                => '¿Estás seguro que deseas salir de esta página? Si has realizado cambios estos no serán guardados.',

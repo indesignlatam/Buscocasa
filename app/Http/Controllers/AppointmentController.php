@@ -106,7 +106,7 @@ class AppointmentController extends Controller {
 		Queue::push(new SendNewMessageEmail($appointment));
 
 		// Queue the cookie
-		Cookie::queue('listing_message_'.$appointment->listing_id, Carbon::now(), 86400);
+		Cookie::queue('listing_message_'.$appointment->listing_id, date("Y-m-d H:i:s"), 86400);
 
 		// Analytics event
 		Analytics::trackEvent('Contact Vendor', 'button', $appointment->listing_id);

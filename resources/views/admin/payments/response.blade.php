@@ -20,10 +20,10 @@
 			    	<img src="{{ asset('/images/support/payments/payment_succeeded.png') }}" class="uk-align-center">
 					<!-- Listing preview -->
 			    	<a style="text-decoration:none">
-						<div class="uk-panel uk-panel-box uk-panel-box-primary uk-margin-remove">
+						<div class="uk-panel uk-panel-box uk-panel-box uk-margin-bottom" style="border-left-width:4px; border-left-color:#ff4d53; border-left-style: solid;" id="listing">
 						<!-- Tags start -->
 						@if($payment->featuredType->id > 1)
-							<img src="{{asset($payment->featuredType->image_path)}}" style="position:absolute; top:0; left:0; max-width:150px">
+							<img src="{{asset($payment->featuredType->image_path)}}" style="position:absolute; top:15px; left:15px; max-width:150px">
 						@endif
 						<!-- Tags end -->
 							<img src="{{ asset(Image::url($listing->image_path(),['mini_image_2x'])) }}" style="max-width:350px; float:left" class="uk-margin-right">
