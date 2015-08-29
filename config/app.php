@@ -157,8 +157,8 @@ return [
 		Barryvdh\Debugbar\ServiceProvider::class,
 		IndesignColombia\Phpgmaps\PhpgmapsServiceProvider::class,
 		GrahamCampbell\Throttle\ThrottleServiceProvider::class,
-        Jenssegers\Agent\AgentServiceProvider::class
-
+        Jenssegers\Agent\AgentServiceProvider::class,
+        Bugsnag\BugsnagLaravel\BugsnagLaravelServiceProvider::class,
     ],
 
     /*
@@ -220,6 +220,7 @@ return [
 		'Settings'  => Efriandika\LaravelSettings\Facades\Settings::class,
 		'Throttle' 	=> GrahamCampbell\Throttle\Facades\Throttle::class,
         'Agent'     => Jenssegers\Agent\Facades\Agent::class,
+    	'Bugsnag' => Bugsnag\BugsnagLaravel\BugsnagFacade::class,
     ],
 
 ];
