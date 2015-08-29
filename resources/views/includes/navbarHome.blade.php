@@ -1,7 +1,7 @@
 <div class="uk-container uk-container-center uk-margin-top" style="background-color: #fff; max-height:103px; width:100%">
     <div>
         <a class="uk-hidden-small" href="{{ url('/') }}" style="height:45px">
-            <img src="{{ asset('/images/logo_h_mini.png') }}" alt="logo" style="height:45px">
+            <img src="{{ asset('/images/logo_h.png') }}" alt="logo" style="height:45px">
         </a>
 
         @if(!Auth::check())
