@@ -109,7 +109,7 @@ class AppointmentController extends Controller {
 		Cookie::queue('listing_message_'.$appointment->listing_id, date("Y-m-d H:i:s"), 86400);
 
 		// Analytics event
-		Analytics::trackEvent('Contact Vendor', 'button', $appointment->listing_id);
+		Analytics::trackEvent('Contact Vendor', 'button', $appointment->listing_id, 1);
 
 		return redirect()->back()->withSuccess([trans('responses.message_success')]);
 	}
@@ -213,7 +213,7 @@ class AppointmentController extends Controller {
 		Queue::push(new RespondMessageEmail($comments, $message));
 
 		// Analytics event
-		Analytics::trackEvent('Answer Message', 'button', $message->id);
+		Analytics::trackEvent('Answer Message', 'button', $message->id, 1);
 
 		// Return the response in ajax or sync
 		if($request->ajax()){

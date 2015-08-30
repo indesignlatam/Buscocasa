@@ -119,7 +119,7 @@ class AuthController extends Controller {
         $request->session()->push('new_user', true);
 
         // Analytics event
-        Analytics::trackEvent('User Registered', 'button', $user->id);
+        Analytics::trackEvent('User Registered', 'button', $user->id, 1);
 
         return redirect($this->redirectPath());
     }
@@ -150,7 +150,7 @@ class AuthController extends Controller {
 
         if (Auth::attempt($credentials, $request->has('remember'))) {
             // Analytics event
-            Analytics::trackEvent('User logged in', 'button', Auth::user()->id);
+            Analytics::trackEvent('User logged in', 'button', Auth::user()->id, 1);
 
             return $this->handleUserWasAuthenticated($request, $throttles);
         }
@@ -217,7 +217,7 @@ class AuthController extends Controller {
             $user->attachRole($role);
 
             // Analytics event
-            Analytics::trackEvent('User Registered by Facebook', 'button', $user->id);
+            Analytics::trackEvent('User Registered by Facebook', 'button', $user->id, 1);
         }
 
         Auth::login($user);
