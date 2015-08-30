@@ -62,13 +62,6 @@
 						<label class="uk-form-label">{{ trans('frontend.search_city') }}</label>
 			            <select class="uk-width-large-10-10 uk-margin-small-bottom uk-form-large" id="city" name="city_id" onchange="//getMarkers(true)">
 			                <option value>{{ trans('frontend.search_select_option') }}</option>
-			                @foreach($cities as $city)
-			                	@if($city->id == Request::get('city_id'))
-			                		<option value="{{ $city->id }}" selected>{{ $city->name }}</option>
-			                	@else
-			                		<option value="{{ $city->id }}">{{ $city->name }}</option>
-			                	@endif
-			                @endforeach
 			            </select>
 			        </div>
 
@@ -358,8 +351,6 @@
         }
 
 		$(function() {
-			$("#city").select2();
-
 		    $( "#slider-range-price" ).slider({
 		      	range: true,
 		      	step: 10000000,
@@ -523,6 +514,11 @@
 		    });
 		    $( "#garages_range" ).val( accounting.formatNumber($( "#slider-range-garages" ).slider( "values", 0 )) +
 		      	" - " + accounting.formatNumber($( "#slider-range-garages" ).slider( "values", 1 )) + "+" );
+
+
+		    $("#city").select2({
+		    	data: {!! $cities !!}
+		    });
 	  	});
 	</script>
 

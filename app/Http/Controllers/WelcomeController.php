@@ -56,7 +56,7 @@ class WelcomeController extends Controller {
 							 ->take(8)
 							 ->get();
 
-		$cities 		= City::remember(Settings::get('query_cache_time'))->orderBy('ordering')->get();
+		$cities 		= City::selectRaw('id, name AS text')->remember(Settings::get('query_cache_time'))->orderBy('ordering')->get();
 		$listingTypes 	= ListingType::remember(Settings::get('query_cache_time'))->get();
 		$categories 	= Category::remember(Settings::get('query_cache_time'))->get();
 

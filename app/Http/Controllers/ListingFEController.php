@@ -197,7 +197,7 @@ class ListingFEController extends Controller {
 
 		//
 		$categories = Category::remember(Settings::get('query_cache_time'))->get();
-		$cities = City::remember(Settings::get('query_cache_time'))->orderBy('ordering')->get();
+		$cities = City::selectRaw('id, name AS text')->remember(Settings::get('query_cache_time'))->orderBy('ordering')->get();
 
 		// Only if not mobile
 		$featuredTop = null;

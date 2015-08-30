@@ -64,13 +64,6 @@
 
                     <select class="uk-width-2-10 uk-form-large" id="city" name="city_id" style="width:20%">
                         <option value>{{ trans('frontend.search_city') }}</option>
-                        @foreach($cities as $city)
-                            @if($city->id == Request::get('city_id'))
-                                <option value="{{ $city->id }}" selected>{{ $city->name }}</option>
-                            @else
-                                <option value="{{ $city->id }}">{{ $city->name }}</option>
-                            @endif
-                        @endforeach
                     </select>
 
                     <select class="uk-width-2-10 uk-form-large" id="category" name="category_id">
@@ -280,7 +273,9 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            $("#city").select2();
+            $("#city").select2({
+                data: {!! $cities !!}
+            });
         });
     </script>
 @endsection
