@@ -361,6 +361,10 @@
 	    		</div>
 	    		@endif
 
+	    		<div>
+	    			<h2 class="uk-display-inline">{{ trans('frontend.location') }}</h2>
+	    			<button class="uk-button uk-align-right" onclick="toggleStreetView()"><i class="uk-icon-street-view"></i>Street View</button>
+	    		</div>
 	    		<div id="map" class="uk-width-1-1" style="height:350px"></div>
 
 	    		<hr>
@@ -561,6 +565,15 @@
 		    	radius: 500,
 		    	types: ['subway_station', 'train_station', 'bus_station', 'gym', 'park', 'police',]
 		  	}, callback);
+
+		  	// We get the map's default panorama and set up some defaults.
+			// Note that we don't yet set it visible.
+			panorama = map.getStreetView();
+			panorama.setPosition(pyrmont);
+			panorama.setPov(/** @type {google.maps.StreetViewPov} */({
+				heading: 265,
+				pitch: 0
+			}));
 		}
 
 		function callback(results, status) {
@@ -700,6 +713,15 @@
 	    function validateEmail(email) {
 		    var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
 		    return re.test(email);
+		}
+
+		function toggleStreetView() {
+			var toggle = panorama.getVisible();
+			if (toggle == false) {
+				panorama.setVisible(true);
+			}else{
+				panorama.setVisible(false);
+			}
 		}
     </script>
 @endsection
