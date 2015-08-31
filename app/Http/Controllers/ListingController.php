@@ -35,34 +35,38 @@ class ListingController extends Controller {
 
 		// Create the principal query
 		if(Auth::user()->isAdmin()){
-			if($request->get('deleted')){
-				$query = Listing::onlyTrashed();
-			}else{
-				$query = Listing::whereNotNull('id');
-			}
+			$query = Listing::whereNotNull('id');
 		}else{
-			if($request->get('deleted')){
-				$query = Listing::where('broker_id', Auth::user()->id)
-								->onlyTrashed();
-			}else{
-				$query = Listing::where('broker_id', Auth::user()->id);
-			}
+			$query = Listing::where('broker_id', Auth::user()->id);
 		}
 
-		// Order the objects
-		if($request->get('order_by')){
-			if($request->get('order_by') == 'exp_desc'){
-				$query 		= $query->orderBy('expires_at', 'DESC');
-			}else if($request->get('order_by') == 'id_desc'){
-				$query 		= $query->orderBy('id', 'DESC');
-			}					
-		}else{
-			$query 	= $query->orderBy('expires_at', 'DESC')->orderBy('id', 'DESC');
-		}
+		if(count($request->all()) > 0){
+			if($request->has('search')){
+				$search = $request->search;
+				$query = $query->where('slug', 'LIKE', "%$search%");
+			}
 
-		// Take n objects
-		if($request->has('take') && is_int($request->get('take'))){
-			$take = $request->get('take');
+			if($request->get('deleted')){
+				$query = $query->onlyTrashed();
+			}
+
+			// Order the objects
+			if($request->has('order_by')){
+				if($request->get('order_by') == 'exp_desc'){
+					$query = $query->orderBy('expires_at', 'ASC');
+				}else if($request->get('order_by') == 'id_desc'){
+					$query = $query->orderBy('id', 'DESC');
+				}					
+			}else{
+				$query = $query->orderBy('expires_at', 'DESC')->orderBy('id', 'DESC');
+			}
+
+			// Take n objects
+			if($request->has('take')){
+				$take = $request->take;
+			}
+		}else{
+			$query = $query->orderBy('expires_at', 'DESC')->orderBy('id', 'DESC');
 		}
 
 		// Execute the query

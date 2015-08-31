@@ -55,6 +55,7 @@ return [
     'features_check_tooltip'    => 'Tu inmueble no tiene suficientes características',
     'user'                      => 'Usario',
     'views'                     => 'Visitas',
+    'search'                    => 'Buscar',
 
 
     // Create Listing

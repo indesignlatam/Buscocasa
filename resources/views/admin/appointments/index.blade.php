@@ -28,6 +28,7 @@
 	    @if(count($appointments) > 0)
 			<div class="uk-panel">
 				<form action="{{url(Request::path())}}" method="GET" class="uk-form uk-align-right">
+			        <input type="text" name="search" placeholder="{{ trans('admin.search') }}" class="uk-form-width-small" value="{{ Request::get('search') }}">
 					<select name="take" onchange="this.form.submit()">
 				    	<option value="">Cantidad de publicaciones</option>
 				    	@if(Request::get('take') == 50)
@@ -126,7 +127,7 @@
 		            </tbody>
 				</table>
 
-				<?php echo $appointments->render(); ?>
+				<?php echo $appointments->appends(Request::all())->render(); ?>
 			@endif
 		</div>
 	@else
@@ -146,6 +147,7 @@
 				<!-- Order by -->
 				<div class="uk-text-right">
 					<form action="{{url(Request::path())}}" method="GET" class="uk-form uk-hidden-small">
+			        <input type="text" name="search" placeholder="{{ trans('admin.search') }}" class="uk-form-width-small" value="{{ Request::get('search') }}">
 						<select name="take" onchange="this.form.submit()">
 					    	<option value="">Cantidad de publicaciones</option>
 					    	@if(Request::get('take') == 50)
@@ -242,7 +244,7 @@
 		            </tbody>
 				</table>
 
-				<?php echo $appointments->render(); ?>
+				<?php echo $appointments->appends(Request::all())->render(); ?>
 			@else
 		    	<div class="uk-text-center">
 					<h2 class="uk-text-bold uk-text-muted">{{ trans('admin.you_have_no_messages') }}</h2>

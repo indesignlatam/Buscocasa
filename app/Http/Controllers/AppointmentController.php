@@ -54,20 +54,34 @@ class AppointmentController extends Controller {
 								  ->with('listing');
 		}
 
-		// Order the objects
-		if($request->get('order_by')){
-			if($request->get('order_by') == 'id_asc'){
-				$query = $query->orderBy('id', 'ASC');
-			}else if($request->get('order_by') == 'id_desc'){
-				$query = $query->orderBy('id', 'DESC');
+
+		if(count($request->all()) > 0){
+			if($request->has('search')){
+				$search = $request->search;
+				$query = $query->where('name', 'LIKE', "%$search%");
+			}
+
+			if($request->get('deleted')){
+				$query = $query->onlyTrashed();
+			}
+
+			// Order the objects
+			if($request->has('order_by')){
+				if($request->get('order_by') == 'id_asc'){
+					$query = $query->orderBy('id', 'ASC');
+				}else if($request->get('order_by') == 'id_desc'){
+					$query = $query->orderBy('id', 'DESC');
+				}
+			}else{
+				$query = $query->orderBy('answered', 'ASC')->orderBy('appointments.created_at', 'DESC');
+			}
+
+			// Take n objects
+			if($request->has('take')){
+				$take = $request->get('take');
 			}
 		}else{
 			$query = $query->orderBy('answered', 'ASC')->orderBy('appointments.created_at', 'DESC');
-		}
-
-		// Take n objects
-		if($request->has('take') && is_int($request->get('take'))){
-			$take = $request->get('take');
 		}
 
 		// Execute the query
