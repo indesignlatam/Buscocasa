@@ -8,7 +8,7 @@
 
 	<div id="invoice" style="width:80%;" class="uk-align-center">
 
-		<h3>Factura de venta: <i class="uk-text-primary">FACT 1029384</i></h3>
+		<h3>Hemos recibido tu pago</i></h3>
 
 		<table style="border:#e1e1e1 solid 1px" id="items" class="uk-table uk-table-striped">
 			<thead>
@@ -23,7 +23,6 @@
 		        <tr>
 		            <td>{{ $payment->description }}</td>
 		            <td>1</td>
-		            <td>${{ number_format($payment->tax_return_base, 2) }}</td>
 		        </tr>
 		    </tbody>
 		</table>
@@ -34,16 +33,14 @@
 		            <td>Subtotal</td>
 		            <td>${{ number_format($payment->tax_return_base, 2) }}</td>
 		        </tr>
-		        <tr>
-		            <td>IVA</td>
-		            <td>${{ number_format($payment->tax, 2) }}</td>
-		        </tr>
 		        <tr class="uk-text-bold">
 		            <td>Total</td>
 		            <td>${{ number_format($payment->amount, 2) }}</td>
 		        </tr>
 		    </tbody>
 		</table>
+
+		Gracias por confiar en BuscoCasa.co.
 
 	</div>
 	
