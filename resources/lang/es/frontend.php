@@ -88,4 +88,11 @@ return [
     'liked_listings'            => 'Inmuebles favoritos',
     'menu_liked_listings'       => 'Mis favoritos',
     'goto_favorites'            => '¿Deseas ir a ver tus favoritos?',
+
+    'new'                       => 'Nuevo',
+
+
+
+    'template'                  => 'Nuevo',
+
 ];

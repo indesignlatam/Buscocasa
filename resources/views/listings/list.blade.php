@@ -1,14 +1,16 @@
 <a href="{{ url($listing->path()) }}" style="text-decoration:none">
 	<!-- Tags start -->
 	@if($listing->featuredType && $listing->featured_expires_at > Carbon::now())
-		<div class="uk-panel uk-panel-box uk-panel-box uk-margin-bottom" style="border-left-width:4px; border-left-color:#ff4d53; border-left-style: solid;">
-		@if($listing->featuredType->id > 1)
-			<img src="{{asset($listing->featuredType->image_path)}}" style="position:absolute; top:15px; left:15px; max-width:150px">
-		@endif
+		<div class="uk-panel uk-panel-box uk-panel-box uk-margin-bottom" style="border-left-width:4px; border-left-color:{{$listing->featuredType->color}}; border-left-style: solid;">
+		<div style="background-color:{{$listing->featuredType->color}}; position:absolute; top:15px; left:15px;" class="uk-text-center uk-text-contrast uk-h3">
+			<p class="uk-margin-small-bottom uk-margin-small-top uk-margin-left uk-margin-right"><i class="{{$listing->featuredType->uk_class}}"></i> {{ strtoupper($listing->featuredType->name) }}</p>
+		</div>
 	@else
 		<div class="uk-panel uk-panel-hover uk-margin-remove">
 			@if($listing->created_at->diffInDays(Carbon::now()) < 5)
-				<img src="{{asset('/images/defaults/new.png')}}" style="position:absolute; top:15px; left:15px; max-width:90px">
+				<div style="background-color:#2089cf; position:absolute; top:15px; left:15px;" class="uk-text-center uk-text-contrast uk-h3">
+					<p class="uk-margin-small-bottom uk-margin-small-top uk-margin-left uk-margin-right" style="font-weight:300">{{ trans('frontend.new')}}</p>
+				</div>
 			@endif
 	@endif
 	<!-- Tags end -->
