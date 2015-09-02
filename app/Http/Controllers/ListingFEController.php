@@ -502,7 +502,7 @@ class ListingFEController extends Controller {
 			}
 		}else{
 			if($likesCookie = Cookie::get('likes')){
-				if(in_array($id, $likesCookie)){
+				if(isset($likesCookie[$id]) && $likesCookie[$id]){
 					$liked = false;
 					array_forget($likesCookie, $id);
 				}else{

@@ -206,7 +206,7 @@
                 <div class="uk-width-large-1-3 uk-width-medium-1-3 uk-text-center">
                     <img src="{{ asset('images/fp/icon_1.png') }}" class="uk-border-circle" style="max-width:160px">
                     <h2 class="uk-text-bold uk-text-contrast uk-margin-top-remove uk-h1">Gratis</h2>
-                    <p style="max-width:200px" class="uk-align-center uk-contrast">Publica Gratis todos tus inmuebles, no tienes que pagar ni un peso.</p>
+                    <p style="max-width:200px" class="uk-align-center uk-contrast">Publica Gratis todos tus inmuebles, no tienes que pagar un solo peso.</p>
                 </div>
                 <div class="uk-width-large-1-3 uk-width-medium-1-3 uk-text-center">
                     <img src="{{ asset('images/fp/icon_2.png') }}" class="uk-border-circle" style="max-width:160px">
