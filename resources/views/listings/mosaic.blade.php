@@ -1,7 +1,11 @@
+@if(isset($mosaicClass) && $mosaicClass)
+<div class="{{$mosaicClass}}">
+@else
 <div class="uk-width-medium-1-2 uk-width-large-1-2 uk-margin-small-bottom">
+@endif
 	<a href="{{ url($listing->path()) }}" style="text-decoration:none">
 	@if($listing->featuredType && $listing->featured_expires_at > Carbon::now())
-    	<div class="uk-panel uk-panel-box" style="border-bottom-width:4px; border-bottom-color:red; border-bottom-style: solid;">
+    	<div class="uk-panel uk-panel-box" style="border-bottom-width:4px; border-bottom-color:#ff4d53; border-bottom-style: solid;">
     		<div class="uk-overlay uk-overlay-hover">
     			@if($listing->featuredType->id > 1)
 					<img src="{{asset($listing->featuredType->image_path)}}" style="position:absolute; top:0px; left:0px; max-width:150px">
@@ -45,6 +49,9 @@
 	    				@endif
 	    			</ul>
 			    </div>
+			    @if(isset($mosaicClass) && $mosaicClass)
+			    <a onclick="unlike()"><i style="position:absolute; top:5px; right:5px" class="uk-icon-heart uk-icon-large uk-text-primary" id="like_button_image"></i></a>
+			    @endif
 		@if($listing->featuredType && $listing->featured_expires_at > Carbon::now())
 			</div>
 		@else

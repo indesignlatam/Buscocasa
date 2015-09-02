@@ -205,6 +205,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->hasMany('App\Models\Payment', 'user_id');
     }
 
+    public function likes(){
+        return $this->hasMany('App\Models\Like', 'user_id');
+    }
+
     public function appointments(){
         return $this->hasManyThrough('App\Models\Appointment', 'App\Models\Listing', 'broker_id');
     }

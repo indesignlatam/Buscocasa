@@ -12,11 +12,13 @@ use	Settings;
 use	Carbon;
 use DB;
 use Agent;
+use Auth;
 
 use App\Models\Listing;
 use	App\Models\ListingType;
 use	App\Models\Feature;
 use	App\Models\City;
+use	App\Models\Like;
 use	App\Models\Category;
 use	App\Events\ListingViewed;
 
@@ -371,6 +373,7 @@ class ListingFEController extends Controller {
 
 		return response()->json($query);
 	}
+	
 	/**
 	 * Display the specified resource.
 	 *
@@ -387,6 +390,15 @@ class ListingFEController extends Controller {
 
 		// Next, we will fire off an event and pass along 
 	    event(new ListingViewed($listing));
+
+	    if(Auth::check()){
+	    	if(Like::where('listing_id', $listing->id)->where('user_id', Auth::user()->id)->first()){
+	    		$listing->like = true;
+	    	}else{
+	    		$listing->like = false;
+	    	}
+	    }
+
 		
 		$features 	= Feature::remember(Settings::get('query_cache_time'))->with('category')->get();
 
@@ -433,6 +445,79 @@ class ListingFEController extends Controller {
 									   'features' 	=> $features,
 									   'compare'	=> $compare,
 									]);
+	}
+
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function showLikedListings(){
+		//
+		$query = null;
+		if(Auth::check()){
+			$query = Auth::user()->likes()->paginate(20);
+			if(count($query) > 0){
+				$query->load('listing', 'listing.listingType', 'listing.featuredType');
+			}
+		}else if(Cookie::get('likes') && is_array(Cookie::get('likes')) && count(Cookie::get('likes')) > 0){
+			$ids = array_keys(Cookie::get('likes'));
+			$query = Listing::whereIn('id', $ids)->with('listingType', 'featuredType')->paginate(20);
+		}
+		
+
+
+		return view('listings.showLikedListings', [ 'likes' 	=> $query,
+									]);
+	}
+
+	/**
+	 * Share by mail the specified resource from storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function like($id, Request $request){
+		//
+		$listing = Listing::find($id);
+
+		if(!$listing){
+			abort(404);
+		}
+
+		$likesCookie = null;
+		$liked = true;
+
+		if(Auth::check()){
+			$like = Like::where('user_id', Auth::user()->id)->where('listing_id', $id)->first();
+
+			if($like){
+				$liked = false;
+				$like->delete();
+			}else{
+				Like::create(['user_id' 	=> Auth::user()->id,
+							  'listing_id'	=> $id,
+							  ]);
+			}
+		}else{
+			if($likesCookie = Cookie::get('likes')){
+				if(in_array($id, $likesCookie)){
+					$liked = false;
+					array_forget($likesCookie, $id);
+				}else{
+					$likesCookie[$id] = true;
+				}
+			}else{
+				$likesCookie[$id] = true;
+			}
+
+			Cookie::queue('likes', $likesCookie, 525600);
+		}
+
+		return response()->json(['success'	=> trans('responses.listing_liked'),
+								 'like'		=> $liked,
+								]);
 	}
 
 	/**

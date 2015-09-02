@@ -84,5 +84,8 @@ return [
     'compare_title'             => 'Comparar inmuebles',
     'keep_looking' 				=> 'Seguir navegando',
     'compare_now' 				=> 'Comparar',
-    'features111' 				=> 'publicados',
+
+    'liked_listings'            => 'Inmuebles favoritos',
+    'menu_liked_listings'       => 'Mis favoritos',
+    'goto_favorites'            => '¿Deseas ir a ver tus favoritos?',
 ];

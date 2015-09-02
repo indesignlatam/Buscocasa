@@ -48,6 +48,12 @@
 					    		</li>
 					    	@endforeach		    	
 					    </ul>
+					    @if(isset(Cookie::get('likes')[$listing->id]) && Cookie::get('likes')[$listing->id] || $listing->like)
+					    	<a onclick="like()"><i style="position:absolute; top:5px; right:5px" class="uk-icon-heart uk-icon-large uk-text-primary" id="like_button_image"></i></a>
+					    @else
+					    	<a onclick="like()"><i style="position:absolute; top:5px; right:5px" class="uk-icon-heart uk-icon-large uk-text-contrast" id="like_button_image"></i></a>
+					    @endif
+
 					    <a href="" class="uk-slidenav uk-slidenav-contrast uk-slidenav-previous" data-uk-slideshow-item="previous"></a>
 					    <a href="" class="uk-slidenav uk-slidenav-contrast uk-slidenav-next" data-uk-slideshow-item="next"></a>
 					</div>
@@ -114,27 +120,34 @@
 						<h3 class="uk-text-primary">{{ trans('frontend.already_contacted_vendor') }}</h3>
 					@endif
 					
-					<div class="uk-margin-small-top">
-						<button id="my-id2" class="uk-button uk-button-large uk-width-1-1" data-uk-toggle="{target:'#my-id, #my-id2'}">{{ trans('frontend.contact_show_info') }}</button>
-
-						<div id="my-id" class="uk-hidden">
-							@if(!$listing->broker->phone_1 && !$listing->broker->phone_2)
-								<div class="uk-text-warning">
-									El usuario no tiene ningun telefono registrado. Intenta escribirle un mensaje.
-								</div>
+					<div class="uk-margin-small-top uk-flex">
+						<button class="uk-button uk-button-large uk-width-1-1" data-uk-toggle="{target:'#phones'}"><i class="uk-icon-phone"></i></button>
+						<button onclick="like()" class="uk-button uk-button-large uk-width-1-1 uk-margin-small-left">
+					    	@if(isset(Cookie::get('likes')[$listing->id]) && Cookie::get('likes')[$listing->id] || $listing->like)
+								<i id="like_button" class="uk-icon-heart uk-text-primary"></i>
 							@else
-								@if($listing->broker->phone_1)
-									<div class="uk-h3">
-										Tel 1: <b id="phone_1">{{ $listing->broker->phone_1 }}</b>
-									</div>
-								@endif
-								@if($listing->broker->phone_2)
-									<div class="uk-h3">
-										Tel 2: <b id="phone_2">{{ $listing->broker->phone_2 }}</b>
-									</div>
-								@endif
+								<i id="like_button" class="uk-icon-heart"></i>
 							@endif
-						</div>
+						</button>
+					</div>
+
+					<div id="phones" class="uk-hidden">
+						@if(!$listing->broker->phone_1 && !$listing->broker->phone_2)
+							<div class="uk-text-warning">
+								El usuario no tiene ningun telefono registrado. Intenta escribirle un mensaje.
+							</div>
+						@else
+							@if($listing->broker->phone_1)
+								<div class="uk-h3">
+									Tel 1: <b id="phone_1">{{ $listing->broker->phone_1 }}</b>
+								</div>
+							@endif
+							@if($listing->broker->phone_2)
+								<div class="uk-h3">
+									Tel 2: <b id="phone_2">{{ $listing->broker->phone_2 }}</b>
+								</div>
+							@endif
+						@endif
 					</div>
 				</div>
 			</div>
@@ -688,13 +701,13 @@
 			});
 
 			if(validemails.length < 1){
-				UIkit.notify('<i class="uk-icon-remove"></i> {{ trans('admin.no_emails') }}', {pos:'top-right', status:'danger', timeout: 5000});
+				UIkit.modal.alert('<h2 class="uk-text-center"><i class="uk-icon-check-circle uk-icon-large"></i><br>{{ trans('admin.no_emails') }}</h2>', {center: true});
 				$('#sendMail').prop('disabled', false);
 				return;
 			}
 
 			if(message.length < 1){
-				UIkit.notify('<i class="uk-icon-remove"></i> {{ trans('admin.no_message') }}', {pos:'top-right', status:'danger', timeout: 5000});
+				UIkit.modal.alert('<h2 class="uk-text-center"><i class="uk-icon-check-circle uk-icon-large"></i><br>{{ trans('admin.no_message') }}</h2>', {center: true});
 				$('#sendMail').prop('disabled', false);
 				return;
 			}
@@ -703,9 +716,9 @@
 		    	$('#sendMail').prop('disabled', false);
 		    	if(result.success){
 		    		UIkit.modal("#send_mail").hide();
-		    		UIkit.notify('<i class="uk-icon-check-circle"></i> '+result.success, {pos:'top-right', status:'success', timeout: 5000});
+					UIkit.modal.alert('<h2 class="uk-text-center"><i class="uk-icon-check-circle uk-icon-large"></i><br>'+result.success+'</h2>', {center: true});
 		    	}else if(result.error || !result){
-		    		UIkit.notify('<i class="uk-icon-remove"></i> '+result.error, {pos:'top-right', status:'danger', timeout: 5000});
+					UIkit.modal.alert('<h2 class="uk-text-center"><i class="uk-icon-check-circle uk-icon-large"></i><br>'+result.error+'</h2>', {center: true});
 		    	}
 	        });
 	    }
@@ -713,6 +726,49 @@
 	    function validateEmail(email) {
 		    var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
 		    return re.test(email);
+		}
+
+		@if(isset(Cookie::get('likes')[$listing->id]) && Cookie::get('likes')[$listing->id] || $listing->like)
+		var liked = true;
+		@else
+		var liked = false;
+		@endif
+
+		function like() {
+			if(!liked){
+				$('#like_button_image').removeClass('uk-text-contrast').addClass('uk-text-primary');
+				$('#like_button').addClass('uk-text-primary');
+			}else{
+				$('#like_button_image').removeClass('uk-text-primary').addClass('uk-text-contrast');
+				$('#like_button').removeClass('uk-text-primary');
+			}
+		    
+
+		    $.post("{{ url('/listings/'.$listing->id.'/like') }}", {_token: "{{ csrf_token() }}"}, function(result){
+		    	if(result.success){
+		    		if(result.like){
+		    			liked = true;
+		    			$('#like_button_image').removeClass('uk-text-contrast').addClass('uk-text-primary');
+						$('#like_button').addClass('uk-text-primary');
+						UIkit.modal.confirm('<h3 class="uk-text-center">{{ trans('frontend.goto_favorites') }}</h3>', function(){
+						    // will be executed on confirm.
+							window.location.href = "{{ url('/listings/liked') }}";
+						}, {labels:{Ok:'{{trans("admin.yes")}}', Cancel:'{{trans("admin.cancel")}}'}, center: true});
+		    		}else{
+		    			liked = false;
+		    			$('#like_button_image').removeClass('uk-text-primary').addClass('uk-text-contrast');
+						$('#like_button').removeClass('uk-text-primary');
+		    		}
+		    	}else if(result.error || !result){
+					if(liked){
+						$('#like_button_image').removeClass('uk-text-contrast').addClass('uk-text-primary');
+						$('#like_button').addClass('uk-text-primary');
+					}else{
+						$('#like_button_image').removeClass('uk-text-primary').addClass('uk-text-contrast');
+						$('#like_button').removeClass('uk-text-primary');
+					}
+		    	}
+	        });
 		}
 
 		function toggleStreetView() {

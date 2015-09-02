@@ -115,7 +115,9 @@ Route::get('/privacy', function () {
     return view('articles.privacy');
 });
 
+Route::get('listings/liked', 'ListingFEController@showLikedListings');
 Route::post('listings/bounds', 'ListingFEController@indexBounds');
+Route::post('listings/{id}/like', 'ListingFEController@like');
 Route::resource('ventas', 'ListingFEController');
 Route::resource('arriendos', 'ListingFEController');
 Route::get('compare', 'ListingFEController@compare');
