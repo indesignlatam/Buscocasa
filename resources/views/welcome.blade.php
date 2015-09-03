@@ -241,11 +241,11 @@
             @if($i == 4)
             <div class="uk-width-medium-2-3 uk-width-large-2-3 featured">
                 <div class="uk-overlay uk-overlay-hover uk-margin-small">
-                    <img data-layzr="{{ asset(Image::url( $featuredListing->image_path(), ['featured_mosaic_large']) ) }}" alt="{{$featuredListing->title}}" data-uk-scrollspy="{cls:'uk-animation-fade'}">
+                    <img src="{{ asset(Image::url( $featuredListing->image_path(), ['featured_mosaic_large']) ) }}" alt="{{$featuredListing->title}}" data-uk-scrollspy="{cls:'uk-animation-fade'}">
             @else
             <div class="uk-width-medium-1-3 uk-width-large-1-3 featured">
                 <div class="uk-overlay uk-overlay-hover uk-margin-small">
-                    <img data-layzr="{{ asset(Image::url( $featuredListing->image_path(), ['featured_mosaic']) ) }}" alt="{{$featuredListing->title}}" data-uk-scrollspy="{cls:'uk-animation-fade'}">
+                    <img src="{{ asset(Image::url( $featuredListing->image_path(), ['featured_mosaic']) ) }}" alt="{{$featuredListing->title}}" data-uk-scrollspy="{cls:'uk-animation-fade'}">
             @endif
                     <div class="uk-overlay-panel uk-overlay-background uk-overlay-fade uk-vertical-align">
                         <div class="uk-vertical-align-middle">
@@ -273,8 +273,6 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            var layzr = new Layzr();
-
             $("#city").select2({
                 data: {!! $cities !!}
             });
