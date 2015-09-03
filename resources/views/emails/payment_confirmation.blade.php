@@ -23,6 +23,7 @@
 		        <tr>
 		            <td>{{ $payment->description }}</td>
 		            <td>1</td>
+		            <td>{{ $payment->price }}</td>
 		        </tr>
 		    </tbody>
 		</table>
@@ -40,15 +41,13 @@
 		    </tbody>
 		</table>
 
-		Gracias por confiar en BuscoCasa.co.
-
 	</div>
 	
 @endsection
 
 @section('greetings')
 	<div style="margin-top:140px">
-        <h3>{{ trans('emails.greetings_from') }} {{ trans('emails.from_name') }}</h3>
+        <p>{{ trans('emails.greetings_from') }} {{ trans('emails.from_name') }}</p>
     </div>
 @endsection
 
