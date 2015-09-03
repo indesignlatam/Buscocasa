@@ -123,7 +123,7 @@
 			        <a class="uk-button uk-button-large uk-button-primary" href="{{ url('/admin/listings/create') }}">{{ trans('admin.publish_property') }}</a>
 			        <a class="uk-button uk-button-large" href="{{ url('/admin/listings/?deleted=true') }}" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.eliminated_listings') }}"><i class="uk-icon-trash"></i></a>
 
-			        <form action="{{url(Request::path())}}" method="GET" class="uk-form uk-align-right">
+			        <form action="{{url(Request::path())}}" method="GET" class="uk-form uk-align-right uk-hidden-small">
 			        	<input type="text" name="search" placeholder="{{ trans('admin.search') }}" class="uk-form-width-small" value="{{ Request::get('search') }}">
 						<select name="take" onchange="this.form.submit()">
 					    	<option value="">Cantidad de publicaciones</option>
