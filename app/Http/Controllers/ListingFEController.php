@@ -173,16 +173,16 @@ class ListingFEController extends Controller {
 		// Order the query by cookie
 		if(!$request->has('order_by') && $request->session()->has('listings_order_by')){
 			if(session('listings_order_by') == 'price_min'){
-					$query = $query->orderBy('price', 'ASC');
-				}else if(session('listings_order_by') == 'price_max'){
-					$query = $query->orderBy('price', 'DESC');
-				}else if(session('listings_order_by') == 'id_desc'){
-					$query = $query->orderBy('id', 'DESC');
-				}else if(session('listings_order_by') == 'id_asc'){
-					$query = $query->orderBy('id', 'ASC');
-				}
+				$query = $query->orderBy('price', 'ASC');
+			}else if(session('listings_order_by') == 'price_max'){
+				$query = $query->orderBy('price', 'DESC');
+			}else if(session('listings_order_by') == 'id_desc'){
+				$query = $query->orderBy('id', 'DESC');
+			}else if(session('listings_order_by') == 'id_asc'){
+				$query = $query->orderBy('id', 'ASC');
+			}
 		}else{
-			$query = $query->orderBy('featured_expires_at', 'DESC')->orderBy('featured_type', 'DESC');
+			$query = $query->orderBy('featured_type', 'DESC')->orderBy('featured_expires_at', 'DESC');
 		}
 
 		// Take n objects by cookie
