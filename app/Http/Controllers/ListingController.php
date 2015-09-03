@@ -66,7 +66,7 @@ class ListingController extends Controller {
 				$take = $request->take;
 			}
 		}else{
-			$query = $query->orderBy('expires_at', 'DESC')->orderBy('id', 'DESC');
+			$query = $query->orderBy('expires_at', 'ASC')->orderBy('featured_expires_at', 'ASC')->orderBy('id', 'DESC');
 		}
 
 		// Execute the query

@@ -174,7 +174,7 @@
 			                		<div class="uk-width-large-2-10 uk-width-medium-2-10 uk-width-small-1-1">
 			                			<a href="{{ url('/admin/listings/'.$listing->id.'/edit') }}">
 				                			<!-- Featured tag -->
-						                	@if($listing->featured_expires_at && $listing->featuredType->id > 1 && $listing->featured_expires_at > Carbon::now())
+						                	@if($listing->featured_expires_at && $listing->featured_expires_at > Carbon::now())
 												<div style="background-color:{{$listing->featuredType->color}}; position:absolute; top:15px; left:15px;" class="uk-text-center uk-text-contrast">
 													<p class="uk-margin-small-bottom uk-margin-small-top uk-margin-left uk-margin-right"><i class="{{$listing->featuredType->uk_class}}"></i></p>
 												</div>
@@ -268,8 +268,8 @@
 			                		<div class="uk-width-large-2-10 uk-width-medium-2-10 uk-width-small-1-1">
 			                			@if(!$listing->deleted_at)
 			                				<!-- If listing is featured and is not expired yet -->
-				                			@if($listing->featured_expires_at && $listing->featured_expires_at > Carbon::now())
-				                				<!-- If listing iexpires in the next 5 days -->
+				                			@if($listing->featured_expires_at && $listing->featured_expires_at > Carbon::now() && $listing->expires_at == $listing->featured_expires_at)
+				                				<!-- If listing expires in the next 5 days -->
 				                				@if($listing->featured_expires_at <= Carbon::now()->addDays(5))
 				                					@if($listing->featured_expires_at < Carbon::now())
 					                					<a class="uk-text-danger uk-text-bold uk-h4" href="{{ url('/admin/listings/'.$listing->id.'/renovate') }}">{{ trans('admin.featured_expired') }} {{ $listing->featured_expires_at->diffForHumans() }}</a>
