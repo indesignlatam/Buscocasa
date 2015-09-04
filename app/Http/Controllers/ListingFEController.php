@@ -463,7 +463,7 @@ class ListingFEController extends Controller {
 			}
 		}else if(Cookie::get('likes') && is_array(Cookie::get('likes')) && count(Cookie::get('likes')) > 0){
 			$ids = array_keys(Cookie::get('likes'));
-			$query = Listing::whereIn('id', $ids)->with('listingType', 'featuredType')->paginate(20);
+			$query = Listing::whereIn('id', $ids)->with('listingType', 'featuredType')->paginate(30);
 		}
 		
 
