@@ -64,13 +64,6 @@
 
                     <select class="uk-width-2-10 uk-form-large" id="city" name="city_id" style="width:20%">
                         <option value>{{ trans('frontend.search_city') }}</option>
-                        @foreach($cities as $city)
-                            @if($city->id == Request::get('city_id'))
-                                <option value="{{ $city->id }}" selected>{{ $city->name }}</option>
-                            @else
-                                <option value="{{ $city->id }}">{{ $city->name }}</option>
-                            @endif
-                        @endforeach
                     </select>
 
                     <select class="uk-width-2-10 uk-form-large" id="category" name="category_id">
@@ -213,7 +206,7 @@
                 <div class="uk-width-large-1-3 uk-width-medium-1-3 uk-text-center">
                     <img src="{{ asset('images/fp/icon_1.png') }}" class="uk-border-circle" style="max-width:160px">
                     <h2 class="uk-text-bold uk-text-contrast uk-margin-top-remove uk-h1">Gratis</h2>
-                    <p style="max-width:200px" class="uk-align-center uk-contrast">Publica Gratis todos tus inmuebles, no tienes que pagar ni un peso.</p>
+                    <p style="max-width:200px" class="uk-align-center uk-contrast">Publica Gratis todos tus inmuebles, no tienes que pagar un solo peso.</p>
                 </div>
                 <div class="uk-width-large-1-3 uk-width-medium-1-3 uk-text-center">
                     <img src="{{ asset('images/fp/icon_2.png') }}" class="uk-border-circle" style="max-width:160px">
@@ -280,7 +273,9 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            $("#city").select2();
+            $("#city").select2({
+                data: {!! $cities !!}
+            });
         });
     </script>
 @endsection

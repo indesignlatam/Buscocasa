@@ -46,7 +46,7 @@
 									<li data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.better_search_positions_tooltip') }}"><i class="uk-icon-remove uk-text-danger"></i> {{ trans('admin.better_search_positions') }}</li>
 								@endif
 
-								@if($type->id >= 2)
+								@if($type->id >= 1)
 									<li data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.listing_container_ribbon_tooltip') }}"><i class="uk-icon-check uk-text-success"></i> {{ trans('admin.listing_container_ribbon') }}</li>
 								@else
 									<li data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.listing_container_ribbon_tooltip') }}"><i class="uk-icon-remove uk-text-danger"></i> {{ trans('admin.listing_container_ribbon') }}</li>
@@ -70,20 +70,10 @@
 									<li data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.featured_image_limit_tooltip') }}"><i class="uk-icon-remove uk-text-danger"></i> {{ Settings::get('featured_image_limit') }} {{ trans('admin.photos') }}</li>
 								@endif
 
-	    						@if($type->id > 2)
-									<li class="uk-margin-top uk-h2 uk-text-center" id="price-{{ $type->id }}">{{ money_format('$%!.0i', $type->price) }}</li>
-	    						@else
-									<li class="uk-margin-top uk-h2 uk-text-center" id="price-{{ $type->id }}">{{ money_format('$%!.0i', $type->price) }}</li>
-	    						@endif
+	    						<li class="uk-margin-top uk-h2 uk-text-center" id="price-{{ $type->id }}">{{ money_format('$%!.0i', $type->price) }}</li>
 	    					</ul>
 
-	    					@if($type->id == 3)
-								<a href="#preview" class="uk-button uk-button-primary uk-button-large uk-width-1-1" onclick="feature({{$type->id}})" data-uk-smooth-scroll>{{ trans('admin.select') }}</a>
-    						@elseif($type->id == 2)
-								<a href="#preview" class="uk-button uk-button-secondary uk-button-large uk-width-1-1" onclick="feature({{$type->id}})" data-uk-smooth-scroll>{{ trans('admin.select') }}</a>
-    						@else
-								<a href="#preview" class="uk-button uk-button-large uk-width-1-1" onclick="feature({{$type->id}})" data-uk-smooth-scroll>{{ trans('admin.select') }}</a>
-    						@endif
+	    					<a href="#preview" class="uk-button uk-button-primary uk-button-large uk-width-1-1" style="background-color:{{$type->color}}" onclick="feature({{$type->id}})" data-uk-smooth-scroll>{{ trans('admin.select') }}</a>
 	    				</div>
 	    			</div>
 	    			<div class="uk-visible-small uk-margin-top"></div>
@@ -92,11 +82,11 @@
 	    			<div class="uk-width-1-1 uk-margin-top" id="preview">
 	    				<hr>
 	    				<h3>{{ trans('admin.listing_preview') }}</h3>
-			    		<a style="text-decoration:none" >
+			    		<a href="#" style="text-decoration:none">
 							<div class="uk-panel uk-panel-box uk-panel-box uk-margin-bottom" style="border-left-width:4px; border-left-color:#ff4d53; border-left-style: solid;" id="listing">
-								<img src="{{ asset(Image::url($listing->image_path(),['mini_image_2x'])) }}" style="width:350px; height:200px; float:left" class="uk-margin-right">
+								<img src="{{ asset(Image::url($listing->image_path(),['mini_image_2x'])) }}" style="width:350px; max-height:200px; float:left" class="uk-margin-right">
+								<div class="uk-visible-small uk-width-1-1 uk-panel"></div>
 								<h4 class="uk-margin-remove">{{ $listing->title }}</h4>
-								{{-- <p style="margin-top:-2px" class="uk-text-muted">{{ $listing->city->name .", ". $listing->direction }}</p> --}}
 								<h4 style="margin-top:0px" class="uk-text-primary">${{ money_format('%!.0i', $listing->price) }}</h4>
 								<ul style="list-style-type: none;margin-top:-5px" class="uk-text-muted uk-text-small">
 									@if($listing->rooms)
@@ -203,13 +193,6 @@
 
 
 	<script type="text/javascript">
-		// $(function() {
-		// 	$('#price').val(accounting.formatNumber(document.getElementById('price').value));
-		// 	$('#area').val(accounting.formatNumber(document.getElementById('area').value));
-		// 	$('#lot_area').val(accounting.formatNumber(document.getElementById('lot_area').value));
-		// 	$('#administration').val(accounting.formatNumber(document.getElementById('administration').value));
-		// });
-
 		function selectFeature(input){
 			$("#featured_id").val(input);
 			document.forms["featured"].submit();
@@ -218,22 +201,12 @@
 
 		function feature(input){
 			types = {!! json_encode($featuredTypes) !!}
-			tag = "";
-			if(input == 1){
-				console.log(1);
-				$("#featured_id").val(1);
-				tag = "";//"<img src=\"{{asset('/images/defaults/featured.png')}}\" style=\"position:absolute; top:0; left:0; max-width:150px\" id=\"tag\">";
-			}else if(input == 2){
-				console.log(2);
-				$("#featured_id").val(2);
-				tag = "<img src=\"{{asset('/images/defaults/oportunidad.png')}}\" style=\"position:absolute; top:15px; left:15px; max-width:150px\" id=\"tag\">";
-			}else if(input == 3){
-				console.log(3);
-				$("#featured_id").val(3);
-				tag = "<img src=\"{{asset('/images/defaults/featured_full.png')}}\" style=\"position:absolute; top:15px; left:15px; max-width:150px\" id=\"tag\">";
-			}
+			$("#featured_id").val(input);
+			tag = '<div id="tag" style="background-color:'+types[input-1].color+'; position:absolute; top:15px; left:15px;" class="uk-text-center uk-text-contrast uk-h3"><p class="uk-margin-small-bottom uk-margin-small-top uk-margin-left uk-margin-right"><i class="'+types[input-1].uk_class+'"></i> '+types[input-1].name+'</p></div>';
+
 			$("#tag").remove();
-	        $("#listing").prepend(tag);
+	        $("#listing").prepend(tag).css('border-left-color',types[input-1].color);
+
 
 	        price	= accounting.formatMoney(types[input-1].price/1.16, "$", 0, ",", ".");
 	        tax 	= accounting.formatMoney((types[input-1].price/1.16)*0.16, "$", 0, ",", ".");

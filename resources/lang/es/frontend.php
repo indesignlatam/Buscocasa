@@ -54,7 +54,7 @@ return [
     'contact_comments' 			=> 'Comentarios',
     'contact_show_info' 		=> 'Ver información del vendedor',
     'contact_button'            => 'Enviar solicitud',
-    'contact_default_text'      => 'Quisiera mas información sobre este inmueble.',
+    'contact_default_text'      => 'Buen día, Quisiera que me enviaran más información sobre este inmueble.',
     'price_mt' 					=> 'Valor mt2',
     'similar_listings' 			=> 'Inmuebles similares',
     'already_contacted_vendor' 	=> 'Ya has contactado al vendedor hoy',
@@ -65,6 +65,7 @@ return [
     'compare'                   => 'Comparar',
     'price_higher'              => 'El precio por mt2 de este inmueble es mas alto.',
     'price_lower'               => 'El precio por mt2 de este inmueble es mas bajo.',
+    'location'                  => 'Ubicación',
     'distance'                  => 'Distancia',
     'near_places'               => 'Lugares cercanos',
 
@@ -83,5 +84,15 @@ return [
     'compare_title'             => 'Comparar inmuebles',
     'keep_looking' 				=> 'Seguir navegando',
     'compare_now' 				=> 'Comparar',
-    'features111' 				=> 'publicados',
+
+    'liked_listings'            => 'Inmuebles favoritos',
+    'menu_liked_listings'       => 'Mis favoritos',
+    'goto_favorites'            => '¿Deseas ir a ver tus favoritos?',
+
+    'new'                       => 'Nuevo',
+
+
+
+    'template'                  => 'Nuevo',
+
 ];

@@ -34,6 +34,7 @@
                     <li><a href="{{ url('/auth/login') }}">{{ trans('frontend.menu_login') }}</a></li>
                     <li><a href="{{ url('/auth/register') }}">{{ trans('frontend.menu_register') }}</a></li>
                 @else
+                    <li><a href="{{ url('/listings/liked') }}">{{ trans('frontend.menu_liked_listings') }}</a></li>
                     <li><a href="{{ url('/admin/user/'.Auth::user()->id.'/edit') }}">{{ Auth::user()->name }}</a></li>
                     <li><a href="{{ url('/admin') }}">{{ trans('frontend.menu_my_properties') }}</a></li>
                     <li><a href="{{ url('/admin/user/'.Auth::user()->id.'/edit') }}">{{ trans('frontend.menu_user_data') }}</a></li>
@@ -100,6 +101,7 @@
                                 <li><a href="{{ url('/admin/messages') }}">{{ trans('admin.my_messages_menu') }}</a></li>
                                 <li><a href="{{ url('/admin/pagos') }}">{{ trans('admin.payments') }}</a></li>
                                 <li><a href="{{ url('/admin/user/'.Auth::user()->id.'/edit') }}">{{ trans('admin.user_data') }}</a></li>
+                                <li><a href="{{ url('/listings/liked') }}">{{ trans('frontend.menu_liked_listings') }}</a></li>
                                 <li class="uk-nav-divider"></li>
                                 <li><a href="{{ url('/auth/logout') }}">{{ trans('frontend.menu_logout') }}</a></li>
                             </ul><!--/uk-nav-->

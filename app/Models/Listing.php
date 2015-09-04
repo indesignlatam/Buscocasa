@@ -340,4 +340,8 @@ class Listing extends IndesignModel {
     public function messages(){
         return $this->hasMany('App\Models\Appointment', 'listing_id');
     }
+
+    public function likes(){
+        return $this->hasMany('App\Models\Like', 'listing_id');
+    }
 }

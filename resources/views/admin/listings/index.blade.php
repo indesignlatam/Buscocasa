@@ -26,6 +26,7 @@
 			@if(count($listings) > 0)
 			<div class="uk-panel">
 				<form action="{{url(Request::path())}}" method="GET" class="uk-form uk-align-right">
+			        <input type="text" name="search" placeholder="{{ trans('admin.search') }}" class="uk-form-width-small" value="{{ Request::get('search') }}">
 					<select name="take" onchange="this.form.submit()">
 				    	<option value="">Cantidad de publicaciones</option>
 				    	@if(Request::get('take') == 50)
@@ -111,7 +112,7 @@
 		              	@endforeach
 		            </tbody>
 				</table>
-				<?php echo $listings->render(); ?>
+				<?php echo $listings->appends(Request::all())->render(); ?>
 			</div>
 		@else
 			<h1>{{ trans('admin.my_listings') }}</h1>
@@ -122,7 +123,8 @@
 			        <a class="uk-button uk-button-large uk-button-primary" href="{{ url('/admin/listings/create') }}">{{ trans('admin.publish_property') }}</a>
 			        <a class="uk-button uk-button-large" href="{{ url('/admin/listings/?deleted=true') }}" data-uk-tooltip="{pos:'top'}" title="{{ trans('admin.eliminated_listings') }}"><i class="uk-icon-trash"></i></a>
 
-			        <form action="{{url(Request::path())}}" method="GET" class="uk-form uk-align-right">
+			        <form action="{{url(Request::path())}}" method="GET" class="uk-form uk-align-right uk-hidden-small">
+			        	<input type="text" name="search" placeholder="{{ trans('admin.search') }}" class="uk-form-width-small" value="{{ Request::get('search') }}">
 						<select name="take" onchange="this.form.submit()">
 					    	<option value="">Cantidad de publicaciones</option>
 					    	@if(Request::get('take') == 50)
@@ -172,8 +174,10 @@
 			                		<div class="uk-width-large-2-10 uk-width-medium-2-10 uk-width-small-1-1">
 			                			<a href="{{ url('/admin/listings/'.$listing->id.'/edit') }}">
 				                			<!-- Featured tag -->
-						                	@if($listing->featured_expires_at && $listing->featuredType->id > 1 && $listing->featured_expires_at > Carbon::now())
-						                		<img src="{{asset($listing->featuredType->image_path)}}" style="position:absolute; top:30; left:30; max-width:100px">
+						                	@if($listing->featured_expires_at && $listing->featured_expires_at > Carbon::now())
+												<div style="background-color:{{$listing->featuredType->color}}; position:absolute; top:15px; left:15px;" class="uk-text-center uk-text-contrast">
+													<p class="uk-margin-small-bottom uk-margin-small-top uk-margin-left uk-margin-right"><i class="{{$listing->featuredType->uk_class}}"></i></p>
+												</div>
 						                	@endif
 						                	<!-- Featured tag -->
 			                				<img src="{{ asset(Image::url($listing->image_path(),['map_mini'])) }}">
@@ -264,8 +268,8 @@
 			                		<div class="uk-width-large-2-10 uk-width-medium-2-10 uk-width-small-1-1">
 			                			@if(!$listing->deleted_at)
 			                				<!-- If listing is featured and is not expired yet -->
-				                			@if($listing->featured_expires_at && $listing->featured_expires_at > Carbon::now())
-				                				<!-- If listing iexpires in the next 5 days -->
+				                			@if($listing->featured_expires_at && $listing->featured_expires_at > Carbon::now() && $listing->expires_at == $listing->featured_expires_at)
+				                				<!-- If listing expires in the next 5 days -->
 				                				@if($listing->featured_expires_at <= Carbon::now()->addDays(5))
 				                					@if($listing->featured_expires_at < Carbon::now())
 					                					<a class="uk-text-danger uk-text-bold uk-h4" href="{{ url('/admin/listings/'.$listing->id.'/renovate') }}">{{ trans('admin.featured_expired') }} {{ $listing->featured_expires_at->diffForHumans() }}</a>
@@ -320,7 +324,7 @@
 			                </li>
 			          	@endforeach
 					</ul>
-					<?php echo $listings->render(); ?>
+					<?php echo $listings->appends(Request::all())->render(); ?>
 				</div>
 			@elseif(Request::get('deleted'))
 				@if(count($listings))

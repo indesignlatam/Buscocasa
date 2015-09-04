@@ -10,8 +10,10 @@ use Auth;
 use Socialize; 
 use Queue;
 use Analytics;
+use Cookie;
 
 use App\Models\Role;
+use App\Models\Like;
 use App\User;
 
 use App\Jobs\SendUserConfirmationEmail;
@@ -118,10 +120,25 @@ class AuthController extends Controller {
         // Push session var to know if user is new
         $request->session()->push('new_user', true);
 
-        // Analytics event
-        Analytics::trackEvent('User Registered', 'button', $user->id);
+        // Get liked listings and create them
+        $cookie = null;
+        if(Cookie::has('likes') && Cookie::get('likes') && count(Cookie::get('likes')) > 0){
+            $likes = array_keys(Cookie::get('likes'));
+            foreach ($likes as $like) {
+                Like::create(['user_id'     => Auth::user()->id,
+                              'listing_id'  => $like]);
+            }
+            $cookie = Cookie::forget('likes');
+        }
 
-        return redirect($this->redirectPath());
+        // Analytics event
+        Analytics::trackEvent('User Registered', 'button', $user->id, 1);
+
+        if($cookie){
+            return redirect($this->redirectPath())->withCookie($cookie);
+        }else{
+            return redirect($this->redirectPath());
+        }
     }
 
     /**
@@ -150,7 +167,27 @@ class AuthController extends Controller {
 
         if (Auth::attempt($credentials, $request->has('remember'))) {
             // Analytics event
-            Analytics::trackEvent('User logged in', 'button', Auth::user()->id);
+            Analytics::trackEvent('User logged in', 'button', Auth::user()->id, 1);
+
+            // Get liked listings and create them
+            $cookie = null;
+            if(Cookie::has('likes') && Cookie::get('likes') && count(Cookie::get('likes')) > 0){
+                $likes = array_keys(Cookie::get('likes'));
+                $liked = Like::whereIn('id', $likes)->get();
+                $liked = array_pluck($liked, 'listing_id');
+
+                foreach ($likes as $like) {
+                    if(!in_array($like, $liked)){
+                        Like::create(['user_id'     => Auth::user()->id,
+                                      'listing_id'  => $like]);
+                    }
+                }
+                $cookie = Cookie::forget('likes');
+            }
+
+            if($cookie){
+                return $this->handleUserWasAuthenticated($request, $throttles)->withCookie($cookie);
+            }
 
             return $this->handleUserWasAuthenticated($request, $throttles);
         }
@@ -217,7 +254,7 @@ class AuthController extends Controller {
             $user->attachRole($role);
 
             // Analytics event
-            Analytics::trackEvent('User Registered by Facebook', 'button', $user->id);
+            Analytics::trackEvent('User Registered by Facebook', 'button', $user->id, 1);
         }
 
         Auth::login($user);
