@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel {
         \App\Console\Commands\ArchiveDeletedListings::class,
         \App\Console\Commands\TestEmail::class,
         \App\Console\Commands\FlushCache::class,
+        \App\Console\Commands\NullFeaturedTypeFromExpiredListing::class,
     ];
 
     /**
@@ -37,5 +38,8 @@ class Kernel extends ConsoleKernel {
 
         $schedule->command('images:clean_temp')
                  ->dailyAt('1:00');
+
+        $schedule->command('listings:null_featured_expired')
+                 ->hourly();
     }
 }
