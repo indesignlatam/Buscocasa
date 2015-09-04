@@ -113,8 +113,13 @@ class AppointmentController extends Controller {
 	        return redirect()->back()->withErrors($appointment->errors())->withInput();
 	    }
 
+	    $input = $request->all();
+	    if(Auth::check()){
+	    	$input['user_id'] = Auth::user()->id;
+	    }
+	    
 	    // Create the object
-		$appointment = $appointment->create($request->all());
+		$appointment = $appointment->create($input);
 
 		// Queue the Send Email command
 		Queue::push(new SendNewMessageEmail($appointment));

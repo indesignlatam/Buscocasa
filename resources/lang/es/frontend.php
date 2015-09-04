@@ -54,7 +54,7 @@ return [
     'contact_comments' 			=> 'Comentarios',
     'contact_show_info' 		=> 'Ver información del vendedor',
     'contact_button'            => 'Enviar solicitud',
-    'contact_default_text'      => 'Quisiera mas información sobre este inmueble.',
+    'contact_default_text'      => 'Buen día, Quisiera que me enviaran más información sobre este inmueble.',
     'price_mt' 					=> 'Valor mt2',
     'similar_listings' 			=> 'Inmuebles similares',
     'already_contacted_vendor' 	=> 'Ya has contactado al vendedor hoy',
