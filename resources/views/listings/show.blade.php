@@ -37,6 +37,28 @@
 			</div>
 		</div>
 
+		@if (count($errors) > 0 && Agent::isMobile())
+            <div class="uk-alert uk-alert-danger" data-uk-alert>
+                <a href="" class="uk-alert-close uk-close"></a>
+                <ul class="uk-list">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        @if (Session::has('success') && Agent::isMobile())
+			<div class="uk-alert uk-alert-success" data-uk-alert>
+    			<a href="" class="uk-alert-close uk-close"></a>
+				<ul class="uk-list">
+					@foreach (Session::get('success') as $error)
+						<li><i class="uk-icon-check"></i> {{ $error }}</li>
+					@endforeach
+				</ul>
+			</div>
+		@endif
+
 		<div class="uk-grid uk-margin-small-top">
 			<div class="uk-width-large-7-10 uk-width-medium-7-10 uk-width-small-1-1">	
 				@if(count($listing->images) > 0)
@@ -224,7 +246,8 @@
     				<li><i class="uk-text-muted">{{ trans('admin.code') }}</i> <b>#{{ $listing->code }}</b></li>
     			</ul>
 
-				<button class="uk-button uk-button-large uk-button-success uk-width-1-1" onclick="select(this)" id="{{ $listing->id }}">{{ trans('frontend.compare') }}</button>
+				<button class="uk-button uk-button-large uk-button-primary uk-width-1-1 uk-hidden-large" data-uk-modal="{target:'#new_message_modal'}">{{ trans('frontend.contact_vendor') }}</button>
+				<button class="uk-button uk-button-large uk-width-1-1 uk-margin-small-top" onclick="select(this)" id="{{ $listing->id }}">{{ trans('frontend.compare') }}</button>
     			<a href="{{ url($listing->broker->path()) }}" class="uk-button uk-button-large uk-width-1-1 uk-margin-small-top">{{ trans('frontend.other_user_listings') }}</a>
 
     			<hr>
@@ -440,7 +463,7 @@
 	</div>
 </div>
 
-@include('modals.email_listing')
+@include('appointments.new')
 
 @endsection
 

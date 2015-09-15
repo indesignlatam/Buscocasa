@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use Auth;
+use Agent;
 use Cookie;
 use Carbon;
 use Queue;
@@ -27,7 +28,9 @@ class AppointmentController extends Controller {
      */
     public function __construct(){
         $this->middleware('throttle', ['only' => ['store', 'answer']]);
-        $this->middleware('recaptcha', ['only' => 'store']);
+        if(!Agent::isMobile()){
+        	$this->middleware('recaptcha', ['only' => 'store']);
+        }
     }
 
 	/**
